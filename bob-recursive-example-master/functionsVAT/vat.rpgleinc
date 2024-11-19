@@ -1,0 +1,32 @@
+**FREE
+        //=============================================
+        // Get VAT RATE %
+        //=============================================
+Dcl-PR GetVATRate Packed(4:2);
+      VATCODE        Char(1)    VALUE;
+          //=============================================
+          // Get VAT description
+          //=============================================
+End-PR;
+Dcl-PR GetVATDesc Char(20);
+      VATCODE        Char(1)    VALUE;
+          //=============================================
+          // Check VAT Rate
+          //=============================================
+End-PR;
+Dcl-PR ExistVATRate Ind;
+      VATCODE        Char(1)    VALUE;
+          //=============================================
+          // VAT Calculation
+          //=============================================
+End-PR;
+Dcl-PR CLCVat Packed(9:2);
+      VATCODE        Char(1)    VALUE;
+      NetValue       Packed(9:2) VALUE;
+          //=============================================
+          // Close VATDEF
+          //=============================================
+End-PR;
+Dcl-PR CloseVATDEF;
+End-PR;
+

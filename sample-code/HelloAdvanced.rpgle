@@ -22,21 +22,22 @@
 // The program expects three incoming parameters:
 // * Environment Code - 3 character enviroment code (DEV, TST, UAT, PRD)
 // * A success indicator which will return *ON/*OFF
-// * A status message whcih will contain error code or info message
+// * A status message which will contain error code or info message
 //                                     
-// To call use: CALL PGM(HELLO7) PARM(('DEV') (' ') (' '))               
+// To call use: CALL PGM(HELLOADV) PARM(('DEV') (' ') (' '))               
 //
 // --------------------------------------------------------------------- 
 // Modification History:                                                 
 // V.000 2024.03.14 NJL Created                                                
 // --------------------------------------------------------------------- 
 ctl-opt
+  nomain
   main(mainline)
   optimize(*full)
   option(*nodebugio:*srcstmt:*nounref)
   pgminfo(*pcml:*module)
   indent('| ')
-  copyright('HELLO7     | V.000 | Sample Stylised RPG Program')
+  copyright('HelloAdvanced  | V.000 | Sample Stylised RPG Program')
   /if Defined(*CRTBNDRPG)
   dftactgrp(*no)
   actgrp('NICKLITTEN')

@@ -1,0 +1,7 @@
+**/.deps
+**/.evfevent
+**/.logs
+
+**/.DS_Store
+.project
+.env
