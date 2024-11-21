@@ -1,1 +1,0 @@
-Note that TEXT attribute is represented by LABEL ON SQL command

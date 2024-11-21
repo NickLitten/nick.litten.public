@@ -1,1 +1,0 @@
-DCL        VAR(&CUID) TYPE(*DEC) LEN(5 0)

@@ -1,6 +1,4 @@
-HELLOWORLD.PGM: HelloWorld.pgm.rpgle
+RPGLEHW.PGM: RPGLE_HelloWorld.pgm.rpgle
 
-HELLOADV.PGM: HELLOADV.MODULE
-
-HELLOADV.MODULE: HelloAdvanced.rpgle
-HA.MODULE: HelloAdvanced.rpgle
+RPGLEHWA.PGM: RPGLEHWA.MODULE
+RPGLEHWA.MODULE: RPGLE_HelloWorld_Advanced.rpgle
