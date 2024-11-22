@@ -1,1 +1,1 @@
-SUBDIRS = includes sample-code qilesrc
+SUBDIRS = includes sample-code

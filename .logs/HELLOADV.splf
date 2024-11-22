@@ -5,11 +5,11 @@ CPC2196: Library NICKLITTEN added to library list.
 >> executing command: crtpgm pgm(NICKLITTEN/HELLOADV) module(HELLOADV) bndsrvpgm(*NONE) ACTGRP() USRPRF(*USER) TGTRLS() AUT() DETAIL(*EXTENDED) OPTION(*EVENTF ) STGMDL(*SNGLVL) TEXT('')
 sed: The label :a;N;$!ba;s/\n/ /g is greater than eight characters.
 >> liblist: 
->> executing time: 2024-11-22-12.57.07.00
+>> executing time: 2024-11-22-19.31.58.00
 
 CPC5D07: Program HELLOADV created in library NICKLITTEN.
                                                    Create Program                                                       Page     1
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
  Program  . . . . . . . . . . . . . . . . . . . . . :   HELLOADV
    Library  . . . . . . . . . . . . . . . . . . . . :     NICKLITTEN
  Program entry procedure module . . . . . . . . . . :   *FIRST
@@ -30,7 +30,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
  IPA control file . . . . . . . . . . . . . . . . . :   *NONE
  Text . . . . . . . . . . . . . . . . . . . . . . . :
                                                    Create Program                                                       Page     2
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
  Module      Library              Module      Library              Module      Library              Module      Library
  HELLOADV    *LIBL
  Service                                     Service                                     Service
@@ -40,7 +40,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
  Directory   Library              Directory   Library              Directory   Library              Directory   Library
  *NONE
                                                    Create Program                                                       Page     3
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
                                                        Extended Summary Table
    Valid definitions  . . . . . . . . . . :           319
      Strong . . . . . . . . . . . . . . . :           319
@@ -50,7 +50,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
      To weak definitions  . . . . . . . . :             0
                              * * * * *   E N D  O F  E X T E N D E D  S U M M A R Y  T A B L E   * * * * *
                                                    Create Program                                                       Page     4
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
                                                         Brief Summary Table
  Program entry procedures . . . . . . . . . . . :   1
    Symbol    Type      Library     Object      Bound       Identifier
@@ -60,12 +60,12 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
  Activation group . . . . . . . . . . . . . . . :   QILE
                                 * * * * *   E N D  O F  B R I E F  S U M M A R Y  T A B L E   * * * * *
                                                    Create Program                                                       Page     5
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
                                                      Binder Information Listing
  Module . . . . . . . . . . . :   HELLOADV
    Library  . . . . . . . . . :     NICKLITTEN
    Bound  . . . . . . . . . . :     *YES
-   Change date/time . . . . . :     24-11-22  12:14:01
+   Change date/time . . . . . :     24-11-22  19:31:55
    Teraspace storage enabled  :     *YES
    Storage model  . . . . . . :     *INHERIT
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
@@ -113,7 +113,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        00000021  Def                   _QRNX_CVT_ACS                                Proc                  Strong
        00000022  Def                   _QRNX_RTV_ACS_FC_H                           Proc                  Strong
                                                    Create Program                                                       Page     6
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        00000023  Def                   _QRNX_CVT_ACS_FC_H                           Proc                  Strong
        00000024  Def                   _QRNX_DSPLY_E_H                              Proc                  Strong
@@ -171,7 +171,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        00000058  Def                   _QRNX_SUBP_SND_MSG_E_H                       Proc                  Strong
        00000059  Def                   _QRNX_SUBP_SND_MSG_MON                       Proc                  Strong
                                                    Create Program                                                       Page     7
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        0000005A  Def                   _QRNX_MONITOR_ONEXCP                         Proc                  Strong
  Service program  . . . . . . :   QRNXIO
@@ -226,7 +226,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        00000083  Def                   _QRNI_WS_WRITE_EH                            Proc                  Strong
        00000084  Def                   _QRNI_WS_UPDATE_EH                           Proc                  Strong
                                                    Create Program                                                       Page     8
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        00000085  Def                   _QRNI_CLOSE_EH                               Proc                  Strong
        00000086  Def                   _QRNI_OPEN_EH                                Proc                  Strong
@@ -281,7 +281,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        000000AE  Def                   _QRNX_ED_MASK                                Proc                  Strong
        000000AF  Def                   _QRNX_SCAN                                   Proc                  Strong
                                                    Create Program                                                       Page     9
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        000000B0  Def                   _QRNX_TIME_DTZ                               Proc                  Strong
        000000B1  Def                   _QRNX_FCAT                                   Proc                  Strong
@@ -339,7 +339,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        000000E5  Def                   _QRNX_TIMESTAMP                              Proc                  Strong
        000000E6  Def                   _QRNX_LOWER_UPPER                            Proc                  Strong
                                                    Create Program                                                       Page    10
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        000000E7  Def                   _QRNX_SPLIT                                  Proc                  Strong
        000000E8  Def                   _QRNX_dummy1                                 Proc                  Strong
@@ -391,7 +391,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        00000104  Def                   Q LE leBdyEpilog                             Proc                  Strong
        00000105  Def                   CEE4FCB                                      Proc                  Strong
                                                    Create Program                                                       Page    11
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        00000106  Def                   CEE4RAGE                                     Proc                  Strong
        00000107  Def                   __CEERTX                                     Proc                  Strong
@@ -449,7 +449,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        0000013B  Def                   QleGetTLSEntry                               Proc                  Strong
        0000013C  Def                   QleSetTLSEntry                               Proc                  Strong
                                                    Create Program                                                       Page    12
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
        Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
        0000013D  Def                   QleActBndPgmLongTS                           Proc                  Strong
        0000013E  Def                   Q LE leDefaultEh2                            Proc                  Strong
@@ -466,7 +466,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
        00000149  Def                   CEE4RAGEL                                    Proc                  Strong
                          * * * * *   E N D  O F  B I N D E R  I N F O R M A T I O N  L I S T I N G    * *
                                                    Create Program                                                       Page    13
-5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  12:57:07 UTC
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/HELLOADV    PROJEX    24-11-22  19:31:58 UTC
                                                          Binding Statistics
  Symbol collection CPU time . . . . . . . . . . . . . . . . . :                .000
  Symbol resolution CPU time . . . . . . . . . . . . . . . . . :                .000
@@ -475,7 +475,7 @@ CPC5D07: Program HELLOADV created in library NICKLITTEN.
  Listing creation CPU time  . . . . . . . . . . . . . . . . . :                .000
  Program/service program creation CPU time  . . . . . . . . . :                .000
  Total CPU time . . . . . . . . . . . . . . . . . . . . . . . :                .005
- Total elapsed time . . . . . . . . . . . . . . . . . . . . . :                .187
+ Total elapsed time . . . . . . . . . . . . . . . . . . . . . :                .144
                                  * * * * *   E N D  O F  B I N D I N G  S T A T I S T I C S   * * * * *
 *CPC5D07 - Program HELLOADV created in library NICKLITTEN.
                            * * * * *   E N D  O F  C R E A T E  P R O G R A M  L I S T I N G   * * * * *
