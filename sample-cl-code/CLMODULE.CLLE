@@ -1,0 +1,5 @@
+pgm &msg
+  include srcstmf('include.clleinc') 
+  chgvar var(&msg) value(&msg *TCAT '(CLMODULE)')
+  call CLBNDPGM parm(&msg)
+endpgm

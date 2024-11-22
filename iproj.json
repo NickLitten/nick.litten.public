@@ -1,18 +1,17 @@
 {
- "version": "0.0.1",
- "description": "Nick Litten Public VSCode Stuff",
- "objlib": "&lib1",
- "curlib": "&lib1",
- "includePath": [
-    "includes",
-    "QPROTOSRC"
- ],
- "preUsrlibl": [
+  "version": "0.0.1",
+  "description": "Nick Litten Public VSCode Stuff",
+  "objlib": "&lib1",
+  "curlib": "&lib1",
+  "includePath": [
+    "includes"
+  ],
+  "preUsrlibl": [
     "&lib1"
- ],
- "postUsrlibl": [],
- "setIBMiEnvCmd": [],
- "repository": "https://github.com/NickLitten/nick.litten.public.git",
- "compileCommand": "/QOpenSys/pkgs/bin/makei c -f {filename}",
- "buildCommand": "/QOpenSys/pkgs/bin/makei build"
+  ],
+  "postUsrlibl": [],
+  "setIBMiEnvCmd": [],
+  "repository": "https://github.com/NickLitten/nick.litten.public.git",
+  "compileCommand": "/QOpenSys/pkgs/bin/makei c -f {filename}",
+  "buildCommand": "/QOpenSys/pkgs/bin/makei build"
 }

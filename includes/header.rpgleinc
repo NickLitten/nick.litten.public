@@ -1,0 +1,6 @@
+ctl-opt
+  main(mainline)
+  optimize(*full)
+  option(*nodebugio:*srcstmt:*nounref)
+  pgminfo(*pcml:*module)
+  indent('| ');
