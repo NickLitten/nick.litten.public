@@ -1,0 +1,44 @@
+[
+    {
+        "cmd": "crtpgm pgm(NICKLITTEN/HELLOADV) module(HELLOADV) bndsrvpgm(*NONE) ACTGRP() USRPRF(*USER) TGTRLS() AUT() DETAIL(*EXTENDED) OPTION(*EVENTF ) STGMDL(*SNGLVL) TEXT('')",
+        "cmd_time": "2024-11-22-12.57.07.00",
+        "msgs": [
+            {
+                "msgid": "CPC2198",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2024-11-22-12.57.07.028519",
+                "message_text": "Current library changed to NICKLITTEN.",
+                "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
+                "from_program": "QLICHLLE",
+                "from_library": "QSYS",
+                "from_instruction": "01A3",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            },
+            {
+                "msgid": "CPC2196",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2024-11-22-12.57.07.029506",
+                "message_text": "Library NICKLITTEN added to library list.",
+                "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
+                "from_program": "QLICUSRL",
+                "from_library": "QSYS",
+                "from_instruction": "0114",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            }
+        ],
+        "object": "HELLOADV.PGM",
+        "source": "/QSYS.LIB/NICKLITTEN.LIB/HELLOADV.MODULE",
+        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOADV.splf",
+        "failed": false
+    }
+]

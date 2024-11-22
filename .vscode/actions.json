@@ -36,36 +36,6 @@
     ]
   },
   {
-    "name": "Create COBOL Program (SQL)",
-    "command": "CRTSQLCBLI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) TOSRCFILE(&CURLIB/QSQLTEMP)",
-    "deployFirst": true,
-    "environment": "ile",
-    "extensions": [
-      "SQLCBL",
-      "SQLCBBLE",
-      "SQLCBLLE",
-      "COB",
-      "CBLLE",
-      "CBL",
-      "CBBLE"
-    ]
-  },
-  {
-    "name": "Create COBOL Module (SQL)",
-    "command": "CRTSQLCBLI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OBJTYPE(*MODULE) OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) TOSRCFILE(&CURLIB/QSQLTEMP)",
-    "deployFirst": true,
-    "environment": "ile",
-    "extensions": [
-      "SQLCBL",
-      "SQLCBBLE",
-      "SQLCBLLE",
-      "COB",
-      "CBLLE",
-      "CBL",
-      "CBBLE"
-    ]
-  },
-  {
     "name": "Create C Program",
     "command": "CRTBNDC PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)",
     "deployFirst": true,

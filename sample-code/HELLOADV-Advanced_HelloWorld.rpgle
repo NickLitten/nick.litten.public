@@ -1,6 +1,6 @@
 **free
 // --------------------------------------------------------------------- 
-// SAMPLE COMPLEX BUT STYLISH HELLO WORLD PROGRAM
+// Alternate Helloworld with Environment codes
 // --------------------------------------------------------------------- 
 //
 // This program is a simple 'Hello World' style RPG program which has
@@ -31,17 +31,12 @@
 // V.000 2024.03.14 NJL Created                                                
 // --------------------------------------------------------------------- 
 ctl-opt
-  nomain
   main(mainline)
   optimize(*full)
   option(*nodebugio:*srcstmt:*nounref)
   pgminfo(*pcml:*module)
   indent('| ')
   copyright('HelloAdvanced  | V.000 | Sample Stylised RPG Program')
-  /if Defined(*CRTBNDRPG)
-  dftactgrp(*no)
-  actgrp('NICKLITTEN')
-  /endIf
   ;
 
 // --------------------------------------------------------------------- 
