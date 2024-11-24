@@ -1,0 +1,69 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: CRTSRVPGM srcstmf('/home/NICKLITTEN/builds/public/services/SIMPLESRV.BND') SRVPGM(NICKLITTEN/SIMPLESRV) MODULE(SIMPLEMOD) BNDSRVPGM(*NONE) ACTGRP(*CALLER) TEXT('') TGTRLS() AUT() DETAIL(*BASIC) STGMDL(*SNGLVL ) OPTION()
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NICKLITTEN NICKLITTEN QTEMP QGPL
+>> executing time: 2024-11-24-19.47.31.00
+
+CPC5D0B: Service program SIMPLESRV created in library NICKLITTEN.
+                                               Create Service Program                                                   Page     1
+5770SS1 V7R5M0  220415                                                    NICKLITTEN/SIMPLESRV    PROJEX    24-11-24  19:47:32 UTC
+ Service program  . . . . . . . . . . . . . . . . . . . . . . . . :   SIMPLESRV
+   Library  . . . . . . . . . . . . . . . . . . . . . . . . . . . :     NICKLITTEN
+ Export . . . . . . . . . . . . . . . . . . . . . . . . . . . . . :   *SRCFILE
+ Export source file . . . . . . . . . . . . . . . . . . . . . . . :   *STMF
+   Library  . . . . . . . . . . . . . . . . . . . . . . . . . . . :
+ Export source member . . . . . . . . . . . . . . . . . . . . . . :
+ Export source stream file  . . . . . . . . . . . . . . . . . . . :   /home/NICKLITTEN/builds/public/services/SIMPLESRV.BND
+ Activation group . . . . . . . . . . . . . . . . . . . . . . . . :   *CALLER
+ Creation options . . . . . . . . . . . . . . . . . . . . . . . . :   *GEN        *NODUPPROC  *NODUPVAR   *WARN       *RSLVREF
+ Listing detail . . . . . . . . . . . . . . . . . . . . . . . . . :   *BASIC
+ Allow Update . . . . . . . . . . . . . . . . . . . . . . . . . . :   *YES
+ Allow bound *SRVPGM library name update  . . . . . . . . . . . . :   *NO
+ User profile . . . . . . . . . . . . . . . . . . . . . . . . . . :   *USER
+ Replace existing service program . . . . . . . . . . . . . . . . :   *YES
+ Authority  . . . . . . . . . . . . . . . . . . . . . . . . . . . :   *LIBCRTAUT
+ Target release . . . . . . . . . . . . . . . . . . . . . . . . . :   *CURRENT
+ Allow reinitialization . . . . . . . . . . . . . . . . . . . . . :   *NO
+ Storage model  . . . . . . . . . . . . . . . . . . . . . . . . . :   *SNGLVL
+ Argument optimization  . . . . . . . . . . . . . . . . . . . . . :   *NO
+                                               Create Service Program                                                   Page     2
+5770SS1 V7R5M0  220415                                                    NICKLITTEN/SIMPLESRV    PROJEX    24-11-24  19:47:32 UTC
+ Interprocedural analysis . . . . . . . . . . . . . . . . . . . . :   *NO
+ IPA control file . . . . . . . . . . . . . . . . . . . . . . . . :   *NONE
+ Text . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . :
+ Module      Library              Module      Library              Module      Library              Module      Library
+ SIMPLEMOD   *LIBL
+ Service                                     Service                                     Service
+ Program     Library     Activation          Program     Library     Activation          Program     Library     Activation
+ *NONE
+                                               Create Service Program                                                   Page     3
+5770SS1 V7R5M0  220415                                                    NICKLITTEN/SIMPLESRV    PROJEX    24-11-24  19:47:32 UTC
+ Binding                          Binding                          Binding                          Binding
+ Directory   Library              Directory   Library              Directory   Library              Directory   Library
+ *NONE
+                                               Create Service Program                                                   Page     4
+5770SS1 V7R5M0  220415                                                    NICKLITTEN/SIMPLESRV    PROJEX    24-11-24  19:47:32 UTC
+                                                        Brief Summary Table
+ Program entry procedures . . . . . . . . . . . :   0
+ Multiple strong definitions  . . . . . . . . . :   0
+ Unresolved references  . . . . . . . . . . . . :   0
+ Activation group . . . . . . . . . . . . . . . :   *CALLER
+                                * * * * *   E N D  O F  B R I E F  S U M M A R Y  T A B L E   * * * * *
+                                               Create Service Program                                                   Page     5
+5770SS1 V7R5M0  220415                                                    NICKLITTEN/SIMPLESRV    PROJEX    24-11-24  19:47:32 UTC
+                                                         Binding Statistics
+ Symbol collection CPU time . . . . . . . . . . . . . . . . . :                .000
+ Symbol resolution CPU time . . . . . . . . . . . . . . . . . :                .000
+ Binding directory resolution CPU time  . . . . . . . . . . . :                .000
+ Binder language compilation CPU time . . . . . . . . . . . . :                .000
+ Listing creation CPU time  . . . . . . . . . . . . . . . . . :                .000
+ Program/service program creation CPU time  . . . . . . . . . :                .001
+ Total CPU time . . . . . . . . . . . . . . . . . . . . . . . :                .005
+ Total elapsed time . . . . . . . . . . . . . . . . . . . . . :                .124
+                                 * * * * *   E N D  O F  B I N D I N G  S T A T I S T I C S   * * * * *
+*CPC5D0B - Service program SIMPLESRV created in library NICKLITTEN.
+                    * * * * *   E N D  O F  C R E A T E  S E R V I C E  P R O G R A M  L I S T I N G   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

@@ -1,13 +1,13 @@
 [
     {
-        "cmd": "crtrpgmod module(NICKLITTEN/HELLOADV) srcstmf('/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOADV-Advanced_HelloWorld.rpgle') AUT() DBGVIEW(*ALL) OPTIMIZE() OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Advanced HelloWorld') TGTCCSID(37) TGTRLS() INCDIR('includes') DEFINE()",
-        "cmd_time": "2024-11-23-12.18.24.00",
+        "cmd": "CRTSRVPGM srcstmf('/home/NICKLITTEN/builds/public/services/SIMPLESRV.BND') SRVPGM(NICKLITTEN/SIMPLESRV) MODULE(SIMPLEMOD) BNDSRVPGM(*NONE) ACTGRP(*CALLER) TEXT('') TGTRLS() AUT() DETAIL(*BASIC) STGMDL(*SNGLVL ) OPTION()",
+        "cmd_time": "2024-11-24-19.47.31.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.24.670528",
+                "message_time": "2024-11-24-19.47.31.483473",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -23,7 +23,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.24.671187",
+                "message_time": "2024-11-24-19.47.31.484134",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -36,20 +36,20 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "HELLOADV.MODULE",
-        "source": "/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOADV-Advanced_HelloWorld.rpgle",
-        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOADV-Advanced_HelloWorld.splf",
+        "object": "SIMPLESRV.SRVPGM",
+        "source": "/home/NICKLITTEN/builds/public/services/SIMPLESRV.BND",
+        "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLESRV.splf",
         "failed": false
     },
     {
-        "cmd": "crtrpgmod module(NICKLITTEN/HELLOINC) srcstmf('/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOINC-Helloworld_using_copybook.rpgle') AUT() DBGVIEW(*ALL) OPTIMIZE() OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Helloworld using copybook') TGTCCSID(37) TGTRLS() INCDIR('includes') DEFINE()",
-        "cmd_time": "2024-11-23-12.18.27.00",
+        "cmd": "DLTOBJ OBJ(NICKLITTEN/SIMPLEBND) OBJTYPE(*BNDDIR)",
+        "cmd_time": "2024-11-24-19.47.37.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.26.722958",
+                "message_time": "2024-11-24-19.47.36.561053",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -65,7 +65,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.26.723629",
+                "message_time": "2024-11-24-19.47.36.561836",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -78,20 +78,20 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "HELLOINC.MODULE",
-        "source": "/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOINC-Helloworld_using_copybook.rpgle",
-        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOINC-Helloworld_using_copybook.splf",
+        "object": "SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
         "failed": false
     },
     {
-        "cmd": "CRTBNDRPG srcstmf('/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOWORLD-Simple_HelloWorld.pgm.rpgle') PGM(NICKLITTEN/HELLOWORLD) TGTCCSID(37) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Simple HelloWorld') INCDIR('includes')",
-        "cmd_time": "2024-11-23-12.18.29.00",
+        "cmd": "CRTBNDDIR BNDDIR(NICKLITTEN/SIMPLEBND) TEXT('Simple Services Binder')",
+        "cmd_time": "2024-11-24-19.47.39.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.29.048155",
+                "message_time": "2024-11-24-19.47.38.802890",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -107,7 +107,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.29.048833",
+                "message_time": "2024-11-24-19.47.38.803696",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -120,20 +120,20 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "HELLOWORLD.PGM",
-        "source": "/home/NICKLITTEN/builds/public/sample-rpg-code/HELLOWORLD-Simple_HelloWorld.pgm.rpgle",
-        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOWORLD-Simple_HelloWorld.pgm.splf",
+        "object": "SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
         "failed": false
     },
     {
-        "cmd": "crtpgm pgm(NICKLITTEN/HELLOADV) module(HELLOADV) bndsrvpgm(*NONE) ACTGRP() USRPRF(*USER) TGTRLS() AUT() DETAIL(*EXTENDED) OPTION(*EVENTF ) STGMDL(*SNGLVL) TEXT('')",
-        "cmd_time": "2024-11-23-12.18.31.00",
+        "cmd": "ADDBNDDIRE BNDDIR(NICKLITTEN/SIMPLEBND) OBJ((*LIBL/SIMPLESRV *SRVPGM))",
+        "cmd_time": "2024-11-24-19.47.41.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.31.023729",
+                "message_time": "2024-11-24-19.47.41.035576",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -149,7 +149,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-23-12.18.31.024490",
+                "message_time": "2024-11-24-19.47.41.036328",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -162,51 +162,9 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "HELLOADV.PGM",
-        "source": "HELLOADV.MODULE",
-        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOADV.splf",
-        "failed": false
-    },
-    {
-        "cmd": "crtpgm pgm(NICKLITTEN/HELLOINC) module(HELLOINC) bndsrvpgm(*NONE) ACTGRP() USRPRF(*USER) TGTRLS() AUT() DETAIL(*EXTENDED) OPTION(*EVENTF ) STGMDL(*SNGLVL) TEXT('')",
-        "cmd_time": "2024-11-23-12.18.33.00",
-        "msgs": [
-            {
-                "msgid": "CPC2198",
-                "type": "COMPLETION",
-                "severity": 0,
-                "message_time": "2024-11-23-12.18.33.013883",
-                "message_text": "Current library changed to NICKLITTEN.",
-                "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
-                "from_program": "QLICHLLE",
-                "from_library": "QSYS",
-                "from_instruction": "01A3",
-                "to_program": "QP2USER2",
-                "to_library": "QSYS",
-                "to_module": "QP2API",
-                "to_procedure": "runpase_common__FiPvT2",
-                "to_instruction": "4"
-            },
-            {
-                "msgid": "CPC2196",
-                "type": "COMPLETION",
-                "severity": 0,
-                "message_time": "2024-11-23-12.18.33.014749",
-                "message_text": "Library NICKLITTEN added to library list.",
-                "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
-                "from_program": "QLICUSRL",
-                "from_library": "QSYS",
-                "from_instruction": "0114",
-                "to_program": "QP2USER2",
-                "to_library": "QSYS",
-                "to_module": "QP2API",
-                "to_procedure": "runpase_common__FiPvT2",
-                "to_instruction": "4"
-            }
-        ],
-        "object": "HELLOINC.PGM",
-        "source": "HELLOINC.MODULE",
-        "output": "/home/NICKLITTEN/builds/public/.logs/HELLOINC.splf",
+        "object": "SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
         "failed": false
     }
 ]
