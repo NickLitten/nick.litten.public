@@ -1,13 +1,13 @@
 [
     {
-        "cmd": "CRTSRVPGM srcstmf('/home/NICKLITTEN/builds/public/services/SIMPLESRV.BND') SRVPGM(NICKLITTEN/SIMPLESRV) MODULE(SIMPLEMOD) BNDSRVPGM(*NONE) ACTGRP(*CALLER) TEXT('') TGTRLS() AUT() DETAIL(*BASIC) STGMDL(*SNGLVL ) OPTION()",
-        "cmd_time": "2024-11-24-19.47.31.00",
+        "cmd": "crtsqlrpgi obj(NICKLITTEN/SIMPLEMOD) srcstmf('/home/NICKLITTEN/builds/public/services/SIMPLEMOD-Simple_Service_Program.sqlrpgle') COMMIT(*NONE ) OBJTYPE(*MODULE) OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Simple Service Program') TGTRLS() DBGVIEW(*SOURCE) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(37) OPTIMIZE() INCDIR(''includes'')')",
+        "cmd_time": "2024-11-24-20.28.11.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.31.483473",
+                "message_time": "2024-11-24-20.28.10.895736",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -23,7 +23,49 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.31.484134",
+                "message_time": "2024-11-24-20.28.10.896408",
+                "message_text": "Library NICKLITTEN added to library list.",
+                "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
+                "from_program": "QLICUSRL",
+                "from_library": "QSYS",
+                "from_instruction": "0114",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            }
+        ],
+        "object": "SIMPLEMOD.MODULE",
+        "source": "/home/NICKLITTEN/builds/public/services/SIMPLEMOD-Simple_Service_Program.sqlrpgle",
+        "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEMOD-Simple_Service_Program.splf",
+        "failed": false
+    },
+    {
+        "cmd": "CRTSRVPGM srcstmf('/home/NICKLITTEN/builds/public/services/SIMPLESRV.BND') SRVPGM(NICKLITTEN/SIMPLESRV) MODULE(SIMPLEMOD) BNDSRVPGM(*NONE) ACTGRP(*CALLER) TEXT('') TGTRLS() AUT() DETAIL(*BASIC) STGMDL(*SNGLVL ) OPTION()",
+        "cmd_time": "2024-11-24-20.28.13.00",
+        "msgs": [
+            {
+                "msgid": "CPC2198",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2024-11-24-20.28.13.492433",
+                "message_text": "Current library changed to NICKLITTEN.",
+                "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
+                "from_program": "QLICHLLE",
+                "from_library": "QSYS",
+                "from_instruction": "01A3",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            },
+            {
+                "msgid": "CPC2196",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2024-11-24-20.28.13.493265",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -43,13 +85,13 @@
     },
     {
         "cmd": "DLTOBJ OBJ(NICKLITTEN/SIMPLEBND) OBJTYPE(*BNDDIR)",
-        "cmd_time": "2024-11-24-19.47.37.00",
+        "cmd_time": "2024-11-24-20.28.18.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.36.561053",
+                "message_time": "2024-11-24-20.28.17.951674",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -65,7 +107,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.36.561836",
+                "message_time": "2024-11-24-20.28.17.952427",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -79,19 +121,19 @@
             }
         ],
         "object": "SIMPLEBND.BNDDIR",
-        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binders/SIMPLEBND.BNDDIR",
         "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
-        "failed": false
+        "failed": true
     },
     {
         "cmd": "CRTBNDDIR BNDDIR(NICKLITTEN/SIMPLEBND) TEXT('Simple Services Binder')",
-        "cmd_time": "2024-11-24-19.47.39.00",
+        "cmd_time": "2024-11-24-20.28.20.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.38.802890",
+                "message_time": "2024-11-24-20.28.20.073988",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -107,7 +149,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.38.803696",
+                "message_time": "2024-11-24-20.28.20.074699",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -121,19 +163,19 @@
             }
         ],
         "object": "SIMPLEBND.BNDDIR",
-        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binders/SIMPLEBND.BNDDIR",
         "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
         "failed": false
     },
     {
         "cmd": "ADDBNDDIRE BNDDIR(NICKLITTEN/SIMPLEBND) OBJ((*LIBL/SIMPLESRV *SRVPGM))",
-        "cmd_time": "2024-11-24-19.47.41.00",
+        "cmd_time": "2024-11-24-20.28.22.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.41.035576",
+                "message_time": "2024-11-24-20.28.21.704595",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -149,7 +191,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2024-11-24-19.47.41.036328",
+                "message_time": "2024-11-24-20.28.21.705534",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -163,7 +205,7 @@
             }
         ],
         "object": "SIMPLEBND.BNDDIR",
-        "source": "/home/NICKLITTEN/builds/public/binding-directories/SIMPLEBND.BNDDIR",
+        "source": "/home/NICKLITTEN/builds/public/binders/SIMPLEBND.BNDDIR",
         "output": "/home/NICKLITTEN/builds/public/.logs/SIMPLEBND.splf",
         "failed": false
     }

@@ -1,1 +1,1 @@
-SUBDIRS = includes services binding-directories sample-rpg-code sample-cl-code 
+SUBDIRS = includes services binders sample-rpg-code sample-cl-code 

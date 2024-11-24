@@ -21,12 +21,9 @@
 // Modification History:                                                 
 // V.000 2020.03.14 NJL Created                                                
 // --------------------------------------------------------------------- 
+/include header.rpgleinc
+
 ctl-opt
-  main(mainline)
-  optimize(*full)
-  option(*nodebugio:*srcstmt:*nounref)
-  pgminfo(*pcml:*module)
-  indent('| ')
   copyright('HelloAdvanced | V.000 | Sample Stylised RPG Program')
   ;
 
