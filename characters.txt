@@ -1,0 +1,102 @@
+  www.projex4i.com
+' left single quote
+' right single quote
+" left double quote
+" right double quote
+" double quotation mark
+& ampersand
+< less-than sign
+> greater-than sign
+[ left square bracket
+] right square bracket
+- en dash
+¡ inverted exclamation
+g_ cent sign
+£ pound sterling
+¤ general currency sign
+¥ yen sign
+¦ broken vertical bar
+§ section sign
+© copyright
+ª feminine ordinal
+® registered trademark
+¯ macron accent
+° degree sign
+± plus or minus
+² superscript two
+³ superscript three
+´ acute accent
+µ micro sign
+· middle dot
+¸ cedilla
+¹ superscript one
+º masculine ordinal
+" right angle quote
+¼ one-fourth
+½ one-half
+¾ three-fourths
+¿ inverted question mark
+À uppercase A, grave accent
+Á uppercase A, acute accent
+Â uppercase A, circumflex accent
+Ã uppercase A, tilde
+Ä uppercase A, umlaut
+Å uppercase A, ring
+Æ uppercase AE
+Ç uppercase C, cedilla
+È uppercase E, grave accent
+É uppercase E, acute accent
+Ê uppercase E, circumflex accent
+Ë uppercase E, umlaut
+Ì uppercase I, grave accent
+Í uppercase I, acute accent
+Î uppercase I, circumflex accent
+Ï uppercase I, umlaut
+Ð uppercase Eth, Icelandic
+Ñ uppercase N, tilde
+Ò uppercase O, grave accent
+Ó uppercase O, acute accent
+Ô uppercase O, circumflex accent
+Õ uppercase O, tilde
+Ö uppercase O, umlaut
+× multiplication sign
+Ø uppercase O, slash
+Ù uppercase U, grave accent
+Ú uppercase U, acute accent
+Û uppercase U, circumflex accent
+Ü uppercase U, umlaut
+Ý uppercase Y, acute accent
+Þ uppercase THORN, Icelandic
+ß lowercase sharps, German
+à lowercase a, grave accent
+á lowercase a, acute accent
+â lowercase a, circumflex accent
+ã lowercase a, tilde
+ä lowercase a, umlaut
+å lowercase a, ring
+æ lowercase ae
+ç lowercase c, cedilla
+è lowercase e, grave accent
+é lowercase e, acute accent
+ê lowercase e, circumflex accent
+ë lowercase e, umlaut
+ì lowercase i, grave accent
+í lowercase i, acute accent
+î lowercase i, circumflex accent
+ï lowercase i, umlaut
+ð lowercase eth, Icelandic
+ñ lowercase n, tilde
+ò lowercase o, grave accent
+ó lowercase o, acute accent
+ô lowercase o, circumflex accent
+õ lowercase o, tilde
+ö lowercase o, umlaut
+÷ division sign
+ø lowercase o, slash
+ù lowercase u, grave accent
+ú lowercase u, acute accent
+û lowercase u, circumflex accent
+ü lowercase u, umlaut
+ý lowercase y, acute accent
+þ lowercase thorn, Icelandic
+ÿ lowercase y, umlaut

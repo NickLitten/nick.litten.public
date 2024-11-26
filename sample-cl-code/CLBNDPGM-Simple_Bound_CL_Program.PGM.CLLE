@@ -1,0 +1,19 @@
+/* --------------------------------------------------------- */
+/* Simple CLLE Bound Program                                 */
+/* --------------------------------------------------------- */
+/* This receives a 20 character input parameter, which is    */
+/* defined in the 'include.clleinc' copybook. This copybook  */
+/* location is defined in the "include paths" section of     */
+/* VS Code for IBM i - Project Explorer                      */
+/* --------------------------------------------------------- */
+/* Author: nick@nicklitten.com                               */
+/* Date:   November 25th 2024                                */
+/* --------------------------------------------------------- */
+
+PGM PARM(&MSG)
+
+  INCLUDE SRCSTMF('include.clleinc') 
+
+  SNDPGMMSG MSG(&MSG) MSGTYPE(*COMP)
+
+ENDPGM
