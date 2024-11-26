@@ -11,14 +11,11 @@
 // CRUD for single file, with subfile using SQLRPGLE
 //
 
-/include projexsrc/@copybook,@hspec
 ctl-opt copyright('| CRUD01RPG 2018.09.27');
 ctl-opt main(proc_Main);
 
 dcl-f CRUD01PNL workstn sfile(SFLTASK:TASKRRN)
   usropn infds(infds);
-
- /INCLUDE projexsrc/@copybook,@CORE
 
 // Validation indicators
 dcl-s pIndicators Pointer Inz(%Addr(*In));
@@ -88,9 +85,7 @@ dcl-s w_Crudfinalize Ind;
 dcl-s CurrentUser char(10) inz(*user);
 
 
-/title -------- MAINLINE ----------
-
-
+/title [---- proc_Main ----] 
 dcl-proc proc_Main;
 
   dcl-s choice char(1) inz(*blanks);
@@ -108,7 +103,7 @@ dcl-proc proc_Main;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 // This procedure receives a parameter that indicates what titles should
 // written.
 dcl-proc proc_WriteScreen;
@@ -151,7 +146,7 @@ dcl-proc proc_WriteScreen;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 // This procedure executes and show the screen choiced by parameter
 dcl-proc proc_ShowScreen;
   dcl-pi proc_ShowScreen ;
@@ -173,6 +168,8 @@ dcl-proc proc_ShowScreen;
 
 end-proc;
 
+
+/title [---- proc_WriteScreen ----] 
 // Show Window to user for confirm the current action
 dcl-proc proc_ShowWdw;
   dcl-pi proc_ShowWdw;
@@ -207,6 +204,7 @@ dcl-proc proc_ShowWdw;
 end-proc;
 
 
+/title [---- proc_WriteScreen ----] 
 // This procedure Center the titles of the screen
 dcl-proc proc_Center;
   dcl-pi proc_Center char(80);
@@ -228,6 +226,7 @@ end-proc;
 
 
 
+/title [---- proc_WriteScreen ----] 
 // Show the subfile in the screen
 dcl-proc proc_ShowSubfile;
   dcl-pi proc_Showsubfile;
@@ -367,7 +366,7 @@ dcl-proc proc_ShowSubfile;
 end-proc ;
 
 
-
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_ScreenValidation ;
   dcl-pi proc_ScreenValidation Ind;
     Par_Choice char(1);
@@ -415,6 +414,8 @@ dcl-proc proc_ScreenValidation ;
 end-proc;
 
 
+
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_TurnoffErrors;
   Taskidexisterror_31 = *Off;
   Startdateerror_32 = *Off;
@@ -423,9 +424,9 @@ dcl-proc proc_TurnoffErrors;
 end-proc ;
 
 
-
-// This procedure set the sql variable to the procedure for
-// poblate the subfile with data based in the customized
+/title [---- proc_WriteScreen ----] 
+// This procedure set the sql variable to the procedure to
+// populate the subfile with data based in the customized
 // sql variable
 dcl-proc proc_SubfileStart;
   dcl-pi proc_SubfileStart;
@@ -445,7 +446,7 @@ dcl-proc proc_SubfileStart;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 // Initialize and prepare the subfile
 dcl-proc proc_Sflinitial;
   SflEnd = *off;
@@ -457,6 +458,8 @@ dcl-proc proc_Sflinitial;
   SflDspCtl = *off;
 end-proc;
 
+
+/title [---- proc_WriteScreen ----] 
 // Activate the subfile for being visualizated in Screen
 dcl-proc proc_ActivateSubfile;
   proc_Sflinitial();
@@ -474,7 +477,7 @@ dcl-proc proc_ActivateSubfile;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 // Fill the subfile with a Cursor
 dcl-proc proc_FillSfl;
   dcl-pi proc_FillSfl;
@@ -530,7 +533,7 @@ dcl-proc proc_FillSfl;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 // This procedure assign the data fetched from cursor to subfile
 dcl-proc proc_DatatoSfl;
   taskrrn +=1;
@@ -543,6 +546,9 @@ dcl-proc proc_DatatoSfl;
   clear SFLTASK;
 end-proc;
 
+
+
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_Gettotalrecords;
   dcl-pi proc_Gettotalrecords zoned(10);
   end-pi;
@@ -577,6 +583,7 @@ end-proc;
 
 
 
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_ExecuteCrudScreen;
   dcl-pi proc_ExecuteCrudScreen;
     Par_Choice char(1);
@@ -600,7 +607,7 @@ dcl-proc proc_ExecuteCrudScreen;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_InsertScreen;
   dcl-pi proc_InsertScreen;
     Par_Choice char(1);
@@ -667,6 +674,7 @@ end-proc;
 
 
 
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_ModifyScreen;
   dcl-pi proc_ModifyScreen;
     Par_Choice char(1);
@@ -741,6 +749,7 @@ end-proc;
 
 
 
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_DeleteScreen;
   dcl-pi proc_DeleteScreen;
     Par_Choice char(1);
@@ -807,7 +816,7 @@ dcl-proc proc_DeleteScreen;
 end-proc;
 
 
-
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_ViewScreen;
   dcl-pi proc_ViewScreen;
     Par_Choice char(1);
@@ -840,6 +849,7 @@ end-proc;
 
 
 
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_LoaddatatoScreen;
   clear CRUDTASK;
   CRUDTASKID = Ds_datacrud.Task_id;
@@ -852,7 +862,7 @@ dcl-proc proc_LoaddatatoScreen;
 end-proc ;
 
 
-
+/title [---- proc_WriteScreen ----] 
 dcl-proc proc_LoaddatatoDs;
   clear Ds_datacrud;
   Ds_datacrud.Task_id = CRUDTASKID;
