@@ -14,8 +14,8 @@
 ctl-opt copyright('| CRUD01RPG 2018.09.27');
 ctl-opt main(proc_Main);
 
-dcl-f CRUD01PNL workstn sfile(SFLTASK:TASKRRN)
-  usropn infds(infds);
+dcl-f CRUD01PNL workstn sfile(SFLTASK:TASKRRN) usropn infds(infds);
+      
 
 // Validation indicators
 dcl-s pIndicators Pointer Inz(%Addr(*In));

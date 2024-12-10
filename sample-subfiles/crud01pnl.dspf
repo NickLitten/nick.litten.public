@@ -1,10 +1,7 @@
-     A*%%TS  SD  20180927  111308  LITTENN     REL-V7R3M0  5770-WDS
-     A*%%EC
      A                                      DSPSIZ(24 80 *DS3)
      A                                      INDARA
      A                                      ERRSFL
      A          R HEADER
-     A*%%TS  SD  20180927  111308  LITTENN     REL-V7R3M0  5770-WDS
      A                                  1  3SYSNAME
      A            TITLE1        50A  O  1 16COLOR(WHT)
      A                                  1 69DATE
@@ -19,7 +16,6 @@
      A                                             '
      A                                      DSPATR(UL)
      A          R FOOTER
-     A*%%TS  SD  20170126  023245  RAJCARDON   REL-V7R3M0  5770-WDS
      A                                      OVERLAY
      A                                      PUTRETAIN
      A                                 21  3'                                  -
@@ -28,7 +24,6 @@
      A                                      DSPATR(UL)
      A            FOOTTEXT      50A  O 22  3
      A          R SFLTASK                   SFL
-     A*%%TS  SD  20170202  030735  RAJCARDON   REL-V7R3M0  5770-WDS
      A            OPCTASK        1A  B 10  7
      A            SFLTASKID     10S 0O 10 12
      A            SFLTASKNAM    10A  O 10 23
@@ -36,7 +31,6 @@
      A            SFLENDDATE     8Y 0O 10 45EDTWRD('    /  /  ')
      A            SFLSTATE       2S 0O 10 57
      A          R SFLTASKCTL                SFLCTL(SFLTASK)
-     A*%%TS  SD  20170207  023935  RAJCARDON   REL-V7R3M0  5770-WDS
      A                                      SFLSIZ(0013)
      A                                      SFLPAG(0010)
      A                                      CF05(05 'Refresh')
@@ -62,7 +56,6 @@
      A                                  8 45'Finish date'
      A                                  8 57'State'
      A          R CRUDTASK
-     A*%%TS  SD  20180927  111308  LITTENN     REL-V7R3M0  5770-WDS
      A                                      CA03(03 'Exit')
      A                                      CF10(10 'Confirm')
      A                                      OVERLAY
@@ -85,14 +78,14 @@
      A                                 17  5'Start date..:'
      A            STARTDATE      8Y 0B 17 19
      A  35                                  DSPATR(PR)
-     A  32                                  ERRMSG('Not valid date')
+     A  32                                  ERRMSG('Invalid Date')
      A  34                                  ERRMSG('Start date is greater than -
      A                                      end date')
      A                                 17 32'YYYYMMDD'
      A                                      COLOR(WHT)
      A                                 18  5'End date....:'
      A            ENDDATE        8Y 0B 18 19
-     A  33                                  ERRMSG('Not valid date')
+     A  33                                  ERRMSG('Invalid Date')
      A  36                                  DSPATR(PR)
      A                                 18 32'YYYYMMDD'
      A                                      COLOR(WHT)
@@ -102,20 +95,15 @@
      A                                 19 23'+'
      A                                      COLOR(WHT)
      A          R EMPTY
-     A*%%TS  SD  20170201  162304  RAJCARDON   REL-V7R3M0  5770-WDS
      A                                      OVERLAY
      A                                      PUTRETAIN
-     A                                 14 13'(There are not records in database-
-     A                                       yet)'
+     A                                 14 13'(Database is EMPTY!)'
      A          R WDWCONFIRM
-     A*%%TS  SD  20170131  145408  RAJCARDON   REL-V7R3M0  5770-WDS
      A                                      WINDOW(9 18 5 40)
      A            WDWTEXT1      40   O  2  1
      A            WDWTEXT2      40   O  3  1
      A            WDWCHOICE      1   B  4 21COLOR(WHT)
      A          R WDWMESSAGE
-     A*%%TS  SD  20170202  201010  RAJCARDON   REL-V7R3M0  5770-WDS
      A                                      WINDOW(9 18 5 40)
      A            WDWMSG1       40A  O  2  1
      A            WDWMSG2       40A  O  3  1
-
