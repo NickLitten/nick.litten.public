@@ -3,13 +3,13 @@ ctl-opt nomain;
 
 // service program procedure called 'getsystemname'
 dcl-proc getsystemname export;
-    dcl-pi getsystemname;
-      systemname char(8);
-    end-pi;
+  dcl-pi getsystemname;
+    systemname char(8);
+  end-pi;
     
-    exec sql
+  exec sql
       VALUES CURRENT SERVER INTO :systemname ;
 
-    return;
+  return;
 
 end-proc;
