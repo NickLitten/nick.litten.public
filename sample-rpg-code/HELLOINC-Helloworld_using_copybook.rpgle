@@ -19,16 +19,17 @@
 //
 // --------------------------------------------------------------------- 
 // Modification History:                                                 
-// V.000 2024.11.22 NJL Created                                                
+// V.000 2024.11.22 NJL Created      
+// V.001 2024.12.11 NJL Christmas Update                                          
 // --------------------------------------------------------------------- 
 
-/include header.rpgleinc
+/include 'header.rpgleinc'
 
 ctl-opt
-  copyright('HelloAlternate | V.000 | Sample Stylised RPG Program')
+  copyright('HelloAlternate | V.001 | Sample Stylised RPG Program')
   ;
 
-/include global_variables.rpgleinc
+/include 'global_variables.rpgleinc'
 
 dcl-proc mainline;
   dcl-pi mainline;
@@ -50,9 +51,9 @@ dcl-proc mainline;
   on-exit success;
 
     if not success;
-    // Handle abnormal end
+      // Handle abnormal end
     else;
-    // do *normal* program closure items - close files, etc
+      // do *normal* program closure items - close files, etc
     endif;
 
 end-proc;

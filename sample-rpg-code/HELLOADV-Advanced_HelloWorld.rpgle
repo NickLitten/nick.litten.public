@@ -34,13 +34,13 @@ dcl-proc mainline;
   dcl-s msg char(50);
   dcl-s reply char(1);
 
-    msg = 'Hello World!';
-    dsply msg;
+  msg = 'Hello World!';
+  dsply msg;
 
-    msg = 'Press Y to continue';
-    Dou %upper(reply) = 'Y';
-      dsply msg '' reply;
-    enddo;
+  msg = 'Press Y to continue';
+  Dou %upper(reply) = 'Y';
+    dsply msg '' reply;
+  enddo;
 
   return;
 
