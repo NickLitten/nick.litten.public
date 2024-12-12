@@ -1,0 +1,226 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: crtpgm pgm(NICKLITTEN/CLILEPGM) module(CLMODULE) bndsrvpgm(*NONE) ACTGRP(NICKLITTEN) USRPRF(*USER) TGTRLS(V7R4M0) AUT() DETAIL(*EXTENDED) OPTION(*EVENTF ) STGMDL(*SNGLVL) TEXT('')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NICKLITTEN NICKLITTEN QTEMP QGPL
+>> executing time: 2024-12-12-21.16.29.00
+
+CPC5D07: Program CLILEPGM created in library NICKLITTEN.
+                                                   Create Program                                                       Page     1
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+ Program  . . . . . . . . . . . . . . . . . . . . . :   CLILEPGM
+   Library  . . . . . . . . . . . . . . . . . . . . :     NICKLITTEN
+ Program entry procedure module . . . . . . . . . . :   *FIRST
+   Library  . . . . . . . . . . . . . . . . . . . . :
+ Activation group . . . . . . . . . . . . . . . . . :   NICKLITTEN
+ Creation options . . . . . . . . . . . . . . . . . :   *GEN        *NODUPPROC  *NODUPVAR   *WARN       *RSLVREF
+ Listing detail . . . . . . . . . . . . . . . . . . :   *EXTENDED
+ Allow update . . . . . . . . . . . . . . . . . . . :   *YES
+ Allow bound *SRVPGM library name update  . . . . . :   *NO
+ User profile . . . . . . . . . . . . . . . . . . . :   *USER
+ Replace existing program . . . . . . . . . . . . . :   *YES
+ Authority  . . . . . . . . . . . . . . . . . . . . :   *LIBCRTAUT
+ Target release . . . . . . . . . . . . . . . . . . :   V7R4M0
+ Allow reinitialization . . . . . . . . . . . . . . :   *NO
+ Storage model  . . . . . . . . . . . . . . . . . . :   *SNGLVL
+ Argument optimization  . . . . . . . . . . . . . . :   *NO
+ Interprocedural analysis . . . . . . . . . . . . . :   *NO
+ IPA control file . . . . . . . . . . . . . . . . . :   *NONE
+ Text . . . . . . . . . . . . . . . . . . . . . . . :
+                                                   Create Program                                                       Page     2
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+ Module      Library              Module      Library              Module      Library              Module      Library
+ CLMODULE    *LIBL
+ Service                                     Service                                     Service
+ Program     Library     Activation          Program     Library     Activation          Program     Library     Activation
+ *NONE
+ Binding                          Binding                          Binding                          Binding
+ Directory   Library              Directory   Library              Directory   Library              Directory   Library
+ *NONE
+                                                   Create Program                                                       Page     3
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+                                                       Extended Summary Table
+   Valid definitions  . . . . . . . . . . :           101
+     Strong . . . . . . . . . . . . . . . :           101
+     Weak . . . . . . . . . . . . . . . . :             0
+   Resolved references  . . . . . . . . . :             6
+     To strong definitions  . . . . . . . :             6
+     To weak definitions  . . . . . . . . :             0
+                             * * * * *   E N D  O F  E X T E N D E D  S U M M A R Y  T A B L E   * * * * *
+                                                   Create Program                                                       Page     4
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+                                                        Brief Summary Table
+ Program entry procedures . . . . . . . . . . . :   1
+   Symbol    Type      Library     Object      Bound       Identifier
+             *MODULE   NICKLITTEN  CLMODULE    *YES        _CL_PEP
+ Multiple strong definitions  . . . . . . . . . :   0
+ Unresolved references  . . . . . . . . . . . . :   0
+ Activation group . . . . . . . . . . . . . . . :   NICKLITTEN
+                                * * * * *   E N D  O F  B R I E F  S U M M A R Y  T A B L E   * * * * *
+                                                   Create Program                                                       Page     5
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+                                                     Binder Information Listing
+ Module . . . . . . . . . . . :   CLMODULE
+   Library  . . . . . . . . . :     NICKLITTEN
+   Bound  . . . . . . . . . . :     *YES
+   Change date/time . . . . . :     24-12-12  21:16:26
+   Teraspace storage enabled  :     *YES
+   Storage model  . . . . . . :     *INHERIT
+       Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
+       00000001  Def                   CLMODULE                                     Proc      Module      Strong
+       00000002  Ref         0000000C  CEEGOTO                                      Proc
+       00000003  Ref         0000001A  Qcl_CHKBI                                    Proc
+       00000004  Ref         0000001B  Qcl_LkLDA                                    Proc
+       00000005  Ref         00000060  Q LE leDefaultEh2                            Proc
+       00000006  Ref         00000062  Q LE leBdyCh2                                Proc
+       00000007  Ref         00000061  Q LE leBdyEpilog2                            Proc
+ Service program  . . . . . . :   QLECWI
+   Library  . . . . . . . . . :     QSYS
+   Bound  . . . . . . . . . . :     *YES
+   Change date/time . . . . . :     22-07-05  13:20:10
+   Teraspace storage enabled
+     modules  . . . . . . . . :     *ALL
+   Storage model  . . . . . . :     *INHERIT
+   Activation . . . . . . . . :     *IMMEDIATE
+       Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
+       00000008  Def                   CEE4RemoveMsg                                Proc                  Strong
+       00000009  Def                   CEE4Percolate                                Proc                  Strong
+       0000000A  Def                   CEE4MRR                                      Proc                  Strong
+       0000000B  Def                   CEE4RegActGrpExit                            Proc                  Strong
+       0000000C  Def                   CEEGOTO                                      Proc                  Strong
+       0000000D  Def                   CEE4CrtODCommonFlds                          Proc                  Strong
+       0000000E  Def                   CEE4GetVString                               Proc                  Strong
+       0000000F  Def                   CEE4FillVString                              Proc                  Strong
+       00000010  Def                   CEE4GetVFloat                                Proc                  Strong
+       00000011  Def                   CEE4CrtArrayOD                               Proc                  Strong
+       00000012  Def                   CEE4TSML2                                    Proc                  Strong
+       00000013  Def                   CEE4TDML2                                    Proc                  Strong
+       00000014  Def                   CEE4TSXEP                                    Proc                  Strong
+       00000015  Def                   CEE4TDXEP                                    Proc                  Strong
+       00000016  Def                   CEE4TSXFR                                    Proc                  Strong
+       00000017  Def                   CEE4TDXFR                                    Proc                  Strong
+       00000018  Def                   CEE4InvFlags                                 Proc                  Strong
+       00000019  Def                   CEE4RegActGrpExitLong                        Proc                  Strong
+ Service program  . . . . . . :   QCLSRV
+   Library  . . . . . . . . . :     QSYS
+   Bound  . . . . . . . . . . :     *YES
+   Change date/time . . . . . :     22-07-05  13:19:52
+   Teraspace storage enabled
+     modules  . . . . . . . . :     *ALL
+   Storage model  . . . . . . :     *INHERIT
+   Activation . . . . . . . . :     *IMMEDIATE
+                                                   Create Program                                                       Page     6
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+       Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
+       0000001A  Def                   Qcl_CHKBI                                    Proc                  Strong
+       0000001B  Def                   Qcl_LkLDA                                    Proc                  Strong
+ Service program  . . . . . . :   QLEAWI
+   Library  . . . . . . . . . :     QSYS
+   Bound  . . . . . . . . . . :     *YES
+   Change date/time . . . . . :     22-07-05  13:20:09
+   Teraspace storage enabled
+     modules  . . . . . . . . :     *ALL
+   Storage model  . . . . . . :     *INHERIT
+   Activation . . . . . . . . :     *IMMEDIATE
+       Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
+       0000001C  Def                   Q LE AG_user_rc                              Data                  Strong
+       0000001D  Def                   Q LE AG_prod_rc                              Data                  Strong
+       0000001E  Def                   Q LE leDefaultEh                             Proc                  Strong
+       0000001F  Def                   CEEMRCR                                      Proc                  Strong
+       00000020  Def                   CEEMGET                                      Proc                  Strong
+       00000021  Def                   CEEMOUT                                      Proc                  Strong
+       00000022  Def                   CEEMSG                                       Proc                  Strong
+       00000023  Def                   CEENCOD                                      Proc                  Strong
+       00000024  Def                   CEEDCOD                                      Proc                  Strong
+       00000025  Def                   Q LE leBdyCh                                 Proc                  Strong
+       00000026  Def                   Q LE leBdyEpilog                             Proc                  Strong
+       00000027  Def                   CEE4FCB                                      Proc                  Strong
+       00000028  Def                   CEE4RAGE                                     Proc                  Strong
+       00000029  Def                   __CEERTX                                     Proc                  Strong
+       0000002A  Def                   __CEEUTX                                     Proc                  Strong
+       0000002B  Def                   Q LE RtxRouterCh                             Proc                  Strong
+       0000002C  Def                   Q LE HdlrRouterEh                            Proc                  Strong
+       0000002D  Def                   CEESGL                                       Proc                  Strong
+       0000002E  Def                   CEETREC                                      Proc                  Strong
+       0000002F  Def                   CEE4ABN                                      Proc                  Strong
+       00000030  Def                   __CEEHDLR                                    Proc                  Strong
+       00000031  Def                   __CEEHDLU                                    Proc                  Strong
+       00000032  Def                   CEEGPID                                      Proc                  Strong
+       00000033  Def                   CEE4RIN                                      Proc                  Strong
+       00000034  Def                   CEE4HC                                       Proc                  Strong
+       00000035  Def                   CEE4CpyOfb                                   Proc                  Strong
+       00000036  Def                   CEE4CpyIofb                                  Proc                  Strong
+       00000037  Def                   CEE4CpyDvfb                                  Proc                  Strong
+       00000038  Def                   _C_session_cleanup                           Proc                  Strong
+       00000039  Def                   _C_session_open                              Proc                  Strong
+       0000003A  Def                   CEEGTST                                      Proc                  Strong
+       0000003B  Def                   CEEFRST                                      Proc                  Strong
+       0000003C  Def                   CEECZST                                      Proc                  Strong
+       0000003D  Def                   CEECRHP                                      Proc                  Strong
+       0000003E  Def                   CEEDSHP                                      Proc                  Strong
+       0000003F  Def                   CEEMKHP                                      Proc                  Strong
+       00000040  Def                   CEERLHP                                      Proc                  Strong
+       00000041  Def                   CEE4DAS                                      Proc                  Strong
+       00000042  Def                   __CEETSTA                                    Proc                  Strong
+       00000043  Def                   __CEEDOD                                     Proc                  Strong
+       00000044  Def                   __CEEGSI                                     Proc                  Strong
+                                                   Create Program                                                       Page     7
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+       Number    Symbol      Ref       Identifier                                   Type      Scope       Export       Key
+       00000045  Def                   CEEDAYS                                      Proc                  Strong
+       00000046  Def                   CEEDATE                                      Proc                  Strong
+       00000047  Def                   CEESECS                                      Proc                  Strong
+       00000048  Def                   CEESCEN                                      Proc                  Strong
+       00000049  Def                   CEEQCEN                                      Proc                  Strong
+       0000004A  Def                   CEEFMDA                                      Proc                  Strong
+       0000004B  Def                   CEEFMTM                                      Proc                  Strong
+       0000004C  Def                   CEEFMDT                                      Proc                  Strong
+       0000004D  Def                   CEEISEC                                      Proc                  Strong
+       0000004E  Def                   CEEDATM                                      Proc                  Strong
+       0000004F  Def                   CEESECI                                      Proc                  Strong
+       00000050  Def                   CEEDYWK                                      Proc                  Strong
+       00000051  Def                   CEELOCT                                      Proc                  Strong
+       00000052  Def                   CEEUTC                                       Proc                  Strong
+       00000053  Def                   CEEGMT                                       Proc                  Strong
+       00000054  Def                   CEEUTCO                                      Proc                  Strong
+       00000055  Def                   Q LE leActivationInit                        Proc                  Strong
+       00000056  Def                   Q LE leActivationInitRouter                  Proc                  Strong
+       00000057  Def                   QleActBndPgm                                 Proc                  Strong
+       00000058  Def                   QleGetExp                                    Proc                  Strong
+       00000059  Def                   Q LE leCheck                                 Proc                  Strong
+       0000005A  Def                   CEE4RAGE2                                    Proc                  Strong
+       0000005B  Def                   QleActBndPgmLong                             Proc                  Strong
+       0000005C  Def                   QleGetExpLong                                Proc                  Strong
+       0000005D  Def                   QleGetTLSEntry                               Proc                  Strong
+       0000005E  Def                   QleSetTLSEntry                               Proc                  Strong
+       0000005F  Def                   QleActBndPgmLongTS                           Proc                  Strong
+       00000060  Def                   Q LE leDefaultEh2                            Proc                  Strong
+       00000061  Def                   Q LE leBdyEpilog2                            Proc                  Strong
+       00000062  Def                   Q LE leBdyCh2                                Proc                  Strong
+       00000063  Def                   Q LE setActGrpUserRC                         Proc                  Strong
+       00000064  Def                   Q LE setActGrpProdRC                         Proc                  Strong
+       00000065  Def                   CEE4GETRC                                    Proc                  Strong
+       00000066  Def                   CEE4SETRC                                    Proc                  Strong
+       00000067  Def                   Q LE comp_mode                               Proc                  Strong
+       00000068  Def                   Q LE init_wcb_static_data                    Proc                  Strong
+       00000069  Def                   Q LE get_ag_static_entry                     Proc                  Strong
+       0000006A  Def                   Q LE delete_ag_static_entry                  Proc                  Strong
+       0000006B  Def                   CEE4RAGEL                                    Proc                  Strong
+                         * * * * *   E N D  O F  B I N D E R  I N F O R M A T I O N  L I S T I N G    * *
+                                                   Create Program                                                       Page     8
+5770SS1 V7R5M0  220415                                                     NICKLITTEN/CLILEPGM    PROJEX    24-12-12  21:16:29 UTC
+                                                         Binding Statistics
+ Symbol collection CPU time . . . . . . . . . . . . . . . . . :                .000
+ Symbol resolution CPU time . . . . . . . . . . . . . . . . . :                .000
+ Binding directory resolution CPU time  . . . . . . . . . . . :                .000
+ Binder language compilation CPU time . . . . . . . . . . . . :                .000
+ Listing creation CPU time  . . . . . . . . . . . . . . . . . :                .000
+ Program/service program creation CPU time  . . . . . . . . . :                .000
+ Total CPU time . . . . . . . . . . . . . . . . . . . . . . . :                .003
+ Total elapsed time . . . . . . . . . . . . . . . . . . . . . :                .103
+                                 * * * * *   E N D  O F  B I N D I N G  S T A T I S T I C S   * * * * *
+*CPC5D07 - Program CLILEPGM created in library NICKLITTEN.
+                           * * * * *   E N D  O F  C R E A T E  P R O G R A M  L I S T I N G   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
