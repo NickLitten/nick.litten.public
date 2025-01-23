@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NICKLITTEN)
->  ADDLIBLE LIB(NICKLITTEN) POSITION(*FIRST)
->  CRTBNDCL PGM(NICKLITTEN/CLBNDPGM) SRCFILE(QTEMP/QSOURCE) SRCMBR(CLBNDPGM) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Simple Bound CL Program') TGTRLS(V7R4M0) INCDIR('/home/NICKLITTEN/builds/public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

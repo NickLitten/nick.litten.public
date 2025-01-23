@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NICKLITTEN)
->  ADDLIBLE LIB(NICKLITTEN) POSITION(*FIRST)
->  CRTCLMOD MODULE(NICKLITTEN/CLMODULE) SRCFILE(QTEMP/QSOURCE) SRCMBR(CLMODULE) AUT() DBGVIEW(*ALL) OPTIMIZE(*FULL) OPTION(*EVENTF) TEXT('') TGTRLS(V7R4M0) INCDIR('/home/NICKLITTEN/builds/public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
