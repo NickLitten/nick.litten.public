@@ -1,0 +1,17 @@
+     A                                      DSPSIZ(27 132 *DS4)                
+     A                                      CA03(03)                           
+     A          R SFL01                     SFL                                
+     A            NAME          10A  O  5  5                                   
+     A            ADDRESS       50A  O  5 17                                   
+     A          R CTL01                     SFLCTL(SFL01)                      
+     A                                      SFLSIZ(0021)                       
+     A                                      SFLPAG(0020)                       
+     A                                      OVERLAY                            
+     A  30                                  SFLCLR                             
+     A  31                                  SFLDSP                             
+     A  32                                  SFLDSPCTL                          
+     A  33                                  SFLEND                             
+     A                                  1 17'THIS IS A SIMPLE SUBFILE'         
+     A                                      DSPATR(HI)                         
+     A                                      COLOR(BLU)                         
+     A                                      DSPATR(RI)                         

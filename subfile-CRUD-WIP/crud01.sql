@@ -2,8 +2,9 @@
 -- TABLE LOCATION:  CRUD01TBL                           
 -- PURPOSE: SAVE THE TASKS                            
 -- -----------------------------------------------------
+SET SCHEMA NICKLITTEN;
 
-CREATE TABLE
+CREATE OR REPLACE TABLE
     CRUD01TBL (
         TASK_ID NUMERIC (10, 0) NOT NULL DEFAULT,
         NAME VARCHAR(10) NOT NULL DEFAULT,

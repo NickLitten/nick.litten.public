@@ -21,27 +21,32 @@
 // Modification History:                                                 
 // V.000 2020.03.14 NJL Created                                                
 // --------------------------------------------------------------------- 
-/include header.rpgleinc
+
+/include 'header.rpgleinc'
 
 ctl-opt
   copyright('HelloAdvanced | V.000 | Sample Stylised RPG Program')
   ;
 
-dcl-proc mainline;
-  dcl-pi mainline;
-  end-pi;
+// --------------------------------------------------------------------- 
+// Procedure: mainline
+// Description: Main entry point for the program.
+// --------------------------------------------------------------------- 
+Dcl-Proc mainline;
+   Dcl-Pi mainline;
+   end-pi;
 
-  dcl-s msg char(50);
-  dcl-s reply char(1);
+   Dcl-S msg char(50);
+   Dcl-S reply char(1);
 
-  msg = 'Hello World!';
-  dsply msg;
+   msg = 'Hello World!';
+   dsply msg;
 
-  msg = 'Press Y to continue';
-  Dou %upper(reply) = 'Y';
-    dsply msg '' reply;
-  enddo;
+   msg = 'Press Y to continue';
+   Dou (%upper(reply) = 'Y');
+      dsply msg '' reply;
+   enddo;
 
-  return;
+   Return;
 
 end-proc;

@@ -1,1 +1,1 @@
-SUBDIRS = includes services binders sample-rpg-code sample-cl-code 
+SUBDIRS = includes sample-cl-code sample-rpg-code services subfile-CRUD-WIP subfile-samples

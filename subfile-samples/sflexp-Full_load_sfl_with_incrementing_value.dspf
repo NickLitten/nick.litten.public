@@ -1,0 +1,22 @@
+     A                                      DSPSIZ(24 80 *DS3)                   
+     A                                      CA03(03)                             
+      * This is the subfile definition aka "the fields to display"                                      
+     A          R SFL01                     SFL        
+     A            RRN            4  0H   
+     A            COUNT          4Y 0   4 05TEXT('Counter')              
+      * This is the subfile-control definition which controls
+     A          R CTL01                     SFLCTL(SFL01)                                                   
+     A                                      SFLPAG(17)                            
+     A                                      SFLSIZ(9999)                         
+     A 30                                   SFLCLR                               
+     AN30                                   SFLDSP                               
+     AN30                                   SFLDSPCTL                            
+     A                                  1 26' Simple Subfile Example'           
+     A                                      COLOR(WHT)                      
+     A                                  3 05'Line Counter'                           
+     A                                      DSPATR(UL)
+     A                                      COLOR(BLU)     
+      * This is the footer of the screen - showing the PFKEY options
+     A          R CMD01             
+     A                                 23 02'F3=EXIT'                      
+     A                                      COLOR(BLU)       
