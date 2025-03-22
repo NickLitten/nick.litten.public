@@ -10,8 +10,17 @@
      A  30                                  SFLCLR                             
      A  31                                  SFLDSP                             
      A  32                                  SFLDSPCTL                          
-     A  33                                  SFLEND                             
-     A                                  1 17'THIS IS A SIMPLE SUBFILE'         
+     A  33                                  SFLEND               
+     A                                  1  2'SIMPLESFL'           
+     A                                      DSPATR(HI)                      
+     A                                  1 17'SIMPLE FILE DATA SUBFILE'         
      A                                      DSPATR(HI)                         
      A                                      COLOR(BLU)                         
-     A                                      DSPATR(RI)                         
+     A                                      DSPATR(RI)              
+     A                                  4  5'NAME'         
+     A                                      DSPATR(HI)                         
+     A                                  4 17'ADDRESS'         
+     A                                      DSPATR(HI)                         
+     A          R CMD01
+     A                                 26 02'F3=EXIT'                      
+     A                                      COLOR(BLU)                  

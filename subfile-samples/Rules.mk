@@ -1,3 +1,5 @@
-SIMPFILE.FILE: simpfile-testfile_with_some_data_in_it.pf
-SIMPSFL.PGM: simpsfl-1_AS400_rpg_subfile_processor.pgm.rpgle
-SIMPDSPF.FILE: simpdspf-Display_file_for_the_subfile_example.dspf
+NOOBSFL1.PGM: NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle NOOBDSPF.FILE
+NOOBDSPF.FILE: NOOBDSPF-Full_load_sfl_with_incrementing_value.dspf
+SIMPLEFILE.FILE: SIMPLEFILE-testfile_with_some_data_in_it.pf
+SIMPLEDSPF.FILE: SIMPLEDSPF-Display_file_for_the_subfile_example.dspf
+SIMPLESFL1.PGM: SIMPLESFL1-AS400_rpg_subfile_processor.pgm.rpgle SIMPLEDSPF.FILE SIMPLEFILE.FILE

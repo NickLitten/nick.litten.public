@@ -1,0 +1,244 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: CRTBNDRPG srcstmf('/home/projex/builds/nick.litten.public/subfile-samples/NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle') PGM(NICKLITTEN/NOOBSFL1) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Full load subfile example AS400 STYLE') INCDIR('includes')
+sed: The label :a;N;$!ba;s/\n/ /g is greater than eight characters.
+>> liblist: 
+>> executing time: 2025-03-22-13.20.57.00
+
+RNS9304: Program NOOBSFL1 placed in library NICKLITTEN. 00 highest severity. Created on 25-03-22 at 13:20:57.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     PROJEX
+  Program  . . . . . . . . . . . . :   NOOBSFL1
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   Full load subfile example AS400 STYLE
+  Source stream file   . . . . . . :   /home/projex/builds/nick.litten.public/subfile-sam
+                                       ples/NOOBSFL1-Full_load_subfile_example_AS400_STYL
+                                       E.pgm.rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-03-22  11:46:51
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   *CURRENT
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      2
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1  ********************************************************************                                                000001
+     2  * - Simple RPG Subfile Example using a full load of 9999 records                                                    000002
+     3  * - This program is a simple example of how to load a subfile with                                                  000003
+     4  *   9999 records. The subfile is loaded with a counter value that                                                   000004
+     5  *   increments by one for each record. The subfile is cleared                                                       000005
+     6  *   before loading the records.                                                                                     000006
+     7  * - The subfile is defined in the display file. The subfile is                                                      000007
+     8  *   defined with a relative record number (RRN) field. The RRN                                                      000008
+     9  *   field is used to identify the record number of the subfile.                                                     000009
+    10  * - The subfile is loaded by a subroutine. The subroutine clears                                                    000010
+    11  *   the subfile, increments the RRN, and writes the record to the                                                   000011
+    12  *   subfile. The subroutine is called from the mainline code.                                                       000012
+    13  * - The mainline code is a simple loop that calls the subroutine                                                    000013
+    14  *   to load the subfile. The loop continues until the user presses                                                  000014
+    15  *   the exit key.                                                                                                   000015
+    16  * - The program is compiled and run. The subfile is displayed with                                                  000016
+    17  *   9999 records. The user can scroll through the records using the                                                 000017
+    18  *   page up and page down keys. The user can exit the program by                                                    000018
+    19  *   pressing the exit key.                                                                                          000019
+    20  ********************************************************************                                                000020
+    21  * Declare the display file which contains the subfile                                                               000021
+    22 FNOOBDSPF  CF   E             WORKSTN SFILE(SFL01:RRN01)                                                             000022
+    23  * Start of mainline code                                                                                            000023
+    24  * Execute subroutine to load the subfile                                                                            000024
+        *--------------------------------------------------------------------------------------------*
+        *                               RPG name         External name                               *
+        * File name. . . . . . . . . :  NOOBDSPF         NICKLITTEN/NOOBDSPF                         *
+        * Record format(s) . . . . . :  SFL01            SFL01                                       *
+        *                               CTL01            CTL01                                       *
+        *                               CMD01            CMD01                                       *
+        *--------------------------------------------------------------------------------------------*
+    25=ISFL01                                                                                                              1000001
+        *--------------------------------------------------------------------------------------------*                     1
+        * RPG record format  . . . . :  SFL01                                                        *                     1
+        * External format  . . . . . :  SFL01 : NICKLITTEN/NOOBDSPF                                  *                     1
+        *--------------------------------------------------------------------------------------------*                     1
+    26=I                             S    1    4 0COUNT                           Counter                                  1000002
+    27=ICTL01                                                                                                              2000001
+        *--------------------------------------------------------------------------------------------*                     2
+        * RPG record format  . . . . :  CTL01                                                        *                     2
+        * External format  . . . . . :  CTL01 : NICKLITTEN/NOOBDSPF                                  *                     2
+        *--------------------------------------------------------------------------------------------*                     2
+    28=ICMD01                                                                                                              3000001
+        *--------------------------------------------------------------------------------------------*                     3
+        * RPG record format  . . . . :  CMD01                                                        *                     3
+        * External format  . . . . . :  CMD01 : NICKLITTEN/NOOBDSPF                                  *                     3
+        *--------------------------------------------------------------------------------------------*                     3
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      3
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+    29 C                   ExSr      #LodSfl                                                                                000025
+    30  * Loop until user press the F3 key                                                                                  000026
+    31 C                   DoU       *inkc = *on                                                       B01                  000027
+    32  * ExFmt the CONTROL FORMAT of the subfile.                                                                          000028
+    33 C                   Write     CMD01                                                              01                  000029
+    34 C                   ExFmt     CTL01                                                              01                  000030
+    35 C                   EndDo                                                                       E01                  000031
+    36  * Free up resources and return                                                                                      000032
+    37 C                   Eval      *inlr = *On                                                                            000033
+    38 C                   Return                                                                                           000034
+    39                                                                                                                      000035
+    40  ************************************************************************************                                000036
+    41  * Subroutine : #LODSFL                                                                                              000037
+    42  * This subroutine is used to load the subfile with 9999 records.                                                    000038
+    43  * The subroutine is called from the mainline code. The subroutine                                                   000039
+    44  * clears the subfile, increments the RRN, and writes the record                                                     000040
+    45  * to the subfile. The subroutine is called from the mainline code.                                                  000041
+    46  ************************************************************************************                                000042
+    47 C     #LODSFL       BegSr                                                                                            000043
+    48  * Clear the subfile. Clearing a subfile involves the following four                                                 000044
+    49  * statements.                                                                                                       000045
+    50  * 1. Switch on the SFLCLR indicator                                                                                 000046
+    51  * 2. Write to the control format                                                                                    000047
+    52  * 3. Switch off the SFLCLR indicator                                                                                000048
+    53  * 4. Reset the RRN to zero (Or one).                                                                                000049
+    54  * The fourth statement actually is not related to subfile. However,                                                 000050
+    55  * we generally reset this value while clearing the subfile itself.                                                  000051
+    56 C                   Z-Add     0             RRN01             4 0                                                    000052
+    57 C                   Eval      *In(30) = *On                                                                          000053
+    58 C                   Write     CTL01                                                                                  000054
+    59 C                   Eval      *In(30) = *Off                                                                         000055
+    60  * Set a looping condition. This condition may be based on anything.                                                 000056
+    61  * But in any case, just ensure that RRN does not exceed 9999.                                                       000057
+    62 C                   DoW       RRN01 < 99                                                        B01                  000058
+    63  * Increment the RRN to mark a new record of subfile. Remember that                                                  000059
+    64  * the variable corresponding to RRN should not be less than one (1) a                                               000060
+    65  * nd it should never exceed 9999.                                                                                   000061
+    66 C                   Eval      RRN01 += 1                                                         01                  000062
+    67  * Populate the fields defined in the subfile.                                                                       000063
+    68  * For this example simply show the RRN value as it accumulates                                                      000064
+    69 C                   Eval      COUNT = RRN01                                                      01                  000065
+    70  * Perform actual write to the subfile. Notice that each write                                                       000066
+    71  * actually adds a record to the subfile but is not displayed yet                                                    000067
+    72 C                   Write     SFL01                                                              01                  000068
+    73 C                   EndDo                                                                       E01                  000069
+    74 C                   EndSr                                                                                            000070
+    75=OSFL01                                                                                                              4000001
+        *--------------------------------------------------------------------------------------------*                     4
+        * RPG record format  . . . . :  SFL01                                                        *                     4
+        * External format  . . . . . :  SFL01 : NICKLITTEN/NOOBDSPF                                  *                     4
+        *--------------------------------------------------------------------------------------------*                     4
+    76=O                       COUNT                4S ZONE      4,0              Counter                                  4000002
+    77=OCTL01                                                                                                              5000001
+        *--------------------------------------------------------------------------------------------*                     5
+        * RPG record format  . . . . :  CTL01                                                        *                     5
+        * External format  . . . . . :  CTL01 : NICKLITTEN/NOOBDSPF                                  *                     5
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      4
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+        *--------------------------------------------------------------------------------------------*                     5
+    78=O                       *IN30                1N CHAR        1                                                       5000002
+    79=OCMD01                                                                                                              6000001
+        *--------------------------------------------------------------------------------------------*                     6
+        * RPG record format  . . . . :  CMD01                                                        *                     6
+        * External format  . . . . . :  CMD01 : NICKLITTEN/NOOBDSPF                                  *                     6
+        *--------------------------------------------------------------------------------------------*                     6
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      5
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv Number Seq     Message text
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+                 O u t p u t   B u f f e r   P o s i t i o n s
+Line   Start End   Field or Constant
+Number Pos   Pos
+    76     1     4 COUNT
+    78     1     1 *IN30
+ * * * * *   E N D   O F   O U T P U T   B U F F E R   P O S I T I O N   *  * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      6
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         NOOBDSPF          WORKSTN                22D
+           SFL01                                  22D     25      72      75
+           CTL01                                  22D     27      34      58
+                                                  77
+           CMD01                                  22D     28      33      79
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         *IN(99)           N(1)                   57M     59M
+         *INKC             N(1)                   31
+         *INLR             N(1)                   37M
+         *IN30             N(1)                   78
+         #LODSFL           BEGSR                  29      47D
+         COUNT             P(4,0)                 26M     69M     76
+         RRN01             P(4,0)                 22      56D     62      66M
+                                                  69
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+         *IN                                      57M     59M     78
+         30                                       57M     59M
+         LR                                       37M
+         KC                                       31
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      7
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      8
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/NOOBSFL1      PROJEX     25-03-22 13:20:57        Page      9
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        0
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        0
+  Source Totals:
+    Records . . . . . . . . . . . . :       79
+    Specifications  . . . . . . . . :       28
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       50
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Program NOOBSFL1 placed in library NICKLITTEN. 00 highest severity. Created on 25-03-22 at 13:20:57.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
