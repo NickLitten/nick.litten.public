@@ -1,4 +1,4 @@
-      ********************************************************************
+      * *******************************************************************
       * - Simple RPG Subfile Example using a full load of 9999 records
       * - This program is a simple example of how to load a subfile with
       *   9999 records. The subfile is loaded with a counter value that
@@ -17,30 +17,37 @@
       *   9999 records. The user can scroll through the records using the
       *   page up and page down keys. The user can exit the program by
       *   pressing the exit key.
-      ********************************************************************
-      * Declare the display file which contains the subfile 
+      * *******************************************************************
+      
+      * Declare the display file which contains the subfile
      FNOOBDSPF  CF   E             WORKSTN SFILE(SFL01:RRN01)
+      
+      /FREE
+       
       * Start of mainline code
+       
       * Execute subroutine to load the subfile
-     C                   ExSr      #LodSfl
-      * Loop until user press the F3 key                        
-     C                   DoU       *inkc = *on
-      * ExFmt the CONTROL FORMAT of the subfile.
-     C                   Write     CMD01
-     C                   ExFmt     CTL01
-     C                   EndDo
-      * Free up resources and return
-     C                   Eval      *inlr = *On
-     C                   Return
+       EXSR #LODSFL;
 
-      ************************************************************************************
+      * Loop until user press the F3 key
+       DOU (*inkc = *on);
+      * ExFmt the CONTROL FORMAT of the subfile.
+         WRITE CMD01;
+         EXFMT CTL01;
+       ENDDO;
+
+      * Free up resources and return
+       *inlr = *On;
+       Return;
+
+      * *************************************************************************
       * Subroutine : #LODSFL
       * This subroutine is used to load the subfile with 9999 records.
       * The subroutine is called from the mainline code. The subroutine
       * clears the subfile, increments the RRN, and writes the record
       * to the subfile. The subroutine is called from the mainline code.
-      ************************************************************************************
-     C     #LODSFL       BegSr
+      * *************************************************************************
+       BEGSR #LODSFL;
       * Clear the subfile. Clearing a subfile involves the following four
       * statements.
       * 1. Switch on the SFLCLR indicator
@@ -49,22 +56,28 @@
       * 4. Reset the RRN to zero (Or one).
       * The fourth statement actually is not related to subfile. However,
       * we generally reset this value while clearing the subfile itself.
+      
+      /end-free
      C                   Z-Add     0             RRN01             4 0
-     C                   Eval      *In(30) = *On
-     C                   Write     CTL01
-     C                   Eval      *In(30) = *Off
+      /free
+      
+       *In(30) = *On;
+       WRITE CTL01;
+       *In(30) = *Off;
+      
       * Set a looping condition. This condition may be based on anything.
       * But in any case, just ensure that RRN does not exceed 9999.
-     C                   DoW       RRN01 < 9999
+      
+       DOW (RRN01 < 9999);
       * Increment the RRN to mark a new record of subfile. Remember that
-      * the variable corresponding to RRN should not be less than one (1) a
-      * nd it should never exceed 9999. 
-     C                   Eval      RRN01 += 1
-      * Populate the fields defined in the subfile. 
+      * the variable corresponding to RRN should not be less than one (1)
+      * and it should never exceed 9999.
+        RRN01 += 1;
+      * Populate the fields defined in the subfile.
       * For this example simply show the RRN value as it accumulates
-     C                   Eval      COUNT = RRN01
+        COUNT = RRN01;
       * Perform actual write to the subfile. Notice that each write
       * actually adds a record to the subfile but is not displayed yet
-     C                   Write     SFL01
-     C                   EndDo  
-     C                   EndSr
+        WRITE SFL01;
+       ENDDO;
+       ENDSR;

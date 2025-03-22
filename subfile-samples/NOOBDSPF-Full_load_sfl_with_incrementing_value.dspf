@@ -1,5 +1,5 @@
      A                                      DSPSIZ(24 80 *DS3)                   
-     A                                      CA03                             
+     A                                      CA03                       
       * This is the subfile definition aka "the fields to display"                                      
      A          R SFL01                     SFL        
      A            COUNT          4Y 0   4 10TEXT('Counter')              

@@ -1,13 +1,13 @@
 [
     {
-        "cmd": "CRTBNDRPG srcstmf('/home/projex/builds/nick.litten.public/subfile-samples/NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle') PGM(NICKLITTEN/NOOBSFL1) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Full load subfile example AS400 STYLE') INCDIR('includes')",
-        "cmd_time": "2025-03-22-13.20.57.00",
+        "cmd": "CRTBNDRPG srcstmf('/home/projex/builds/nick.litten.public/subfile-samples/NOOBSFL3-Full_load_subfile_example_IBMi_STYLE.pgm.rpgle') PGM(NICKLITTEN/NOOBSFL3) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Full load subfile example IBMi STYLE') INCDIR('includes')",
+        "cmd_time": "2025-03-22-15.09.04.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2025-03-22-13.20.56.764159",
+                "message_time": "2025-03-22-15.09.03.711076",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -23,7 +23,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2025-03-22-13.20.56.764811",
+                "message_time": "2025-03-22-15.09.03.711734",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -36,9 +36,9 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "NOOBSFL1.PGM",
-        "source": "/home/projex/builds/nick.litten.public/subfile-samples/NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle",
-        "output": "/home/projex/builds/nick.litten.public/.logs/subfile-samples_NOOBSFL1-Full_load_subfile_example_AS400_STYLE_pgm_rpgle.splf",
+        "object": "NOOBSFL3.PGM",
+        "source": "/home/projex/builds/nick.litten.public/subfile-samples/NOOBSFL3-Full_load_subfile_example_IBMi_STYLE.pgm.rpgle",
+        "output": "/home/projex/builds/nick.litten.public/.logs/subfile-samples_NOOBSFL3-Full_load_subfile_example_IBMi_STYLE_pgm_rpgle.splf",
         "failed": false
     }
 ]
