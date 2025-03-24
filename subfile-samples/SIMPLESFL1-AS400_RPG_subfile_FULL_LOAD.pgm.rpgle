@@ -4,35 +4,35 @@
       * The program will use a subfile control record and a subfile record format.
       * **********************************************************************************
      FSIMPLEDSPFCF   E             WORKSTN SFILE(SFL01:RRN01)                  
-     FSIMPLEFILEIF   E             DISK           
+     FSIMPLEFILEIF   E           K DISK           
       * **********************************************************************************
       * define the subfile row counter variable RRN01                          
-     C                   Z-ADD     0             RRN01           5 0       
+     C                   Z-ADD     0             RRN01      
+     C                   EVAL      PGMNAME = 'SIMPLESFL1'
       * clear the subfile                                                    
      C                   SETON                                        30     
      C                   WRITE     CTL01                                     
      C                   SETOFF                                       30     
       *                                                                      
-     C     1             SETLL     SIMPLEFILE                                  
+      * Load subfile from the file SIMPLEFILE  
+      * Loop Until the EOF Indicator is ON, or until the SFL maxsize is reached                                                      
+     C     *LOVAL        SETLL     SIMPLEFILE                                  
+     C     *IN99         DOUEQ     *ON                                      
+     C     RRN01         OREQ      9999                                      
      C                   READ      SIMPLEFILE                             99 
-      * Load subfile                                                         
-     C     *IN99         DOWEQ     *OFF                                      
-     C     RRN01         ANDLT     9999                                      
+     C     *IN99         IFEQ      *OFF 
      C                   ADD       1             RRN01                         
      C                   WRITE     SFL01                                     
-      * seton the indicators to let RPG know that we have some stuff to show 
-     C                   SETON                                        31
-     C                   READ      SIMPLEFILE                             99 
+     C                   ENDIF
      C                   ENDDO                                               
-      * display the MORE value if more than one screen has been loaded       
-     C     RRN01         IFGT      15                                        
-     C                   SETON                                        33     
+      * if we have read file data then show the SFl and the SFLEND indicator
+     C     RRN01         IFGT      0                                        
+     C                   SETON                                        3133   
      C                   ENDIF                                               
       * display subfile                                                     
      C                   SETON                                        32   
-     C                   WRITE     CMD01                                   
-     C                   EXFMT     CTL01                                   
-     C     *IN03         DOWEQ     *OFF                                    
+     C                   WRITE     CMD01                                                                    
+     C     *IN03         DOUEQ     *ON                                    
      C                   EXFMT     CTL01                                   
      C                   ENDDO                                             
       * terminate program                                                                    
