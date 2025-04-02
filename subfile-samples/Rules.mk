@@ -1,3 +1,10 @@
+%.MODULE: private TGTRLS := V7R4M0
+%.PGM:    private TGTRLS := V7R4M0
+%.PGM:    private ENTMOD := *PGM
+%.PGM:    private ALWRTVSRC := *NO
+%.PGM:    private OPTIMIZE := *FULL
+%.PGM:    private ACTGRP := NICKLITTEN
+
 NOOBDSPF.FILE: NOOBDSPF-Full_load_sfl_with_incrementing_value.dspf
 NOOBSFL2.PGM: NOOBSFL2-Full_load_subfile_example_ISERIES_STYLE.pgm.rpgle NOOBDSPF.FILE
 NOOBSFL1.PGM: NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle NOOBDSPF.FILE

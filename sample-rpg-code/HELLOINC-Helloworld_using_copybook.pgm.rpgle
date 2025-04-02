@@ -31,29 +31,29 @@ ctl-opt
 
 /include 'global_variables.rpgleinc'
 
-dcl-proc mainline;
-  dcl-pi mainline;
-  end-pi;
+Dcl-Proc mainline;
+   Dcl-Pi mainline;
+   end-pi;
 
-  dcl-s msg char(50);
-  dcl-s reply char(1);
+   Dcl-S msg char(50);
+   Dcl-S reply char(1);
 
-  msg = 'Hello World!';
-  dsply msg;
+   msg = 'Hello World!';
+   dsply msg;
 
-  msg = 'Press Y to continue';
-  Dou %upper(reply) = 'Y';
-    dsply msg '' reply;
-  enddo;
+   msg = 'Press Y to continue';
+   Dou (%upper(reply) = 'Y');
+      dsply msg '' reply;
+   enddo;
 
-  return;
+   Return;
 
-  on-exit success;
+   on-exit success;
 
-    if not success;
-      // Handle abnormal end
-    else;
-      // do *normal* program closure items - close files, etc
-    endif;
+      If not success;
+         // Handle abnormal end
+      Else;
+         // do *normal* program closure items - close files, etc
+      EndIf;
 
 end-proc;

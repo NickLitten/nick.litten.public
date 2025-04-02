@@ -5,6 +5,6 @@
 %.PGM:    private OPTIMIZE := *FULL
 %.PGM:    private ACTGRP := NICKLITTEN
 
-CRUD01TBL.FILE: crud01.sql
-CRUD01PNL.FILE: crud01pnl.dspf
-CRUD01RPG.MODULE: crud01rpg.sqlrpgle CRUD01TBL.FILE CRUD01PNL.FILE
+BUGME.CMD: BUGME-This_is_a_debugging_example.cmd BUGMECL.PGM
+BUGMECL.PGM: BUGMECL-This_is_a_debugging_example.pgm.clle BUGMERPG.PGM
+BUGMERPG.PGM: BUGMERPG-This_is_a_debugging_example.pgm.rpgle

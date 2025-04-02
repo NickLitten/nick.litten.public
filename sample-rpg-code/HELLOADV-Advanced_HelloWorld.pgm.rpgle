@@ -33,20 +33,20 @@ ctl-opt
 // Description: Main entry point for the program.
 // --------------------------------------------------------------------- 
 Dcl-Proc mainline;
-   Dcl-Pi mainline;
-   end-pi;
+  Dcl-Pi mainline;
+  end-pi;
 
-   Dcl-S msg char(50);
-   Dcl-S reply char(1);
+  Dcl-S msg char(50);
+  Dcl-S reply char(1);
 
-   msg = 'Hello World!';
-   dsply msg;
+  msg = 'Hello World!';
+  dsply msg;
 
-   msg = 'Press Y to continue';
-   Dou (%upper(reply) = 'Y');
-      dsply msg '' reply;
-   enddo;
+  msg = 'Press Y to continue';
+  Dou (%upper(reply) = 'Y');
+    dsply msg '' reply;
+  enddo;
 
-   Return;
+  Return;
 
 end-proc;

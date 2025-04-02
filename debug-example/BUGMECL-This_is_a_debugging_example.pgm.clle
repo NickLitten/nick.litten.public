@@ -1,7 +1,7 @@
 /* --------------------------------------------------------- */
-/* SIMPLE CLLE MODULE TO BE USED IN ILE PROGRAM              */
+/* SIMPLE CLLE MODULE CALLING AN ILE PROGRAM FOR DEBUG       */
 /* --------------------------------------------------------- */
-/* THIS RECEIVES A 100 CHARACTER INPUT PARAMETER, WHICH IS   */
+/* THIS RECEIVES A 10 CHARACTER INPUT PARAMETER, WHICH IS    */
 /* DEFINED IN THE 'INCLUDE.CLLEINC' COPYBOOK. THIS COPYBOOK  */
 /* LOCATION IS DEFINED IN THE "INCLUDE PATHS" SECTION OF     */
 /* VS CODE FOR IBM I - PROJECT EXPLORER                      */
@@ -11,12 +11,16 @@
 /* DATE:   NOVEMBER 25TH 2024                                */
 /* --------------------------------------------------------- */
 
-PGM &MSG
+PGM PARM(&DEBUGPARM)
 
-  INCLUDE SRCSTMF('INCLUDE.CLLEINC') 
+  DCL VAR(&DEBUGPARM) TYPE(*CHAR) LEN(100)
 
-  CHGVAR VAR(&MSG) VALUE('ILE says -' *BCAT &MSG)
+  CHGVAR VAR(&DEBUGPARM) VALUE(&DEBUGPARM *TCAT ' - modified by CLLE')
+
+  SNDPGMMSG MSG(&DEBUGPARM) MSGTYPE(*COMP)
   
-  SNDPGMMSG MSG(&MSG) MSGTYPE(*COMP)
+  CALL PGM(BUGMERPG) PARM(&DEBUGPARM)
+
+  SNDPGMMSG MSG(&DEBUGPARM) MSGTYPE(*COMP)
 
 ENDPGM

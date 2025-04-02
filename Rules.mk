@@ -1,1 +1,1 @@
-SUBDIRS = includes sample-cl-code sample-rpg-code services subfile-CRUD-WIP subfile-samples
+SUBDIRS = debug-example sample-cl-code includes sample-rpg-code services subfile-CRUD-WIP subfile-samples
