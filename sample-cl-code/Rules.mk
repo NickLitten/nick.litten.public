@@ -10,8 +10,3 @@ CHOOSEIASP.PGM: CHOOSEIASP-Question_and_Answer_CL_Example.pgm.clle
 CLMODULE.MODULE: CLMODULE.CLLE
 
 CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.PGM.CLLE
-
-STRUP.MODULE: STRUP-Multisystem_Startup_Program.clle
-STRUPA.MODULE: STRUPDEV-Multisystem_System_DEV.clle
-STRUPB.MODULE: STRUPTST-Multisystem_System_TST.clle
-STRUPC.MODULE: STRUPSYS-Multisystem_System_SYS.clle
