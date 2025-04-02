@@ -11,7 +11,7 @@ CLMODULE.MODULE: CLMODULE.CLLE
 
 CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.PGM.CLLE
 
-NICKSTRUP.MODULE: NICKSTRUP-Multisystem_Startup_Program.clle
-NICKSTRUPA.MODULE: NICKSTRUPA-Multisystem_System_A.clle
-NICKSTRUPB.MODULE: NICKSTRUPB-Multisystem_System_B.clle
-NICKSTRUPC.MODULE: NICKSTRUPC-Multisystem_System_C.clle
+STRUP.MODULE: STRUP-Multisystem_Startup_Program.clle
+STRUPA.MODULE: STRUPDEV-Multisystem_System_DEV.clle
+STRUPB.MODULE: STRUPTST-Multisystem_System_TST.clle
+STRUPC.MODULE: STRUPSYS-Multisystem_System_SYS.clle
