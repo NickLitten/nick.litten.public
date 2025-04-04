@@ -114,7 +114,7 @@ Dcl-Proc WriteScreen;
 
   // Secondary titles
   TITLE2 = Center('Created by Some Bloke':%len(TITLE2));
-  TITLE3 = Center('Projex4i 2018':%len(TITLE3));
+  TITLE3 = Center('Back in 2018':%len(TITLE3));
 
   // Principal title
   Select;
