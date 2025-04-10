@@ -1,13 +1,13 @@
 {
   "version": "0.0.1",
   "description": "Nick Litten Public VSCode Stuff",
-  "objlib": "&lib1",
-  "curlib": "&lib1",
+  "objlib": "&lib",
+  "curlib": "&lib",
   "includePath": [
     "includes"
   ],
   "preUsrlibl": [
-    "&lib1"
+    "&lib"
   ],
   "postUsrlibl": [],
   "setIBMiEnvCmd": [],
