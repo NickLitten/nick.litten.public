@@ -1,0 +1,39 @@
+TIMESTAMP  0 20250411094931
+PROCESSOR  0 000 1
+FILEID     0 001 000000 111 /home/nlitten/builds/nick.litten.public/includes/hexkeys-constants_for_command_key_processing_of_display..rpgle 20241126153215 0
+ERROR      0 001 1 000039 000039 007 000039 011 RNF7031 I 00 046 The name or indicator CLEAR is not referenced.
+ERROR      0 001 1 000009 000009 007 000009 011 RNF7031 I 00 046 The name or indicator ENTER is not referenced.
+ERROR      0 001 1 000015 000015 007 000015 008 RNF7031 I 00 043 The name or indicator F1 is not referenced.
+ERROR      0 001 1 000024 000024 007 000024 009 RNF7031 I 00 044 The name or indicator F10 is not referenced.
+ERROR      0 001 1 000025 000025 007 000025 009 RNF7031 I 00 044 The name or indicator F11 is not referenced.
+ERROR      0 001 1 000026 000026 007 000026 009 RNF7031 I 00 044 The name or indicator F12 is not referenced.
+ERROR      0 001 1 000027 000027 007 000027 009 RNF7031 I 00 044 The name or indicator F13 is not referenced.
+ERROR      0 001 1 000028 000028 007 000028 009 RNF7031 I 00 044 The name or indicator F14 is not referenced.
+ERROR      0 001 1 000029 000029 007 000029 009 RNF7031 I 00 044 The name or indicator F15 is not referenced.
+ERROR      0 001 1 000030 000030 007 000030 009 RNF7031 I 00 044 The name or indicator F16 is not referenced.
+ERROR      0 001 1 000031 000031 007 000031 009 RNF7031 I 00 044 The name or indicator F17 is not referenced.
+ERROR      0 001 1 000032 000032 007 000032 009 RNF7031 I 00 044 The name or indicator F18 is not referenced.
+ERROR      0 001 1 000033 000033 007 000033 009 RNF7031 I 00 044 The name or indicator F19 is not referenced.
+ERROR      0 001 1 000016 000016 007 000016 008 RNF7031 I 00 043 The name or indicator F2 is not referenced.
+ERROR      0 001 1 000034 000034 007 000034 009 RNF7031 I 00 044 The name or indicator F20 is not referenced.
+ERROR      0 001 1 000035 000035 007 000035 009 RNF7031 I 00 044 The name or indicator F21 is not referenced.
+ERROR      0 001 1 000036 000036 007 000036 009 RNF7031 I 00 044 The name or indicator F22 is not referenced.
+ERROR      0 001 1 000037 000037 007 000037 009 RNF7031 I 00 044 The name or indicator F23 is not referenced.
+ERROR      0 001 1 000038 000038 007 000038 009 RNF7031 I 00 044 The name or indicator F24 is not referenced.
+ERROR      0 001 1 000017 000017 007 000017 008 RNF7031 I 00 043 The name or indicator F3 is not referenced.
+ERROR      0 001 1 000018 000018 007 000018 008 RNF7031 I 00 043 The name or indicator F4 is not referenced.
+ERROR      0 001 1 000019 000019 007 000019 008 RNF7031 I 00 043 The name or indicator F5 is not referenced.
+ERROR      0 001 1 000020 000020 007 000020 008 RNF7031 I 00 043 The name or indicator F6 is not referenced.
+ERROR      0 001 1 000021 000021 007 000021 008 RNF7031 I 00 043 The name or indicator F7 is not referenced.
+ERROR      0 001 1 000022 000022 007 000022 008 RNF7031 I 00 043 The name or indicator F8 is not referenced.
+ERROR      0 001 1 000023 000023 007 000023 008 RNF7031 I 00 043 The name or indicator F9 is not referenced.
+ERROR      0 001 1 000010 000010 007 000010 010 RNF7031 I 00 045 The name or indicator HELP is not referenced.
+ERROR      0 001 1 000005 000005 006 000005 008 RNF7031 I 00 044 The name or indicator KEY is not referenced.
+ERROR      0 001 1 000004 000004 008 000004 013 RNF7031 I 00 047 The name or indicator INFODS is not referenced.
+ERROR      0 001 1 000013 000013 007 000013 011 RNF7031 I 00 046 The name or indicator PRINT is not referenced.
+ERROR      0 001 1 000014 000014 007 000014 020 RNF7031 I 00 051 The name or indicator RECORDB... is not referenced.
+ERROR      0 001 1 000011 000011 007 000011 014 RNF7031 I 00 049 The name or indicator ROLLDOWN is not referenced.
+ERROR      0 001 1 000012 000012 007 000012 012 RNF7031 I 00 047 The name or indicator ROLLUP is not referenced.
+ERROR      0 001 1 000000 000000 001 000000 000 RNF7023 T 40 054 The Compiler cannot determine how the program can end.
+ERROR      0 001 0 000000 000000 000 000000 000 RNS9308 T 50 057 Compilation stopped. Severity 40 errors found in program.
+FILEEND    0 001 000040

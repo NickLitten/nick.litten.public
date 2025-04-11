@@ -1,0 +1,135 @@
+**FREE
+
+Dcl-Ds infds qualified;
+   FileOpen ind pos(9); // File Open Indicator?
+   FileEOF ind pos(10); // File at End of File?
+   ListingLine char(8) pos(30);
+   // --SpecialStatus zoned(5) pos(38);
+   File char(10) pos(83);
+   fileType int(5) pos(147);
+   Lib char(10) pos(93);
+   RcdLen int(5) pos(125);
+   keyLen int(5) pos(127); // Max key len
+   Mbr char(10) pos(129);
+   RcdsReadSinceOpen int(10) pos(156); // number of records retrieved since open
+   Ccsid int(5) pos(218);
+   RRNlastRead int(10) pos(247); // relative record number of last record processed
+   Rcdfmt char(10) pos(261);
+   SflRcdNbr int(5) pos(378);
+   RRN int(10) pos(397);
+   // DSPF BITs
+   funcKey char(1) pos(369); // DS@AID for nice "funckey = PageDown" type syntax
+   RowColumn int(5) pos(370); // DS@POS - cursor row & column
+   firstRrnOnScreen int(5) pos(378); // DS@TOP SFL RRN Top of scrn
+   totalSflRows int(5) pos(380); // DS@TOT records in subfile
+   // PRTF BITs
+   printPageSize int(5) pos(152); // PR@SIZ page size
+   printOverflow int(5) pos(188); // PR@FLW printer file overflow
+   printCurrentLine int(5) pos(367); // PR@CLN current line number
+   // *PRTF Stuff:
+   PageSize int(5) pos(152); // PR@SIZ page size
+   Overflow int(5) pos(188); // PR@FLW printer file overflow
+   CurrentLine int(5) pos(367); // PR@CLN current line number
+   CurrentPage int(10) pos(369);
+   // Error MSGID -- available after POST
+   MsgID char(7) pos(46);
+   ODPtype char(2) pos(81); // ODP Type
+   splf char(10) pos(103);
+   splfLib char(10) pos(113);
+   splfNumber int(5) pos(123);
+   // *DSPF Stuff:
+   SflRRN int(5) pos(376);
+   SflMinRRN int(5) pos(378);
+   SflNumRcds int(5) pos(380);
+   ActualCursor char(2) pos(382);
+   NumberOfRows int(5) pos(282);
+   NumberOfCols int(5) pos(284);
+   nbrOfRows int(5) pos(152);
+   nbrOfCol int(5) pos(154);
+   nbrRcds int(10) pos(156);
+   accessType char(2) pos(160);
+   DupKey char(1) pos(162);
+   srcFile char(1) pos(163);
+   VolumeLavelOffset int(5) pos(184);
+   MaxRcdsInBlock int(5) pos(186);
+   BlockIncrement int(5) pos(190);
+   deviceClass char(1) pos(271);
+   deviceType char(6) pos(272);
+   Requester char(1) pos(278);
+   AcquireStatus char(1) pos(279);
+   InviteStatus char(1) pos(280);
+   DataAvailable char(1) pos(281);
+   AllowBlink char(1) pos(286);
+   OnlineOffline char(1) pos(287);
+   DisplayLocation char(1) pos(288);
+   DisplayType char(1) pos(289);
+   KeyboardType char(1) pos(290);
+   ControllerInfo char(1) pos(342);
+   ColorCapable char(1) pos(343);
+   MiscFlags1 char(1) pos(196);
+   OepCount int(5) pos(207);
+   NumBasedMbrs int(5) pos(211);
+   MiscFlags2 char(1) pos(213);
+   OpenID char(2) pos(214);
+   RcdFmtLen int(5) pos(216);
+   MiscFlags3 char(1) pos(220);
+   NUM_DEVS int(5) pos(227);
+   writeCount int(10) pos(243);
+   readCount int(10) pos(247);
+   writeReadCount int(10) pos(251);
+   otherIOCount int(10) pos(255);
+   currentOperations char(1) pos(260);
+   DevClass char(2) pos(271);
+   PgmDevName char(10) pos(273);
+   IOrcdLen int(10) pos(283);
+   PgmDevice char(10) pos(241);
+   DeviceDesc char(10) pos(251);
+   user char(10) pos(261);
+   // Disk :
+   NbrLockedRcds int(5) pos(377);
+   FilePosBits char(1) pos(385);
+   RcdDeletedBits char(1) pos(384);
+   Numkeys int(5) pos(387);
+   Keylength int(5) pos(393);
+   MemberNumber int(5) pos(395);
+end-ds;
+
+Dcl-Ds infds_DB likeds(infds);
+Dcl-Ds infds_DSPF likeds(infds);
+Dcl-Ds infds_PRTF likeds(infds);
+
+// Hexadecimal representation of function Keys 
+// If you use an INFDS against your display file you can check functions by
+// using : IF infs.funcKey = PFKEY03; 
+Dcl-C ENTER CONST(X'F1');
+Dcl-C HELP CONST(X'F3');
+Dcl-C PAGEUP CONST(X'F4');
+Dcl-C PAGEDOWN CONST(X'F5');
+Dcl-C PRINT CONST(X'F6');
+Dcl-C RECORDBACKSPAC CONST(X'F8');
+Dcl-C PFKEY01 CONST(X'31');
+Dcl-C PFKEY02 CONST(X'32');
+Dcl-C PFKEY03 CONST(X'33');
+Dcl-C PFKEY04 CONST(X'34');
+Dcl-C PFKEY05 CONST(X'35');
+Dcl-C PFKEY06 CONST(X'36');
+Dcl-C PFKEY07 CONST(X'37');
+Dcl-C PFKEY08 CONST(X'38');
+Dcl-C PFKEY09 CONST(X'39');
+Dcl-C PFKEY10 CONST(X'3A');
+Dcl-C PFKEY11 CONST(X'3B');
+Dcl-C PFKEY12 CONST(X'3C');
+Dcl-C PFKEY13 CONST(X'B1');
+Dcl-C PFKEY14 CONST(X'B2');
+Dcl-C PFKEY15 CONST(X'B3');
+Dcl-C PFKEY16 CONST(X'B4');
+Dcl-C PFKEY17 CONST(X'B5');
+Dcl-C PFKEY18 CONST(X'B6');
+Dcl-C PFKEY19 CONST(X'B7');
+Dcl-C PFKEY20 CONST(X'B8');
+Dcl-C PFKEY21 CONST(X'B9');
+Dcl-C PFKEY22 CONST(X'BA');
+Dcl-C PFKEY23 CONST(X'BB');
+Dcl-C PFKEY24 CONST(X'BC');
+Dcl-C CLEAR CONST(X'BD');
+

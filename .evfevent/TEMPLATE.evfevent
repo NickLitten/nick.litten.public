@@ -1,0 +1,7 @@
+TIMESTAMP  0 20250411102009
+PROCESSOR  0 000 1
+FILEID     0 001 000000 100 /home/nlitten/builds/nick.litten.public/sample-cl-code/TEMPLATE-CL_Program_Starter_Template.pgm.clle 20250411102009 0
+ERROR      0 001 1 000027 000027 000 000027 000 CPD0030 S 30 116 Command RPG in library *LIBL not found.
+ERROR      0 001 1 000125 000125 000 000125 000 CPD0755 W 10 116 The preceding errors may be caused by previous release incompatibility.
+ERROR      0 001 1 000125 000125 000 000125 000 CPD0726 W 10 116 Variable &COPYRIGHTP declared but not referred to.
+FILEEND    0 001 000000

@@ -1,0 +1,5 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>  CHGCURLIB CURLIB(NLITTEN1)
+>  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
+>  CRTDSPF FILE(NLITTEN1/CRUD01PNL) SRCFILE(QTEMP/QSOURCE) SRCMBR(CRUD01PNL) ENHDSP(*YES) RSTDSP(*YES) DFRWRT(*YES) AUT() OPTION(*EVENTF *SRC *LIST) TEXT('Change Read Update Delete Example')
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -26,10 +26,9 @@
 /include 'header.rpgleinc'
 
 ctl-opt
-  copyright('HelloAlternate | V.001 | Sample Stylised RPG Program')
-  ;
+  copyright('HelloAlternate | V.001 | Sample Stylised RPG Program');
 
-/include 'global_variables.rpgleinc'
+/include 'variables.rpgleinc'
 
 Dcl-Proc mainline;
    Dcl-Pi mainline;

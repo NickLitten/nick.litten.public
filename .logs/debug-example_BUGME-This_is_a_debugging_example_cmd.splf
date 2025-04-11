@@ -1,0 +1,72 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN1.
+CPC2196: Library NLITTEN1 added to library list.
+
+>> executing command: CRTCMD CMD(NLITTEN1/BUGME) srcstmf('/home/nlitten/builds/nick.litten.public/debug-example/BUGME-This_is_a_debugging_example.cmd') PGM(NLITTEN1/BUGME) VLDCKR(*NONE) PMTFILE(*NONE) HLPPNLGRP(BUGME) HLPID(BUGME) AUT() ALLOW() TEXT('This is a debugging example')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN1 NLITTEN1 QTEMP QGPL
+>> executing time: 2025-04-11-10.37.59.00
+
+CPC0202: Command BUGME created in library NLITTEN1.
+ 5770SS1 V7R5M0  220415                 Command Definition        NLITTEN1/BUGME        PROJEX 25-04-07 10:38:00         Page      1
+ Command name  . . . . . . . . . . . . . . . . :   BUGME
+   Library . . . . . . . . . . . . . . . . . . :     NLITTEN1
+ Command processing program  . . . . . . . . . :   BUGME
+   Library . . . . . . . . . . . . . . . . . . :     NLITTEN1
+ Source stream file  . . . . . . . . . . . . . :   /home/nlitten/builds/nick.litten.public/debug-example/BUGME-This_is_a_de
+ Last Change   . . . . . . . . . . . . . . . . :   25-03-27 08:45:14
+ Source printing options . . . . . . . . . . . :   *NOEVENTF
+ Validity checker program  . . . . . . . . . . :   *NONE
+ Mode in which valid . . . . . . . . . . . . . :   *PROD
+                                                   *DEBUG
+                                                   *SERVICE
+ Environment allowed . . . . . . . . . . . . . :   *IREXX
+                                                   *BREXX
+                                                   *BPGM
+                                                   *IPGM
+                                                   *EXEC
+                                                   *INTERACT
+                                                   *BATCH
+                                                   *BMOD
+                                                   *IMOD
+ Allow limited user  . . . . . . . . . . . . . :   *NO
+ Max positional parameters . . . . . . . . . . :   *NOMAX
+ Prompt file . . . . . . . . . . . . . . . . . :   *NONE
+ Message file  . . . . . . . . . . . . . . . . :   QCPFMSG
+   Library . . . . . . . . . . . . . . . . . . :     *LIBL
+ Authority . . . . . . . . . . . . . . . . . . :   *LIBCRTAUT
+ Replace command . . . . . . . . . . . . . . . :   *YES
+ Enable graphical user interface . . . . . . . :   *NO
+ Threadsafe  . . . . . . . . . . . . . . . . . :   *NO
+ Multithreaded job action  . . . . . . . . . . :   *SYSVAL
+ Text  . . . . . . . . . . . . . . . . . . . . :   This is a debugging example
+ Help panel group  . . . . . . . . . . . . . . :   BUGME
+   Library . . . . . . . . . . . . . . . . . . :     *LIBL
+ Help identifier . . . . . . . . . . . . . . . :   BUGME
+ Help search index . . . . . . . . . . . . . . :   *NONE
+ Current library . . . . . . . . . . . . . . . :   *NOCHG
+ Product library . . . . . . . . . . . . . . . :   *NOCHG
+ Prompt override program . . . . . . . . . . . :   *NONE
+ Compiler  . . . . . . . . . . . . . . . . . . :   IBM i Command Definition Compiler
+                                     Command Definition Source
+ SEQNBR  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+.  DATE
+    100-  CMD PROMPT('This is a debugging example')
+    200-  PARM KWD(DEBUGPARM) TYPE(*CHAR) LEN(100) DFT('NICHOLAS') PROMPT('This is a debugging example')
+                                         * * * * *   E N D   O F   S  O U R C E   * * * * *
+ 5770SS1 V7R5M0  220415                 Command Definition        NLITTEN1/BUGME        PROJEX 25-04-07 10:38:00         Page      2
+                                          Cross Reference
+ Defined Keywords
+ Keyword              Number          Defined      References
+ DEBUGPARM              001               200
+                               * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770SS1 V7R5M0  220415                 Command Definition        NLITTEN1/BUGME        PROJEX 25-04-07 10:38:00         Page      3
+                                          Final Messages
+ Message               Sequence
+ ID                     Number          Sev        Text
+* CPD4090                1001M           10        Printer device PRT01 not found. Output queue changed to QPRINT in library QGPL.
+                                          Message Summary
+ Total         Info        Error
+     0             0           0
+* CPC0202                                00        Command BUGME created in library NLITTEN1.
+                                   * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

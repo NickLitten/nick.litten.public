@@ -1,16 +1,17 @@
 **free
-// --------------------------------------------------------------------------
-// CRUD for single file, with subfile using SQLRPGLE
-// --------------------------------------------------------------------------
 
-ctl-opt copyright('| CRUD01RPG 2018.09.27') 
- main(mainline);
+// --------------------------------------------------------------------------
+// *** WORK IN PROGRESS _ NOT FINISHED YET ***
+// --------------------------------------------------------------------------
+ctl-opt main(mainline) copyright('| CRUD01RPG 2025.04.11');
 
 dcl-f CRUD01PNL workstn sfile(SFLTASK:taskrrn) usropn infds(infds);
-    
+
+/include 'information_data_structures.rpgleinc
+
 // Validation indicators
-Dcl-S pIndicators Pointer Inz(%Addr(*In));
-Dcl-Ds DspInd Based(pIndicators);
+Dcl-S ptrDisplayIndicators Pointer Inz(%Addr(*In));
+Dcl-Ds DisplayIndicators Based(ptrDisplayIndicators);
   // Subfile indicators
   SflDsp          Ind Pos(99);
   SflDspCtl       Ind Pos(98);
@@ -283,7 +284,7 @@ Dcl-Proc ShowSubfile;
         reset Initialpos;
         reset Finalpos;
         leave;
-      When (infds.funcKey = Pageup);
+      When (infds.funcKey = PAGEUP);
         If (Initialpos = 0 and Finalpos = 10);
           iter;
         elseif (Initialpos > 1 and Finalpos > 10);
@@ -293,7 +294,7 @@ Dcl-Proc ShowSubfile;
           leave;
         EndIf;
 
-      When (infds.funcKey = PageDn);
+      When (infds.funcKey = PAGEDOWN);
 
         If (Initialpos > 0 and Finalpos > 10);
 
@@ -418,7 +419,7 @@ Dcl-Proc ScreenValidation ;
   Dcl-S w_ValidisnotOK Ind;
   Dcl-S w_Exists char(1);
 
-  // Set zeros in general variable based in DspInd
+  // Set zeros in general variable based in  DisplayIndicators
   IndErrors = *zeros;
 
   If (p_choice = 'I'); // Validations for Insert

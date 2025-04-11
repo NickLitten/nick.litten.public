@@ -1,0 +1,13 @@
+TIMESTAMP  0 20250411103809
+PROCESSOR  0 000 1
+FILEID     0 001 000000 100 /home/nlitten/builds/nick.litten.public/sample-rpg-code/HELLOINC-Helloworld_using_copybook.pgm.rpgle 20250411081706 0
+FILEID     0 002 000026 064 /home/nlitten/builds/nick.litten.public/includes/header.rpgleinc 20250411081559 0
+FILEEND    0 002 000009
+FILEID     0 003 000031 067 /home/nlitten/builds/nick.litten.public/includes/variables.rpgleinc 20250411081559 0
+FILEEND    0 003 000003
+ERROR      0 001 1 000000 000000 001 000000 000 RNF3776 W 10 090 External program on prototype for main procedure is not the same as program being created.
+FILEEND    0 001 000058
+PROCESSOR  0 000 1
+FILEID     0 000 000000 000  19700101000000 0
+ERROR      0 000 0 000000 000000 000 000000 000 CPC5D07 I 00 045 Program HELLOINC created in library NLITTEN1.
+FILEEND    0 000 000000

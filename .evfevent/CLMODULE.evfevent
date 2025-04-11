@@ -1,0 +1,10 @@
+TIMESTAMP  0 20250411103802
+PROCESSOR  0 000 1
+FILEID     0 001 000000 085 /home/nlitten/builds/nick.litten.public/sample-cl-code/CLMODULE-Simple_CL_Module.CLLE 20250411103802 0
+FILEID     0 002 000000 064 /home/nlitten/builds/nick.litten.public/includes/INCLUDE.CLLEINC 20112504081559 0
+FILEEND    0 002 000000
+ERROR      0 001 1 000022 000022 000 000022 000 CPD0726 W 10 116 Variable &DEBUGPARM declared but not referred to.
+ERROR      0 001 1 000022 000022 000 000022 000 CPD0726 W 10 116 Variable &MSG1 declared but not referred to.
+ERROR      0 001 1 000022 000022 000 000022 000 CPD0726 W 10 116 Variable &MSG2 declared but not referred to.
+ERROR      0 001 1 000022 000022 000 000022 000 CPD0791 I 00 116 No labels used in program.
+FILEEND    0 001 000000

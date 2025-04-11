@@ -1,0 +1,207 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN1.
+CPC2196: Library NLITTEN1 added to library list.
+
+>> executing command: CRTBNDRPG srcstmf('/home/nlitten/builds/nick.litten.public/debug-example/BUGMERPG-This_is_a_debugging_example.pgm.rpgle') PGM(NLITTEN1/BUGMERPG) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('This is a debugging example') INCDIR('includes')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN1 NLITTEN1 QTEMP QGPL
+>> executing time: 2025-04-11-10.37.55.00
+
+RNS9304: Program BUGMERPG placed in library NLITTEN1. 10 highest severity. Created on 25-04-11 at 10:37:55.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   BUGMERPG
+    Library  . . . . . . . . . . . :     NLITTEN1
+  Text 'description' . . . . . . . :   This is a debugging example
+  Source stream file   . . . . . . :   /home/nlitten/builds/nick.litten.public/debug-exam
+                                       ple/BUGMERPG-This_is_a_debugging_example.pgm.rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-03-31  17:12:20
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   *CURRENT
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **free                                                                                                               000001
+     2 // ---------------------------------------------------------------------                                             000002
+     3 // BUGMERPG debug code example based on Helloworld                                                                   000003
+     4 // ---------------------------------------------------------------------                                             000004
+     5 //                                                                                                                   000005
+     6 // This will recieve a parameter and change the value before returning                                               000006
+     7 //                                                                                                                   000007
+     8 // ---------------------------------------------------------------------                                             000008
+     9 // Modification History:                                                                                             000009
+    10 // V.000 2025.03.27 NJL Created                                                                                      000010
+    11 // ---------------------------------------------------------------------                                             000011
+    12                                                                                                                      000012
+    13 /include 'header.rpgleinc'                                                                                           000013
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+        *--------------------------------------------------------------------------------------------*
+        * RPG member name  . . . . . :  header.rp+                                                   *                     1
+        * External name  . . . . . . :  includes/header.rpgleinc                                     *                     1
+        * Last change  . . . . . . . :  25-04-11  08:15:59                                           *                     1
+        *--------------------------------------------------------------------------------------------*
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+    14+**free                                                                                                              1000001
+    15+// Common Header Specifications                                                                                     1000002
+    16+ctl-opt                                                                                                             1000003
+    17+  main(mainline)                                                                                                    1000004
+    18+  optimize(*full)                                                                                                   1000005
+    19+  option(*nodebugio:*srcstmt:*nounref)                                                                              1000006
+000007+  pgminfo(*pcml:*module)                                                                                            1000007
+000008+  actgrp(*new)                                                                                                      1000008
+000009+  indent('| ');                                                                                                     1000009
+000014                                                                                                                      000014
+000015 ctl-opt                                                                                                              000015
+000016   copyright('Bug Me RPG | V.000 | Sample RPG Program for Debug')                                                     000016
+000017   ;                                                                                                                  000017
+000018                                                                                                                      000018
+000019 // ---------------------------------------------------------------------                                             000019
+000020 // Procedure: mainline                                                                                               000020
+000021 // Description: Main entry point for the program.                                                                    000021
+000022 // ---------------------------------------------------------------------                                             000022
+        *--------------------------------------------------------------------*
+        * Compiler Options in Effect:                                        *
+        *--------------------------------------------------------------------*
+        *  Text 'description' . . . . . . . :                                *
+        *                 This is a debugging example                        *
+        *  Generation severity level  . . . :   10                           *
+        *  Default activation group . . . . :   *NO                          *
+        *  Compiler options . . . . . . . . :   *XREF      *GEN              *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+        *                                       *NOSECLVL  *SHOWCPY          *
+        *                                       *EXPDDS    *EXT              *
+        *                                       *NOSHOWSKP *SRCSTMT          *
+        *                                       *NODEBUGIO *NOUNREF          *
+        *                                       *EVENTF                      *
+        *  Optimization level . . . . . . . :   *FULL                        *
+        *  Source listing indentation . . . :   '| '                         *
+        *  Type conversion options  . . . . :   *NONE                        *
+        *  Sort sequence  . . . . . . . . . :   *HEX                         *
+        *  Language identifier  . . . . . . :   *JOBRUN                      *
+        *  User profile . . . . . . . . . . :   *USER                        *
+        *  Authority  . . . . . . . . . . . :   *LIBCRTAUT                   *
+        *  Truncate numeric . . . . . . . . :   *YES                         *
+        *  Fix numeric  . . . . . . . . . . :   *NONE                        *
+        *  Allow null values  . . . . . . . :   *NO                          *
+        *  Storage model . . .  . . . . . . :   *SNGLVL                      *
+        *  Binding directory from Command . :   *NONE                        *
+        *  Binding directory from Source  . :   *NONE                        *
+        *  Activation group . . . . . . . . :   *NEW                         *
+        *  Enable performance collection  . :   *PEP                         *
+        *  Profiling data . . . . . . . . . :   *NOCOL                       *
+        *  Program interface information:                                    *
+        *    Generate . . . . . . . . . . . :   *PCML                        *
+        *    Location . . . . . . . . . . . :   *MODULE                      *
+        *  Require prototype for export . . :   *NO                          *
+        *--------------------------------------------------------------------*
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+000023 Dcl-Proc mainline;                                                                                                   000023
+000024    Dcl-Pi mainline;                                                                                                  000024
+*RNF3776 10                External program on prototype for main procedure is not the
+                           same as program being created.
+000025       incomingDebugMsg char(100);                                                                                    000025
+000026    end-pi;                                                                                                           000026
+000027                                                                                                                      000027
+000028    incomingDebugMsg = %trim(incomingDebugMsg) + ' - (updated from BUGMERPG!)';                                       000028
+000029                                                                                                                      000029
+000030    Return;                                                                                                           000030
+000031                                                                                                                      000031
+000032 end-proc;                                                                                                            000032
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      4
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv   Statement    Message text
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+                            / C o p y   M e m b e r s
+Line   Src  RPG name   <-------- External name -------> CCSID  <- Last change ->
+Number Id              Library    File       Member            Date     Time
+    000013    1 header.rp+ includes/header.rpgleinc          1208  25-04-11 08:15:59
+         * * * * *   E N D   O F   / C O P Y   M E M B E R S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      5
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         No references in the source.
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         MAINLINE          PROTOTYPE             1000004      000023      000024
+      Field References for subprocedure MAINLINE
+         Field             Attributes         References (D=Defined M=Modified)
+         INCOMINGDEBUGMSG  A(100)                 000025D     000028M     000028
+                           BASED(_QRNL_PST+)
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      6
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      7
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF3776 10      1 External program on prototype for main procedure is not the
+                   same as program being created.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/BUGMERPG        PROJEX     25-04-11 10:37:55        Page      8
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        0
+    Warning      (10) . . . . . . . :        1
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        1
+  Source Totals:
+    Records . . . . . . . . . . . . :       41
+    Specifications  . . . . . . . . :       15
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       21
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Program BUGMERPG placed in library NLITTEN1. 10 highest severity. Created on 25-04-11 at 10:37:55.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

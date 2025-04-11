@@ -1,0 +1,5 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>  CHGCURLIB CURLIB(NLITTEN1)
+>  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
+>  CRTDSPF FILE(NLITTEN1/NOOBDSPF) SRCFILE(QTEMP/QSOURCE) SRCMBR(NOOBDSPF) ENHDSP(*YES) RSTDSP(*YES) DFRWRT(*YES) AUT() OPTION(*EVENTF *SRC *LIST) TEXT('Full load sfl with incrementing value')
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

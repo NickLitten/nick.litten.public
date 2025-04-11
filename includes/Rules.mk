@@ -1,2 +1,0 @@
-
-HEXKEYS.MODULE: hexkeys-constants_for_command_key_processing_of_display..rpgle

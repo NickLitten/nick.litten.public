@@ -1,0 +1,182 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN1.
+CPC2196: Library NLITTEN1 added to library list.
+
+>> executing command: crtrpgmod module(NLITTEN1/HEXKEYS) srcstmf('/home/nlitten/builds/nick.litten.public/includes/hexkeys-constants_for_command_key_processing_of_display..rpgle') AUT() DBGVIEW(*ALL) OPTIMIZE() OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('constants for command key processing of display') TGTCCSID(*JOB) TGTRLS() INCDIR('includes') DEFINE()
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN1 NLITTEN1 QTEMP QGPL
+>> executing time: 2025-04-11-09.49.31.00
+
+RNS9308: Compilation stopped. Severity 40 errors found in program.
+RNS9309: Compilation failed. Module HEXKEYS not created in library NLITTEN1.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      1
+  Command  . . . . . . . . . . . . :   CRTRPGMOD
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Module . . . . . . . . . . . . . :   HEXKEYS
+    Library  . . . . . . . . . . . :     NLITTEN1
+  Text 'description' . . . . . . . :   constants for command key processing of display
+  Source stream file   . . . . . . :   /home/nlitten/builds/nick.litten.public/includes/h
+                                       exkeys-constants_for_command_key_processing_of_dis
+                                       play..rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   24-11-26  15:32:15
+  Generation severity level  . . . :   10
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace module . . . . . . . . . :   *YES
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   V7R4M0
+  Allow null values  . . . . . . . :   *NO
+  Storage model . . .  . . . . . . :   *INHERIT
+  Binding directory  . . . . . . . :   *NONE
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **FREE                                                                                                               000001
+     2                                                                                                                      000002
+     3 // Display File Information Data Structure                                                                           000003
+     4 Dcl-DS InfoDS;                                                                                                       000004
+     5      Key            Char(1)    Pos(369);                                                                             000005
+     6 End-DS;                                                                                                              000006
+     7                                                                                                                      000007
+     8 // Hexadecimal representation of function Keys                                                                       000008
+     9 Dcl-C Enter      CONST(X'F1');                                                                                       000009
+    10 Dcl-C Help       CONST(X'F3');                                                                                       000010
+    11 Dcl-C RollDown   CONST(X'F4');                                                                                       000011
+    12 Dcl-C RollUp     CONST(X'F5');                                                                                       000012
+    13 Dcl-C Print      CONST(X'F6');                                                                                       000013
+    14 Dcl-C RecordBackSpac CONST(X'F8');                                                                                   000014
+    15 Dcl-C F1         CONST(X'31');                                                                                       000015
+    16 Dcl-C F2         CONST(X'32');                                                                                       000016
+    17 Dcl-C F3         CONST(X'33');                                                                                       000017
+    18 Dcl-C F4         CONST(X'34');                                                                                       000018
+    19 Dcl-C F5         CONST(X'35');                                                                                       000019
+    20 Dcl-C F6         CONST(X'36');                                                                                       000020
+    21 Dcl-C F7         CONST(X'37');                                                                                       000021
+    22 Dcl-C F8         CONST(X'38');                                                                                       000022
+    23 Dcl-C F9         CONST(X'39');                                                                                       000023
+    24 Dcl-C F10        CONST(X'3A');                                                                                       000024
+    25 Dcl-C F11        CONST(X'3B');                                                                                       000025
+    26 Dcl-C F12        CONST(X'3C');                                                                                       000026
+    27 Dcl-C F13        CONST(X'B1');                                                                                       000027
+    28 Dcl-C F14        CONST(X'B2');                                                                                       000028
+    29 Dcl-C F15        CONST(X'B3');                                                                                       000029
+    30 Dcl-C F16        CONST(X'B4');                                                                                       000030
+    31 Dcl-C F17        CONST(X'B5');                                                                                       000031
+    32 Dcl-C F18        CONST(X'B6');                                                                                       000032
+    33 Dcl-C F19        CONST(X'B7');                                                                                       000033
+    34 Dcl-C F20        CONST(X'B8');                                                                                       000034
+    35 Dcl-C F21        CONST(X'B9');                                                                                       000035
+    36 Dcl-C F22        CONST(X'BA');                                                                                       000036
+    37 Dcl-C F23        CONST(X'BB');                                                                                       000037
+    38 Dcl-C F24        CONST(X'BC');                                                                                       000038
+    39 Dcl-C Clear      CONST(X'BD');                                                                                       000039
+    40                                                                                                                      000040
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      3
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv Number Seq     Message text
+*RNF7023 40      0         The Compiler cannot determine how the program can end.
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      4
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         No references in the source.
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+*RNF7031 CLEAR             CONST                  39D
+*RNF7031 ENTER             CONST                   9D
+*RNF7031 F1                CONST                  15D
+*RNF7031 F10               CONST                  24D
+*RNF7031 F11               CONST                  25D
+*RNF7031 F12               CONST                  26D
+*RNF7031 F13               CONST                  27D
+*RNF7031 F14               CONST                  28D
+*RNF7031 F15               CONST                  29D
+*RNF7031 F16               CONST                  30D
+*RNF7031 F17               CONST                  31D
+*RNF7031 F18               CONST                  32D
+*RNF7031 F19               CONST                  33D
+*RNF7031 F2                CONST                  16D
+*RNF7031 F20               CONST                  34D
+*RNF7031 F21               CONST                  35D
+*RNF7031 F22               CONST                  36D
+*RNF7031 F23               CONST                  37D
+*RNF7031 F24               CONST                  38D
+*RNF7031 F3                CONST                  17D
+*RNF7031 F4                CONST                  18D
+*RNF7031 F5                CONST                  19D
+*RNF7031 F6                CONST                  20D
+*RNF7031 F7                CONST                  21D
+*RNF7031 F8                CONST                  22D
+*RNF7031 F9                CONST                  23D
+*RNF7031 HELP              CONST                  10D
+*RNF7031 INFODS            DS(369)                 4D
+*RNF7031 KEY               A(1)                    5D
+*RNF7031 PRINT             CONST                  13D
+*RNF7031 RECORDBACKSPAC    CONST                  14D
+*RNF7031 ROLLDOWN          CONST                  11D
+*RNF7031 ROLLUP            CONST                  12D
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      5
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      6
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00     33 The name or indicator is not referenced.
+*RNF7023 40      1 The Compiler cannot determine how the program can end.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/HEXKEYS         PROJEX     25-04-11 09:49:31        Page      7
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :       33
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        1
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :       34
+  Source Totals:
+    Records . . . . . . . . . . . . :       40
+    Specifications  . . . . . . . . :       34
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :        5
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Compilation stopped. Severity 40 errors found in program.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

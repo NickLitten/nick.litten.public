@@ -1,0 +1,5 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>  CHGCURLIB CURLIB(NLITTEN1)
+>  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
+>  CRTDSPF FILE(NLITTEN1/SIMPLEDSPF) SRCFILE(QTEMP/QSOURCE) SRCMBR(SIMPLEDSPF) ENHDSP(*YES) RSTDSP(*YES) DFRWRT(*YES) AUT() OPTION(*EVENTF *SRC *LIST) TEXT('Display file for the subfile example')
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

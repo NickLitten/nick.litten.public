@@ -1,0 +1,113 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN1.
+CPC2196: Library NLITTEN1 added to library list.
+>> Temporarily set curlib to NLITTEN1
+CPC2197: Library NLITTEN1 removed from library list.
+CPC2196: Library NLITTEN1 added to library list.
+CPC2198: Current library changed to NLITTEN1.
+
+>> executing command: RUNSQLSTM srcstmf('/home/nlitten/builds/nick.litten.public/subfile-samples/CRUD01TBL-Sample_Task_Table.table') DBGVIEW(*SOURCE) TGTRLS() OUTPUT(*PRINT) MARGINS(1024) COMMIT(*NONE )
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN1 NLITTEN1 QTEMP QGPL
+>> executing time: 2025-04-11-10.46.22.00
+
+5770SS1 V7R5M0 220415               Run SQL Statements             CRUD01TBL_                         25-04-11 10:46:22   PAGE   1
+Source stream file......../home/nlitten/builds/nick.litten.public/subfile-samples/CRUD01TBL-Sample_Task_Ta
+                          ble.table
+Target release............V7R5M0
+Commit....................*NONE
+Naming....................*SYS
+Generation level..........10
+Date format...............*JOB
+Date separator............*JOB
+Time format...............*HMS
+Time separator ...........*JOB
+Right margin..............1024
+Default collection........*NONE
+IBM SQL flagging..........*NOFLAG
+ANS flagging..............*NONE
+Decimal point.............*JOB
+Sort sequence.............*JOB
+Language ID...............*JOB
+Printer file..............*LIBL/QSYSPRT
+Source file CCSID.........1208
+Job CCSID.................37
+Statement processing......*RUN
+Allow copy of data........*OPTIMIZE
+Allow blocking............*ALLREAD
+SQL rules.................*DB2
+Decimal result options:
+  Maximum precision.......31
+  Maximum scale...........31
+  Minimum divide scale....0
+Concurrent access
+  resolution..............*DFT
+System time sensitive.....*YES
+Source member changed on 25-04-11  09:10:56
+5770SS1 V7R5M0 220415               Run SQL Statements             CRUD01TBL_                         25-04-11 10:46:22   PAGE     2
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8   SEQNBR  Last change
+      1 -- -----------------------------------------------------
+      2 -- TABLE LOCATION:  CRUD01TBL
+      3 -- PURPOSE: SAVE THE TASKS
+      4 -- -----------------------------------------------------
+      5 SET SCHEMA NLITTEN1;
+      6
+      7 CREATE OR REPLACE TABLE
+      8     CRUD01TBL (
+      9         TASK_ID NUMERIC (10, 0) NOT NULL DEFAULT,
+     10         NAME VARCHAR(10) NOT NULL DEFAULT,
+     11         DESCR VARCHAR(150) NOT NULL DEFAULT,
+     12         ENDDES VARCHAR(150),
+     13         STARTDATE NUMERIC (8, 0) NOT NULL DEFAULT,
+     14         ENDDATE NUMERIC (8, 0) NOT NULL DEFAULT,
+     15         STATE NUMERIC (1, 0) NOT NULL DEFAULT,
+     16         OWNER VARCHAR(10) NOT NULL DEFAULT,
+     17         -- ADD PRIMARY KEY
+     18         CONSTRAINT PK_TASK PRIMARY KEY (TASK_ID)
+     19     );
+     20
+     21 -- TABLE TAG
+     22 LABEL ON TABLE CRUD01TBL IS 'TASKS TODO LIST';
+     23
+     24 -- ADDING TEXT DESCRIPTION TO FIELDS
+     25 LABEL ON CRUD01TBL (
+     26     TASK_ID TEXT IS 'TASK ID',
+     27     NAME TEXT IS 'NAME OF THE TASK',
+     28     DESCR TEXT IS 'DESCRIPTION OF TASK',
+     29     ENDDES TEXT IS 'END DESCRIPTION OF TASK',
+     30     STARTDATE TEXT IS 'DATE OF TASK CREATION',
+     31     ENDDATE TEXT IS 'DATE OF TASK FINALIZATION',
+     32     STATE TEXT IS 'STATE TASK 0-UNFINISHED 1-FINISHED',
+     33     OWNER TEXT IS 'CREATOR OF THE TASK'
+     34 );
+     35
+     36
+     37 -- ADDING COLUMN TAG NAME
+     38 LABEL ON COLUMN CRUD01TBL (
+     39     TASK_ID IS 'TASK ID',
+     40     NAME IS 'NAME OF TASK',
+     41     DESCR IS 'DESCRIPTION',
+     42     ENDDES IS 'END DESCRIPTION',
+     43     STARTDATE IS 'DATE OF CREATION',
+     44     ENDDATE IS 'DATE OF FINISH',
+     45     STATE IS 'STATE OF TASK',
+     46     OWNER IS 'CREATOR OF TASK'
+     47 );
+                                 * * * * *  E N D  O F  S O U R C E  * * * * *
+5770SS1 V7R5M0 220415               Run SQL Statements             CRUD01TBL_                         25-04-11 10:46:22   PAGE     3
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8   SEQNBR  Last change
+MSG ID  SEV  RECORD  TEXT
+SQL790F   0       1  Position 1 SET CURRENT SCHEMA statement complete.
+SQL7905  20       7  Position 1 Table CRUD01TBL in NLITTEN1 created but was
+                     not journaled.
+SQL7965   0      21  Position 1 LABEL ON for CRUD01TBL in NLITTEN1 completed.
+SQL7965   0      24  Position 1 LABEL ON for CRUD01TBL in NLITTEN1 completed.
+SQL7965   0      37  Position 1 LABEL ON for CRUD01TBL in NLITTEN1 completed.
+                    Message Summary
+  Total     Info   Warning      Error   Severe  Terminal
+      5        4         0          1        0         0
+20 level severity errors found in source
+                                * * * * *  E N D  O F  L I S T I N G  * * * * *
+CPD000D: Command *LIBL/CHGOBJD not safe for a multithreaded job.
+CPC2103: Object changed for CRUD01TBL in NLITTEN1 type *FILE.
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
