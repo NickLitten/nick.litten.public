@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NLITTEN1)
->  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
->  CRTBNDCL PGM(NLITTEN1/CLBNDPGM) SRCFILE(QTEMP/QSOURCE) SRCMBR(CLBNDPGM) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Simple Bound CL Program') TGTRLS(V7R4M0) INCDIR('/home/nlitten/builds/nick.litten.public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

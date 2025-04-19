@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NLITTEN1)
->  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
->  CRTCLMOD MODULE(NLITTEN1/CLMODULE) SRCFILE(QTEMP/QSOURCE) SRCMBR(CLMODULE) AUT() DBGVIEW(*ALL) OPTIMIZE() OPTION(*EVENTF) TEXT('Simple CL Module') TGTRLS(V7R4M0) INCDIR('/home/nlitten/builds/nick.litten.public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -1,6 +1,0 @@
-TIMESTAMP  0 20250411103827
-PROCESSOR  0 000 1
-FILEID     0 001 000000 108 /home/nlitten/builds/nick.litten.public/subfile-samples/SIMPLEDSPF-Display_file_for_the_subfile_example.dspf 20250411103827 0
-ERROR      0 001 1 002200 000022 039 000022 044 CPD7865 W 10 200 Field overlaps one or more fields in record.
-ERROR      0 001 1 002400 000024 039 000024 044 CPD7865 W 10 200 Field overlaps one or more fields in record.
-FILEEND    0 001 000000

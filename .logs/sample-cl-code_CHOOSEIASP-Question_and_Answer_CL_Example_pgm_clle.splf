@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NLITTEN1)
->  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
->  CRTBNDCL PGM(NLITTEN1/CHOOSEIASP) SRCFILE(QTEMP/QSOURCE) SRCMBR(CHOOSEIASP) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Question and Answer CL Example') TGTRLS(V7R4M0) INCDIR('/home/nlitten/builds/nick.litten.public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

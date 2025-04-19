@@ -1,7 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NLITTEN1)
->  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
->  CRTBNDCL PGM(NLITTEN1/TEMPLATE) SRCFILE(QTEMP/QSOURCE) SRCMBR(TEMPLATE) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('CL Program Starter Template') TGTRLS(V7R4M0) INCDIR('/home/nlitten/builds/nick.litten.public/includes')
-[FAILED]  CRTBNDCL PGM(NLITTEN1/TEMPLATE) SRCFILE(QTEMP/QSOURCE) SRCMBR(TEMPLATE) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('CL Program Starter Template') TGTRLS(V7R4M0) INCDIR('/home/nlitten/builds/nick.litten.public/includes')
-Build not successful for NLITTEN1/TEMPLATE
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

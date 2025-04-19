@@ -1,5 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NLITTEN1)
->  ADDLIBLE LIB(NLITTEN1) POSITION(*FIRST)
->  CRTPF FILE(NLITTEN1/SIMPLEFILE) SRCFILE(QTEMP/QSOURCE) SRCMBR(SIMPLEFILE) AUT() DLTPCT(*NONE) OPTION(*EVENTF *SRC *LIST) REUSEDLT(*NO) SIZE() TEXT('Simple file with some NAME ADDRESS data in it')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
