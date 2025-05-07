@@ -1,4 +1,5 @@
 {
+  "files.trimTrailingWhitespace": true,
   "indent": 3,
   "BlankStructNamesCheck": false,
   "QualifiedCheck": false,

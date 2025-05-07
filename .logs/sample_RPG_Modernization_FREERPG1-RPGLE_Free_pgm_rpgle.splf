@@ -1,0 +1,209 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN1.
+CPC2196: Library NLITTEN1 added to library list.
+
+>> executing command: CRTBNDRPG srcstmf('/home/nlitten/builds/nick.litten.public/sample_RPG_Modernization/FREERPG1-RPGLE_Free.pgm.rpgle') PGM(NLITTEN1/FREERPG1) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('RPGLE Free') INCDIR('includes')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN1 NLITTEN1 QTEMP QGPL
+>> executing time: 2025-05-07-11.48.32.00
+
+RNS9304: Program FREERPG1 placed in library NLITTEN1. 00 highest severity. Created on 25-05-07 at 11:48:32.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   FREERPG1
+    Library  . . . . . . . . . . . :     NLITTEN1
+  Text 'description' . . . . . . . :   RPGLE Free
+  Source stream file   . . . . . . :   /home/nlitten/builds/nick.litten.public/sample_RPG
+                                       _Modernization/FREERPG1-RPGLE_Free.pgm.rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-05-07  10:12:22
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   *CURRENT
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      2
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1   // ----------------------------------------------------------                                                      000001
+     2   // author: nick litten                                                                                             000002
+     3   // Submit file to remote system using CFT                                                                          000003
+     4   // rtn=1 if partner mismatch - return partner found                                                                000004
+     5   // rtn=2 if record not found                                                                                       000005
+     6   // rtn=3 if file empty                                                                                             000006
+     7   // ----------------------------------------------------------                                                      000007
+     8   // written  : may 1994                                                                                             000008
+     9   // modified : 2010.03.14 njl converted to free format RPG                                                          000009
+    10   // ----------------------------------------------------------                                                      000010
+    11   dcl-f QTXTSRC;                                                                                                     000011
+        *--------------------------------------------------------------------------------------------*
+        *                               RPG name         External name                               *
+        * File name. . . . . . . . . :  QTXTSRC          QGPL/QTXTSRC                                *
+        * Record format(s) . . . . . :  QASUTXTSRC       QASUTXTSRC                                  *
+        *--------------------------------------------------------------------------------------------*
+    12                                                                                                                      000012
+    13   dcl-ds DATA;                                                                                                       000013
+    14    RECORD char(92) pos(1);                                                                                           000014
+    15    FLAG char(4) pos(1);                                                                                              000015
+    16    FILEN char(10) pos(11);                                                                                           000016
+    17    PARTN char(10) pos(26);                                                                                           000017
+    18    IDFN char(8) pos(40);                                                                                             000018
+    19   end-ds;                                                                                                            000019
+    20=IQASUTXTSRC                                                                                                         1000001
+        *--------------------------------------------------------------------------------------------*                     1
+        * RPG record format  . . . . :  QASUTXTSRC                                                   *                     1
+        * External format  . . . . . :  QASUTXTSRC : QGPL/QTXTSRC                                    *                     1
+        *--------------------------------------------------------------------------------------------*                     1
+    21=I                             S    1    6 2SRCSEQ                                                                   1000002
+    22=I                             S    7   12 0SRCDAT                                                                   1000003
+    23=I                             A   13   92  SRCDTA                                                                   1000004
+    24 C     *ENTRY        Plist                                                                                            000020
+    25 C                   Parm                    FILE             10                                                      000021
+    26 C                   Parm                    PART             10                                                      000022
+    27 C                   Parm                    IDF               8                                                      000023
+    28 C                   Parm                    RTN                                                                      000024
+    29                                                                                                                      000025
+    30   // rtn=2 if record not found                                                                                       000026
+    31 C                   Movel     '2'           RTN               1                                                      000027
+    32                                                                                                                      000028
+    33   // first time read - rtn=4 if file empty                                                                           000029
+    34   READ QTXTSRC ;                                                                                                     000030
+    35   *in50 = %eof();                                                                                                    000031
+    36   IF *IN50        = '1';                                                                        B01                  000032
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      3
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+    37 C                   Movel     '3'           RTN                                                  01                  000033
+    38 C                   Goto      ENDPGM                                                             01                  000034
+    39   ENDIF;                                                                                        E01                  000035
+    40                                                                                                                      000036
+    41   Dow *IN50 = *OFF;                                                                             B01                  000037
+    42 C                   Movel     SRCDTA        RECORD                                               01                  000038
+    43                                                                                                                      000039
+    44     // rtn=1 if partner mismatch - return partner found                                                              000040
+    45     IF FLAG = '/*@@';                                                                           B02                  000041
+    46       IF FILE = FILEN;                                                                          B03                  000042
+    47         IF PART <> PARTN;                                                                       B04                  000043
+    48 C                   Movel     PARTN         PART                                                 04                  000044
+    49 C                   MOVEL     '1'           RTN                                                  04                  000045
+    50 C                   Goto      ENDPGM                                                             04                  000046
+    51         ENDIF;                                                                                  E04                  000047
+    52       ENDIF;                                                                                    E03                  000048
+    53     ENDIF;                                                                                      E02                  000049
+    54                                                                                                                      000050
+    55     // read ahead                                                                                                    000051
+    56     READ QTXTSRC ;                                                                               01                  000052
+    57   *in50 = %eof();                                                                                01                  000053
+    58   ENDDO;                                                                                        E01                  000054
+    59                                                                                                                      000055
+    60   // program exit point                                                                                              000056
+    61 C     ENDPGM        Tag                                                                                              000057
+    62   *INLR = *ON;                                                                                                       000058
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      4
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv Number Seq     Message text
+*RNF7066 00     11 000011  Record-Format QASUTXTSRC not used for input or output.
+*RNF7086 00     11 000011  RPG handles blocking for file QTXTSRC. INFDS is updated
+                           only when blocks of data are transferred.
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      5
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         QTXTSRC           DISK                   11D     34      56
+           QASUTXTSRC                             11D     20
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         *ENTRY            PLIST                  24D
+         *INLR             N(1)                   62M
+         *IN50             N(1)                   35M     36      41      57M
+*RNF7031 DATA              DS(92)                 13D
+         ENDPGM            TAG                    38      50      61D
+         FILE              A(10)                  25D     46
+                           BASED(_QRNL_PRM+)
+         FILEN             A(10)                  16D     46
+         FLAG              A(4)                   15D     45
+         IDF               A(8)                   27D
+                           BASED(_QRNL_PRM+)
+*RNF7031 IDFN              A(8)                   18D
+         PART              A(10)                  26D     47      48M
+                           BASED(_QRNL_PRM+)
+         PARTN             A(10)                  17D     47      48
+         RECORD            A(92)                  14D     42M
+         RTN               A(1)                   28M     31D     37M     49M
+                           BASED(_QRNL_PRM+)
+*RNF7031 SRCDAT            P(6,0)                 22D
+         SRCDTA            A(80)                  23D     42
+*RNF7031 SRCSEQ            P(6,2)                 21D
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+         50                                       35M     36      41      57M
+         LR                                       62M
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      6
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      7
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00      4 The name or indicator is not referenced.
+*RNF7066 00      1 Record-Format name of Externally-Described file is not used.
+*RNF7086 00      1 RPG handles blocking for the file. INFDS is updated only when
+                   blocks of data are transferred.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN1/FREERPG1        PROJEX     25-05-07 11:48:32        Page      8
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        6
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        6
+  Source Totals:
+    Records . . . . . . . . . . . . :       62
+    Specifications  . . . . . . . . :       40
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       15
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Program FREERPG1 placed in library NLITTEN1. 00 highest severity. Created on 25-05-07 at 11:48:32.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

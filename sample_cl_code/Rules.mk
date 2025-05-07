@@ -8,6 +8,6 @@
 IASP.PGM: IASP-Question_and_Answer_CL_Example.pgm.clle
 IASPLOOP.PGM: IASPLOOP-DOU_Question_and_Answer_CL_Example.pgm.clle
 
-CLMODULE.MODULE: CLMODULE-Simple_CL_Module.CLLE
+CLMODULE.MODULE: CLMODULE-Simple_CL_Module.clle
 
-CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.PGM.CLLE
+CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.pgm.clle
