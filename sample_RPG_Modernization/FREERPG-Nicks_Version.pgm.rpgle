@@ -6,8 +6,11 @@
 // rtn=2 if record not found
 // rtn=3 if file empty
 // ----------------------------------------------------------
-// written  : may 1994
-// modified : 2010.03.14 njl converted to free format RPG
+// written  : may 1994                                          
+// modified :
+// 10.03.14 njl converted to free format RPG    
+// 25.05.07 njl played with as part of a Video RPG Upgrade Tour
+// https://www.nicklitten.com/course/forget-the-vscode-extensions-lets-upgrade-old-rpg-code-to-rpgle-manually/
 // ----------------------------------------------------------
 
 dcl-f QTXTSRC;

@@ -6,7 +6,10 @@
       // rtn=3 if file empty                                       
       // ----------------------------------------------------------
       // written  : may 1994                                          
-      // modified : 2010.03.14 njl converted to free format RPG                                          
+      // modified :
+      // 10.03.14 njl converted to free format RPG    
+      // 25.05.07 njl played with as part of a Video RPG Upgrade Tour
+      // https://www.nicklitten.com/course/visual-studio-code-extension-arcad-rpg-transformer/                                  
       // ----------------------------------------------------------
       /free
        dcl-f QTXTSRC;
