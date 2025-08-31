@@ -21,6 +21,11 @@
         IDFN char(8) pos(40);
        end-ds;
 
+     C     *ENTRY        Plist
+     C                   Parm                    FILE             10
+     C                   Parm                    PART             10
+     C                   Parm                    IDF               8
+     C                   Parm                    RTN               1
      
        // rtn=2 if record not found
      C                   Movel     '2'           RTN               1

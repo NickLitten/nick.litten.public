@@ -17,4 +17,4 @@ SIMPLESFL2.PGM: SIMPLESFL2-IBMi_RPG_subfile_FULL_LOAD.pgm.rpgle SIMPLEDSPF.FILE 
 
 CRUD01TBL.FILE: CRUD01TBL-Sample_Task_Table.table
 CRUD01PNL.FILE: CRUD01PNL-Change_Read_Update_Delete_Example.dspf
-CRUD01RPG.PGM: CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle CRUD01TBL.FILE CRUD01PNL.FILE
+CRUD01RPG.MODULE: CRUD01RPG-Change_Read_Update_Delete_Example.sqlrpgle

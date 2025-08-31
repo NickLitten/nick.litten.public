@@ -1,28 +1,28 @@
-TIMESTAMP  0 20250507114834
+TIMESTAMP  0 20250509082108
 PROCESSOR  0 000 1
-FILEID     0 001 000000 099 /home/nlitten/builds/nick.litten.public/sample_RPG_Modernization/FREERPG3-Cozzi_Converter.pgm.rpgle 20250507101047 0
-ERROR      0 001 1 000032 000032 017 000032 017 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000033 000033 018 000033 021 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000034 000034 018 000034 021 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000035 000035 018 000035 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000036 000036 018 000036 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000045 000045 017 000045 022 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000057 000057 017 000057 022 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000067 000067 015 000067 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
-ERROR      0 001 1 000028 000028 009 000028 012 RNF7031 I 00 045 The name or indicator IDFN is not referenced.
-ERROR      0 001 1 000023 000023 015 000023 018 RNF7031 I 00 045 The name or indicator DATA is not referenced.
-ERROR      0 001 1 000045 000045 017 000045 022 RNF7030 S 30 044 The name or indicator ENDPGM is not defined.
-ERROR      0 001 1 000045 000045 011 000045 014 RNF7030 S 30 042 The name or indicator GOTO is not defined.
-ERROR      0 001 1 000019 000019 017 000019 019 RNF7031 I 00 044 The name or indicator IDF is not referenced.
-ERROR      0 001 1 000033 000033 011 000033 014 RNF7030 S 30 042 The name or indicator PARM is not defined.
-ERROR      0 001 1 000032 000032 011 000032 015 RNF7030 S 30 043 The name or indicator PLIST is not defined.
-ERROR      0 001 1 000012 000012 001 000012 000 RNF7066 I 00 054 Record-Format QASUTXTSRC not used for input or output.
-ERROR      0 001 1 000012 000012 014 000012 020 RNF7031 I 00 047 The name or indicator SRCDAT is not referenced.
-ERROR      0 001 1 000012 000012 014 000012 020 RNF7031 I 00 047 The name or indicator SRCSEQ is not referenced.
-ERROR      0 001 1 000067 000067 011 000067 013 RNF7030 S 30 041 The name or indicator TAG is not defined.
-ERROR      0 001 1 000043 000043 014 000043 018 RNF7503 S 30 051 Expression contains an operand that is not defined.
-ERROR      0 001 1 000048 000048 015 000048 019 RNF7503 S 30 051 Expression contains an operand that is not defined.
-ERROR      0 001 1 000012 000012 001 000012 000 RNF7086 I 00 097 RPG handles blocking for file QTXTSRC. INFDS is updated only when blocks of data are transferred.
-ERROR      0 001 1 000043 000043 001 000043 002 RNF7030 S 30 043 The name or indicator *IN50 is not defined.
+FILEID     0 001 000000 099 /home/nlitten/builds/nick.litten.public/sample_RPG_Modernization/FREERPG3-Cozzi_Converter.pgm.rpgle 20250508161709 0
+ERROR      0 001 1 000035 000035 017 000035 017 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000036 000036 018 000036 021 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000037 000037 018 000037 021 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000038 000038 018 000038 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000039 000039 018 000039 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000048 000048 017 000048 022 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000060 000060 017 000060 022 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000070 000070 015 000070 020 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000031 000031 009 000031 012 RNF7031 I 00 045 The name or indicator IDFN is not referenced.
+ERROR      0 001 1 000026 000026 015 000026 018 RNF7031 I 00 045 The name or indicator DATA is not referenced.
+ERROR      0 001 1 000048 000048 017 000048 022 RNF7030 S 30 044 The name or indicator ENDPGM is not defined.
+ERROR      0 001 1 000048 000048 011 000048 014 RNF7030 S 30 042 The name or indicator GOTO is not defined.
+ERROR      0 001 1 000022 000022 017 000022 019 RNF7031 I 00 044 The name or indicator IDF is not referenced.
+ERROR      0 001 1 000036 000036 011 000036 014 RNF7030 S 30 042 The name or indicator PARM is not defined.
+ERROR      0 001 1 000035 000035 011 000035 015 RNF7030 S 30 043 The name or indicator PLIST is not defined.
+ERROR      0 001 1 000015 000015 001 000015 000 RNF7066 I 00 054 Record-Format QASUTXTSRC not used for input or output.
+ERROR      0 001 1 000015 000015 014 000015 020 RNF7031 I 00 047 The name or indicator SRCDAT is not referenced.
+ERROR      0 001 1 000015 000015 014 000015 020 RNF7031 I 00 047 The name or indicator SRCSEQ is not referenced.
+ERROR      0 001 1 000070 000070 011 000070 013 RNF7030 S 30 041 The name or indicator TAG is not defined.
+ERROR      0 001 1 000046 000046 014 000046 018 RNF7503 S 30 051 Expression contains an operand that is not defined.
+ERROR      0 001 1 000051 000051 015 000051 019 RNF7503 S 30 051 Expression contains an operand that is not defined.
+ERROR      0 001 1 000015 000015 001 000015 000 RNF7086 I 00 097 RPG handles blocking for file QTXTSRC. INFDS is updated only when blocks of data are transferred.
+ERROR      0 001 1 000046 000046 001 000046 002 RNF7030 S 30 043 The name or indicator *IN50 is not defined.
 ERROR      0 001 0 000000 000000 000 000000 000 RNS9308 T 50 057 Compilation stopped. Severity 30 errors found in program.
-FILEEND    0 001 000068
+FILEEND    0 001 000071

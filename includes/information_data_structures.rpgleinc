@@ -1,97 +1,97 @@
 **FREE
 
 Dcl-Ds infds qualified;
-   FileOpen ind pos(9); // File Open Indicator?
-   FileEOF ind pos(10); // File at End of File?
-   ListingLine char(8) pos(30);
-   // --SpecialStatus zoned(5) pos(38);
-   File char(10) pos(83);
-   fileType int(5) pos(147);
-   Lib char(10) pos(93);
-   RcdLen int(5) pos(125);
-   keyLen int(5) pos(127); // Max key len
-   Mbr char(10) pos(129);
-   RcdsReadSinceOpen int(10) pos(156); // number of records retrieved since open
-   Ccsid int(5) pos(218);
-   RRNlastRead int(10) pos(247); // relative record number of last record processed
-   Rcdfmt char(10) pos(261);
-   SflRcdNbr int(5) pos(378);
-   RRN int(10) pos(397);
-   // DSPF BITs
-   funcKey char(1) pos(369); // DS@AID for nice "funckey = PageDown" type syntax
-   RowColumn int(5) pos(370); // DS@POS - cursor row & column
-   firstRrnOnScreen int(5) pos(378); // DS@TOP SFL RRN Top of scrn
-   totalSflRows int(5) pos(380); // DS@TOT records in subfile
-   // PRTF BITs
-   printPageSize int(5) pos(152); // PR@SIZ page size
-   printOverflow int(5) pos(188); // PR@FLW printer file overflow
-   printCurrentLine int(5) pos(367); // PR@CLN current line number
-   // *PRTF Stuff:
-   PageSize int(5) pos(152); // PR@SIZ page size
-   Overflow int(5) pos(188); // PR@FLW printer file overflow
-   CurrentLine int(5) pos(367); // PR@CLN current line number
-   CurrentPage int(10) pos(369);
-   // Error MSGID -- available after POST
-   MsgID char(7) pos(46);
-   ODPtype char(2) pos(81); // ODP Type
-   splf char(10) pos(103);
-   splfLib char(10) pos(113);
-   splfNumber int(5) pos(123);
-   // *DSPF Stuff:
-   SflRRN int(5) pos(376);
-   SflMinRRN int(5) pos(378);
-   SflNumRcds int(5) pos(380);
-   ActualCursor char(2) pos(382);
-   NumberOfRows int(5) pos(282);
-   NumberOfCols int(5) pos(284);
-   nbrOfRows int(5) pos(152);
-   nbrOfCol int(5) pos(154);
-   nbrRcds int(10) pos(156);
-   accessType char(2) pos(160);
-   DupKey char(1) pos(162);
-   srcFile char(1) pos(163);
-   VolumeLavelOffset int(5) pos(184);
-   MaxRcdsInBlock int(5) pos(186);
-   BlockIncrement int(5) pos(190);
-   deviceClass char(1) pos(271);
-   deviceType char(6) pos(272);
-   Requester char(1) pos(278);
-   AcquireStatus char(1) pos(279);
-   InviteStatus char(1) pos(280);
-   DataAvailable char(1) pos(281);
-   AllowBlink char(1) pos(286);
-   OnlineOffline char(1) pos(287);
-   DisplayLocation char(1) pos(288);
-   DisplayType char(1) pos(289);
-   KeyboardType char(1) pos(290);
-   ControllerInfo char(1) pos(342);
-   ColorCapable char(1) pos(343);
-   MiscFlags1 char(1) pos(196);
-   OepCount int(5) pos(207);
-   NumBasedMbrs int(5) pos(211);
-   MiscFlags2 char(1) pos(213);
-   OpenID char(2) pos(214);
-   RcdFmtLen int(5) pos(216);
-   MiscFlags3 char(1) pos(220);
-   NUM_DEVS int(5) pos(227);
-   writeCount int(10) pos(243);
-   readCount int(10) pos(247);
-   writeReadCount int(10) pos(251);
-   otherIOCount int(10) pos(255);
-   currentOperations char(1) pos(260);
-   DevClass char(2) pos(271);
-   PgmDevName char(10) pos(273);
-   IOrcdLen int(10) pos(283);
-   PgmDevice char(10) pos(241);
-   DeviceDesc char(10) pos(251);
-   user char(10) pos(261);
-   // Disk :
-   NbrLockedRcds int(5) pos(377);
-   FilePosBits char(1) pos(385);
-   RcdDeletedBits char(1) pos(384);
-   Numkeys int(5) pos(387);
-   Keylength int(5) pos(393);
-   MemberNumber int(5) pos(395);
+  FileOpen ind pos(9); // File Open Indicator?
+  FileEOF ind pos(10); // File at End of File?
+  ListingLine char(8) pos(30);
+  // --SpecialStatus zoned(5) pos(38);
+  File char(10) pos(83);
+  fileType int(5) pos(147);
+  Lib char(10) pos(93);
+  RcdLen int(5) pos(125);
+  keyLen int(5) pos(127); // Max key len
+  Mbr char(10) pos(129);
+  RcdsReadSinceOpen int(10) pos(156); // number of records retrieved since open
+  Ccsid int(5) pos(218);
+  RRNlastRead int(10) pos(247); // relative record number of last record processed
+  Rcdfmt char(10) pos(261);
+  SflRcdNbr int(5) pos(378);
+  RRN int(10) pos(397);
+  // DSPF BITs
+  funcKey char(1) pos(369); // DS@AID for nice "funckey = PageDown" type syntax
+  RowColumn int(5) pos(370); // DS@POS - cursor row & column
+  firstRrnOnScreen int(5) pos(378); // DS@TOP SFL RRN Top of scrn
+  totalSflRows int(5) pos(380); // DS@TOT records in subfile
+  // PRTF BITs
+  printPageSize int(5) pos(152); // PR@SIZ page size
+  printOverflow int(5) pos(188); // PR@FLW printer file overflow
+  printCurrentLine int(5) pos(367); // PR@CLN current line number
+  // *PRTF Stuff:
+  PageSize int(5) pos(152); // PR@SIZ page size
+  Overflow int(5) pos(188); // PR@FLW printer file overflow
+  CurrentLine int(5) pos(367); // PR@CLN current line number
+  CurrentPage int(10) pos(369);
+  // Error MSGID -- available after POST
+  MsgID char(7) pos(46);
+  ODPtype char(2) pos(81); // ODP Type
+  splf char(10) pos(103);
+  splfLib char(10) pos(113);
+  splfNumber int(5) pos(123);
+  // *DSPF Stuff:
+  SflRRN int(5) pos(376);
+  SflMinRRN int(5) pos(378);
+  SflNumRcds int(5) pos(380);
+  ActualCursor char(2) pos(382);
+  NumberOfRows int(5) pos(282);
+  NumberOfCols int(5) pos(284);
+  nbrOfRows int(5) pos(152);
+  nbrOfCol int(5) pos(154);
+  nbrRcds int(10) pos(156);
+  accessType char(2) pos(160);
+  DupKey char(1) pos(162);
+  srcFile char(1) pos(163);
+  VolumeLavelOffset int(5) pos(184);
+  MaxRcdsInBlock int(5) pos(186);
+  BlockIncrement int(5) pos(190);
+  deviceClass char(1) pos(271);
+  deviceType char(6) pos(272);
+  Requester char(1) pos(278);
+  AcquireStatus char(1) pos(279);
+  InviteStatus char(1) pos(280);
+  DataAvailable char(1) pos(281);
+  AllowBlink char(1) pos(286);
+  OnlineOffline char(1) pos(287);
+  DisplayLocation char(1) pos(288);
+  DisplayType char(1) pos(289);
+  KeyboardType char(1) pos(290);
+  ControllerInfo char(1) pos(342);
+  ColorCapable char(1) pos(343);
+  MiscFlags1 char(1) pos(196);
+  OepCount int(5) pos(207);
+  NumBasedMbrs int(5) pos(211);
+  MiscFlags2 char(1) pos(213);
+  OpenID char(2) pos(214);
+  RcdFmtLen int(5) pos(216);
+  MiscFlags3 char(1) pos(220);
+  NUM_DEVS int(5) pos(227);
+  writeCount int(10) pos(243);
+  readCount int(10) pos(247);
+  writeReadCount int(10) pos(251);
+  otherIOCount int(10) pos(255);
+  currentOperations char(1) pos(260);
+  DevClass char(2) pos(271);
+  PgmDevName char(10) pos(273);
+  IOrcdLen int(10) pos(283);
+  PgmDevice char(10) pos(241);
+  DeviceDesc char(10) pos(251);
+  user char(10) pos(261);
+  // Disk :
+  NbrLockedRcds int(5) pos(377);
+  FilePosBits char(1) pos(385);
+  RcdDeletedBits char(1) pos(384);
+  Numkeys int(5) pos(387);
+  Keylength int(5) pos(393);
+  MemberNumber int(5) pos(395);
 end-ds;
 
 Dcl-Ds infds_DB likeds(infds);

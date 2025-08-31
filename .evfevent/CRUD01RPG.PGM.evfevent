@@ -1,8 +1,0 @@
-TIMESTAMP  0 20250507114836
-PROCESSOR  0 999 1
-FILEID     0 999 000000 024 QTEMP/QSQLPRE(CRUD01RPG) 20250507114836 0
-FILEID     0 001 000000 111 /home/nlitten/builds/nick.litten.public/sample_subfile/CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle 20250411093208 0
-ERROR      0 001 1 000010 000010 010 000010 046 RNF0272 S 30 058 The /COPY directive has a syntax error; directive ignored.
-ERROR      0 001 0 000000 000000 000 000000 000 RNS9308 T 50 057 Compilation stopped. Severity 30 errors found in program.
-FILEEND    0 001 001002
-FILEEND    0 999 001002

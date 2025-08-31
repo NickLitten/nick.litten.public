@@ -1,8 +1,8 @@
 {
   "files.trimTrailingWhitespace": true,
-  "indent": 3,
+  "indent": 2,
   "BlankStructNamesCheck": false,
-  "QualifiedCheck": false,
+  "QualifiedCheck": true,
   "PrototypeCheck": true,
   "ForceOptionalParens": true,
   "NoOCCURS": true,

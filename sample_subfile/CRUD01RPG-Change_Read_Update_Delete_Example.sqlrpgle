@@ -7,7 +7,7 @@ ctl-opt main(mainline) copyright('| CRUD01RPG 2025.04.11');
 
 dcl-f CRUD01PNL workstn sfile(SFLTASK:taskrrn) usropn infds(infds);
 
-/include 'information_data_structures.rpgleinc
+/include 'information_data_structures.rpgleinc'
 
 // Validation indicators
 Dcl-S ptrDisplayIndicators Pointer Inz(%Addr(*In));
