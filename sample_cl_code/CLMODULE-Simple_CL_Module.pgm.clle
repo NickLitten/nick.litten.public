@@ -13,7 +13,7 @@
 
 PGM &MSG
 
-  INCLUDE SRCSTMF('INCLUDE.CLLEINC') 
+  INCLUDE SRCSTMF('header.clleinc') 
 
   CHGVAR VAR(&MSG) VALUE('ILE says -' *BCAT &MSG)
   

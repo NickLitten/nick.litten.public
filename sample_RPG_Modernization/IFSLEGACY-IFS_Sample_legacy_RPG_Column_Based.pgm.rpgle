@@ -6,9 +6,9 @@
       *
      H DFTACTGRP(*NO) ACTGRP(*NEW) BNDDIR('QC2LE') BNDDIR('IFSTEXT')
 
-     D/include '/legacy/QRPGLESRC,IFSIO_H.rpgle'
-     D/include '/legacy/QRPGLESRC,ERRNO_H.rpgle'
-     D/include '/legacy/QRPGLESRC,IFSTEXT_H.rpgle'
+     D/include 'legacy/ifsio_h.rpgleinc'
+     D/include 'legacy/errno_h.rpgleinc'
+     D/include 'legacy/ifstext_h.rpgleinc'
 
      D Cmd             PR                  ExtPgm('QCMDEXC')
      D   command                    200A   const
@@ -111,6 +111,5 @@
      C*------------------------
      CSR                 endsr
 
-
       /DEFINE ERRNO_LOAD_PROCEDURE
-      /include '/legacy/ERRNO_H.rpgle'
+      /include 'legacy/errno_h.rpgleinc'

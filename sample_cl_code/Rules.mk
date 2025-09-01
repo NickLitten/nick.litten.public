@@ -11,3 +11,4 @@ IASPLOOP.PGM: IASPLOOP-DOU_Question_and_Answer_CL_Example.pgm.clle
 CLMODULE.MODULE: CLMODULE-Simple_CL_Module.clle
 
 CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.pgm.clle
+CLMODULE.PGM: CLMODULE-Simple_CL_Module.pgm.clle

@@ -12,7 +12,7 @@
 
 PGM PARM(&MSG)
 
-  INCLUDE SRCSTMF('include.clleinc') 
+  INCLUDE SRCSTMF('header.clleinc') 
 
   SNDPGMMSG MSG(&MSG) MSGTYPE(*COMP)
 
