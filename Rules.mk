@@ -1,1 +1,1 @@
-SUBDIRS = includes\modern sample_cl_code sample_rpg_code sample_debug sample_RPG_Modernization sample_services sample_subfile templates binders
+SUBDIRS = templates binders sample_cl_code sample_rpg_code sample_debug sample_RPG_Modernization sample_services sample_subfile

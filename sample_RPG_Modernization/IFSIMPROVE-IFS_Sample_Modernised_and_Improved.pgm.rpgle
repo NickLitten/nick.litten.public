@@ -5,9 +5,9 @@
 
 ctl-opt DFTACTGRP(*NO) ACTGRP(*NEW) BNDDIR('QC2LE') BNDDIR('IFSTEXT');
 
- /include 'modern/ifsio_h.rpgleinc'
- /include 'modern/errno_h.rpgleinc'
- /include 'modern/ifstext_h.rpgleinc'
+/include 'modern/ifsio_h.rpgleinc'
+/include 'modern/errno_h.rpgleinc'
+/include 'modern/ifstext_h.rpgleinc'
 
 dcl-pr Cmd ExtPgm('QCMDEXC');
     command char(200) const;

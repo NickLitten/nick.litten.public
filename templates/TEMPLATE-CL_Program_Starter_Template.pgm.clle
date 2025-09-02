@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------ */
-/* TEMPLATE - automate the HOTFIX distribution and installation */
+/* TEMPLATE - Code Snippet IBMi Control Language                */
 /* ------------------------------------------------------------ */
 /* Program.......... TEMPLATE                                   */
 /* Author........... nick@nicklitten.com                        */
@@ -10,12 +10,8 @@
 /* User Profile..... *USER                                      */
 /* Object Owner..... QPGMR                                      */
 /* Compiler Options. This is a CLLE *MODULE bound into *PGM     */
-/* Module: CRTCLMOD MODULE('library'/TEMPLATE)                  */
-/*         SRCFILE('library'/QCLLESRC)                          */
-/*         SRCMBR(TEMPLATE)                                     */
-/*         OPTIMIZE(*NONE)                                      */
-/*         DBGVIEW(*SOURCE)                                     */
-/* ILEPGM: CRTPGM PGM('library'/TEMPLATE) MODULE(TEMPLATE*)     */
+/* CRTCLMOD: CRTCLMOD MODULE('library'/TEMPLATE)                */
+/* CRTPGM:   CRTPGM PGM('library'/TEMPLATE) MODULE(TEMPLATE*)   */
 /* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
@@ -24,7 +20,6 @@
 /* ------------------------------------------------------------ */
 PGM
 
-RPG Code Snippet IBMi Control Language
 DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
 DCL VAR(&PGMNAME) TYPE(*CHAR) LEN(10)
 DCL VAR(&CRASHED) TYPE(*LGL) VALUE('0')
