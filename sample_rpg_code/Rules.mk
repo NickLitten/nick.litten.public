@@ -9,3 +9,5 @@
 HELLOINC.PGM: HELLOINC-Helloworld_using_copybook.pgm.rpgle
 HELLOWORLD.PGM: HELLOWORLD-Simple_HelloWorld.pgm.rpgle
 HELLOADV.PGM: HELLOADV-Advanced_HelloWorld.pgm.rpgle
+
+SQLREAD.PGM: SQLREAD-Sample_SQL_RPG_Dynamic_File_read.pgm.sqlrpgle
