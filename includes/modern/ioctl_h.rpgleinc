@@ -1,29 +1,29 @@
-          // -
-          //  Copyright (c) 2004 Scott C. Klement
-          //  All rights reserved.
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
 
-          //  Redistribution and use in source and binary forms, with or without
-          //  modification, are permitted provided that the following conditions
-          //  are met:
-          //  1. Redistributions of source code must retain the above copyright
-          //     notice, this list of conditions and the following disclaimer.
-          //  2. Redistributions in binary form must reproduce the above copyright
-          //     notice, this list of conditions and the following disclaimer in the
-          //     documentation and/or other materials provided with the distribution.
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
 
-          //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-          //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-          //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
-          //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-          //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
-          //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-          //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-          //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
-          //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
-          //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-          //  SUCH DAMAGE.
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
 
-          // /
+
         /if defined(IOCTL_H)
         /eof
         /endif
@@ -154,15 +154,9 @@
          dcl-c RTF_MODIFIED 32;
           //                                       do not rebind to another
           //                                       interface on activate/deactiv
-
-
-
-      
          dcl-c RTF_NOREBIND_IFC_ACTV 512;
           //                                       do not rebind to another
           //                                       interface if interface fails
-
-
          dcl-c RTF_NOREBIND_IFC_FAIL 256;
           //                                       route is usable
          dcl-c RTF_UP 1;
@@ -203,7 +197,6 @@
 
           // *****************************************************************
           //  Interface Entry Request Structure (ifreq)
-
           //  #define ifr_addr        ifr_ifru.ifru_addr
           //  #define ifr_mask        ifr_ifru.ifru_mask
           //  #define ifr_broadaddr   ifr_ifru.ifru_broadaddr
@@ -212,7 +205,6 @@
           //  #define ifr_rbufsize    ifr_ifru.ifru_rbufsize
           //  #define ifr_linename    ifr_ifru.ifru_linename
           //  #define ifr_TOS         ifr_ifru.ifru_TOS
-
           //  struct ifreq {                        /* interface entry request */
           //    char ifr_name[IFNAMSIZ];            /* interface name         */
           //    union {
@@ -227,36 +219,32 @@
           //    } ifr_ifru;
           //  };
           // *****************************************************************
-
-         dcl-s p_ifreq pointer;
-         dcl-ds ifreq INZ based(p_ifreq) align;
-         
-        /if defined(USE_QUALIFIED)
-         *n  qualified;
-        /endif
-         ifr_name char(16);
-        /if defined(USE_QUALIFIED)
-         ifr_addr  likeds(sockaddr_in);
-         ifr_mask  likeds(sockaddr_in) overlay(ifr_addr);
-         ifr_broadadd  likeds(sockaddr_in) overlay(ifr_addr);
-        /else
-         ifr_addr  like(sockaddr_in);
-         ifr_mask  like(sockaddr_in) overlay(ifr_addr);
-         ifr_broadadd  like(sockaddr_in) overlay(ifr_addr);
-        /endif
-         ifr_flags int(5) overlay(ifr_addr);
-         ifr_mtu int(10) overlay(ifr_addr);
-         ifr_rbufsize int(10) overlay(ifr_addr);
-         ifr_linename char(10) overlay(ifr_addr);
-         ifr_TOS uns(3) overlay(ifr_addr);
-     end-ds ifreq;
+          dcl-s p_ifreq pointer;
+          dcl-ds ifreq INZ based(p_ifreq) align;
+            /if defined(USE_QUALIFIED)
+            *n  qualified;
+            /endif
+            ifr_name char(16);
+            /if defined(USE_QUALIFIED)
+            ifr_addr  likeds(sockaddr_in);
+            ifr_mask  likeds(sockaddr_in) overlay(ifr_addr);
+            ifr_broadadd  likeds(sockaddr_in) overlay(ifr_addr);
+            /else
+            ifr_addr  like(sockaddr_in);
+            ifr_mask  like(sockaddr_in) overlay(ifr_addr);
+            ifr_broadadd  like(sockaddr_in) overlay(ifr_addr);
+            /endif
+            ifr_flags int(5) overlay(ifr_addr);
+            ifr_mtu int(10) overlay(ifr_addr);
+            ifr_rbufsize int(10) overlay(ifr_addr);
+            ifr_linename char(10) overlay(ifr_addr);
+            ifr_TOS uns(3) overlay(ifr_addr);
+          end-ds ifreq;
 
           // *****************************************************************
           //  Interface Configuration List Structure (ifconf)
-
           //  #define ifc_buf         ifc_ifcu.ifcu_buf
           //  #define ifc_req         ifc_ifcu.ifcu_req
-
           //  struct ifconf {                 /* interface configuration list*/
           //    int ifc_len;                  /* size of user-supplied buffer*/
           //    int ifc_configured;           /* number of interfaces
@@ -271,16 +259,15 @@
           // *****************************************************************
          dcl-s p_ifconf pointer;
          dcl-ds ifconf INZ based(p_ifconf) align;
-         ifc_len int(10);
-         ifc_configuredifc_returned int(10);
-         ifc_buf pointer;
-         ifc_req pointer overlay(ifc_buf);
+          ifc_len int(10);
+          ifc_configuredifc_returned int(10);
+          ifc_buf pointer;
+          ifc_req pointer overlay(ifc_buf);
          end-ds ifconf;
 
 
           // *****************************************************************
           //  Route Entry Structure (rtentry)
-
           //  struct rtentry {                /* route entry                 */
           //    struct sockaddr rt_dst;       /* route destination
           //                                     net/subnet/host             */
@@ -293,35 +280,31 @@
           //                                     was learned                 */
           //    u_char  rt_TOS;               /* route type-of-service       */
           //    char    rt_if[IFNAMSIZ];      /* interface used for route    */
-
           //  };
           // **************************************************************
          dcl-s p_rtentry pointer;
          dcl-ds rtentry INZ based(p_rtentry) align;
-         
-        /if defined(USE_QUALIFIED)
-         rt_dst  qualified likeds(sockaddr_in);
-         rt_mask  likeds(sockaddr_in);
-         rt_gateway  likeds(sockaddr_in);
-        /else
-         rt_dst  like(sockaddr_in);
-         rt_mask  like(sockaddr_in);
-         rt_gateway  like(sockaddr_in);
-        /endif
-         rt_mtu int(10);
-         rt_flags uns(5);
-         rt_refcnt uns(5);
-         rt_protocol uns(3);
-         rt_TOS uns(3);
-         rt_if char(16);
-          end-ds rtentry;
+            /if defined(USE_QUALIFIED)
+            rt_dst  qualified likeds(sockaddr_in);
+            rt_mask  likeds(sockaddr_in);
+            rt_gateway  likeds(sockaddr_in);
+            /else
+            rt_dst  like(sockaddr_in);
+            rt_mask  like(sockaddr_in);
+            rt_gateway  like(sockaddr_in);
+            /endif
+            rt_mtu int(10);
+            rt_flags uns(5);
+            rt_refcnt uns(5);
+            rt_protocol uns(3);
+            rt_TOS uns(3);
+            rt_if char(16);
+         end-ds rtentry;
 
           // **************************************************************
           //  Route Configuration List Structure (rtconf)
-
           //  #define rtc_buf    rtc_rtcu.rtcu_buf
           //  #define rtc_req    rtc_rtcu.rtcu_req
-
           //  struct rtconf {                /* route configuration list    */
           //    int rtc_len;                 /* size of user-supplied buffer*/
           //    int rtc_configured;          /* number of interfaces
@@ -336,22 +319,20 @@
           // **************************************************************
          dcl-s p_rtconf pointer;
          dcl-ds rtconf INZ based(p_rtconf) align;
-         rtc_len int(10);
-         rtc_configuredrtc_returned int(10);
-         rtc_buf pointer;
-         rtc_req pointer overlay(rtc_buf);
+          rtc_len int(10);
+          rtc_configuredrtc_returned int(10);
+          rtc_buf pointer;
+          rtc_req pointer overlay(rtc_buf);
          end-ds rtconf;
 
 
           //  --------------------------------------------------------------------
           //    ioctl()--Perform I/O Control Request
-
           //    int ioctl(int descriptor, unsigned long request, ...)
-
           //   returns -1 upon error, 0 when successful
           //  --------------------------------------------------------------------
          dcl-pr ioctl int(10) ExtProc('ioctl');
-         descriptor int(10) value;
-         request uns(10) value;
-         arg pointer value options(*nopass);
+          descriptor int(10) value;
+          request uns(10) value;
+          arg pointer value options(*nopass);
          end-pr ioctl;

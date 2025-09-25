@@ -1,34 +1,32 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
         /if defined(QP0LSTDI_H)
         /eof
         /endif
         /define QP0LSTDI_H
-
-          // -
-          //  Copyright (c) 2004-2007 Scott C. Klement
-          //  All rights reserved.
-
-          //  Redistribution and use in source and binary forms, with or without
-          //  modification, are permitted provided that the following conditions
-          //  are met:
-          //  1. Redistributions of source code must retain the above copyright
-          //     notice, this list of conditions and the following disclaimer.
-          //  2. Redistributions in binary form must reproduce the above copyright
-          //     notice, this list of conditions and the following disclaimer in the
-          //     documentation and/or other materials provided with the distribution.
-
-          //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-          //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-          //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
-          //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-          //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
-          //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-          //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-          //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
-          //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
-          //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-          //  SUCH DAMAGE.
-
-          // /
 
         /include QLG_H
 
@@ -38,7 +36,6 @@
 
           // *****************************************************************
           //   Qp0lProcessSubtree() API Object types list                     */
-
           //    typedef struct                        /*                      */
           //    {                                     /*                      */
           //      uint          Number_Of_Objtypes;   /* Number of object     */
@@ -48,13 +45,12 @@
           //    } Qp0l_Objtypes_List_t;               /*                      */
           // *****************************************************************
          dcl-ds Qp0l_Objtypes_List_t INZ based(StructureTemplate) qualified;
-         Number_Of_ObjtypesObjtypes uns(10) dim(128);
+          Number_Of_ObjtypesObjtypes uns(10) dim(128);
          end-ds Qp0l_Objtypes_List_t;
 
 
           // *****************************************************************
           //   Qp0lProcessSubtree() API IN_EXclusion list type
-
           //    typedef struct
           //    {
           //      uint       IN_EXclusion_t;          /* Inclusion list or  */
@@ -68,13 +64,11 @@
           //                                          /*                    */
           //                                          /*Variable length entry*/
           //     /*Qlg_Path_Name_T    *Path_Name_Ptrs[];*/
-
           //    } Qp0l_IN_EXclusion_List_t;
           // *****************************************************************
          dcl-ds Qp0l_IN_EXclusion_List_t INZ based(StructureTemplate) align
            qualified;
-         IN_EXclusion_tNumber_Of_PointersReservedPath_Name_Ptrs uns(10) dim(128
-           );
+          IN_EXclusion_tNumber_Of_PointersReservedPath_Name_Ptrs uns(10) dim(128);
          end-ds Qp0l_IN_EXclusion_List_t;
 
 
@@ -89,17 +83,16 @@
           //      char       Mltthdacn[1];            /* Multithread action   */
           //      char       Reserved[7];             /* must be zero         */
           //      Qp0l_ProcSubtree_t  Procedure;      /* Procedure pointer    */
-
           //    } Qp0l_User_Function_t;
           // *****************************************************************
          dcl-ds Qp0l_User_Function_t INZ based(StructureTemplate) align
            qualified;
-         Function_Type uns(10);
-         Library char(10);
-         Program char(10);
-         MltThdAcn char(1);
-         Reserved char(7);
-         Procedure pointer procptr;
+          Function_Type uns(10);
+          Library char(10);
+          Program char(10);
+          MltThdAcn char(1);
+          Reserved char(7);
+          Procedure pointer procptr;
          end-ds Qp0l_User_Function_t;
 
 
@@ -129,7 +122,7 @@
           //    } Qp0l_Checkout_t;                    /*                      @A5A*/
           // *****************************************************************
          dcl-ds Qp0l_Checkout_t INZ based(StructureTemplate) qualified align;
-         Checked_Out_FlagUser_NameReservedChecked_Out_Time uns(3);
+          Checked_Out_FlagUser_NameReservedChecked_Out_Time uns(3);
          end-ds Qp0l_Checkout_t;
 
 
@@ -155,9 +148,17 @@
           // *****************************************************************
          dcl-ds Qp0l_Authority_General_t INZ based(StructureTemplate) qualified
            align;
-         Object_ownerPrimary_groupAuth_list_nameReserved1UserArray_Offs...
+          Object_owner char(10);
+          Primary_group char(10);
+          Auth_list_name char(10);
+          Reserved1 char(10);
+          UserArray_Offset char(10);
+          Number_of_users char(10);
+          UserEntry_size char(10);
+          Reserved2 char(10);
+          Array_of_Users_Base char(10);
          end-ds Qp0l_Authority_General_t;
-           etNumber_of_usersUserEntry_sizeReserved2Array_of_Users_Basechar(10);
+           
 
 
           // *****************************************************************
@@ -181,19 +182,18 @@
           //    } Qp0l_QSYS_Info_t;                   /*                      @A6A*/
           // *****************************************************************
          dcl-ds Qp0l_QSYS_Info_t INZ based(StructureTemplate) qualified align;
-         Bytes_ReturnedBytes_AvailableCCSID_OutLib_Name uns(10);
-         Lib_Type char(20);
-         Obj_Name char(28);
-         Obj_Type char(20);
-         Mbr_Name char(28);
-         Mbr_Type char(20);
-         Asp_Name char(28);
+          Bytes_ReturnedBytes_AvailableCCSID_OutLib_Name uns(10);
+          Lib_Type char(20);
+          Obj_Name char(28);
+          Obj_Type char(20);
+          Mbr_Name char(28);
+          Mbr_Type char(20);
+          Asp_Name char(28);
          end-ds Qp0l_QSYS_Info_t;
 
 
           // *****************************************************************
           //   Qp0lGetAttr() API format for information returned for users
-
           //    typedef struct                        /*                      @A5A*/
           //    {                                     /*                      @A5A*/
           //      char          User_name[10];        /* User name            @A5A*/
@@ -211,7 +211,6 @@
           //      char          EXECUTE_DataRights[1];/* Execute              @A5A*/
           //      char          EXCLUDE_DataRights[1];/* Exclude              @A5A*/
           //      char          Reserved2[7];         /* (must be zero)       @A5A*/
-
           //    } Qp0l_Authority_Users_t;             /*                      @A5A*/
           // *****************************************************************
          dcl-ds Qp0l_Authority_Users_t INZ based(StructureTemplate) qualified

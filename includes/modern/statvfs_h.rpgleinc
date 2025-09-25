@@ -1,29 +1,28 @@
-          // -
-          //  Copyright (c) 2004 Scott C. Klement
-          //  All rights reserved.
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
 
-          //  Redistribution and use in source and binary forms, with or without
-          //  modification, are permitted provided that the following conditions
-          //  are met:
-          //  1. Redistributions of source code must retain the above copyright
-          //     notice, this list of conditions and the following disclaimer.
-          //  2. Redistributions in binary form must reproduce the above copyright
-          //     notice, this list of conditions and the following disclaimer in the
-          //     documentation and/or other materials provided with the distribution.
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
 
-          //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-          //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-          //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
-          //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-          //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
-          //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-          //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-          //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
-          //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
-          //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-          //  SUCH DAMAGE.
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
 
-          // /
         /if defined(STATVFS_H_DEFINED)
         /eof
         /endif
@@ -32,7 +31,6 @@
 
           // ---------------------------------------------------------------
           //  ds_statvfs - data structure to receive file system info
-
           //    f_bsize   = file system block size (in bytes)
           //    f_frsize  = fundamental block size in bytes.
           //                 if this is zero, f_blocks, f_bfree and f_bavail
@@ -57,29 +55,28 @@
           //    f_basetype = null-terminated string containing the file
           //                   system type name.  For example, this might
           //                   be "root" or "Network File System (NFS)"
-
           //   Since f_basetype is null-terminated, you should read it
           //   in ILE RPG with:
           //        myString = %str(%addr(ds_statvfs.f_basetype))
           // ---------------------------------------------------------------
          dcl-ds ds_statvfs INZ qualified;
-         f_bsize uns(10);
-         f_frsize uns(10);
-         f_blocks uns(20);
-         f_bfree uns(20);
-         f_bavail uns(20);
-         f_files uns(10);
-         f_ffree uns(10);
-         f_favail uns(10);
-         f_fsid uns(10);
-         f_flag uns(10);
-         f_namemax uns(10);
-         f_pathmax uns(10);
-         f_objlinkmax int(10);
-         f_dirlinkmax int(10);
-         f_reserved1 char(4);
-         f_fsid64 uns(20);
-         f_basetype char(80);
+          f_bsize uns(10);
+          f_frsize uns(10);
+          f_blocks uns(20);
+          f_bfree uns(20);
+          f_bavail uns(20);
+          f_files uns(10);
+          f_ffree uns(10);
+          f_favail uns(10);
+          f_fsid uns(10);
+          f_flag uns(10);
+          f_namemax uns(10);
+          f_pathmax uns(10);
+          f_objlinkmax int(10);
+          f_dirlinkmax int(10);
+          f_reserved1 char(4);
+          f_fsid64 uns(20);
+          f_basetype char(80);
          end-ds ds_statvfs;
 
           // ---------------------------------------------------------------
@@ -96,13 +93,10 @@
          dcl-c ST_NO_EXPORTS CONST(128);
          dcl-c ST_SYNCHRONOUS CONST(256);
 
-
           // ---------------------------------------------------------------
           //  statvfs() -- Get file system status
-
           //     path = (input) pathname of a link ("file") in the IFS.
           //      buf = (output) data structure containing file system info
-
           //  Returns 0 if successful, -1 upon error.
           //  (error information is returned via the "errno" variable)
           // ---------------------------------------------------------------

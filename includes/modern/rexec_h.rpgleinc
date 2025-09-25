@@ -23,7 +23,7 @@
           //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
           //  SUCH DAMAGE.
 
-          // /
+
         /if defined(REXEC_H_DEFINED)
         /eof
         /endif
@@ -31,18 +31,16 @@
 
           // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           //  rexec() - Issue a command on a remote host
-
           //  int rexec(char **host, int port, char *user, char *password,
           //              char *command, int *errorDescriptor);
-
           //  Returns:  socket to remote host
           //         or -1 if unsuccessful
           // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
          dcl-pr rexec int(10) extproc('rexec');
-         host pointer value;
-         port int(10) value;
-         user pointer value options(*string);
-         password pointer value options(*string);
-         command pointer value options(*string);
-         errorDescrip int(10) options(*omit);
+          host pointer value;
+          port int(10) value;
+          user pointer value options(*string);
+          password pointer value options(*string);
+          command pointer value options(*string);
+          errorDescrip int(10) options(*omit);
          end-pr rexec;

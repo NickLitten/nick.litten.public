@@ -17,10 +17,12 @@
 /* Author     Date       Description                            */
 /* NickLitten 2017.10.17 Created                                */
 /* NickLitten 2025.04.11 Refreshed and imported to GITHUB       */
+/* NickLitten 2025.09.21 Check for QTEMP/IDONTEXIST             */
 /* ------------------------------------------------------------ */
 PGM
 
 DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
 DCL VAR(&PGMNAME) TYPE(*CHAR) LEN(10)
 DCL VAR(&CRASHED) TYPE(*LGL) VALUE('0')
 DCL VAR(&MSGID) TYPE(*CHAR) LEN(7)
@@ -31,17 +33,18 @@ DCL VAR(&MSGKEY) TYPE(*CHAR) LEN(4)
 DCL VAR(&RTNTYPE) TYPE(*CHAR) LEN(2)
 DCL VAR(&SENDER) TYPE(*CHAR) LEN(80)
 
-/* NOTE: the COPYRIGHT statement will display when you do a DSPPGM but we */
-/* can go an extra step and include it with a variable so that it */
-/* displays in DUMP outputs (not that my code ever dumps of course ;) */
-COPYRIGHT TEXT('TEMPLATE Ver:002 Simple CL template.  Add any comments you like here')
+/* NOTE: the COPYRIGHT statement will display when you do a DSPPGM */
+COPYRIGHT TEXT('TEMPLATE Ver:003 Simple CL template.  Add any comments you like here')
 
+/* we can go an extra step and include more text with a variable so that it */
+/* displays in DUMP outputs (not that my code ever dumps of course ;) */
 DCL VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
  VALUE('YOUR COMPANY © 2025 | IBM i V7.5 https://www.nicklitten.com')
-
 DCL VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT) /* &VARIABLES are not +
  shown in DUMPS unless theyre used but we can *fool* IBM i into using it - how +
  about something like a little pointer? */
+
+
 
 MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH)) /* Global monitor for any error messages */
 
@@ -76,7 +79,7 @@ SUBR SUBR(MAINLINE)
 /* This is where all your main code will go */
 
 /* if any error occurs the global MONMSG will pick it up and spit us into the error handling subroutine */ 
-CHKOBJ OBJ(QTEMP/SANTACLAUS) OBJTYPE(*PGM) /* Here is an example command that will deliberately crash, forcing a program ABEND so you can see the error message in use. Obviously you should replace this with the actual logic you are writing... */
+CHKOBJ OBJ(QTEMP/IDONTEXIST) OBJTYPE(*PGM) /* Here is an example command that will deliberately crash, forcing a program ABEND so you can see the error message in use. Obviously you should replace this with the actual logic you are writing... */
  
 /*  The RTNSUBR can be used (like LEAVESR in RPGLE) and will exit the subroutine immediately  */
 RTNSUBR

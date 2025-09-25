@@ -1,4 +1,4 @@
-     /*-                                                                            +
+      *                                                                            +
       * Copyright (c) 2004-2008 Scott C. Klement                                    +
       * All rights reserved.                                                        +
       *                                                                             +
@@ -26,11 +26,10 @@
       */                                                                            +
       * Data structures and related definitions for NLS-Enabled APIs.
       *                                                 SCK 5/5/2004
-      *
+      
       /if defined(QLG_H)
       /eof
       /endif
-
       /define QLG_H
 
       ********************************************************************
@@ -55,9 +54,6 @@
      D                               10I 0
      D   Reserved...
      D                               10A
-
-
-
       ********************************************************************
       * Structures for request using table (*TBL)
       *
@@ -90,8 +86,6 @@
      D                               10I 0
      D   Qual_Tbl_Name...
      D                                     likeds(Qlg_Qual_Tbl_Name_t)
-
-
       ********************************************************************
       * Structure for request using user-defined conversion map
       *
@@ -117,8 +111,6 @@
      D                               10I 0
      D   CvtMap...
      D                              256A
-
-
       ********************************************************************
       * Structure for NLS-enabled path name
       *
@@ -149,7 +141,7 @@
      D   Reserved2                   10A
      D   Path_Name                 1024A
      D   p_Path_Name                   *   overlay(Path_Name)
-
+ 
 
       ********************************************************************
       *  Constants for the Path_Type parameter to QLg_Path_Name_T
@@ -162,3 +154,4 @@
      D                 c                   2
      D QLG_PTR_DOUBLE...
      D                 c                   3
+ 
