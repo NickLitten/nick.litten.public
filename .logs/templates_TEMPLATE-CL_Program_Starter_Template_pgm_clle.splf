@@ -1,0 +1,6 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>  CHGCURLIB CURLIB(NLITTEN)
+>  ADDLIBLE LIB(NLITTEN) POSITION(*FIRST)
+Backing up 1 object(s)...
+>  CRTBNDCL PGM(NLITTEN/TEMPLATE) SRCFILE(QTEMP/QSOURCE) SRCMBR(TEMPLATE) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('CL Program Starter Template') TGTRLS() INCDIR('/home/NICKLITTEN/builds/nick.litten.public/includes')
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

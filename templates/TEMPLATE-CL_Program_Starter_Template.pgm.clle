@@ -15,9 +15,10 @@
 /* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
-/* NickLitten 2017.10.17 Created                                */
-/* NickLitten 2025.04.11 Refreshed and imported to GITHUB       */
-/* NickLitten 2025.09.21 Check for QTEMP/IDONTEXIST             */
+/* NickLitten 2017.10.17 V01 Created                            */
+/* NickLitten 2025.04.11 V02 Refreshed and imported to GITHUB   */
+/* NickLitten 2025.09.21 V03 Check for QTEMP/IDONTEXIST         */
+/* NickLitten 2025.09.28 V04 Minor Layout Tweaks                */
 /* ------------------------------------------------------------ */
 PGM
 
@@ -34,7 +35,7 @@ DCL VAR(&RTNTYPE) TYPE(*CHAR) LEN(2)
 DCL VAR(&SENDER) TYPE(*CHAR) LEN(80)
 
 /* NOTE: the COPYRIGHT statement will display when you do a DSPPGM */
-COPYRIGHT TEXT('TEMPLATE Ver:003 Simple CL template.  Add any comments you like here')
+COPYRIGHT TEXT('TEMPLATE Ver:004 Simple CL template.  Add any comments you like here')
 
 /* we can go an extra step and include more text with a variable so that it */
 /* displays in DUMP outputs (not that my code ever dumps of course ;) */
@@ -44,9 +45,12 @@ DCL VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT) /* &VARIABLES a
  shown in DUMPS unless theyre used but we can *fool* IBM i into using it - how +
  about something like a little pointer? */
 
-
-
 MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH)) /* Global monitor for any error messages */
+
+
+/* ---------------- */
+/* MAINLINE SECTION */
+/* ---------------- */
 
 CALLSUBR SUBR(INZSR) /* a little initialization subroutine to do pre-run gubbins */
 
@@ -56,11 +60,12 @@ CALLSUBR SUBR(MAINLINE)
 SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) +
  MSGDTA('Program' *BCAT &PGMNAME *TCAT 'completed normally') MSGTYPE(*COMP)
 
-END: RETURN
+RETURN
 
 CRASH: CALLSUBR SUBR(CRASH)
 
-/* ---------------------------------------------------------------------------------------------- */
+
+/* ------------------ */
 /* SUBROUTINE SECTION */
 /* ---------------------------------------------------------------------------------------------- */
 /* Initialization Routine - could contains anything but lets use it to get the pgm name */
