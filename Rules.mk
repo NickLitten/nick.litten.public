@@ -1,7 +1,1 @@
-SUBDIRS = templates binders
- sample_cl_code 
- sample_rpg_code 
- sample_debug 
- sample_RPG_Modernization
- sample_services 
- sample_subfile
+SUBDIRS = sample_cl_code sample_debug sample_rpg_code sample_RPG_Modernization sample_services sample_subfile tables templates binders

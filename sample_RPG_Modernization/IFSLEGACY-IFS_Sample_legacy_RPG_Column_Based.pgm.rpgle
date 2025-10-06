@@ -19,10 +19,10 @@
      D len             S             10I 0
      D msg             S             52A
 
-     c                   exsr      MakeFile
-     c                   exsr      EditFile
-     c                   exsr      ShowFile
-     c                   eval      *inlr = *on
+     C                   exsr      MakeFile
+     C                   exsr      EditFile
+     C                   exsr      ShowFile
+     C                   eval      *inlr = *on
 
 
      C**************************************************************
@@ -30,47 +30,47 @@
      C**************************************************************
      CSR   MakeFile      begsr
      C*------------------------
-     c                   eval      fd = open('/ifstest/ch5_file.txt':
-     c                                  O_TRUNC+O_CREAT+O_WRONLY:
-     c                                  S_IWUSR+S_IRUSR+S_IRGRP+S_IROTH)
-     c                   if        fd < 0
-     c                   callp     die('open(): ' + %str(strerror(errno)))
-     c                   endif
+     C                   eval      fd = open('/ifstest/ch5_file.txt':
+     C                                  O_TRUNC+O_CREAT+O_WRONLY:
+     C                                  S_IWUSR+S_IRUSR+S_IRGRP+S_IROTH)
+     C                   if        fd < 0
+     C                   callp     die('open(): ' + %str(strerror(errno)))
+     C                   endif
 
-     c                   eval      line = 'Dear Cousin,'
-     c                   eval      len = %len(%trimr(line))
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = 'Dear Cousin,'
+     C                   eval      len = %len(%trimr(line))
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = ' '
-     c                   eval      len = 0
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = ' '
+     C                   eval      len = 0
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = 'I love the way you make' +
-     c                               ' cheese fondue.'
-     c                   eval      len = %len(%trimr(line))
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = 'I love the way you make' +
+     C                               ' cheese fondue.'
+     C                   eval      len = %len(%trimr(line))
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = ' '
-     c                   eval      len = 0
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = ' '
+     C                   eval      len = 0
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = 'Thank you for being so cheesy!'
-     c                   eval      len = %len(%trimr(line))
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = 'Thank you for being so cheesy!'
+     C                   eval      len = %len(%trimr(line))
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = ' '
-     c                   eval      len = 0
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = ' '
+     C                   eval      len = 0
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = 'Sincerely,'
-     c                   eval      len = %len(%trimr(line))
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = 'Sincerely,'
+     C                   eval      len = %len(%trimr(line))
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   eval      line = '     Richard M. Nixon'
-     c                   eval      len = %len(%trimr(line))
-     c                   callp     writeline(fd: %addr(line): len)
+     C                   eval      line = '     Richard M. Nixon'
+     C                   eval      len = %len(%trimr(line))
+     C                   callp     writeline(fd: %addr(line): len)
 
-     c                   callp     close(fd)
+     C                   callp     close(fd)
      C*------------------------
      CSR                 endsr
 
@@ -81,8 +81,8 @@
      C**************************************************************
      CSR   EditFile      begsr
      C*------------------------
-     c                   callp     cmd('EDTF STMF(''/ifstest/' +
-     c                                           'ch5_file.txt'')': 200)
+     C                   callp     cmd('EDTF STMF(''/ifstest/' +
+     C                                           'ch5_file.txt'')': 200)
      C*------------------------
      CSR                 endsr
 
@@ -93,21 +93,21 @@
      C**************************************************************
      CSR   ShowFile      begsr
      C*------------------------
-     c                   eval      fd = open('/ifstest/ch5_file.txt':
-     c                                  O_RDONLY)
-     c                   if        fd < 0
-     c                   callp     die('open(): ' + %str(strerror(errno)))
-     c                   endif
+     C                   eval      fd = open('/ifstest/ch5_file.txt':
+     C                                  O_RDONLY)
+     C                   if        fd < 0
+     C                   callp     die('open(): ' + %str(strerror(errno)))
+     C                   endif
 
-     c                   dow       readline(fd: %addr(line): %size(line))>=0
-     c                   eval      Msg = line
-     c     Msg           dsply
-     c                   enddo
+     C                   dow       readline(fd: %addr(line): %size(line))>=0
+     C                   eval      Msg = line
+     C     Msg           dsply
+     C                   enddo
 
-     c                   callp     close(fd)
+     C                   callp     close(fd)
 
-     c                   eval      Msg = 'Press ENTER to continue'
-     c                   dsply                   Msg
+     C                   eval      Msg = 'Press ENTER to continue'
+     C                   dsply                   Msg
      C*------------------------
      CSR                 endsr
 

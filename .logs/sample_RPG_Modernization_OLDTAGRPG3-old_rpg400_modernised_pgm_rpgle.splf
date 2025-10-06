@@ -1,0 +1,238 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NLITTEN.
+CPC2196: Library NLITTEN added to library list.
+
+>> executing command: CRTBNDRPG srcstmf('/home/NICKLITTEN/builds/nick.litten.public/sample_RPG_Modernization/OLDTAGRPG3-old_rpg400_modernised.pgm.rpgle') PGM(NLITTEN/OLDTAGRPG3) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('old rpg400 modernised') INCDIR('includes')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NLITTEN NLITTEN QTEMP QGPL
+>> executing time: 2025-10-06-17.29.02.00
+
+RNS9304: Program OLDTAGRPG3 placed in library NLITTEN. 00 highest severity. Created on 25-10-06 at 17:29:03.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   OLDTAGRPG3
+    Library  . . . . . . . . . . . :     NLITTEN
+  Text 'description' . . . . . . . :   old rpg400 modernised
+  Source stream file   . . . . . . :   /home/NICKLITTEN/builds/nick.litten.public/sample_
+                                       RPG_Modernization/OLDTAGRPG3-old_rpg400_modernised
+                                       .pgm.rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-10-06  15:45:21
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   *CURRENT
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **free                                                                                                               000001
+     2 // ----------------------------------------------------------                                                        000002
+     3 // author: nick litten                                                                                               000003
+     4 // some old sample code written in the 1990s for rpg400 style                                                        000004
+     5 // with goto statements and subroutines. this code has been                                                          000005
+     6 // converted to free format rpg as part of a video rpg upgrade.                                                      000006
+     7 // ----------------------------------------------------------                                                        000007
+     8 // written  : during a 1990's rave                                                                                   000008
+     9 // modification history:                                                                                             000009
+    10 // 2025.10.06 njl played with as part of a video rpg upgrade                                                         000010
+    11 // https://www.nicklitten.com/course/adventures-in-automatic-rpg-upgrade-with-vscode/                                000011
+    12 // ----------------------------------------------------------                                                        000012
+    13                                                                                                                      000013
+    14 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN') option(*srcstmt:*nodebugio);                                             000014
+000015                                                                                                                      000015
+        *--------------------------------------------------------------------*
+        * Compiler Options in Effect:                                        *
+        *--------------------------------------------------------------------*
+        *  Text 'description' . . . . . . . :                                *
+        *                 old rpg400 modernised                              *
+        *  Generation severity level  . . . :   10                           *
+        *  Default activation group . . . . :   *NO                          *
+        *  Compiler options . . . . . . . . :   *XREF      *GEN              *
+        *                                       *NOSECLVL  *SHOWCPY          *
+        *                                       *EXPDDS    *EXT              *
+        *                                       *NOSHOWSKP *SRCSTMT          *
+        *                                       *NODEBUGIO *UNREF            *
+        *                                       *EVENTF                      *
+        *  Optimization level . . . . . . . :   *NONE                        *
+        *  Source listing indentation . . . :   *NONE                        *
+        *  Type conversion options  . . . . :   *NONE                        *
+        *  Sort sequence  . . . . . . . . . :   *HEX                         *
+        *  Language identifier  . . . . . . :   *JOBRUN                      *
+        *  User profile . . . . . . . . . . :   *USER                        *
+        *  Authority  . . . . . . . . . . . :   *LIBCRTAUT                   *
+        *  Truncate numeric . . . . . . . . :   *YES                         *
+        *  Fix numeric  . . . . . . . . . . :   *NONE                        *
+        *  Allow null values  . . . . . . . :   *NO                          *
+        *  Storage model . . .  . . . . . . :   *SNGLVL                      *
+        *  Binding directory from Command . :   *NONE                        *
+        *  Binding directory from Source  . :   *NONE                        *
+        *  Activation group . . . . . . . . :   NICKLITTEN                   *
+        *  Enable performance collection  . :   *PEP                         *
+        *  Profiling data . . . . . . . . . :   *NOCOL                       *
+        *  Generate program interface . . . :   *NO                          *
+        *  Require prototype for export . . :   *NO                          *
+        *--------------------------------------------------------------------*
+000016 dcl-f qtxtsrc disk usage(*input) rename(qtxtsrc:rectxt);                                                             000016
+        *--------------------------------------------------------------------------------------------*
+        *                               RPG name         External name                               *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+        * File name. . . . . . . . . :  QTXTSRC          NLITTEN/QTXTSRC                             *
+        * Record format(s) . . . . . :  RECTXT           QTXTSRC                                     *
+        *--------------------------------------------------------------------------------------------*
+000017                                                                                                                      000017
+000018 dcl-pi *n;                                                                                                           000018
+000019   rtn char(10);                                                                                                      000019
+000020 end-pi;                                                                                                              000020
+000021                                                                                                                      000021
+000022 dcl-ds srcdta qualified inz;                                                                                         000022
+000023   flag char(8) pos(1);                                                                                               000023
+000024   partnumber char(20) pos(11);                                                                                       000024
+000025 end-ds;                                                                                                              000025
+000026                                                                                                                      000026
+000001=IRECTXT                                                                                                             1000001
+        *--------------------------------------------------------------------------------------------*                     1
+        * RPG record format  . . . . :  RECTXT                                                       *                     1
+        * External format  . . . . . :  QTXTSRC : NLITTEN/QTXTSRC                                    *                     1
+        * Format text  . . . . . . . :  Text Source Code                                             *                     1
+        *--------------------------------------------------------------------------------------------*                     1
+000002=I                             S    1    6 2SRCSEQ                                                                   1000002
+000003=I                             S    7   12 0SRCDAT                                                                   1000003
+000004=I                             A   13  132  SRCDTA                                                                   1000004
+000027 rtn = 'NOT FOUND';                                                                                                   000027
+000028                                                                                                                      000028
+000029 // read every row in QTXTSRC and update 'RTN' if match found                                                         000029
+000030 read qtxtsrc;                                                                                                        000030
+000031 dow not %eof(qtxtsrc) and no_match_found(srcdta.flag:srcdta.partnumber);                             B01             000031
+000032   read qtxtsrc;                                                                                       01             000032
+000033 enddo;                                                                                               E01             000033
+000034                                                                                                                      000034
+000035 dsply %char('Rtn=' + rtn);                                                                                           000035
+000036                                                                                                                      000036
+000037 *inlr = *on;                                                                                                         000037
+000038                                                                                                                      000038
+000039 // ----------------------------------------------------------                                                        000039
+000040 // this is a subprocedure that replaces a goto tag subroutine                                                        000040
+000041 // ----------------------------------------------------------                                                        000041
+000042 dcl-proc no_match_found;                                                                                             000042
+000043   dcl-pi *n ind;                                                                                                     000043
+000044     myFlag like(srcdta.flag);                                                                                        000044
+000045     myPartnumber like(srcdta.partnumber);                                                                            000045
+000046   end-pi;                                                                                                            000046
+000047   dcl-s myStatus ind inz(*on);                                                                                       000047
+000048                                                                                                                      000048
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000049   if myFlag = 'THISONE' and myPartnumber <> *BLANKS;                                                 B01             000049
+000050     rtn = 'EXISTS';                                                                                   01             000050
+000051     myStatus = *off;                                                                                  01             000051
+000052   endif;                                                                                             E01             000052
+000053                                                                                                                      000053
+000054   return myStatus;                                                                                                   000054
+000055 end-proc;                                                                                                            000055
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      5
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv   Statement    Message text
+*RNF7066 00        000016  Record-Format RECTXT not used for input or output.
+*RNF7086 00        000016  RPG handles blocking for file QTXTSRC. INFDS is updated
+                           only when blocks of data are transferred.
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      6
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         QTXTSRC           DISK                   000016D     000030      000031      000032
+           RECTXT                                 000016     1000001
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         *INLR             N(1)                   000037M
+         NO_MATCH_FOUND    N(1)                   000031      000042
+                           PROTOTYPE
+         RTN               A(10)                  000019D     000027M     000035      000050M
+                           BASED(_QRNL_PRM+)
+*RNF7031 SRCDAT            P(6,0)                1000003D
+         SRCDTA            DS(120)                000022D    1000004M     000031      000031
+                                                  000044      000045
+           FLAG            A(8)                   000023D     000031      000044
+           PARTNUMBER      A(20)                  000024D     000031      000045
+*RNF7031 SRCSEQ            P(6,2)                1000002D
+      Field References for subprocedure NO_MATCH_FOUND
+         Field             Attributes         References (D=Defined M=Modified)
+         MYFLAG            A(8)                   000044D     000049
+                           BASED(_QRNL_PST+)
+         MYPARTNUMBER      A(20)                  000045D     000049
+                           BASED(_QRNL_PST+)
+         MYSTATUS          N(1)                   000047D     000051M     000054
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+         LR                                       000037M
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      7
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      8
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00      2 The name or indicator is not referenced.
+*RNF7066 00      1 Record-Format name of Externally-Described file is not used.
+*RNF7086 00      1 RPG handles blocking for the file. INFDS is updated only when
+                   blocks of data are transferred.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NLITTEN/OLDTAGRPG3       PROJEX     25-10-06 17:29:02        Page      9
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        4
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        4
+  Source Totals:
+    Records . . . . . . . . . . . . :       59
+    Specifications  . . . . . . . . :       30
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       26
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Program OLDTAGRPG3 placed in library NLITTEN. 00 highest severity. Created on 25-10-06 at 17:29:03.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
