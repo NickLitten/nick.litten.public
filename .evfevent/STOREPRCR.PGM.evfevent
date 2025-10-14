@@ -1,0 +1,16 @@
+TIMESTAMP  0 20251014184442
+PROCESSOR  0 000 1
+FILEID     0 001 000000 108 /home/NICKLITTEN/builds/nick.litten.public/sample_rpg_code/STOREPRCR-Stored_Procedure_RPG_Employee.pgm.rpgle 20251014170107 0
+ERROR      0 001 1 000000 000000 001 000000 000 RNF3776 W 10 090 External program on prototype for main procedure is not the same as program being created.
+ERROR      0 001 1 000030 000030 010 000030 027 RNF7031 I 00 050 The name or indicator JOB_TITLE is not referenced.
+ERROR      0 001 1 000030 000030 010 000030 027 RNF7031 I 00 048 The name or indicator DEPT_ID is not referenced.
+ERROR      0 001 1 000030 000030 010 000030 027 RNF7031 I 00 050 The name or indicator HIRE_DATE is not referenced.
+ERROR      0 001 1 000030 000030 010 000030 027 RNF7031 I 00 047 The name or indicator SALARY is not referenced.
+ERROR      0 001 1 000030 000030 010 000030 027 RNF7031 I 00 047 The name or indicator ACTIVE is not referenced.
+ERROR      0 001 1 000029 000029 001 000029 000 RNF7066 I 00 051 Record-Format EMPLREC not used for input or output.
+ERROR      0 001 1 000029 000029 001 000029 000 RNF7086 I 00 100 RPG handles blocking for file EMPLO00001. INFDS is updated only when blocks of data are transferred.
+FILEEND    0 001 000056
+PROCESSOR  0 000 1
+FILEID     0 000 000000 000  19700101000000 0
+ERROR      0 000 0 000000 000000 000 000000 000 CPC5D07 I 00 048 Program STOREPRCR created in library NICKLITTEN.
+FILEEND    0 000 000000
