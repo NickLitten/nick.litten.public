@@ -18,3 +18,7 @@ SIMPLESFL2.PGM: SIMPLESFL2-IBMi_RPG_subfile_FULL_LOAD.pgm.rpgle SIMPLEDSPF.FILE 
 CRUD01PNL.FILE: CRUD01PNL-Change_Read_Update_Delete_Example.dspf
 CRUD01RPG.MODULE: CRUD01RPG-Change_Read_Update_Delete_Example.sqlrpgle
 CRUD01RPG.PGM: CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle CRUD01TBL.FILE CRUD01PNL.FILE
+
+SORTSFLPF.FILE: SORTSFLPF-Sort_Subfile_Sample_table.pf
+SORTSFL.FILE: SORTSFL-Sortable_Subfile.dspf
+SORTSFL.PGM: SORTSFL-Sortable_Subfile.pgm.sqlrpgle

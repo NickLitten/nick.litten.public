@@ -1,12 +1,12 @@
 **FREE
-// ************************************************************************
+//
 // Simple RPGLE program to demonstrate the use of subfile processing
 // in RPGLE.  This program will read a file and display the records in a su
 // The program will use a subfile control record and a subfile record forma
-// ************************************************************************
+//
 Dcl-F SIMPLEDSPF WORKSTN SFILE(SFL01:RRN01);
 Dcl-F SIMPLEFILE Usage(*Input) Keyed;
-// ************************************************************************
+
 // define the subfile row counter variable RRN01
 RRN01 = 0;
 PGMNAME = 'SIMPLESFL2';
