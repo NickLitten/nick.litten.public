@@ -75,8 +75,6 @@ dcl-ds ErrorCode;
 end-ds;
 
 
-/Title [---------- MAINLINE ---------- ]
-
 // Open the stream file
 Handle = open(%trim(ifsFilename):O_RDONLY + O_TEXTDATA);
 
@@ -98,11 +96,11 @@ if ifsData <> *blanks;
     // a proof of concept
     exec sql
     set option naming = *sys,
-    commit = *none,
-    usrprf = *user,
-    dynusrprf = *user,
-    datfmt = *iso,
-    closqlcsr = *endmod;
+                      commit = *none,
+                      usrprf = *user,
+                      dynusrprf = *user,
+                      datfmt = *iso,
+                      closqlcsr = *endmod;
 
     // read the JSON data from a string variable using JSON_TABLE
     exec sql
@@ -130,14 +128,14 @@ if ifsData <> *blanks;
 
     dow sqlstt='00000' or %subst(sqlstt:1:2)='01';
 
-    lastelem += 1;  
+        lastelem += 1;  
 
-    // Store Datastructure values in next element of 'return array'
-    result.jsonArray(lastelem) = jsonFields;
+        // Store Datastructure values in next element of 'return array'
+        result.jsonArray(lastelem) = jsonFields;
 
-    // here we could do something with each row of data ie: write to file
-    // or some other business logic.
-    exec sql fetch next from c1 into :jsonfields;
+        // here we could do something with each row of data ie: write to file
+        // or some other business logic.
+        exec sql fetch next from c1 into :jsonfields;
 
     enddo;
 
