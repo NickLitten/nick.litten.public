@@ -1,0 +1,763 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: CRTSQLRPGI srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/SIMPWEBSQL/SIMPWEBSQL-Consume_a_webservice_response.pgm.sqlrpgle') OBJ(NICKLITTEN/SIMPWEBSQL) COMMIT(*NONE ) OBJTYPE(*PGM) OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Consume a webservice response') TGTRLS(V7R4M0) DBGVIEW(*SOURCE) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR(''includes'')')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NICKLITTEN NICKLITTEN QTEMP QGPL
+>> executing time: 2025-12-05-15.14.15.00
+
+RNS9304: Program SIMPWEBSQL placed in library NICKLITTEN. 00 highest severity. Created on 25-12-05 at 15:14:17.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   SIMPWEBSQL
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   Consume a webservice response
+  Source stream file   . . . . . . :   /home/NICKLITTEN/builds/nick.litten.public/codesam
+                                       ples/webservice/SIMPWEBSQL/SIMPWEBSQL-Consume_a_we
+                                       bservice_response.pgm.sqlrpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-12-05  13:27:51
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *FULL
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *JOB
+  Language identifier  . . . . . . :   *JOB
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   V7R4M0
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NORMVCOMMENT *EXPINCLUDE   *NOSEQSRC
+  Output source file . . . . . . . :   QSQLPRE
+    Library  . . . . . . . . . . . :     QTEMP
+  Output source member . . . . . . :   SIMPWEBSQL
+  MINIMUM OUTPUT LINE LENGTH . . . :   100
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **free                                                                                                               000001
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+     2                                                                                                                      000003
+     3 // ----------------------------------------------------------                                                        000004
+     4 //                                                                                                                   000005
+     5 // Service - SIMPWEBSQL                                                                                              000006
+     6 //                                                                                                                   000007
+     7 // ----------------------------------------------------------                                                        000008
+     8 // COMPILE NOTES:                                                                                                    000009
+     9 // Change the source location to match yours:                                                                        000010
+    10 //                                                                                                                   000011
+    11 // CRTSQLRPGI OBJ(WEBSERVICE/SIMPWEBSQL)                                                                             000012
+    12 // SRCSTMF('/home/nicklitten/source-webservices/SIMPWEBSQL.sqlrpgle')                                                000013
+    13 // COMMIT(*NONE) OBJTYPE(*PGM) DBGVIEW(*SOURCE) CVTCCSID(*JOB)                                                       000014
+    14 //                                                                                                                   000015
+    15 // ----------------------------------------------------------                                                        000016
+    16 // Modification History:                                                                                             000017
+    17 // 2022-06-11 V1.0 Created by Nick Litten                                                                            000018
+    18 // ----------------------------------------------------------                                                        000019
+    19                                                                                                                      000020
+    20 ctl-opt                                                                                                              000021
+    21   main(SIMPWEBSQL)                                                                                                   000022
+    22   pgminfo(*PCML:*MODULE:*DCLCASE)                                                                                    000023
+    23   option(*srcstmt:*nodebugio:*noshowcpy)                                                                             000024
+    24   /if Defined(*CRTSQLRPGI)                                                                                           000025
+            LINES EXCLUDED: 1
+    25   /endIf                                                                                                             000027
+    26   copyright('SIMPWEBSQL: Version 1.0 June 2022');                                                                    000028
+    27                                                                                                                      000029
+    28 dcl-ds psds PSDS qualified;                                                                                          000030
+    29   program char(10) pos(1);                                                                                           000031
+    30 end-ds;                                                                                                              000032
+    31                                                                                                                      000033
+    32                                                                                                                      000034
+    33 //-- SIMPWEBSQL - Consume an external internet webservice from                                                       000035
+    34 //-- my IBMi System. Get the JSON result and let SQL decompose                                                       000036
+    35 //-- that from JSON into fields that I can use.                                                                      000037
+    36 dcl-proc SIMPWEBSQL;                                                                                                 000038
+    37 dcl-pi SIMPWEBSQL end-pi;                                                                                            000039
+    38                                                                                                                      000040
+    39 // Output values                                                                                                     000041
+    40 dcl-s g_firstname varchar(50);                                                                                       000042
+    41 dcl-s g_surname varchar(50);                                                                                         000043
+    42 dcl-s g_website varchar(50);                                                                                         000044
+    43                                                                                                                      000045
+    44 // result string humans who like to know what happened                                                               000046
+    45 dcl-s g_result char(50);                                                                                             000047
+    46                                                                                                                      000048
+    47 monitor;                                                                                                             000049
+    48                                                                                                                      000050
+    49     // consume external webservice                                                                                   000051
+    50     exec sql                                                                                                         000052
+    51     select firstname, surname, website                                                                               000053
+    52     into :g_firstname, :g_surname, :g_website                                                                        000054
+    53     from JSON_TABLE( SYSTOOLS.HTTPGETCLOB (                                                                          000055
+    54     'http://nicklitten.com/sample.json', null), '$'                                                                  000056
+    55     COLUMNS(                                                                                                         000057
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+    56     firstname VARCHAR(50) path '$.firstName',                                                                        000058
+    57     surname VARCHAR(50) path '$.surName',                                                                            000059
+    58     website VARCHAR(50) path '$.webSite'                                                                             000060
+    59     ) error on error                                                                                                 000061
+    60     ) as x;                                                                                                          000062
+    61                                                                                                                      000063
+    62     Select;                                                                                                          000064
+    63     when sqlcode = 0;                                                                                                000065
+    64     g_result = 'Completed normally';                                                                                 000066
+    65     when sqlcode = 100;                                                                                              000067
+    66     g_result = 'No data found';                                                                                      000068
+    67     when sqlcode > 0;                                                                                                000069
+    68     g_result = 'Completed with warning';                                                                             000070
+    69     when sqlcode < 0;                                                                                                000071
+    70     g_result = 'Did not complete normally';                                                                          000072
+    71     endsl;                                                                                                           000073
+    72                                                                                                                      000074
+    73     // Display values returned                                                                                       000075
+    74     DSPLY sqlcode;                                                                                                   000076
+    75     DSPLY g_firstname;                                                                                               000077
+    76     DSPLY g_surname;                                                                                                 000078
+    77     DSPLY g_website;                                                                                                 000079
+    78                                                                                                                      000080
+    79     return;                                                                                                          000081
+    80                                                                                                                      000082
+    81 on-error ;                                                                                                           000083
+    82     dump(a);                                                                                                         000084
+    83     dsply ('*** Webservice(' + %trim(psds.program) + ') has failed!');                                               000085
+    84 endmon ;                                                                                                             000086
+    85                                                                                                                      000087
+    86 end-proc;                                                                                                            000088
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      5
+Line   <---------------------- Data Records -------------------------------------------------------------->      Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10      Date   Id  Number
+                       C o m p i l e   T i m e   D a t a
+    * * * * *   E N D   O F   C O M P I L E   T I M E   D A T A   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      6
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:16        Page      7
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        0
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        0
+  Source Totals:
+    Records . . . . . . . . . . . . :       86
+    Specifications  . . . . . . . . :       44
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       37
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Diagnostic check of source is complete. Highest severity is 00.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         SIMPWEBSQL                  25-12-05 15:14:16          Page     1
+Source type...............RPG
+Object name...............NICKLITTEN/SIMPWEBSQL
+Source file...............QTEMP/QSQLPRE
+Member....................*OBJ
+To source file............QTEMP/QSQLTEMP1
+Options...................*LSTDBG
+RPG preprocessor options..*LVL2
+Listing option............*PRINT
+Target release............V7R4M0
+INCLUDE file..............*LIBL/QRPGLESRC
+Commit....................*NONE
+Allow copy of data........*OPTIMIZE
+Close SQL cursor..........*ENDACTGRP
+Allow blocking............*ALLREAD
+Delay PREPARE.............*NO
+Concurrent access
+  resolution..............*DFT
+Generation level..........10
+Printer file..............*LIBL/QSYSPRT
+Date format...............*JOB
+Date separator............*JOB
+Time format...............*HMS
+Time separator ...........*JOB
+Replace...................*YES
+Relational database.......*LOCAL
+User .....................*CURRENT
+RDB connect method........*DUW
+Default collection........*NONE
+Dynamic default
+  collection..............*NO
+Package name..............*OBJLIB/*OBJ
+Path......................*NAMING
+SQL rules.................*DB2
+Created object type.......*PGM
+Debugging view............*SOURCE
+Debugging encryption key..*NONE
+User profile .............*NAMING
+Dynamic user profile......*USER
+Sort sequence.............*JOB
+Language ID...............*JOB
+IBM SQL flagging..........*NOFLAG
+ANS flagging..............*NONE
+Text......................Consume a webservice response
+Source file CCSID.........37
+Job CCSID.................37
+Decimal result options:
+  Maximum precision.......31
+  Maximum scale...........31
+  Minimum divide scale....0
+DECFLOAT rounding mode....*HALFEVEN
+Compiler options..........TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR('includes')
+Source member changed on 25-12-05  15:14:16
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         SIMPWEBSQL                  25-12-05 15:14:16          Page     2
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+    1   **free                                                                                                 000001   25-12-05
+    2   /title Simply consume a webservice response from nicklitten dot com                                    000002   25-12-05
+    3                                                                                                          000003   25-12-05
+    4   // ----------------------------------------------------------                                          000004   25-12-05
+    5   //                                                                                                     000005   25-12-05
+    6   // Service - SIMPWEBSQL                                                                                000006   25-12-05
+    7   //                                                                                                     000007   25-12-05
+    8   // ----------------------------------------------------------                                          000008   25-12-05
+    9   // COMPILE NOTES:                                                                                      000009   25-12-05
+   10   // Change the source location to match yours:                                                          000010   25-12-05
+   11   //                                                                                                     000011   25-12-05
+   12   // CRTSQLRPGI OBJ(WEBSERVICE/SIMPWEBSQL)                                                               000012   25-12-05
+   13   // SRCSTMF('/home/nicklitten/source-webservices/SIMPWEBSQL.sqlrpgle')                                  000013   25-12-05
+   14   // COMMIT(*NONE) OBJTYPE(*PGM) DBGVIEW(*SOURCE) CVTCCSID(*JOB)                                         000014   25-12-05
+   15   //                                                                                                     000015   25-12-05
+   16   // ----------------------------------------------------------                                          000016   25-12-05
+   17   // Modification History:                                                                               000017   25-12-05
+   18   // 2022-06-11 V1.0 Created by Nick Litten                                                              000018   25-12-05
+   19   // ----------------------------------------------------------                                          000019   25-12-05
+   20                                                                                                          000020   25-12-05
+   21   ctl-opt                                                                                                000021   25-12-05
+   22     main(SIMPWEBSQL)                                                                                     000022   25-12-05
+   23     pgminfo(*PCML:*MODULE:*DCLCASE)                                                                      000023   25-12-05
+   24     option(*srcstmt:*nodebugio:*noshowcpy)                                                               000024   25-12-05
+   25   //   /if Defined(*CRTSQLRPGI)                                                                          000025   25-12-05
+   26   //   /endIf                                                                                            000027   25-12-05
+   27     copyright('SIMPWEBSQL: Version 1.0 June 2022');                                                      000028   25-12-05
+   28                                                                                                          000029   25-12-05
+   29   dcl-ds psds PSDS qualified;                                                                            000030   25-12-05
+   30     program char(10) pos(1);                                                                             000031   25-12-05
+   31   end-ds;                                                                                                000032   25-12-05
+   32                                                                                                          000033   25-12-05
+   33                                                                                                          000034   25-12-05
+   34   //-- SIMPWEBSQL - Consume an external internet webservice from                                         000035   25-12-05
+   35   //-- my IBMi System. Get the JSON result and let SQL decompose                                         000036   25-12-05
+   36   //-- that from JSON into fields that I can use.                                                        000037   25-12-05
+   37   dcl-proc SIMPWEBSQL;                                                                                   000038   25-12-05
+   38   dcl-pi SIMPWEBSQL end-pi;                                                                              000039   25-12-05
+   39                                                                                                          000040   25-12-05
+   40   // Output values                                                                                       000041   25-12-05
+   41   dcl-s g_firstname varchar(50);                                                                         000042   25-12-05
+   42   dcl-s g_surname varchar(50);                                                                           000043   25-12-05
+   43   dcl-s g_website varchar(50);                                                                           000044   25-12-05
+   44                                                                                                          000045   25-12-05
+   45   // result string humans who like to know what happened                                                 000046   25-12-05
+   46   dcl-s g_result char(50);                                                                               000047   25-12-05
+   47                                                                                                          000048   25-12-05
+   48   monitor;                                                                                               000049   25-12-05
+   49                                                                                                          000050   25-12-05
+   50       // consume external webservice                                                                     000051   25-12-05
+   51       exec sql                                                                                           000052   25-12-05
+   52       select firstname, surname, website                                                                 000053   25-12-05
+   53       into :g_firstname, :g_surname, :g_website                                                          000054   25-12-05
+   54       from JSON_TABLE( SYSTOOLS.HTTPGETCLOB (                                                            000055   25-12-05
+   55       'http://nicklitten.com/sample.json', null), '$'                                                    000056   25-12-05
+   56       COLUMNS(                                                                                           000057   25-12-05
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         SIMPWEBSQL                  25-12-05 15:14:16          Page     3
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+   57       firstname VARCHAR(50) path '$.firstName',                                                          000058   25-12-05
+   58       surname VARCHAR(50) path '$.surName',                                                              000059   25-12-05
+   59       website VARCHAR(50) path '$.webSite'                                                               000060   25-12-05
+   60       ) error on error                                                                                   000061   25-12-05
+   61       ) as x;                                                                                            000062   25-12-05
+   62                                                                                                          000063   25-12-05
+   63       Select;                                                                                            000064   25-12-05
+   64       when sqlcode = 0;                                                                                  000065   25-12-05
+   65       g_result = 'Completed normally';                                                                   000066   25-12-05
+   66       when sqlcode = 100;                                                                                000067   25-12-05
+   67       g_result = 'No data found';                                                                        000068   25-12-05
+   68       when sqlcode > 0;                                                                                  000069   25-12-05
+   69       g_result = 'Completed with warning';                                                               000070   25-12-05
+   70       when sqlcode < 0;                                                                                  000071   25-12-05
+   71       g_result = 'Did not complete normally';                                                            000072   25-12-05
+   72       endsl;                                                                                             000073   25-12-05
+   73                                                                                                          000074   25-12-05
+   74       // Display values returned                                                                         000075   25-12-05
+   75       DSPLY sqlcode;                                                                                     000076   25-12-05
+   76       DSPLY g_firstname;                                                                                 000077   25-12-05
+   77       DSPLY g_surname;                                                                                   000078   25-12-05
+   78       DSPLY g_website;                                                                                   000079   25-12-05
+   79                                                                                                          000080   25-12-05
+   80       return;                                                                                            000081   25-12-05
+   81                                                                                                          000082   25-12-05
+   82   on-error ;                                                                                             000083   25-12-05
+   83       dump(a);                                                                                           000084   25-12-05
+   84       dsply ('*** Webservice(' + %trim(psds.program) + ') has failed!');                                 000085   25-12-05
+   85   endmon ;                                                                                               000086   25-12-05
+   86                                                                                                          000087   25-12-05
+   87   end-proc;                                                                                              000088   25-12-05
+                                * * * * *  E N D  O F  S O U R C E  * * * * *
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         SIMPWEBSQL                  25-12-05 15:14:16          Page     4
+                                               CROSS REFERENCE
+Data Names                    Define    Reference
+FIRSTNAME                        ****     COLUMN
+                                          52
+                                 ****     VARCHAR(50) COLUMN (NOT NULL)
+                                 ****     VARCHAR(0) COLUMN (NOT NULL) IN X
+G_FIRSTNAME                      41       VARCHAR(50) IN RPG PROCEDURE SIMPWEBSQL
+                                          53
+G_RESULT                         46       CHARACTER(50) IN RPG PROCEDURE SIMPWEBSQL
+G_SURNAME                        42       VARCHAR(50) IN RPG PROCEDURE SIMPWEBSQL
+                                          53
+G_WEBSITE                        43       VARCHAR(50) IN RPG PROCEDURE SIMPWEBSQL
+                                          53
+PROGRAM                          30       CHARACTER(10) IN PSDS
+PSDS                             29       STRUCTURE
+SIMPWEBSQL                       37       RPG PROCEDURE
+SURNAME                          ****     COLUMN
+                                          52
+                                 ****     VARCHAR(50) COLUMN (NOT NULL)
+                                 ****     VARCHAR(0) COLUMN (NOT NULL) IN X
+WEBSITE                          ****     COLUMN
+                                          52
+                                 ****     VARCHAR(50) COLUMN (NOT NULL)
+                                 ****     VARCHAR(0) COLUMN (NOT NULL) IN X
+                                 ****
+No errors found in source
+   87 Source records processed
+                               * * * * *  E N D  O F  L I S T I N G  * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   SIMPWEBSQL
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   Consume a webservice response
+  Source stream file   . . . . . . :   /QSYS.LIB/QTEMP.LIB/QSQLTEMP1.FILE/SIMPWEBSQL.MBR
+    CCSID  . . . . . . . . . . . . :     37
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-12-05  15:14:16
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *FULL
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *JOB
+  Language identifier  . . . . . . :   *JOB
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   V7R4M0
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **free                                                                                                               000001
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+     2                                                                                                                      000003
+     3 // ----------------------------------------------------------                                                        000004
+     4 //                                                                                                                   000005
+     5 // Service - SIMPWEBSQL                                                                                              000006
+     6 //                                                                                                                   000007
+     7 // ----------------------------------------------------------                                                        000008
+     8 // COMPILE NOTES:                                                                                                    000009
+     9 // Change the source location to match yours:                                                                        000010
+    10 //                                                                                                                   000011
+    11 // CRTSQLRPGI OBJ(WEBSERVICE/SIMPWEBSQL)                                                                             000012
+    12 // SRCSTMF('/home/nicklitten/source-webservices/SIMPWEBSQL.sqlrpgle')                                                000013
+    13 // COMMIT(*NONE) OBJTYPE(*PGM) DBGVIEW(*SOURCE) CVTCCSID(*JOB)                                                       000014
+    14 //                                                                                                                   000015
+    15 // ----------------------------------------------------------                                                        000016
+    16 // Modification History:                                                                                             000017
+    17 // 2022-06-11 V1.0 Created by Nick Litten                                                                            000018
+    18 // ----------------------------------------------------------                                                        000019
+    19                                                                                                                      000020
+    20 ctl-opt                                                                                                              000021
+    21   main(SIMPWEBSQL)                                                                                                   000022
+    22   pgminfo(*PCML:*MODULE:*DCLCASE)                                                                                    000023
+    23   option(*srcstmt:*nodebugio:*noshowcpy)                                                                             000024
+000025 //   /if Defined(*CRTSQLRPGI)                                                                                        000025
+000026 //   /endIf                                                                                                          000026
+000027   copyright('SIMPWEBSQL: Version 1.0 June 2022');                                                                    000027
+000028                                                                                                                      000028
+        *--------------------------------------------------------------------*
+        * Compiler Options in Effect:                                        *
+        *--------------------------------------------------------------------*
+        *  Text 'description' . . . . . . . :                                *
+        *                 Consume a webservice response                      *
+        *  Generation severity level  . . . :   10                           *
+        *  Default activation group . . . . :   *YES                         *
+        *  Compiler options . . . . . . . . :   *XREF      *GEN              *
+        *                                       *NOSECLVL  *NOSHOWCPY        *
+        *                                       *EXPDDS    *EXT              *
+        *                                       *NOSHOWSKP *SRCSTMT          *
+        *                                       *NODEBUGIO *UNREF            *
+        *                                       *EVENTF                      *
+        *  Optimization level . . . . . . . :   *FULL                        *
+        *  Source listing indentation . . . :   *NONE                        *
+        *  Type conversion options  . . . . :   *NONE                        *
+        *  Sort sequence  . . . . . . . . . :   *JOB                         *
+        *  Language identifier  . . . . . . :   *JOB                         *
+        *  User profile . . . . . . . . . . :   *USER                        *
+        *  Authority  . . . . . . . . . . . :   *LIBCRTAUT                   *
+        *  Truncate numeric . . . . . . . . :   *YES                         *
+        *  Fix numeric  . . . . . . . . . . :   *NONE                        *
+        *  Allow null values  . . . . . . . :   *NO                          *
+        *  Enable performance collection  . :   *PEP                         *
+        *  Profiling data . . . . . . . . . :   *NOCOL                       *
+        *  Program interface information:                                    *
+        *    Generate . . . . . . . . . . . :   *PCML                        *
+        *    Location . . . . . . . . . . . :   *MODULE                      *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+        *  REQUIRE PROTOTYPE FOR EXPORT . . :   *NO                          *
+        *--------------------------------------------------------------------*
+000029 dcl-ds psds PSDS qualified;                                                                                          000029
+000030   program char(10) pos(1);                                                                                           000030
+000031 end-ds;                                                                                                              000031
+000032                                                                                                                      000032
+000033                                                                                                                      000033
+000034 //-- SIMPWEBSQL - Consume an external internet webservice from                                                       000034
+000035 //-- my IBMi System. Get the JSON result and let SQL decompose                                                       000035
+000036 //-- that from JSON into fields that I can use.                                                                      000036
+000037        /SET CCSID(*CHAR:*JOBRUNMIX)                                                                                  000037
+000038        // SQL COMMUNICATION AREA                                                //SQL                                000038
+000039        DCL-DS SQLCA;                                                            //SQL                                000039
+000040          SQLCAID CHAR(8) INZ(X'0000000000000000');                              //SQL                                000040
+000041           SQLAID CHAR(8) OVERLAY(SQLCAID);                                      //SQL                                000041
+000042          SQLCABC INT(10);                                                       //SQL                                000042
+000043           SQLABC BINDEC(9) OVERLAY(SQLCABC);                                    //SQL                                000043
+000044          SQLCODE INT(10);                                                       //SQL                                000044
+000045           SQLCOD BINDEC(9) OVERLAY(SQLCODE);                                    //SQL                                000045
+000046          SQLERRML INT(5);                                                       //SQL                                000046
+000047           SQLERL BINDEC(4) OVERLAY(SQLERRML);                                   //SQL                                000047
+000048          SQLERRMC CHAR(70);                                                     //SQL                                000048
+000049           SQLERM CHAR(70) OVERLAY(SQLERRMC);                                    //SQL                                000049
+000050          SQLERRP CHAR(8);                                                       //SQL                                000050
+000051           SQLERP CHAR(8) OVERLAY(SQLERRP);                                      //SQL                                000051
+000052          SQLERR CHAR(24);                                                       //SQL                                000052
+000053           SQLER1 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000053
+000054           SQLER2 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000054
+000055           SQLER3 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000055
+000056           SQLER4 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000056
+000057           SQLER5 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000057
+000058           SQLER6 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000058
+000059           SQLERRD INT(10) DIM(6) OVERLAY(SQLERR);                               //SQL                                000059
+000060          SQLWRN CHAR(11);                                                       //SQL                                000060
+000061           SQLWN0 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000061
+000062           SQLWN1 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000062
+000063           SQLWN2 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000063
+000064           SQLWN3 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000064
+000065           SQLWN4 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000065
+000066           SQLWN5 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000066
+000067           SQLWN6 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000067
+000068           SQLWN7 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000068
+000069           SQLWN8 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000069
+000070           SQLWN9 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000070
+000071           SQLWNA CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000071
+000072           SQLWARN CHAR(1) DIM(11) OVERLAY(SQLWRN);                              //SQL                                000072
+000073          SQLSTATE CHAR(5);                                                      //SQL                                000073
+000074           SQLSTT CHAR(5) OVERLAY(SQLSTATE);                                     //SQL                                000074
+000075        END-DS SQLCA;                                                            //SQL                                000075
+000076        DCL-PR SQLROUTE_CALL EXTPGM(SQLROUTE);                                   //SQL                                000076
+000077          CA LIKEDS(SQLCA);                                                      //SQL                                000077
+000078          *N BINDEC(4) OPTIONS(*NOPASS);                                         //SQL                                000078
+000079          *N CHAR(1) OPTIONS(*NOPASS);                                           //SQL                                000079
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      5
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000080        END-PR SQLROUTE_CALL;                                                    //SQL                                000080
+000081        DCL-PR SQLOPEN_CALL EXTPGM(SQLOPEN);                                     //SQL                                000081
+000082          CA LIKEDS(SQLCA);                                                      //SQL                                000082
+000083          *N BINDEC(4);                                                          //SQL                                000083
+000084        END-PR SQLOPEN_CALL;                                                     //SQL                                000084
+000085        DCL-PR SQLCLSE_CALL EXTPGM(SQLCLSE);                                     //SQL                                000085
+000086          CA LIKEDS(SQLCA);                                                      //SQL                                000086
+000087          *N BINDEC(4);                                                          //SQL                                000087
+000088        END-PR SQLCLSE_CALL;                                                     //SQL                                000088
+000089        DCL-PR SQLCMIT_CALL EXTPGM(SQLCMIT);                                     //SQL                                000089
+000090          CA LIKEDS(SQLCA);                                                      //SQL                                000090
+000091          *N BINDEC(4);                                                          //SQL                                000091
+000092        END-PR SQLCMIT_CALL;                                                     //SQL                                000092
+000093        /RESTORE CCSID(*CHAR)                                                                                         000093
+000094        DCL-C SQLROUTE CONST('QSYS/QSQROUTE');                                   //SQL                                000094
+000095        DCL-C SQLOPEN CONST('QSYS/QSQROUTE');                                    //SQL                                000095
+000096        DCL-C SQLCLSE CONST('QSYS/QSQLCLSE');                                    //SQL                                000096
+000097        DCL-C SQLCMIT CONST('QSYS/QSQLCMIT');                                    //SQL                                000097
+000098        DCL-C SQFRD CONST(2);                                                    //SQL                                000098
+000099        DCL-C SQFCRT CONST(8);                                                   //SQL                                000099
+000100        DCL-C SQFOVR CONST(16);                                                  //SQL                                000100
+000101        DCL-C SQFAPP CONST(32);                                                  //SQL                                000101
+000102 dcl-proc SIMPWEBSQL;                                                                                                 000102
+000103 dcl-pi SIMPWEBSQL end-pi;                                                                                            000103
+000104                                                                                                                      000104
+000105 // Output values                                                                                                     000105
+000106 dcl-s g_firstname varchar(50);                                                                                       000106
+000107 dcl-s g_surname varchar(50);                                                                                         000107
+000108 dcl-s g_website varchar(50);                                                                                         000108
+000109                                                                                                                      000109
+000110 // result string humans who like to know what happened                                                               000110
+000111 dcl-s g_result char(50);                                                                                             000111
+000112                                                                                                                      000112
+000113 **END-FREE                                                                                                           000113
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+000114 D                 DS                  STATIC                               SELECT                                    000114
+000115 D  SQL_00000              1      2B 0 INZ(128)                             length of header                          000115
+000116 D  SQL_00001              3      4B 0 INZ(1)                               statement number                          000116
+000117 D  SQL_00002              5      8U 0 INZ(0)                               invocation mark                           000117
+000118 D  SQL_00003              9      9A   INZ('0') CCSID(*JOBRUNMIX)           data is okay                              000118
+000119 D  SQL_00004             10    128A   CCSID(*JOBRUNMIX)                    end of header                             000119
+000120 D  SQL_00005            129    180A   VARYING CCSID(*JOBRUNMIX)            G_FIRSTNAME                               000120
+000121 D  SQL_00006            181    232A   VARYING CCSID(*JOBRUNMIX)            G_SURNAME                                 000121
+000122 D  SQL_00007            233    284A   VARYING CCSID(*JOBRUNMIX)            G_WEBSITE                                 000122
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      6
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000123 **FREE                                                                                                               000123
+000124 monitor;                                                                                             B01             000124
+000125                                                                                                                      000125
+000126     // consume external webservice                                                                                   000126
+000127 //*    exec sql                                                                                                      000127
+000128 //*    select firstname, surname, website                                                                            000128
+000129 //*    into :g_firstname, :g_surname, :g_website                                                                     000129
+000130 //*    from JSON_TABLE( SYSTOOLS.HTTPGETCLOB (                                                                       000130
+000131 //*    'http://nicklitten.com/sample.json', null), '$'                                                               000131
+000132 //*    COLUMNS(                                                                                                      000132
+000133 //*    firstname VARCHAR(50) path '$.firstName',                                                                     000133
+000134 //*    surname VARCHAR(50) path '$.surName',                                                                         000134
+000135 //*    website VARCHAR(50) path '$.webSite'                                                                          000135
+000136 //*    ) error on error                                                                                              000136
+000137 //*    ) as x;                                                                                                       000137
+000138           SQLER6 = -4;                                                          //SQL 1               01             000138
+000139           SQLROUTE_CALL(                                                        //SQL                 01             000139
+000140                SQLCA                                                            //SQL                 01             000140
+000141              : SQL_00000                                                        //SQL                 01             000141
+000142           );                                                                    //SQL                 01             000142
+000143           IF SQL_00003 = '1';                                                   //SQL                B02             000143
+000144           EVAL G_FIRSTNAME = SQL_00005;                                         //SQL                 02             000144
+000145           EVAL G_SURNAME = SQL_00006;                                           //SQL                 02             000145
+000146           EVAL G_WEBSITE = SQL_00007;                                           //SQL                 02             000146
+000147           ENDIF;                                                                //SQL                E02             000147
+000148                                                                                                                      000148
+000149     Select;                                                                                          B02             000149
+000150     when sqlcode = 0;                                                                                X02             000150
+000151     g_result = 'Completed normally';                                                                  02             000151
+000152     when sqlcode = 100;                                                                              X02             000152
+000153     g_result = 'No data found';                                                                       02             000153
+000154     when sqlcode > 0;                                                                                X02             000154
+000155     g_result = 'Completed with warning';                                                              02             000155
+000156     when sqlcode < 0;                                                                                X02             000156
+000157     g_result = 'Did not complete normally';                                                           02             000157
+000158     endsl;                                                                                           E02             000158
+000159                                                                                                                      000159
+000160     // Display values returned                                                                                       000160
+000161     DSPLY sqlcode;                                                                                    01             000161
+000162     DSPLY g_firstname;                                                                                01             000162
+000163     DSPLY g_surname;                                                                                  01             000163
+000164     DSPLY g_website;                                                                                  01             000164
+000165                                                                                                                      000165
+000166     return;                                                                                           01             000166
+000167                                                                                                                      000167
+000168 on-error ;                                                                                           X01             000168
+000169     dump(a);                                                                                          01             000169
+000170     dsply ('*** Webservice(' + %trim(psds.program) + ') has failed!');                                01             000170
+000171 endmon ;                                                                                             E01             000171
+000172                                                                                                                      000172
+000173 end-proc;                                                                                                            000173
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      7
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      8
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv   Statement    Message text
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page      9
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         No references in the source.
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         PSDS              DS(10)                 000029D     000170
+           PROGRAM         A(10)                  000030D     000170
+         SIMPWEBSQL        PROTOTYPE              000022      000102      000103
+*RNF7031 SQFAPP            CONST                  000101D
+*RNF7031 SQFCRT            CONST                  000099D
+*RNF7031 SQFOVR            CONST                  000100D
+*RNF7031 SQFRD             CONST                  000098D
+*RNF7031 SQLABC            B(9,0)                 000043D
+*RNF7031 SQLAID            A(8)                   000041D
+         SQLCA             DS(136)                000039D     000077      000082      000086
+                                                  000090      000140
+         SQLCABC           I(10,0)                000042D     000043
+         SQLCAID           A(8)                   000040D     000041
+         SQLCLSE           CONST                  000085      000096D
+*RNF7031 SQLCLSE_CALL      PROTOTYPE              000085D
+         SQLCMIT           CONST                  000089      000097D
+*RNF7031 SQLCMIT_CALL      PROTOTYPE              000089D
+*RNF7031 SQLCOD            B(9,0)                 000045D
+         SQLCODE           I(10,0)                000044D     000045      000150      000152
+                                                  000154      000156      000161
+*RNF7031 SQLERL            B(4,0)                 000047D
+*RNF7031 SQLERM            A(70)                  000049D
+*RNF7031 SQLERP            A(8)                   000051D
+         SQLERR            A(24)                  000052D     000053      000054      000055
+                                                  000056      000057      000058      000059
+*RNF7031 SQLERRD(6)        I(10,0)                000059D
+         SQLERRMC          A(70)                  000048D     000049
+         SQLERRML          I(5,0)                 000046D     000047
+         SQLERRP           A(8)                   000050D     000051
+*RNF7031 SQLER1            B(9,0)                 000053D
+*RNF7031 SQLER2            B(9,0)                 000054D
+*RNF7031 SQLER3            B(9,0)                 000055D
+*RNF7031 SQLER4            B(9,0)                 000056D
+*RNF7031 SQLER5            B(9,0)                 000057D
+         SQLER6            B(9,0)                 000058D     000138M
+         SQLOPEN           CONST                  000081      000095D
+*RNF7031 SQLOPEN_CALL      PROTOTYPE              000081D
+         SQLROUTE          CONST                  000076      000094D
+         SQLROUTE_CALL     PROTOTYPE              000076D     000139M
+         SQLSTATE          A(5)                   000073D     000074
+*RNF7031 SQLSTT            A(5)                   000074D
+*RNF7031 SQLWARN(11)       A(1)                   000072D
+*RNF7031 SQLWNA            A(1)                   000071D
+*RNF7031 SQLWN0            A(1)                   000061D
+*RNF7031 SQLWN1            A(1)                   000062D
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page     10
+*RNF7031 SQLWN2            A(1)                   000063D
+*RNF7031 SQLWN3            A(1)                   000064D
+*RNF7031 SQLWN4            A(1)                   000065D
+*RNF7031 SQLWN5            A(1)                   000066D
+*RNF7031 SQLWN6            A(1)                   000067D
+*RNF7031 SQLWN7            A(1)                   000068D
+*RNF7031 SQLWN8            A(1)                   000069D
+*RNF7031 SQLWN9            A(1)                   000070D
+         SQLWRN            A(11)                  000060D     000061      000062      000063
+                                                  000064      000065      000066      000067
+                                                  000068      000069      000070      000071
+                                                  000072
+      Field References for subprocedure SIMPWEBSQL
+         Field             Attributes         References (D=Defined M=Modified)
+         G_FIRSTNAME       A(50)                  000106D     000144M     000162
+                           VARYING(2)
+         G_RESULT          A(50)                  000111D     000151M     000153M     000155M
+                                                  000157M
+         G_SURNAME         A(50)                  000107D     000145M     000163
+                           VARYING(2)
+         G_WEBSITE         A(50)                  000108D     000146M     000164
+                           VARYING(2)
+         SQL_00000         B(4,0)                 000115D     000141
+*RNF7031 SQL_00001         B(4,0)                 000116D
+*RNF7031 SQL_00002         U(10,0)                000117D
+         SQL_00003         A(1)                   000118D     000143
+*RNF7031 SQL_00004         A(119)                 000119D
+         SQL_00005         A(50)                  000120D     000144
+                           VARYING(2)
+         SQL_00006         A(50)                  000121D     000145
+                           VARYING(2)
+         SQL_00007         A(50)                  000122D     000146
+                           VARYING(2)
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page     11
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page     12
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00     35 The name or indicator is not referenced.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+  Simply consume a webservice response from nicklitten dot com
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/SIMPWEBSQL    PROJEX     25-12-05 15:14:17        Page     13
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :       35
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :       35
+  Source Totals:
+    Records . . . . . . . . . . . . :      172
+    Specifications  . . . . . . . . :      114
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       51
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Program SIMPWEBSQL placed in library NICKLITTEN. 00 highest severity. Created on 25-12-05 at 15:14:17.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

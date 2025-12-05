@@ -21,4 +21,4 @@ CRUD01RPG.PGM: CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle CRUD01TB
 
 SORTSFLPF.FILE: SORTSFLPF-Sort_Subfile_Sample_table.pf
 SORTSFL.FILE: SORTSFL-Sortable_Subfile.dspf
-SORTSFL.PGM: SORTSFL-Sortable_Subfile.pgm.sqlrpgle
+SORTSFL.PGM: SORTSFL-Sortable_Subfile.pgm.sqlrpgle SORTSFLPF.FILE SORTSFL.FILE
