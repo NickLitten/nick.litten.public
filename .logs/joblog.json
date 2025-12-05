@@ -1,13 +1,13 @@
 [
     {
-        "cmd": "CRTSQLRPGI srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/SIMPWEBSQL/SIMPWEBSQL-Consume_a_webservice_response.pgm.sqlrpgle') OBJ(NICKLITTEN/SIMPWEBSQL) COMMIT(*NONE ) OBJTYPE(*PGM) OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Consume a webservice response') TGTRLS(V7R4M0) DBGVIEW(*SOURCE) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR(''includes'')')",
-        "cmd_time": "2025-12-05-15.14.15.00",
+        "cmd": "CRTBNDRPG srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/JSNIFSSQL/JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL.pgm.rpgle') PGM(NICKLITTEN/JSNIFSSQL) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('JSON TABLE Decode JSON SQL') INCDIR('includes')",
+        "cmd_time": "2025-12-05-15.34.18.00",
         "msgs": [
             {
                 "msgid": "CPC2198",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2025-12-05-15.14.14.518096",
+                "message_time": "2025-12-05-15.34.17.962740",
                 "message_text": "Current library changed to NICKLITTEN.",
                 "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
                 "from_program": "QLICHLLE",
@@ -23,7 +23,7 @@
                 "msgid": "CPC2196",
                 "type": "COMPLETION",
                 "severity": 0,
-                "message_time": "2025-12-05-15.14.14.522880",
+                "message_time": "2025-12-05-15.34.17.963400",
                 "message_text": "Library NICKLITTEN added to library list.",
                 "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
                 "from_program": "QLICUSRL",
@@ -36,9 +36,9 @@
                 "to_instruction": "4"
             }
         ],
-        "object": "SIMPWEBSQL.PGM",
-        "source": "/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/SIMPWEBSQL/SIMPWEBSQL-Consume_a_webservice_response.pgm.sqlrpgle",
-        "output": "/home/NICKLITTEN/builds/nick.litten.public/.logs/codesamples_webservice_SIMPWEBSQL_SIMPWEBSQL-Consume_a_webservice_response_pgm_sqlrpgle.splf",
-        "failed": false
+        "object": "JSNIFSSQL.PGM",
+        "source": "/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/JSNIFSSQL/JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL.pgm.rpgle",
+        "output": "/home/NICKLITTEN/builds/nick.litten.public/.logs/codesamples_webservice_JSNIFSSQL_JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL_pgm_rpgle.splf",
+        "failed": true
     }
 ]

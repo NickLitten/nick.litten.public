@@ -1,0 +1,35 @@
+TIMESTAMP  0 20251205153418
+PROCESSOR  0 000 1
+FILEID     0 001 000000 122 /home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/JSNIFSSQL/JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL.pgm.rpgle 20251205134502 0
+ERROR      0 001 1 000064 000064 012 000064 018 RNF3308 E 20 050 Keyword name is not valid; the keyword is ignored.
+ERROR      0 001 1 000064 000064 007 000064 010 RNF3438 S 30 077 LIKE keyword is expected for field JSON but not found; definition is ignored.
+ERROR      0 001 1 000099 000099 010 000099 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000108 000108 010 000108 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000127 000127 010 000127 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000129 000129 010 000129 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000140 000140 010 000140 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000144 000144 010 000144 012 RNF5347 S 30 059 An assignment operator is expected with the EVAL operation.
+ERROR      0 001 1 000073 000073 005 000073 013 RNF7031 I 00 050 The name or indicator BYTESPROV is not referenced.
+ERROR      0 001 1 000074 000074 005 000074 014 RNF7031 I 00 051 The name or indicator BYTESAVAIL is not referenced.
+ERROR      0 001 1 000072 000072 008 000072 016 RNF7031 I 00 050 The name or indicator ERRORCODE is not referenced.
+ERROR      0 001 1 000099 000099 005 000099 008 RNF7030 S 30 042 The name or indicator EXEC is not defined.
+ERROR      0 001 1 000064 000064 007 000064 010 RNF7030 S 30 042 The name or indicator JSON is not defined.
+ERROR      0 001 1 000029 000029 005 000029 010 RNF7031 I 00 047 The name or indicator USERID is not referenced.
+ERROR      0 001 1 000030 000030 005 000030 013 RNF7031 I 00 050 The name or indicator FIRSTNAME is not referenced.
+ERROR      0 001 1 000031 000031 005 000031 012 RNF7031 I 00 049 The name or indicator LASTNAME is not referenced.
+ERROR      0 001 1 000032 000032 005 000032 012 RNF7031 I 00 049 The name or indicator INITIALS is not referenced.
+ERROR      0 001 1 000033 000033 005 000033 011 RNF7031 I 00 048 The name or indicator COMPANY is not referenced.
+ERROR      0 001 1 000034 000034 005 000034 012 RNF7031 I 00 049 The name or indicator DIVISION is not referenced.
+ERROR      0 001 1 000035 000035 005 000035 014 RNF7031 I 00 051 The name or indicator DEPARTMENT is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 047 The name or indicator USERID is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 050 The name or indicator FIRSTNAME is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 049 The name or indicator LASTNAME is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 049 The name or indicator INITIALS is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 048 The name or indicator COMPANY is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 049 The name or indicator DIVISION is not referenced.
+ERROR      0 001 1 000041 000041 005 000041 013 RNF7031 I 00 051 The name or indicator DEPARTMENT is not referenced.
+ERROR      0 001 1 000099 000099 010 000099 012 RNF7030 S 30 041 The name or indicator SQL is not defined.
+ERROR      0 001 1 000131 000131 009 000131 014 RNF7030 S 30 044 The name or indicator SQLSTT is not defined.
+ERROR      0 001 1 000131 000131 009 000131 014 RNF7503 S 30 051 Expression contains an operand that is not defined.
+ERROR      0 001 0 000000 000000 000 000000 000 RNS9308 T 50 057 Compilation stopped. Severity 30 errors found in program.
+FILEEND    0 001 000157

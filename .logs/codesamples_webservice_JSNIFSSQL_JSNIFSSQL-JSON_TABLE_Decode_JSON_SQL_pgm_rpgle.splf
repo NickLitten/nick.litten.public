@@ -1,0 +1,392 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: CRTBNDRPG srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/webservice/JSNIFSSQL/JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL.pgm.rpgle') PGM(NICKLITTEN/JSNIFSSQL) TGTCCSID(*JOB) DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('JSON TABLE Decode JSON SQL') INCDIR('includes')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NICKLITTEN NICKLITTEN QTEMP QGPL
+>> executing time: 2025-12-05-15.34.18.00
+
+RNS9308: Compilation stopped. Severity 30 errors found in program.
+RNS9310: Compilation failed. Program JSNIFSSQL not created in library NICKLITTEN.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   JSNIFSSQL
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   JSON TABLE Decode JSON SQL
+  Source stream file   . . . . . . :   /home/NICKLITTEN/builds/nick.litten.public/codesam
+                                       ples/webservice/JSNIFSSQL/JSNIFSSQL-JSON_TABLE_Dec
+                                       ode_JSON_SQL.pgm.rpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   25-12-05  13:45:02
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *NONE
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *HEX
+  Language identifier  . . . . . . :   *JOBRUN
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   *CURRENT
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **FREE                                                                                                               000001
+     2                                                                                                                      000002
+  JSON_TABLE Decode JSON using SQL - Proof of Concept
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+     3                                                                                                                      000004
+     4 // PROGRAM CREATION OVERRIDES:                                                                                       000005
+     5 // Create as a Module and bind into ILE program                                                                      000006
+     6 //                                                                                                                   000007
+     7 // JSNIFSSQL.sqlrpgle (fully /free)                                                                                  000008
+     8 //                                                                                                                   000009
+     9 // This demonstrates reading JSON data from an IFS file and then                                                     000010
+    10 // parsing that JSON using SQL JSON_TABLE functions.                                                                 000011
+    11 //                                                                                                                   000012
+    12 // The JSON data is loaded into a data structure suitable                                                            000013
+    13 // for display from a program debugger.                                                                              000014
+    14 //                                                                                                                   000015
+    15 // MODIFICATION HISTORY:                                                                                             000016
+    16 // 07/17/2017 nick litten V1.0 Created                                                                               000017
+    17 // 06/20/2021 nick litten V1.1 Removed unused variables for clarity                                                  000018
+    18                                                                                                                      000019
+    19 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')                                                                          000020
+    20  option(*nodebugio:*srcstmt:*nounref)                                                                                000021
+000022  datfmt(*ISO) decedit('0.')                                                                                          000022
+000023  copyright('| JSNIFSSQL V1.1 Use JSONTABLE to read IFS and parse JSON');                                             000023
+000024                                                                                                                      000024
+000025 // IFS file with JSON code that we will be reading and decoding                                                      000025
+        *--------------------------------------------------------------------*
+        * Compiler Options in Effect:                                        *
+        *--------------------------------------------------------------------*
+        *  Text 'description' . . . . . . . :                                *
+        *                 JSON TABLE Decode JSON SQL                         *
+        *  Generation severity level  . . . :   10                           *
+        *  Default activation group . . . . :   *NO                          *
+        *  Compiler options . . . . . . . . :   *XREF      *GEN              *
+        *                                       *NOSECLVL  *SHOWCPY          *
+        *                                       *EXPDDS    *EXT              *
+        *                                       *NOSHOWSKP *SRCSTMT          *
+        *                                       *NODEBUGIO *NOUNREF          *
+        *                                       *EVENTF                      *
+        *  Optimization level . . . . . . . :   *NONE                        *
+        *  Source listing indentation . . . :   *NONE                        *
+        *  Type conversion options  . . . . :   *NONE                        *
+        *  Sort sequence  . . . . . . . . . :   *HEX                         *
+        *  Language identifier  . . . . . . :   *JOBRUN                      *
+        *  User profile . . . . . . . . . . :   *USER                        *
+        *  Authority  . . . . . . . . . . . :   *LIBCRTAUT                   *
+        *  Truncate numeric . . . . . . . . :   *YES                         *
+        *  Fix numeric  . . . . . . . . . . :   *NONE                        *
+        *  Allow null values  . . . . . . . :   *NO                          *
+        *  Storage model . . .  . . . . . . :   *SNGLVL                      *
+        *  Binding directory from Command . :   *NONE                        *
+        *  Binding directory from Source  . :   *NONE                        *
+        *  Activation group . . . . . . . . :   NICKLITTEN                   *
+        *  Enable performance collection  . :   *PEP                         *
+        *  Profiling data . . . . . . . . . :   *NOCOL                       *
+        *  Generate program interface . . . :   *NO                          *
+        *  Require prototype for export . . :   *NO                          *
+        *--------------------------------------------------------------------*
+  JSON_TABLE Decode JSON using SQL - Proof of Concept
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000026 dcl-c ifsFilename const('/littenn/getwebjsn.json');                                                                  000026
+000027                                                                                                                      000027
+000028 dcl-ds jsonFields qualified;                                                                                         000028
+000029     USERID varchar(100);                                                                                             000029
+000030     FIRSTNAME varchar(100);                                                                                          000030
+000031     LASTNAME varchar(100);                                                                                           000031
+000032     INITIALS varchar(100);                                                                                           000032
+000033     COMPANY int(10);                                                                                                 000033
+000034     DIVISION int(10);                                                                                                000034
+000035     DEPARTMENT int(10);                                                                                              000035
+000036 end-ds;                                                                                                              000036
+000037                                                                                                                      000037
+000038 dcl-ds result qualified;                                                                                             000038
+000039     success ind;                                                                                                     000039
+000040     errmsg varchar(500);                                                                                             000040
+000041     jsonArray likeds(jsonFields) dim(9999);                                                                          000041
+000042 end-ds;                                                                                                              000042
+000043                                                                                                                      000043
+000044 // procedures and variables for IBM i *APIS to loads IFS into variable                                               000044
+000045 dcl-pr open int(10) extproc('open');                                                                                 000045
+000046     *n pointer value options(*string); // filename                                                                   000046
+000047     *n int(10) value; // openflags                                                                                   000047
+000048     *n uns(10) value options(*nopass); // mode                                                                       000048
+000049     *n uns(10) value options(*nopass); // codepage                                                                   000049
+000050 end-pr;                                                                                                              000050
+000051                                                                                                                      000051
+000052 dcl-pr read int(10) extproc('read');                                                                                 000052
+000053     *n int(10) value; // filehandle                                                                                  000053
+000054     *n pointer value; // datareceived                                                                                000054
+000055     *n uns(10) value; // nbytes                                                                                      000055
+000056 end-pr;                                                                                                              000056
+000057                                                                                                                      000057
+000058 dcl-pr close int(10) extproc('close');                                                                               000058
+000059     *n int(10) value; // filehandle                                                                                  000059
+000060 end-pr;                                                                                                              000060
+000061                                                                                                                      000061
+000062 dcl-s Count int(10);                                                                                                 000062
+000063 dcl-s Handle int(10);                                                                                                000063
+000064 dcl-s json sqltype(clob:16000000);                                                                                   000064
+======>      bbbb aaaaaaa
+*RNF3308 20 a      000064  Keyword name is not valid; the keyword is ignored.
+*RNF3438 30 b      000064  LIKE keyword is expected for field JSON but not found;
+                           definition is ignored.
+000065 dcl-s ifsData char(16000000);                                                                                        000065
+000066 dcl-s ifsDataLen int(10);                                                                                            000066
+000067 dcl-s rc int(10);                                                                                                    000067
+000068 dcl-s O_RDONLY int(10) inz(1);                                                                                       000068
+000069 dcl-s O_TEXTDATA int(10) inz(16777216);                                                                              000069
+000070 dcl-s lastElem int(10);                                                                                              000070
+000071                                                                                                                      000071
+000072 dcl-ds ErrorCode;                                                                                                    000072
+000073     BytesProv int(10) inz(0);                                                                                        000073
+000074     BytesAvail int(10) inz(0);                                                                                       000074
+000075 end-ds;                                                                                                              000075
+000076                                                                                                                      000076
+  JSON_TABLE Decode JSON using SQL - Proof of Concept
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      5
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000077                                                                                                                      000077
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      6
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000079                                                                                                                      000079
+000080 // Open the stream file                                                                                              000080
+000081 Handle = open(%trim(ifsFilename):O_RDONLY + O_TEXTDATA);                                                             000081
+000082                                                                                                                      000082
+000083 // Loop to read the stream file into variable "ifsData"                                                              000083
+000084 dou ifsDataLen<1;                                                                                    B01             000084
+000085     Count += 1;                                                                                       01             000085
+000086     ifsDataLen = read(Handle:%addr(ifsData):%size(ifsData));                                          01             000086
+000087 enddo;                                                                                               E01             000087
+000088                                                                                                                      000088
+000089 // Close the stream file                                                                                             000089
+000090 rc = close(Handle);                                                                                                  000090
+000091                                                                                                                      000091
+000092 if ifsData <> *blanks;                                                                               B01             000092
+000093                                                                                                                      000093
+000094     // we have the IFS data loaded into variable(ifsData) so lets load                                               000094
+000095     // that variable into the SQL(clob) and process it using the JSON_TABLE                                          000095
+000096     // to break the JSON out into fields for processing. NOTE: we are not                                            000096
+000097     // doing anything with those fields in this program because this is just                                         000097
+000098     // a proof of concept                                                                                            000098
+000099     exec sql                                                                                          01             000099
+======>         aaa
+*RNF5347 30 a      000099  An assignment operator is expected with the EVAL operation.
+000100     set option naming = *sys,                                                                         01             000100
+000101     commit = *none,                                                                                   01             000101
+000102     usrprf = *user,                                                                                   01             000102
+000103     dynusrprf = *user,                                                                                01             000103
+000104     datfmt = *iso,                                                                                    01             000104
+000105     closqlcsr = *endmod;                                                                              01             000105
+000106                                                                                                                      000106
+000107     // read the JSON data from a string variable using JSON_TABLE                                                    000107
+000108     exec sql                                                                                          01             000108
+======>         aaa
+*RNF5347 30 a      000108  An assignment operator is expected with the EVAL operation.
+000109     declare C1 cursor for                                                                             01             000109
+000110     select *                                                                                          01             000110
+000111         from json_table(                                                                              01             000111
+000112             :JSON,                                                                                    01             000112
+000113             '$'                                                                                       01             000113
+000114             columns(                                                                                  01             000114
+000115             nested '$.users[*]' columns(                                                              01             000115
+000116                 USERID varchar(100) path '$.userID',                                                  01             000116
+000117                 FIRSTNAME varchar(100) path '$.firstName',                                            01             000117
+000118                 LASTNAME varchar(100) path '$.lastName',                                              01             000118
+000119                 INITIALS varchar(100) path '$.initials',                                              01             000119
+000120                 COMPANY int path '$.company',                                                         01             000120
+000121                 DIVISION int path '$.division',                                                       01             000121
+000122                 DEPARTMENT int path '$.department'                                                    01             000122
+000123             )                                                                                         01             000123
+000124             )                                                                                         01             000124
+000125         ) as X;                                                                                       01             000125
+000126                                                                                                                      000126
+000127     exec sql open c1;                                                                                 01             000127
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      7
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+======>         aaa
+*RNF5347 30 a      000127  An assignment operator is expected with the EVAL operation.
+000128                                                                                                                      000128
+000129     exec sql fetch next from c1 into :jsonfields;                                                     01             000129
+======>         aaa
+*RNF5347 30 a      000129  An assignment operator is expected with the EVAL operation.
+000130                                                                                                                      000130
+000131     dow sqlstt='00000' or %subst(sqlstt:1:2)='01';                                                   B02             000131
+000132                                                                                                                      000132
+000133     lastelem += 1;                                                                                    02             000133
+000134                                                                                                                      000134
+000135     // Store Datastructure values in next element of 'return array'                                                  000135
+000136     result.jsonArray(lastelem) = jsonFields;                                                          02             000136
+000137                                                                                                                      000137
+000138     // here we could do something with each row of data ie: write to file                                            000138
+000139     // or some other business logic.                                                                                 000139
+000140     exec sql fetch next from c1 into :jsonfields;                                                     02             000140
+======>         aaa
+*RNF5347 30 a      000140  An assignment operator is expected with the EVAL operation.
+000141                                                                                                                      000141
+000142     enddo;                                                                                           E02             000142
+000143                                                                                                                      000143
+000144     exec sql                                                                                          01             000144
+======>         aaa
+*RNF5347 30 a      000144  An assignment operator is expected with the EVAL operation.
+000145     close c1;                                                                                         01             000145
+000146                                                                                                                      000146
+000147     result.success = *on;                                                                             01             000147
+000148                                                                                                                      000148
+000149 else;                                                                                                X01             000149
+000150                                                                                                                      000150
+000151     // If unable to load JSON data from the IFS then tell the world                                                  000151
+000152     result.success = *off;                                                                            01             000152
+000153     result.errmsg = 'Ouch! I couldnt read the IFS file';                                              01             000153
+000154                                                                                                                      000154
+000155 endif;                                                                                               E01             000155
+000156                                                                                                                      000156
+000157 *inlr = *on;                                                                                                         000157
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      8
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv   Statement    Message text
+*RNF7030 30        000099  The name or indicator EXEC is not defined.
+*RNF7030 30        000064  The name or indicator JSON is not defined.
+*RNF7030 30        000099  The name or indicator SQL is not defined.
+*RNF7030 30        000131  The name or indicator SQLSTT is not defined.
+*RNF7503 30        000131  Expression contains an operand that is not defined.
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page      9
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         No references in the source.
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         *INLR             N(1)                   000157M
+*RNF7031 BYTESAVAIL        I(10,0)                000074D
+*RNF7031 BYTESPROV         I(10,0)                000073D
+         CLOSE             I(10,0)                000058D     000090
+                           PROTOTYPE
+         COUNT             I(10,0)                000062D     000085M
+*RNF7031 ERRORCODE         DS(8)                  000072D
+*RNF7030 EXEC              **UNDEF**              000099M     000108M     000127M     000129M
+                                                  000140M     000144M
+         HANDLE            I(10,0)                000063D     000081M     000086      000090
+         IFSDATA           A(16000000)            000065D     000086      000086      000092
+         IFSDATALEN        I(10,0)                000066D     000084      000086M
+         IFSFILENAME       CONST                  000026D     000081
+*RNF7030 JSON              **UNDEF**              000064D
+         JSONFIELDS        DS(420)                000028D     000041      000136
+*RNF7031   COMPANY         I(10,0)                000033D
+*RNF7031   DEPARTMENT      I(10,0)                000035D
+*RNF7031   DIVISION        I(10,0)                000034D
+*RNF7031   FIRSTNAME       A(100)                 000030D
+                           VARYING(2)
+*RNF7031   INITIALS        A(100)                 000032D
+                           VARYING(2)
+*RNF7031   LASTNAME        A(100)                 000031D
+                           VARYING(2)
+*RNF7031   USERID          A(100)                 000029D
+                           VARYING(2)
+         LASTELEM          I(10,0)                000070D     000133M     000136
+         O_RDONLY          I(10,0)                000068D     000081
+         O_TEXTDATA        I(10,0)                000069D     000081
+         OPEN              I(10,0)                000045D     000081
+                           PROTOTYPE
+         RC                I(10,0)                000067D     000090M
+         READ              I(10,0)                000052D     000086
+                           PROTOTYPE
+         RESULT            DS(4200083)            000038D     000136M     000147M     000152M
+                                                  000153M
+           ERRMSG          A(500)                 000040D     000153
+                           VARYING(2)
+           JSONARRAY(9999) DS(420)                000041D     000136
+           SUCCESS         N(1)                   000039D     000147      000152
+*RNF7030 SQLSTT            **UNDEF**              000131      000131
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page     10
+         LR                                       000157M
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page     11
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         open                                     000045      000081
+         read                                     000052      000086
+         close                                    000058      000090
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page     12
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00     17 The name or indicator is not referenced.
+*RNF3308 20      1 Keyword name is not valid; the keyword is ignored.
+*RNF3438 30      1 LIKE keyword is expected but not found; definition is
+                   ignored.
+*RNF5347 30      6 An assignment operator is expected with the EVAL operation.
+*RNF7030 30      4 The name or indicator is not defined.
+*RNF7503 30      1 Expression contains an operand that is not defined.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+  [---------- MAINLINE ---------- ]
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/JSNIFSSQL     PROJEX     25-12-05 15:34:18        Page     13
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :       17
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        1
+    Severe Error (30+)  . . . . . . :       12
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :       30
+  Source Totals:
+    Records . . . . . . . . . . . . :      155
+    Specifications  . . . . . . . . :       93
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       61
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Compilation stopped. Severity 30 errors found in program.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
