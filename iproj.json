@@ -1,0 +1,17 @@
+{
+  "version": "0.0.2",
+  "description": "Nick Litten Public VSCode Stuff",
+  "objlib": "&lib",
+  "curlib": "&lib",
+  "includePath": [
+    "includes"
+  ],
+  "preUsrlibl": [
+    "&lib"
+  ],
+  "postUsrlibl": [],
+  "setIBMiEnvCmd": [],
+  "repository": "https://github.com/NickLitten/nick.litten.public.git",
+  "compileCommand": "/QOpenSys/pkgs/bin/makei c -f {filename}",
+  "buildCommand": "/QOpenSys/pkgs/bin/makei build"
+}

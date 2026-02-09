@@ -1,0 +1,186 @@
+     A* ============================================================================
+     A* Display File: CRUD01PNL - CRUD Task Management Interface
+     A* Description: Subfile-based interface for Create/Read/Update/Delete
+     A*              operations on task records
+     A* Author: Nick Litten
+     A* Date: 2026-02-03
+     A* ============================================================================
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      INDARA
+     A                                      ERRSFL
+     A                                      PRINT
+     A                                      CHGINPDFT(UL)
+     A                                      CA03(03 'Exit')
+     A* ============================================================================
+     A* HEADER RECORD - Common header displayed on all screens
+     A* ============================================================================
+     A          R HEADER
+     A                                      ASSUME
+     A*                                   Row Col
+     A                                  1  3SYSNAME
+     A            TITLE1        50A  O  1 16COLOR(WHT)
+     A                                  1 69DATE
+     A                                      EDTCDE(Y)
+     A                                  2  3USER
+     A            TITLE2        50A  O  2 16COLOR(WHT)
+     A                                  2 69TIME
+     A            TITLE3        50A  O  3 16COLOR(WHT)
+     A*                                   Separator line
+     A                                  4  1' '
+     A                                  4  3'                                  -
+     A                                                                         -
+     A                                             '
+     A                                      DSPATR(UL)
+     A* ============================================================================
+     A* FOOTER RECORD - Common footer with function key help
+     A* ============================================================================
+     A          R FOOTER
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A*                                   Separator line
+     A                                 21  3'                                  -
+     A                                                                         -
+     A                                             '
+     A                                      DSPATR(UL)
+     A            FOOTTEXT      50A  O 22  3COLOR(WHT)
+     A* ============================================================================
+     A* SFLTASK - Subfile record for task list display
+     A* ============================================================================
+     A          R SFLTASK                   SFL
+     A*                                   Row Col
+     A            OPCTASK        1A  B 10  7DSPATR(RI)
+     A  40                                  DSPATR(PC)
+     A            SFLTASKID     10S 0O 10 12
+     A            SFLTASKNAM    10A  O 10 23
+     A            SFLSTRDATE     8Y 0O 10 34EDTWRD('    /  /  ')
+     A            SFLENDDATE     8Y 0O 10 45EDTWRD('    /  /  ')
+     A            SFLSTATE       2S 0O 10 57
+     A* ============================================================================
+     A* SFLTASKCTL - Subfile control record for task list
+     A* ============================================================================
+     A          R SFLTASKCTL                SFLCTL(SFLTASK)
+     A                                      SFLSIZ(0011)
+     A                                      SFLPAG(0010)
+     A*                                   Function Keys
+     A                                      CF05(05 'Refresh')
+     A                                      CF06(06 'Create')
+     A                                      CF12(12 'Cancel')
+     A                                      PAGEDOWN(80)
+     A                                      PAGEUP(81)
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A*                                   Subfile Control Indicators
+     A  99                                  SFLDSP
+     A  98                                  SFLDSPCTL
+     A  97                                  SFLCLR
+     A  96                                  SFLEND(*MORE)
+     A*                                   Column Headers
+     A                                  6  5'Options'
+     A                                      COLOR(WHT)
+     A                                      DSPATR(HI)
+     A                                  6 15'2=Change 4=Delete 5=Display'
+     A                                      COLOR(BLU)
+     A*                                   Column Headings
+     A                                  8  6'Opt'
+     A                                      DSPATR(HI UL)
+     A                                  8 12'Task ID'
+     A                                      DSPATR(HI UL)
+     A                                  8 24'Name'
+     A                                      DSPATR(HI UL)
+     A                                  8 34'Start Date'
+     A                                      DSPATR(HI UL)
+     A                                  8 45'End Date'
+     A                                      DSPATR(HI UL)
+     A                                  8 57'State'
+     A                                      DSPATR(HI UL)
+     A* ============================================================================
+     A* CRUDTASK - CRUD operations detail screen
+     A* ============================================================================
+     A          R CRUDTASK
+     A                                      CF10(10 'Confirm')
+     A                                      CF12(12 'Cancel')
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A*                                   Task ID Field
+     A                                  7  5'Task ID......:'
+     A                                      DSPATR(HI)
+     A            CRUDTASKID    10Y 0B  7 19CHECK(MF ME)
+     A                                      EDTCDE(Z)
+     A  31                                  ERRMSG('Task ID already exists' 31)
+     A  35                                  DSPATR(PR)
+     A*                                   Task Name Field
+     A                                  8  5'Task Name....:'
+     A                                      DSPATR(HI)
+     A            NAMETASK      10A  B  8 19CHECK(ME)
+     A  35                                  DSPATR(PR)
+     A  37                                  ERRMSG('Task name required' 37)
+     A*                                   Description Field (Multi-line)
+     A                                  9  5'Description..:'
+     A                                      DSPATR(HI)
+     A            DESCRP       150A  B 10  5CNTFLD(050)
+     A  35                                  DSPATR(PR)
+     A*                                   Solution Field (Multi-line)
+     A                                 13  5'Solution.....:'
+     A                                      DSPATR(HI)
+     A            SOLUTION     150A  B 14  5CNTFLD(050)
+     A  36                                  DSPATR(PR)
+     A*                                   Start Date Field
+     A                                 17  5'Start Date...:'
+     A                                      DSPATR(HI)
+     A            STARTDATE      8Y 0B 17 19CHECK(ME)
+     A                                      EDTWRD('    /  /  ')
+     A  35                                  DSPATR(PR)
+     A  32                                  ERRMSG('Invalid date format' 32)
+     A  34                                  ERRMSG('Start date > End date' 34)
+     A                                 17 32'YYYYMMDD'
+     A                                      COLOR(WHT)
+     A*                                   End Date Field
+     A                                 18  5'End Date.....:'
+     A                                      DSPATR(HI)
+     A            ENDDATE        8Y 0B 18 19CHECK(ME)
+     A                                      EDTWRD('    /  /  ')
+     A  33                                  ERRMSG('Invalid date format' 33)
+     A  36                                  DSPATR(PR)
+     A                                 18 32'YYYYMMDD'
+     A                                      COLOR(WHT)
+     A*                                   State Field
+     A                                 19  5'State........:'
+     A                                      DSPATR(HI)
+     A            STATETASK      1S 0B 19 19CHECK(ME)
+     A                                      RANGE(0 9)
+     A  36                                  DSPATR(PR)
+     A  38                                  ERRMSG('State must be 0-9' 38)
+     A                                 19 23'(0-9)'
+     A                                      COLOR(WHT)
+     A* ============================================================================
+     A* EMPTY - Message displayed when database is empty
+     A* ============================================================================
+     A          R EMPTY
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A                                 14 13'(Database is EMPTY!)'
+     A                                      COLOR(YLW)
+     A                                      DSPATR(HI BL)
+     A* ============================================================================
+     A* WDWCONFIRM - Confirmation window for delete operations
+     A* ============================================================================
+     A          R WDWCONFIRM
+     A                                      WINDOW(9 18 5 40)
+     A                                      WDWTITLE((*TEXT 'Confirm Action'))
+     A            WDWTEXT1      40A  O  2  1COLOR(WHT)
+     A            WDWTEXT2      40A  O  3  1COLOR(WHT)
+     A            WDWCHOICE      1A  B  4 21COLOR(WHT)
+     A                                      DSPATR(RI)
+     A                                      VALUES('Y' 'N')
+     A                                      CHECK(ME)
+     A* ============================================================================
+     A* WDWMESSAGE - General message window
+     A* ============================================================================
+     A          R WDWMESSAGE
+     A                                      WINDOW(9 18 5 40)
+     A                                      WDWTITLE((*TEXT 'Message'))
+     A            WDWMSG1       40A  O  2  1COLOR(WHT)
+     A            WDWMSG2       40A  O  3  1COLOR(WHT)
+     A* ============================================================================
+     A* End of Display File
+     A* ============================================================================

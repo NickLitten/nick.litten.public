@@ -1,0 +1,1514 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        //   Header file for the Socket API.
+        //   To use this, you must /COPY SOCKET_H into the D specs of your
+        //   ILE RPG source member.
+        //   (or whatever the appropriate source lib/file, member is)
+        //    Most of the major socket functions and structures are prototyped
+        //    here.  There may be some that I missed (because I havent needed
+        //    them) if you need them, you'll have to add them yourself :)
+        //       SCK 08/06/1998
+        // **********************************************************************
+
+        /if defined(SOCKET_H)
+        /eof
+        /endif
+        /define SOCKET_H
+
+        // *********************************************************************
+        //   C O N S T A N T S
+        // *********************************************************************
+         dcl-c IPVERSION CONST(4);
+
+        // ************************************************
+        //  Address families.
+        // ************************************************
+         dcl-c AF_UNSPEC CONST(0);
+          // Unix domain
+         dcl-c AF_UNIX CONST(1);
+          // Internet domain (IPv4)
+         dcl-c AF_INET CONST(2);
+          // Network Services domain
+         dcl-c AF_NS CONST(6);
+          // IPv6
+         dcl-c AF_INET6 CONST(24);
+          // Unix w/CCSID support
+         dcl-c AF_UNIX_CCSID CONST(98);
+          // Telephony domain
+         dcl-c AF_TELEPHONY CONST(99);
+
+
+          // ************************************************
+          //  Socket Types:
+          // ************************************************
+          // stream socket (TCP)
+         dcl-c SOCK_STREAM CONST(1);
+          // datagram socket (UDP)
+         dcl-c SOCK_DGRAM CONST(2);
+          // raw socket
+         dcl-c SOCK_RAW CONST(3);
+          // sequential packet
+         dcl-c SOCK_SEQPACKET CONST(5);
+
+          // ************************************************
+          //  Protocol families.
+          // ************************************************
+         dcl-c PF_UNSPEC CONST(0);
+          // Unix domain
+         dcl-c PF_UNIX CONST(1);
+          // Internet domain (IPv4)
+         dcl-c PF_INET CONST(2);
+          // Network Services domain
+         dcl-c PF_NS CONST(6);
+          // IPv6
+         dcl-c PF_INET6 CONST(24);
+          // Unix w/CCSID support
+         dcl-c PF_UNIX_CCSID CONST(98);
+          // Telephony domain
+         dcl-c PF_TELEPHONY CONST(99);
+
+          // ************************************************
+          //  Socket-Level options (setsockopt/getsockopt)
+          // ************************************************
+          // allow broadcast msgs
+         dcl-c SO_BROADCAST 5;
+          // record debug information
+         dcl-c SO_DEBUG 10;
+          // disable routing
+         dcl-c SO_DONTROUTE 15;
+          // error status
+         dcl-c SO_ERROR 20;
+          // keep connections alive
+         dcl-c SO_KEEPALIVE 25;
+          // linger upon close
+         dcl-c SO_LINGER 30;
+          // out-of-band data inline
+         dcl-c SO_OOBINLINE 35;
+          // receive buffer size
+         dcl-c SO_RCVBUF 40;
+          // receive low water mark
+         dcl-c SO_RCVLOWAT 45;
+          // receive timeout value
+         dcl-c SO_RCVTIMEO 50;
+          // re-use local address
+         dcl-c SO_REUSEADDR 55;
+          // send buffer size
+         dcl-c SO_SNDBUF 60;
+          // send low water mark
+         dcl-c SO_SNDLOWAT 65;
+          // send timeout value
+         dcl-c SO_SNDTIMEO 70;
+          // socket type
+         dcl-c SO_TYPE 75;
+          // send loopback
+         dcl-c SO_USELOOPBACK 80;
+          // send loopback
+         dcl-c SO_ACCEPTCONN 85;
+
+          // ************************************************
+          //  flag parameter values (send/sendto/recv/recvfrom)
+          // ************************************************
+          //   dont route
+         dcl-c MSG_DONTROUTE CONST(1);
+          //   out-of-band data
+         dcl-c MSG_OOB CONST(4);
+          //   keep data in buffer
+         dcl-c MSG_PEEK CONST(8);
+          //   data discarded
+         dcl-c MSG_TRUNC CONST(16);
+          //   control data discard
+         dcl-c MSG_CTRUNC CONST(32);
+          //   wait for full req
+         dcl-c MSG_WAITALL CONST(64);
+          //   end of record
+         dcl-c MSG_EOR CONST(128);
+          //   maximum iovecs
+         dcl-c MSG_MAXIOVLEN CONST(16);
+          //    socket layer
+         dcl-c SOL_SOCKET CONST(-1);
+          //    max queued conns
+         dcl-c SOMAXCONN CONST(512);
+
+          // ************************************************
+          //  Flag constants for send_file API
+          // ************************************************
+         dcl-c SF_CLOSE 1;
+         dcl-c SF_REUSE 2;
+
+          // ************************************************
+          //  Flags for shutdown API
+          // ************************************************
+         dcl-c SHUT_RD 0;
+         dcl-c SHUT_WR 1;
+         dcl-c SHUT_RDWR 2;
+
+          // ************************************************
+          //  Internet Family Protocols
+          // ************************************************
+         dcl-c IPPROTO_IP CONST(0);
+         dcl-c IPPROTO_HOPOPTS CONST(0);
+         dcl-c IPPROTO_ICMP CONST(1);
+         dcl-c IPPROTO_TCP CONST(6);
+         dcl-c IPPROTO_EGP CONST(8);
+         dcl-c IPPROTO_PUP CONST(12);
+         dcl-c IPPROTO_UDP CONST(17);
+         dcl-c IPPROTO_IPV6 CONST(41);
+         dcl-c IPPROTO_ROUTING CONST(43);
+         dcl-c IPPROTO_FRAGMENT CONST(44);
+         dcl-c IPPROTO_ESP CONST(50);
+         dcl-c IPPROTO_AH CONST(51);
+         dcl-c IPPROTO_ICMPV6 CONST(58);
+         dcl-c IPPROTO_NONE CONST(59);
+         dcl-c IPPROTO_DSTOPTS CONST(60);
+         dcl-c IPPROTO_RAW CONST(255);
+         dcl-c IPPROTO_MAX CONST(256);
+
+          //  IP-Level (IPPROTO_IP) options for setsockopt()/getsockopt()
+          //      ip options
+         dcl-c IP_OPTIONS CONST(5);
+         dcl-c IP_TOS CONST(10);
+         dcl-c IP_TTL CONST(15);
+         dcl-c IP_MULTICAST_IF CONST(20);
+         dcl-c IP_MULTICAST_TTL CONST(25);
+         dcl-c IP_MULTICAST_LOOP CONST(30);
+         dcl-c IP_ADD_MEMBERSHIP CONST(35);
+         dcl-c IP_DROP_MEMBERSHIP CONST(40);
+         dcl-c IP_DONTFRAG CONST(55);
+         dcl-c IP_RECVLCLIFADDR CONST(99);
+         dcl-c IPV6_V6ONLY CONST(100);
+         dcl-c IPV6_RECVHOPLIMIT CONST(101);
+         dcl-c IPV6_UNICAST_HOPS CONST(15);
+         dcl-c IPV6_MULTICAST_IF CONST(20);
+         dcl-c IPV6_MULTICAST_TTL CONST(25);
+         dcl-c IPV6_MULTICAST_LOOP CONST(30);
+         dcl-c IPV6_JOIN_GROUP CONST(35);
+         dcl-c IPV6_LEAVE_GROUP CONST(40);
+         dcl-c IPV6_CHECKSUM CONST(105);
+         dcl-c IPV6_HOPLIMIT CONST(115);
+         dcl-c ICMP6_FILTER CONST(150);
+
+          //  TCP level (IPPROTO_TCP) options for setsockopt()/getsockopt()
+         dcl-c TCP_MAXSEG 5;
+         dcl-c TCP_NODELAY 10;
+
+          //  Types of Service for IP packets
+          //   These are indended to be used in the 'ip' data structure
+          //   defined below.
+          //      normal
+         dcl-c IPTOS_NORMAL CONST(x'00');
+          //      min cost
+         dcl-c IPTOS_MIN CONST(x'02');
+          //      reliability
+         dcl-c IPTOS_RELIABLE CONST(x'04');
+          //      throughput
+         dcl-c IPTOS_THRUPUT CONST(x'08');
+          //      low-delay
+         dcl-c IPTOS_LOWDELAY CONST(x'10');
+          //  Precedence for Types of Service
+          //   These are indended to be used in the 'ip' data structure
+          //   defined below.
+          //     net control
+         dcl-c IPTOS_NET CONST(x'E0');
+          //     internet control
+         dcl-c IPTOS_INET CONST(x'C0');
+          //     critic ecp
+         dcl-c IPTOS_CRIT CONST(x'A0');
+          //     flash override
+         dcl-c IPTOS_FOVR CONST(x'80');
+          //     flash
+         dcl-c IPTOS_FLAS CONST(x'60');
+          //     immediate
+         dcl-c IPTOS_IMME CONST(x'40');
+          //     priority
+         dcl-c IPTOS_PTY CONST(x'20');
+          //     routine
+         dcl-c IPTOS_ROUT CONST(x'10');
+          //  "Special" IP Address values
+         dcl-c INADDR_ANY CONST(0);
+         dcl-c INADDR_BROADCAST CONST(4294967295);
+         dcl-c INADDR_LOOPBACK CONST(2130706433);
+         dcl-c INADDR_NONE CONST(4294967295);
+         dcl-c INADDR_UNSPEC_GROUP CONST(3758096384);
+         dcl-c INADDR_ALLHOSTS_GROUP CONST(3758096385);
+         dcl-c INADDR_MAX_LOCAL_GROUP CONST(3758096639);
+         dcl-s INET_ADDRSTRLEN char(16)  based(template);
+         dcl-s INET6_ADDRSTRLEN char(46)  based(template);
+          //  ICMP message types
+          //      echo reply
+         dcl-c ICMP_ECHOREPLY CONST(x'00');
+          //      unreachable
+         //           //      source quench
+         dcl-c ICMP_UNREACHICMP_SOURCEQUENCH CONST(x'03');
+         dcl-c *n CONST(x'04');
+          //      redirect
+         dcl-c ICMP_REDIRECT CONST(x'05');
+          //      echo
+         //           //      time exceeded
+         dcl-c ICMP_ECHOICMP_TIMXCEED CONST(x'08');
+         dcl-c *n CONST(x'0B');
+          //      parameter problem
+         dcl-c ICMP_PARAMPROB CONST(x'0C');
+          //      timestamp request
+         //           //      timestamp req reply
+         dcl-c ICMP_TSTAMPICMP_TSTAMPREPLY CONST(x'0D');
+         dcl-c *n CONST(x'0E');
+          //      info request
+         //           //      info request reply
+         dcl-c ICMP_IREQICMP_IREQREPLY CONST(x'0F');
+         dcl-c *n CONST(x'10');
+          //      addr mask request
+         dcl-c ICMP_MASKREQ CONST(x'11');
+          //      addr mask req reply
+         dcl-c ICMP_MASKREPLY CONST(x'12');
+          //  ICMP subtype codes
+          //      network unreachable
+         dcl-c UNR_NET CONST(x'00');
+          //      host unreachable
+         dcl-c UNR_HOST CONST(x'01');
+          //      protocol unreachble
+         dcl-c UNR_PROTO CONST(x'02');
+          //      port unreachable
+         dcl-c UNR_PORT CONST(x'03');
+          //      fragmentation needed
+          //      and dont fragment
+          //      flag is set
+         dcl-c UNR_FRAG CONST(x'04');
+          //      source route failed
+         dcl-c UNR_SRCF CONST(x'05');
+          //      time exceeded in
+          //      transit
+         dcl-c TIMX_INTRA CONST(x'00');
+          //      time exceeded in
+          //      frag reassembly
+         dcl-c TIMX_REASS CONST(x'01');
+          //      redir for network
+         dcl-c REDIR_NET CONST(x'00');
+          //      redir for host
+         dcl-c REDIR_HOST CONST(x'01');
+          //      redir for TOS & Net
+         dcl-c REDIR_TOSN CONST(x'02');
+          //      redir for TOS & Host
+         dcl-c REDIR_TOSH CONST(x'03');
+
+        /if not defined(FCNTL_CONSTANTS)
+          //  fcntl() commands
+         dcl-c F_DUPFD CONST(0);
+         dcl-c F_GETFL CONST(6);
+         dcl-c F_SETFL CONST(7);
+         dcl-c F_GETOWN CONST(8);
+         dcl-c F_SETOWN CONST(9);
+
+          //  fcntl() flags
+         dcl-c O_NONBLOCK CONST(128);
+         dcl-c O_NDELAY CONST(128);
+         dcl-c FNDELAY CONST(128);
+         dcl-c FASYNC CONST(512);
+        /define FCNTL_CONSTANTS
+        /endif
+
+          // ************************************************
+          //   linger structure
+          //      struct linger {
+          //           int   l_onoff;    Turns ON/OFF
+          //           int   l_linger;   Linger time in secs
+          //      };
+          // ************************************************
+         dcl-ds linger INZ BASED(p_linger);
+          l_onoff int(10);
+          l_linger int(10);
+         end-ds linger;
+
+        /if defined(XOPEN_SOURCE)
+        /if not defined(COMPAT_43)
+        /define XOPEN_SOURCE_530
+        /endif
+        /endif
+
+         dcl-s socklen_t int(10)  based(Template);
+
+          // *************************************************************
+          //  Socket Address: This is a basic socket address structure
+          //                  for any type of network (pre-IPv6)
+          // *************************************************************
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-s sa_family_t uns(5)  based(Template);
+         dcl-ds sockaddr INZ;
+          sa_family like(sa_family_t);
+          sa_data char(14);
+         end-ds sockaddr;
+        /else
+         dcl-s sa_family_t uns(3)  based(Template);
+         dcl-s sa_len_t uns(3)  based(Template);
+         dcl-ds sockaddr INZ;
+          sa_len like(sa_len_t);
+          sa_family like(sa_family_t);
+          sa_data char(14);
+        /endif
+
+
+          // *************************************************************
+          //  Socket Storage: Same as preceding structure, but large
+          //                  enough for any address, even in IPv6.
+          // *************************************************************
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-ds sockaddr_storage INZ LEN(304) based(p_sockaddr_storage);
+          ss_family like(sa_family_t);
+         end-ds sockaddr_storage;
+        /else
+         dcl-ds sockaddr_storage INZ LEN(304) based(p_sockaddr_storage);
+          ss_len like(sa_len_t);
+          ss_family like(sa_family_t);
+        /endif
+
+        //   Socket Address (Internet)
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-ds sockaddr_in INZ based(p_sockaddr);
+          sin_Family uns(5);
+          sin_Port uns(5);
+          sin_addr uns(10);
+          sin_zero char(8);
+         end-ds sockaddr_in;
+        /else
+         dcl-ds sockaddr_in INZ based(p_sockaddr);
+          sin_Len uns(3);
+          sin_Family uns(3);
+          sin_Port uns(5);
+          sin_addr uns(10);
+          sin_zero char(8);
+          end-ds sockaddr_in; 
+        /endif
+
+
+        //   Socket Address (Internet IPv6)
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-ds sockaddr_in6 INZ based(Template);
+          sin6_family uns(5);
+          sin6_port uns(5);
+          sin6_flowinfo uns(10);
+          sin6_addr char(16);
+          sin6_scope_id uns(10);
+         end-ds sockaddr_in6;
+        /else
+         dcl-ds sockaddr_in6 INZ based(Template);
+          sin6_len uns(3);
+          sin6_family uns(3);
+          sin6_port uns(5);
+          sin6_flowinfo uns(10);
+          sin6_addr char(16);
+          sin6_scope_id uns(10);
+          end-ds sockaddr_in6;  
+        /endif
+
+
+        //   Socket Address (Unix domain)
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-ds sockaddr_un INZ qualified based(p_sockaddr);
+         sun_Family int(5);
+         sun_Path char(126);
+         end-ds sockaddr_un;
+        /else
+         dcl-ds sockaddr_un INZ qualified based(p_sockaddr);
+         sun_len uns(3);
+         sun_family uns(3);
+         sun_path char(126);
+         end-ds sockaddr_un;
+        /endif
+
+          //  Host Database Entry (for DNS lookups, etc)
+          //    (this is a partial implementation... didn't try to
+          //     figure out how to deal with all possible addresses
+          //     or all possible aliases for a host in RPG)
+         dcl-ds hostent INZ Based(p_hostent);
+          h_name pointer;
+          h_aliases pointer;
+          h_addrtype int(5);
+          h_length int(5);
+          h_addrlist pointer;
+         end-ds hostent;
+         dcl-s p_h_addr pointer  Based(h_addrlist);
+         dcl-s h_addr uns(10)  Based(p_h_addr);
+
+          //  Service Database Entry (which service = which port, etc)
+         dcl-ds servent INZ Based(p_servent);
+          s_name pointer;
+          s_aliases pointer;
+          s_port int(10);
+          s_proto pointer;
+         end-ds servent;
+
+          //  IP structure without any opts (for RAW sockets)
+          //    struct ip {
+          //        unsigned       ip_v:4;       Version (first 4 bits)
+          //        unsigned       ip_hl:4;      Header length (next 4)
+          //        u_char         ip_tos;       Type of service
+          //        short          ip_len;       Total Length
+          //        u_short        ip_id;        Identification
+          //        short          ip_off;       Fragment offset field
+          //        u_char         ip_ttl;       Time to live
+          //        u_char         ip_p;         Protocol
+          //        u_short        ip_sum;       Checksum
+          //        struct in_addr ip_src;       Source Address
+          //        struct in_addr ip_dst;       Destination Address
+          //    };
+          //   Note:  Since you can't define a variable to be 4 bits long
+          //      in RPG, ip_v_hl is a combination of ip_v and ip_hl.
+          //      with mult/div/mvr and data structures, it should still
+          //      be usable...
+          //   Since ip_tos & ip_ttl conflict with the definitions for
+          //   setsockopt() & getsockopt(), we add an extra $ to the end...
+         dcl-ds ip INZ based(p_ip) qualified;
+          ip_v_hl char(1);
+          ip_tos char(1);
+          ip_len int(5);
+          ip_id uns(5);
+          ip_off int(5);
+          ip_ttl char(1);
+          ip_p char(1);
+          ip_sum uns(5);
+          ip_src uns(10);
+          ip_dst uns(10);
+         end-ds ip;
+
+          //  UDP Packet Header (for RAW sockets)
+         dcl-ds udphdr INZ based(p_udphdr) qualified;
+          uh_sport uns(5);
+          uh_dport uns(5);
+          uh_ulen int(5);
+          uh_sum uns(5);
+         end-ds udphdr;
+
+          //  Internet Control Message Protocol (ICMP) header
+          //    (I THINK I did the unions correctly...  but you might want to
+          //     check that out if you're having problems...)
+          //    struct icmp {                     /* ICMP header                */
+          //        u_char      icmp_type;        /* ICMP message type          */
+          //        u_char      icmp_code;        /* type sub code              */
+          //        u_short     icmp_cksum;       /* ICMP checksum              */
+          //        union {                       /* Message type substructures:*/
+          //            u_char ih_pptr;           /*   Parameter problem pointer*/
+          //            struct in_addr ih_gwaddr; /*   Redirect gateway address */
+          //            struct ih_idseq {         /*   Echo/Timestmp Req/Reply  */
+          //                u_short     icd_id;   /*      Indentifier           */
+          //                u_short     icd_seq;  /*      Sequence number       */
+          //            } ih_idseq;
+          //            int ih_void;              /* Unused part of some msgs   */
+          //        } icmp_hun;
+          //        union {
+          //            struct id_ts {            /* Timestamp substructure     */
+          //                u_long its_otime;     /*    Originate timestamp     */
+          //                u_long its_rtime;     /*    Receive timestamp       */
+          //                u_long its_ttime;     /*    Transmit timestamp      */
+          //            } id_ts;
+          //            struct id_ip  {           /* Imbedded 'original' IP hdr */
+          //                struct ip idi_ip;     /* in ICMP error-type msgs.   */
+          //                                      /* Includes IP header,IP opts,*/
+          //                                      /* and 64 bits of data.       */
+          //            } id_ip;
+          //            u_long  id_mask;          /* Address mask request/reply */
+          //            char    id_data[1];       /* Beginning of echo req data */
+          //        } icmp_dun;
+          //    };
+         dcl-ds icmp INZ based(p_icmp) qualified;
+          icmp_type char(1);
+          icmp_code char(1);
+          icmp_cksum uns(5);
+          icmp_hun char(4);
+          ih_gwaddr uns(10) OVERLAY(icmp_hun:1);
+          ih_pptr char(1) OVERLAY(icmp_hun:1);
+          ih_idseq char(4) OVERLAY(icmp_hun:1);
+          icd_id uns(5) OVERLAY(ih_idseq:1);
+          icd_seq uns(5) OVERLAY(ih_idseq:3);
+          ih_void int(5) OVERLAY(icmp_hun:1);
+          icmp_dun char(20);
+          id_ts char(12) OVERLAY(icmp_dun:1);
+          its_otime uns(10) OVERLAY(id_ts:1);
+          its_rtime uns(10) OVERLAY(id_ts:5);
+          its_ttime uns(10) OVERLAY(id_ts:9);
+          id_ip char(20) OVERLAY(icmp_dun:1);
+          idi_ip char(20) OVERLAY(id_ip:1);
+          id_mask uns(10) OVERLAY(icmp_dun:1);
+          id_data char(1) OVERLAY(icmp_dun:1);
+         end-ds icmp;
+
+          //  Time Value Structure (for the select() function, etc)
+          //       struct timeval {
+          //          long  tv_sec;                  /* seconds       */
+          //          long  tv_usec;                 /* microseconds  */
+          //       };
+          //    contrains a structure for specifying a wait time on
+          //    a select() function...
+          //     tv_sec = seconds.    tv_usec = microseconds
+
+        /if not defined(TIMEVAL_STRUCT)
+         dcl-ds timeval INZ based(p_timeval);
+          tv_sec int(10);
+          tv_usec int(10);
+         end-ds timeval;
+        /define TIMEVAL_STRUCT
+        /endif
+
+
+          //  i/o vector.  Can be used to write data from
+          //  different buffers without needing to copy the
+          //  data all into one place first.
+          //  ("scatter/gather" I/O)
+
+        /if not defined(IOVEC_DS_DEFINED)
+         dcl-ds iovec INZ based(p_iovec) qualified;
+          iov_base pointer;
+          iov_len uns(10);
+         end-ds iovec;
+        /define IOVEC_DS_DEFINED
+        /endif
+
+        //  msghdr structure for use w/sendmsg() and recvmsg() APIs
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-ds msghdr INZ based(p_msghdr) qualified align;
+          msg_name pointer;
+          msg_namelen int(10);
+          msg_iov pointer;
+          msg_iovlen int(10);
+          msg_accrights pointer;
+          msg_accrightslen int(10);
+         end-ds msghdr;
+        /else
+         dcl-ds msghdr INZ based(p_msghdr) qualified align;
+          msg_name pointer;
+          msg_namelen int(10);
+          msg_iov pointer;
+          msg_iovlen int(10);
+          msg_control pointer;
+          msg_controllenmsg_flags int(10);
+         end-ds msghdr;
+
+         dcl-ds cmsghdr INZ based(p_cmsghdr) qualified;
+          cmsg_len int(10);
+          cmsg_level int(10);
+          cmsg_type int(10);
+         end-ds cmsghdr;
+
+         dcl-c SCM_RIGHTS const(1);
+         dcl-c IP_QOS_CLASSIFICATION_DATA const(x'80000001');
+        /endif
+
+
+          // *********************************************************************
+          //   S U B P R O C E D U R E   P R O T O T Y P E S
+          // *********************************************************************
+          //     socket--Create Socket
+          //     int  socket(int address_family,
+          //                 int type,
+          //                 int protocol)
+          //      The socket() function is used to create an end point for
+          //         communications.  The end point is represented by the
+          //         socket descriptor returned by the socket() function.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr socket int(10) ExtProc('socket');
+          AddrFamily int(10) Value;
+          SocketType int(10) Value;
+          Protocol int(10) Value;
+         end-pr socket;
+        /else
+         dcl-pr socket int(10) ExtProc('qso_socket98');
+          AddrFamily int(10) Value;
+          SocketType int(10) Value;
+          Protocol int(10) Value;
+          end-pr socket;  
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     setsockopt()--Set Socket Options
+          //     int  setsockopt(int socket_descriptor,
+          //                     int level,
+          //                     int option_name,
+          //                     char *option_value
+          //                     int option_length)
+          //     The setsockopt() function is used to set socket options
+          //      (there are many, see the book.)
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+        dcl-pr setsockopt int(10) ExtProc('setsockopt');
+          SocketDesc int(10) Value;
+          Opt_Level int(10) Value;
+          Opt_Name int(10) Value;
+          Opt_Value pointer Value;
+          Opt_Len int(10) Value;
+        end-pr setsockopt;
+        /else
+        dcl-pr setsockopt int(10) ExtProc('qso_setsockopt98');
+          SocketDesc int(10) Value;
+          Opt_Level int(10) Value;
+          Opt_Name int(10) Value;
+          Opt_Value pointer Value;
+          Opt_Len int(10) Value;
+        end-pr setsockopt;  
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    getsockopt() -- Retrieve Info about Socket Options
+          //    int getsockopt(int socket_descriptor,
+          //                   int level,
+          //                   int option_name,
+          //                   char *option_value,
+          //                   int *option_length)
+          //    Gets various information about the socket's options.
+          //    (there are many, see the book.)
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getsockopt int(10) extproc('getsockopt');
+          SocketDesc int(10) VALUE;
+          Opt_Level int(10) VALUE;
+          Opt_Name int(10) VALUE;
+          Opt_Value pointer VALUE;
+          Opt_Length int(10);
+         end-pr getsockopt;
+        /else
+         dcl-pr getsockopt int(10) extproc('qso_getsockopt98');
+          SocketDesc int(10) VALUE;
+          Opt_Level int(10) VALUE;
+          Opt_Name int(10) VALUE;
+          Opt_Value pointer VALUE;
+          Opt_Length int(10);
+         end-pr getsockopt;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     getsockname()--Get Local Address for Socket
+          //     int  getsockname(int socket_descriptor,
+          //               struct sockaddr *local_address,
+          //               int *address_length)
+          //            struct sockaddr {
+          //               u_short sa_family;
+          //               char    sa_data[14];
+          //            };
+          //     The getsockname() function is used to retreive the local address
+          //       asociated with a socket.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getsockname int(10) ExtProc('getsockname');
+          SocketDesc int(10) Value;
+          SockAddr like(Sockaddr_storage) options(*varsize);
+          AddrLength int(10);
+         end-pr getsockname;
+        /else
+         dcl-pr getsockname int(10) ExtProc('qso_getsockname98');
+          SocketDesc int(10) Value;
+          SockAddr like(Sockaddr_storage) options(*varsize);
+          AddrLength int(10);
+         end-pr getsockname;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     getpeername()--Retrieve Destination Address of Socket
+          //     int  getpeername(int socket_descriptor,
+          //                      struct sockaddr *local_address,
+          //                      int *address_length)
+          //            struct sockaddr {
+          //               u_short sa_family;
+          //               char    sa_data[14];
+          //            };
+          //     The getpeername() function is used to retreive the destination
+          //       address to which the socket is connected.
+          //     Note:  Socket must be connected first.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getpeername int(10) ExtProc('getpeername');
+          SocketDesc int(10) Value;
+          p_sockaddr like(Sockaddr_storage) options(*varsize);
+          AddrLength int(10);
+         end-pr getpeername;
+        /else
+         dcl-pr getpeername int(10) ExtProc('qso_getpeername98');
+          SocketDesc int(10) Value;
+          p_sockaddr like(Sockaddr_storage) options(*varsize);
+          AddrLength int(10);
+         end-pr getpeername;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     bind()--Bind socket to specified adapter and/or port
+          //     int  bind(int socket_descriptor,
+          //               struct sockaddr *local_address,
+          //               int address_length)
+          //            struct sockaddr {
+          //               u_short sa_family;
+          //               char    sa_data[14];
+          //            };
+          //     The bind() function is used to associate a local address
+          //       and port with a socket.   This allows you to get only
+          //       socket requests on a specific network adapter, and to
+          //       assign a specific port to your socket.
+          //     For example, if you're writing a telnet server, you'd
+          //       bind to port 23, because thats the standard port for
+          //       telnets to listen on.
+          //     If we bind to an address of 0, it will allow requests on
+          //       any (TCP/IP enabled) network adapter.
+
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr bind int(10) ExtProc('bind');
+          Sock_Desc int(10) Value;
+          p_Address pointer value;
+          AddressLen int(10) Value;
+         end-pr bind;
+        /else
+         dcl-pr bind int(10) ExtProc('qso_bind98');
+          Sock_Desc int(10) Value;
+          p_Address like(sockaddr_storage) options(*varsize);
+          AddressLen int(10) Value;
+         end-pr bind;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     listen()--Invite Incoming Connections Requests
+          //     int  listen(int socket_descriptor,
+          //                  int back_log)
+          //     The listen() function is used to indicate a willingness to accept
+          //        incoming connection requests.  if a listen() is not done,
+          //        incoming requests are refused.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr listen int(10) ExtProc('listen');
+          SocketDesc int(10) Value;
+          Back_Log int(10) Value;
+         end-pr listen;
+        /else
+         dcl-pr listen int(10) ExtProc('qso_listen98');
+          SocketDesc int(10) Value;
+          Back_Log int(10) Value;
+         end-pr listen;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     accept()--Wait for Connection Request and Make Connection
+          //     int  accept(int socket_descriptor,
+          //               struct sockaddr *address,
+          //               int *address_length)
+          //            struct sockaddr {
+          //               u_short sa_family;
+          //               char    sa_data[14];
+          //            };
+          //    The accept() function is used to wait for connection requests.
+          //     accept() takes the first connection request on the queue of
+          //     pending connection requests and creates a new socket to service
+          //     the connection request.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr accept int(10) ExtProc('accept');
+          Sock_Desc int(10) Value;
+          p_Address pointer Value;
+          p_AddrLen int(10) options(*omit);
+         end-pr accept;
+        /else
+         dcl-pr accept int(10) ExtProc('accept');
+          Sock_Desc int(10) Value;
+          p_Address like(sockaddr_storage) options(*varsize:*omit);
+          p_AddrLen int(10) options(*omit);
+         end-pr accept;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    connect() -- Connect to a host.
+          //       int connect(int socket_descriptor,
+          //                   struct sockaddr *destination,
+          //                   int address_length)
+          //       Used to connect to a host.  (Usually used on the client-side)
+          //       In TCP applications, this takes an address & port and connects
+          //       to a server program thats listening on that port.   In UDP
+          //       this simply specifies the address & port to send to.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr connect int(10) ExtProc('connect');
+          Sock_Desc int(10) VALUE;
+          p_SockAddr pointer VALUE;
+          AddressLen int(10) VALUE;
+         end-pr connect;
+        /else
+         dcl-pr connect int(10) ExtProc('qso_connect98');
+          Sock_Desc int(10) VALUE;
+          SockAddr like(Sockaddr_storage) options(*varsize);
+          AddressLen int(10) VALUE;
+         end-pr connect;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     send()--Send Data
+          //     int  send(int socket_descriptor,
+          //               char *buffer,
+          //               int  buffer_length,
+          //               int  flags)
+          //     Sends data in buffer via socket connection to another program.
+          //     In the case of text, it should be converted to ASCII and then
+          //     CR/LF terminated.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr Send int(10) ExtProc('send');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+         end-pr Send;
+        /else
+         dcl-pr Send int(10) ExtProc('qso_send98');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+         end-pr Send;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     sendto()--Send Data
+          //    int sendto(int socket_descriptor,
+          //               char *buffer,
+          //               int buffer_length,
+          //               int flags,
+          //               struct sockaddr *destination_address,
+          //               int address_length)
+          //     Sends data in buffer via connected/connectionless sockets
+          //     This is more useful for connectionless sockets (such as UDP)
+          //     because allows you to specify the destination address.
+          //     When used with a connection-oriented sockets (such as TCP)
+          //     the destination address should be set to *NULL, and the length
+          //     should be zero.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr SendTo int(10) ExtProc('sendto');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+          DestAddr pointer Value;
+          AddrLen int(10) Value;
+         end-pr SendTo;
+        /else
+         dcl-pr SendTo int(10) ExtProc('qso_sendto98');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+          DestAddr pointer Value;
+          AddrLen int(10) Value;
+         end-pr SendTo;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     recv()--Receive Data
+          //     int  recv(int socket_descriptor,                 I
+          //               char *buffer,                          I
+          //               int  buffer_length,                    I
+          //               int  flags)
+          //    The recv() funcion is used to receive data through a socket.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr Recv int(10) ExtProc('recv');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+         end-pr Recv;
+        /else
+         dcl-pr Recv int(10) ExtProc('qso_recv98');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+         end-pr Recv;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     recvfrom()--Receive Data w/From Address
+          //     int  recvfrom(int socket_descriptor,
+          //                  char *buffer,
+          //                  int buffer_length,
+          //                  int flags,
+          //                  struct sockaddr *from_address,
+          //                  int *address_length)
+          //    The recvfrom() function receives data through a connected, or
+          //    an unconnected socket.
+          //    This is particularly useful for UDP/Connectionless sockets
+          //    because it allows you to ascertain who sent the data to you.
+          //    The from_address and address_length parms are ignored on
+          //    connection-oriented sockets -- or if they are set to *NULL.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr RecvFrom int(10) ExtProc('recvfrom');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+          FromAddr pointer Value;
+          AddrLength int(10);
+         end-pr RecvFrom;
+        /else
+         dcl-pr RecvFrom int(10) ExtProc('recvfrom');
+          Sock_Desc int(10) Value;
+          p_Buffer pointer Value;
+          BufferLen int(10) Value;
+          Flags int(10) Value;
+          FromAddr pointer Value;
+          AddrLength int(10);
+         end-pr RecvFrom;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     close()--End Socket Connection
+          //     int  close(int descriptor)
+          //     Ends a socket connection, and deletes the socket descriptor.
+          //   Note: Due to conflicts with IFSIO_H, we are only defining
+          //         close() if it has not already been defined.
+          //  --------------------------------------------------------------------
+        /if not defined(CLOSE_PROTOTYPE)
+         dcl-pr Close int(10) ExtProc('close');
+          Sock_Desc int(10) Value;
+         end-pr Close;
+        /define CLOSE_PROTOTYPE
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     shutdown()-- disable reading/writing on a socket
+          //     int  shutdown(int descriptor,
+          //                   int how)
+          //     Stops all reading and/or writing on a socket.
+          //     Difference between this and close() is that with close, you
+          //     actually delete the descriptor, and must accept() a new one,
+          //     or allocate (socket()) a new one.
+          //     The how parameter can be:
+          //             0 = no more data can be received
+          //             1 = no more data can be sent
+          //             2 = no more data can be sent or received
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr shutdown int(10) ExtProc('shutdown');
+          Sock_Desc int(10) Value;
+          How int(10) Value;
+         end-pr shutdown;
+        /else
+         dcl-pr shutdown int(10) ExtProc('qso_shutdown98');
+          Sock_Desc int(10) Value;
+          How int(10) Value;
+         end-pr shutdown;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //   select() -- wait for events on multiple sockets
+          //    int select(int max_descriptor,
+          //               fd_set *read_set,
+          //               fd_set *write_set,
+          //               fd_set *exception_set,
+          //               struct timeval *wait_time)
+          //    Select is used to wait for i/o on multiple sockets.  This
+          //    prevents your job from "blocking" on one socket read, while
+          //    there is data to read on another socket.
+          //    It also allows you to "poll" for data to be found on a socket
+          //    and to set a timeout value to keep your application from
+          //    stopping forever on a "dead-end" socket.
+          //    ***** To help with managing the descriptor sets, I have
+          //    ***** created FD_SET, FD_ISSET, FD_CLR and FD_ZERO functions
+          //    ***** in my SOCKUTIL_H/SOCKUTILR4 socket utilities functions!
+          //    max_desriptor = The number of descriptors in your sets.
+          //                    (take the highest descriptor value you want
+          //                    to wait on, and add 1, and put it here)
+          //    read_set = A 28-byte character field specifying, on input,
+          //                  which descriptors to wait for, and, on output,
+          //                  which descriptors have data waiting on them.
+          //                  This can be set to *NULL if you do not wish to
+          //                  wait for any sockets to be read.
+          //   write_set = A 28-byte character field specifying, on input,
+          //                  which descriptors to wait for, and, on output,
+          //                  which descriptors are ready to be written to.
+          //                  This can be set to *NULL if you do not wish to
+          //                  wait for any sockets to be written to.
+          //   exception_set = A 28-byte character field specifying, on input,
+          //                  which descriptors to test, and on output,
+          //                  which descriptors have exceptions signalled to them.
+          //                  This can be set to *NULL if you do not wish to
+          //                  check for any sockets to have exceptions.
+          //                  NOTE: An exception is not the same as an error.
+          //                        Exceptions are usually out-of-band data!
+          //   wait_time = a timeval data structure containing the amoutn of
+          //                  time to wait for an event to occur.
+          //                  If a wait time of zero is given, select() will
+          //                  return immediately.
+          //               If *NULL is passed instead of the timeval structure,
+          //                  select() will wait indefinitely.
+          //   Returns the number of descriptors that met selection criteria
+          //            or 0 for timeout
+          //            or -1 for error.
+          //  --------------------------------------------------------------------
+         dcl-pr Select int(10) extproc('select');
+          max_desc int(10) VALUE;
+          read_set pointer VALUE;
+          write_set pointer VALUE;
+          except_set pointer VALUE;
+          wait_Time pointer VALUE;
+         end-pr Select;
+
+          //  --------------------------------------------------------------------
+          //    givedescriptor() -- Pass Descriptor Access to Another Job
+          //    int givedescriptor(int descriptor,
+          //                       char *target_job)
+          //    Allows you to pass a descriptor from one OS/400 job to another.
+          //    (Very useful if you wanted one job to wait for incoming conn.
+          //    then, submit a seperate job to deal with each client connection
+          //    while the original keeps waiting for more)
+          //    It is the programmer's responsibility to alert the target job
+          //    that it needs to take the descriptor, using takedescriptor().
+          //    the info for the target job can be obtained by calling a Work
+          //    Managment API that supplies an "internal job identifier"
+          //    (such as QUSRJOBI)
+          //    returns 0 = success, -1 = failure
+          //  --------------------------------------------------------------------
+         dcl-pr givedescriptor int(10) extproc('givedescriptor');
+          SockDesc int(10) VALUE;
+          Target_Job pointer VALUE;
+         end-pr givedescriptor;
+
+          //  --------------------------------------------------------------------
+          //    takedescriptor() -- Receive Descriptor Access from Another Job
+          //    int takedescriptor(char *source_job)
+          //    Allows you to pass a descriptor from one OS/400 job to another.
+          //    (Very useful if you wanted one job to wait for incoming conn.
+          //    then, submit a seperate job to deal with each client connection
+          //    while the original keeps waiting for more)
+          //    the info for the source job can be obtained by calling a Work
+          //    Managment API that supplies an "internal job identifier"
+          //    (such as QUSRJOBI).
+          //    You can also specify *NULL pointer for the Source_Job parm if
+          //    you want to receive a descriptor from ANY job that gives one
+          //    one to you.
+          //    If no other jobs has referenced yours with givedescriptor()
+          //    then this function will block.
+          //    return value is the socket descriptor taken, or -1 for error.
+          //  --------------------------------------------------------------------
+         dcl-pr takedescriptor int(10) extproc('takedescriptor');
+          Source_Job pointer VALUE;
+         end-pr takedescriptor;
+
+          //  --------------------------------------------------------------------
+          //    gethostbyname() -- Resolves a domain name to an IP address
+          //       struct hostent *gethostbyname(char *host_name)
+          //             struct hostent {
+          //               char   *h_name;
+          //               char   **h_aliases;
+          //               int    h_addrtype;
+          //               int    h_length;
+          //               char   **h_addr_list;
+          //             };
+          //    Returns a pointer to a host entry structure.  The aliases and
+          //    address list items in the structure are pointers to arrays of
+          //    pointers, which are null terminated.
+          //    Note:  The strings & arrays used in C are often variable length,
+          //        null-terminated entities.  Be careful to only use bytes from
+          //        the returned pointers (in the hostent data structure) to
+          //        the first null (x'00') character.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr gethostbyname pointer extProc('gethostbyname');
+          HostName pointer value options(*string);
+         end-pr gethostbyname;
+        /else
+         dcl-pr gethostbyname pointer extProc('qso_gethostbyname98');
+          HostName pointer value options(*string);
+         end-pr gethostbyname;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     getservbyname()--Get Port Number for Service Name
+          //     struct servent *getservbyname(char *service_name,
+          //                                   char *protocol_name)
+          //             struct servent {
+          //               char   *s_name;
+          //               char   **s_aliases;
+          //               int    s_port;
+          //               char   *s_proto;
+          //             };
+          //    This is generally used to look up which port is used for a given
+          //    internet service.   i.e. if you want to know the port for
+          //    TELNET, you'd do   x = getservbyname('telnet': 'tcp')
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getservbyname pointer extproc('getservbyname');
+          service_name pointer value options(*string);
+          protocol_nam pointer value options(*string);
+         end-pr getservbyname;
+        /else
+         dcl-pr getservbyname pointer extproc('qso_getservbyname98');
+          service_name pointer value options(*string);
+          protocol_nam pointer value options(*string);
+         end-pr getservbyname;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //     gethostbyaddr()--Get Host Information for IP Address
+          //      struct hostent *gethostbyaddr(char *host_address,
+          //                                    int address_length,
+          //                                    int address_type)
+          //          struct hostent {
+          //              char   *h_name;
+          //              char   **h_aliases;
+          //              int    h_addrtype;
+          //              int    h_length;
+          //              char   **h_addr_list;
+          //          };
+          //      An IP address (32-bit integer formnat) goes in, and a
+          //      hostent structure pops out.   Really, kinda fun, if you
+          //      havent already learned to hate the hostent structure, that is.
+          //    Note:  The strings & arrays used in C are often variable length,
+          //        null-terminated entities.  use caution to only use data from
+          //        the returned pointer up until the terminating null (x'00')
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr gethostbyaddr pointer ExtProc('gethostbyaddr');
+          IP_Address uns(10);
+          Addr_Len int(10) VALUE;
+          Addr_Fam int(10) VALUE;
+         end-pr gethostbyaddr;
+        /else
+         dcl-pr gethostbyaddr pointer ExtProc('qso_gethostbyaddr98');
+          IP_Address uns(10);
+          Addr_Len int(10) VALUE;
+          Addr_Fam int(10) VALUE;
+         end-pr gethostbyaddr;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //   inet_addr()--Converts an address from dotted-decimal format
+          //          to a 32-bit IP address.
+          //          unsigned long inet_addr(char *address_string)
+          //     Converts an IP address from format 192.168.0.100 to an
+          //     unsigned long, such as hex x'C0A80064'.
+          //   returns INADDR_NONE on error.
+          //  KNOWN BUG: Due to the fact that this can't return a negative value,
+          //               it returns x'FFFFFFFF' on error.  However, x'FFFFFFFF'
+          //               is also the correct IP for the valid address of
+          //               "255.255.255.255".  (which is "worldwide broadcast")
+          //               A reasonable workaround is to check for 255.255.255.255
+          //               beforehand, and translate it manually rather than
+          //               calling inet_addr.
+          //  --------------------------------------------------------------------
+         dcl-pr inet_addr uns(10) ExtProc('inet_addr');
+          char_addr pointer value options(*string);
+         end-pr inet_addr;
+
+          //  --------------------------------------------------------------------
+          //     inet_ntoa()--Converts an address from 32-bit IP address to
+          //          dotted-decimal format.
+          //          char *inet_ntoa(struct in_addr internet_address)
+          //     Converts from 32-bit to dotted decimal, such as, x'C0A80064'
+          //     to '192.168.0.100'.  Will return NULL on error
+          //    Note:  The strings & arrays used in C are often variable length,
+          //        null-terminated entities.  Make sure you only use bytes from
+          //        the returned pointer to the first null (x'00') character.
+          //  --------------------------------------------------------------------
+         dcl-pr inet_ntoa pointer ExtProc('inet_ntoa');
+          ulong_addr uns(10) VALUE;
+         end-pr inet_ntoa;
+
+          //  --------------------------------------------------------------------
+          //    fcntl()--Change Descriptor Attributes
+          //    int fcntl(int descriptor, int command, ...)
+          //    The third parameter (when used with sockets) is also an
+          //    integer passed by value.. it specifies an argument for
+          //    some of the commands.
+          //    commands supported in sockets are:
+          //           F_GETFL -- Return the status flags for the descriptor
+          //           F_SETFL -- Set status flags for the descriptor
+          //                     (Arg =)status flags (ORed) to set.
+          //  (the commands below arent terribly useful in RPG)
+          //           F_DUPFD -- Duplicate the descriptor
+          //                     (Arg =)minimum value that new descriptor can be
+          //           F_GETOWN -- Return the process ID or group ID that's
+          //                      set to receive SIGIO & SIGURG
+          //           F_SETOWN -- Set the process ID or group ID that's
+          //                      to receive SIGIO & SIGURG
+          //                     (Arg =)process ID (or neg value for group ID)
+          //   returns -1 upon error.
+          //           successful values are command-specific.
+          //  --------------------------------------------------------------------
+        /if not defined(FCNTL_PROTOTYPE)
+         dcl-pr fcntl int(10) ExtProc('fcntl');
+          SocketDesc int(10) Value;
+          Command int(10) Value;
+          Arg int(10) Value Options(*NOPASS);
+         end-pr fcntl;
+        /define FCNTL_PROTOTYPE
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    sendmsg() -- send a message over a socket
+          //                 (allows multiple buffers.  Allows you to send
+          //                   descriptor rights if using AF_UNIX )
+          //      sock_desc = (input) socket descriptor to use
+          //     msg_struct = (input) message to send (see msghdr, above)
+          //          flags = (input) flags (like any send/recv API)
+          //   Returns number of bytes sent or -1 upon error
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr sendmsg int(10) extproc('sendmsg');
+          sock_desc int(10) value;
+          msg_struct like(msghdr);
+          flags int(10) value;
+         end-pr sendmsg;
+        /else
+         dcl-pr sendmsg int(10) extproc('qso_sendmsg98');
+          sock_desc int(10) value;
+          msg_struct like(msghdr);
+          flags int(10) value;
+         end-pr sendmsg;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    recvmsg() -- receive a message over a socket
+          //                 (allows multiple buffers.  Allows you to receive
+          //                   descriptor rights if using AF_UNIX )
+          //      sock_desc = (input) socket descriptor to use
+          //     msg_struct = (input) message to receive (see msghdr, above)
+          //          flags = (input) flags (like any send/recv API)
+          //   Returns number of bytes received or -1 upon error
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr recvmsg int(10) extproc('recvmsg');
+          sock_desc int(10) value;
+          msg_struct like(msghdr);
+          flags int(10) value;
+         end-pr recvmsg;
+        /else
+         dcl-pr recvmsg int(10) extproc('qso_recvmsg98');
+          sock_desc int(10) value;
+          msg_struct like(msghdr);
+          flags int(10) value;
+         end-pr recvmsg;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    socketpair():  Create a pair of connected sockets
+          //                   (just like a pipe!)
+          //     family = (input) Address family must be AF_UNIX
+          //                      or AF_UNIX_CCSID
+          //       type = (input) type of socket (datagram or stream)
+          //   protocol = (input) protocol (or 0=default)
+          //     vector = (output) the two connected sockets
+          //   Returns 0 if successful, or -1 otherwise
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr socketpair int(10) extproc('socketpair');
+          family int(10) value;
+          type int(10) value;
+          protocol int(10) value;
+          vector int(10) dim(2);
+         end-pr socketpair;
+        /else
+         dcl-pr socketpair int(10) extproc('qso_socketpair98');
+          family int(10) value;
+          type int(10) value;
+          protocol int(10) value;
+          vector int(10) dim(2);
+         end-pr socketpair;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //    inet_pton(): Convert printable IP address to numeric IP
+          //                 address.  (Replacement for inet_addr)
+          //     family = (input)  Address family must be AF_INET (IPv4)
+          //                         or AF_INET6 (IPv6)
+          //      paddr = (input)  printable address (human-readable)
+          //      naddr = (output) numeric address (binary)
+          //   Returns 1 if successful
+          //           0 if input is not a valid address
+          //          -1 upon error (Check errno)
+          //  --------------------------------------------------------------------
+        /if defined(*V5R2M0)
+        
+         dcl-pr inet_pton int(10) extproc('inet_pton');
+          family int(10) value;
+          paddr pointer value options(*string);
+          naddr char(128) options(*varsize);
+         end-pr inet_pton;
+
+          //  --------------------------------------------------------------------
+          //    inet_ntop(): Convert numeric IP address to printable format
+          //                 (Replacement for inet_ntoa)
+          //     family = (input)  Address family must be AF_INET (IPv4)
+          //                        or AF_INET6 (IPv6)
+          //      naddr = (input)  numeric address (binary)
+          //      paddr = (output) printable address (human-readable)
+          //                        use like(INET_ADDRSTRLEN or INET6_ADDRSTRLEN)
+          //       size = (input)  size of 'paddr' field.  Should be
+          //                        Must be >= %size(INET_ADDRSTRLEN) for IPv4
+          //                        Must be >= %size(INET6_ADDRSTRLEN) for IPv6
+          //   Returns *NULL upon failure.
+          //           or a pointer to the text string if successful
+          //  --------------------------------------------------------------------
+         dcl-pr inet_ntop pointer extproc('inet_ntop');
+          family int(10) value;
+          naddr pointer value;
+          paddr like(INET6_ADDRSTRLEN) options(*varsize);
+          size like(socklen_t) value;
+         end-pr inet_ntop;
+
+          //  --------------------------------------------------------------------
+          //   getaddrinfo():  Get address information
+          //      nodename = (input)  host name or address to look up
+          //                           (can be *NULL if looking up a service)
+          //      servname = (input)  service name to look up
+          //                           (can be *NULL if looking up a node)
+          //         hints = (input)  flags/options for controlling how
+          //                           this function works.
+          //           res = (output) linked list of returned addrinfo_t
+          //                           structures.  Must be freed by calling
+          //                           freeaddrinfo()
+          //   returns 0 if successful, non-zero otherwise.
+          //     a non-zero return value is an error code.  Use gai_strerror()
+          //     to get a message for that error code.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getaddrinfo int(10) extproc('getaddrinfo');
+          nodename pointer value options(*string);
+          servname pointer value options(*string);
+          hints like(addrinfo_t) options(*omit);
+          res pointer;
+         end-pr getaddrinfo;
+        /else
+         dcl-pr getaddrinfo int(10) extproc('qso_getaddrinfo98');
+          nodename pointer value options(*string);
+          servname pointer value options(*string);
+          hints like(addrinfo_t) options(*omit);
+          res pointer;
+         end-pr getaddrinfo;
+        /endif
+
+         dcl-ds addrinfo_t INZ qualified;
+          ai_flags int(10) inz(0);
+          ai_family int(10) inz(AF_UNSPEC);
+          ai_socktype int(10) inz(SOCK_STREAM);
+          ai_protocol int(10) inz(IPPROTO_IP);
+          ai_addrlen like(socklen_t) inz;
+          ai_canonname pointer inz(*null);
+          ai_addr pointer inz(*null);
+          ai_next pointer inz(*null);
+         end-ds addrinfo_t;
+
+          //  --------------------------------------------------------------------
+          //  Flags for getaddrinfo():
+          //  AI_PASSIVE     = get address to use with bind()
+          //  AI_CANONNAME   = lookup canonical name, put in ai_canonname
+          //  AI_NUMERICHOST = prevent DNS resolution (numeric only)
+          //  AI_NUMERICSERV = prevent service table lookup (port no only)
+          //  AI_V4MAPPED    = If no IPv6 address found, do IPv4 lookup
+          //                    and map to IPv6 format.
+          //  AI_ALL         = Look up both IPv6 and IPv4 addresses,
+          //                    and return any/all addresses found
+          //                    (with IPv4 mapped to IPv6 format)
+          //  AI_ADDRCONFIG  = Lookup is based on the type of IP address(es)
+          //                    configured.  IPv6 is used if you have an IPv6
+          //                    address configured, IPv4 is used if you have
+          //                    an IPv4 address configured. (not incl loopback!)
+          //  --------------------------------------------------------------------
+         dcl-c AI_PASSIVE const(1);
+         dcl-c AI_CANONNAME const(2);
+         dcl-c AI_NUMERICHOST const(4);
+         dcl-c AI_NUMERICSERV const(8);
+         dcl-c AI_V4MAPPED const(16);
+         dcl-c AI_ALL const(32);
+         dcl-c AI_ADDRCONFIG const(64);
+
+          //  --------------------------------------------------------------------
+          //   getnameinfo():  Get name information for socket address
+          //            sa = (input)  socket address to look up
+          //         salen = (input)  length of "sa" parameter.
+          //      nodename = (output) returned name of host (can be
+          //                           *OMIT if you don't need it.)
+          //   nodenamelen = (input)  %size of nodename parameter
+          //      servname = (output) returned name of service (can be
+          //                           *OMIT if you don't need it.)
+          //   servnamelen = (input)  %size of servname parameter
+          //         flags = (input)  options to control how getnameinfo
+          //                           works.  See NI_xxx flags, below.
+          //   returns 0 if successful, non-zero otherwise.
+          //     a non-zero return value is an error code.  Use gai_strerror()
+          //     to get a message for that error code.
+          //  --------------------------------------------------------------------
+        /if not defined(XOPEN_SOURCE_520)
+         dcl-pr getnameinfo int(10) extproc('getnameinfo');
+          sa like(sockaddr_storage) const;
+          salen like(socklen_t) value;
+          nodename char(32767) options(*varsize:*omit);
+          nodenamelen like(socklen_t) value;
+          servname char(32767) options(*varsize:*omit);
+          servnamelen like(socklen_t) value;
+          flags int(10) value;
+         end-pr getnameinfo;
+        /else
+         dcl-pr getnameinfo int(10) extproc('qso_getnameinfo98');
+          sa like(sockaddr_storage) const;
+          salen like(socklen_t) value;
+          nodename char(32767) options(*varsize:*omit);
+          nodenamelen like(socklen_t) value;
+          servname char(32767) options(*varsize:*omit);
+          servnamelen like(socklen_t) value;
+          flags int(10) value;
+         end-pr getnameinfo;
+        /endif
+
+          //  --------------------------------------------------------------------
+          //  Flags for getnameinfo():
+          //  NI_NOFQDN      = only nodename returned for local hosts
+          //  NI_NUMERICHOST = only return numeric address, not host name
+          //  NI_NAMEREQD    = if DNS lookup of name fails, return error.
+          //                     (otherwise, numeric address is returned.)
+          //  NI_NUMERICSERV = always return port number, not service name
+          //  NI_DGRAM       = return UDP services (by default, returns TCP)
+          //  --------------------------------------------------------------------
+         dcl-c NI_NOFQDN const(1);
+         dcl-c NI_NUMERICHOST const(2);
+         dcl-c NI_NAMEREQD const(4);
+         dcl-c NI_NUMERICSERV const(8);
+         dcl-c NI_DGRAM const(32);
+
+          //  --------------------------------------------------------------------
+          //    gai_strerror():  Get text message for an error code
+          //                     returned by getnameinfo/getaddrinfo
+          //        ecode = (input) error code
+          //  returns pointer to null-terminated string.
+          //  --------------------------------------------------------------------
+         dcl-pr gai_strerror pointer extproc('gai_strerror');
+          ecode int(10) value;
+         end-pr gai_strerror;
+
+          //  --------------------------------------------------------------------
+          //   freeaddrinfo():  Free up address info list memory
+
+          //     list = (input) list of addrinfo_t structures returned
+          //                    in the res parm of getaddrinfo()
+          //  --------------------------------------------------------------------
+         dcl-pr freeaddrinfo  extproc('freeaddrinfo');
+          list pointer value;
+         end-pr freeaddrinfo;
+
+      // endif for if defined(*V5R2M0)
+        /endif

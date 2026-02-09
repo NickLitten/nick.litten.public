@@ -1,0 +1,43 @@
+/* --------------------------------------------------------- */
+/* Simple CLLE Bound Program to ask/answer a question        */
+/* --------------------------------------------------------- */
+/* Author: nick@nicklitten.com                               */
+/* Date:   February 25th 2025                                */
+/* --------------------------------------------------------- */
+
+PGM
+ 
+DCL VAR(&REPLY) TYPE(*CHAR) LEN(10)
+
+MSG: SNDUSRMSG MSG('Which iASP do you want to use? (IASP1/IASP2/*NONE)') +
+               VALUES(IASP1 IASP2 *NONE) TOMSGQ(*) MSGRPY(&REPLY)
+
+/* This is the select group to handle the user reply */
+SELECT
+ 
+  WHEN COND(&REPLY *EQ '*NONE' *OR &REPLY *EQ '*none') THEN(DO)
+    SETASPGRP ASPGRP(*NONE)
+  ENDDO
+ 
+  WHEN COND(&REPLY *EQ 'IASP1' *OR &REPLY *EQ 'iasp1') THEN(DO)
+    SETASPGRP ASPGRP(IASP1)
+  ENDDO
+ 
+  WHEN COND(&REPLY *EQ 'IASP2' *OR &REPLY *EQ 'IASP2') THEN(DO)
+    SETASPGRP ASPGRP(IASP2)
+  ENDDO
+ 
+  OTHERWISE CMD(DO)
+    GOTO CMDLBL(MSG)
+  ENDDO
+ 
+ENDSELECT
+
+/* if the code drops to here then its answered so stick a */
+/* message in the joblog and goto the MAIN IBM i Menu */
+
+SNDPGMMSG MSG('iASP' *BCAT &REPLY *TCAT ' selected.') TOPGMQ(*EXT) TOMSGQ(*TOPGMQ) MSGTYPE(*COMP)
+ 
+GO MENU(MAIN)
+ 
+ENDPGM

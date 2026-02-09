@@ -1,0 +1,130 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+       /if defined(QLG_H)
+       /eof
+       /endif
+       /define QLG_H
+
+        // ******************************************************************
+        // Structure for CCSID based request
+        // 
+        //   typedef struct Qlg_CCSID_ReqCtlBlk {
+        //       int Type_of_Request;
+        //       int CCSID_of_Input_Data;
+        //       int Case_Request;
+        //       char Reserved[10];
+        //   } Qlg_CCSID_ReqCtlBlk_T;
+        // ******************************************************************
+         dcl-ds Qlg_CCSID_ReqCtlBlk_T INZ based(StructureTemplate) align qualified;
+         Type_of_Reques int(10);
+         CCSID_of_Inp int(10);
+         Case_Request int(10);
+         Reserved char(10);
+         end-ds;        
+
+
+
+        // *******************************************************************
+        //  Structures for request using table (*TBL)
+        // 
+        //    typedef struct Qlg_Qual_Tbl_Name {
+        //        char Tbl_Name[10];
+        //        char Lib[10];
+        //    } Qlg_Qual_Tbl_Name_T;
+        // 
+        //    typedef struct Qlg_Table_ReqCtlBlk {
+        //        int Type_of_Request;
+        //        int DBCS_Indicator;
+        //        Qlg_Qual_Tbl_Name_T Qual_Tbl_Name;
+        //    } Qlg_Table_ReqCtlBlk_T;
+        // *******************************************************************
+         dcl-ds Qlg_Qual_Tbl_Name_T INZ based(StructureTemplate) align qualified;
+                Tbl_Name char(10);
+                Lib char(10);
+         end-ds;
+  
+         dcl-ds Qlg_Table_ReqCtlBlk_T INZ based(StructureTemplate) align qualified;
+                Type_of_Requ int(10) EXTFLD;
+                DBCS_Indicat zoned(0:0);
+                Qual_Tbl_Nam zoned(0:L) EXTFLD keds(Qlg_Qual_Tbl_Name_t);
+         end-ds;
+
+
+        // *******************************************************************
+        //  Structure for request using user-defined conversion map
+        // 
+        //    typedef struct UsrDef_ReqCtlBlk {
+        //        int Type_of_Request;
+        //        int DBCS_Indicator;
+        //        int Reserved;
+        //        int Length;
+        //    /*  char CvtMap[];                         Variable length field    */
+        //    } Qlg_UsrDef_ReqCtlBlk_T;
+        // *******************************************************************
+         dcl-ds Qlg_UsrDef_ReqCtlBlk_T INZ based(StructureTemplate) align
+           qualified;
+                Type_of_Requ int(10) EXTFLD;
+                DBCS_Indicat zoned(0:0);
+                Reserved  POS(10);
+                Length int(10);
+                CvtMap char(256);
+         end-ds Qlg_UsrDef_ReqCtlBlk_T;
+
+        // *******************************************************************
+        //  Structure for NLS-enabled path name
+        // 
+        //    typedef struct Qlg_Path_Name {
+        //        int  CCSID;
+        //        char Country_ID[2];              /* Country or region ID  */
+        //        char Language_ID[3];
+        //        char Reserved[3];
+        //        unsigned int Path_Type;
+        //        int  Path_Length;
+        //        char Path_Name_Delimiter[2];
+        //        char Reserved2[10];
+        //      /*char Path_Name[];*/              /*   Variable length field    */
+        //    } Qlg_Path_Name_T;
+        // *******************************************************************
+         dcl-ds Qlg_Path_Name_T INZ based(StructureTemplate) align qualified;
+                CCSID int(10);
+                Country_ID char(2);
+                Language_ID char(3);
+                Reserved char(3);
+                Path_Type uns(10);
+                Path_Length int(10);
+                Path_Name_De  A;
+                Reserved2 char(10);
+                Path_Name char(1024);
+                p_Path_Name pointer overlay(Path_Name);
+         end-ds Qlg_Path_Name_T;
+ 
+        // *******************************************************************
+        //   Constants for the Path_Type parameter to QLg_Path_Name_T
+        // *******************************************************************
+         dcl-c QLG_CHAR_SINGL 0;
+         dcl-c QLG_PTR_SINGLE 1;
+         dcl-c QLG_CHAR_DOUBLE 2;
+         dcl-c QLG_PTR_DOUBLE 3;   

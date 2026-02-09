@@ -1,0 +1,1 @@
+SUBDIRS = check_subsystem_active cl_code_snippets clear_pfrdata crud debug email_csv_file hello_world rpg_modernization security sql_encryption sqlrpgle_dynamic stored_procs subfile triggers webservice

@@ -1,0 +1,87 @@
+     A* ================================================================
+     A* Display File: PERSONSFL
+     A* Description: Expanding page subfile for Person table
+     A* ================================================================
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA12(12 'Cancel')
+     A*
+     A* ================================================================
+     A* Subfile Record Format
+     A* ================================================================
+     A          R SFLREC                    SFL
+     A                                      SFLNXTCHG
+     A            SFLSEL         1A  B  4  3VALUES(' ' '1' '2' '4' '5')
+     A            PNAME         50A  O  4  7
+     A            PDOB            L  O  4 60
+     A            PADDRESS     100A  H
+     A*
+     A* ================================================================
+     A* Subfile Control Record Format
+     A* ================================================================
+     A          R SFLCTL                    SFLCTL(SFLREC)
+     A                                      SFLSIZ(9999)
+     A                                      SFLPAG(0010)
+     A                                      OVERLAY
+     A  91                                  SFLDSP
+     A  92                                  SFLDSPCTL
+     A  93                                  SFLCLR
+     A  94                                  SFLEND(*MORE)
+     A            SFLRCDNBR      4S 0H      SFLRCDNBR(CURSOR)
+     A*
+     A* ================================================================
+     A* Screen Header
+     A* ================================================================
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 30'Person List - Expanding Page'
+     A                                      DSPATR(HI)
+     A                                  1 70TIME
+     A                                  2  2'Program:'
+     A            PGMNAME       10A  O  2 11
+     A                                  2 30'Subfile'
+     A                                      DSPATR(HI)
+     A                                  2 70'User:'
+     A            USERNAME      10A  O  2 76
+     A*
+     A* ================================================================
+     A* Column Headers
+     A* ================================================================
+     A                                  3  3'Sel'
+     A                                      DSPATR(HI)
+     A                                  3  7'Name'
+     A                                      DSPATR(HI)
+     A                                  3 60'Date of Birth'
+     A                                      DSPATR(HI)
+     A*
+     A* ================================================================
+     A* Footer
+     A* ================================================================
+     A          R FOOTREC
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 12'F5=Refresh'
+     A                                      COLOR(BLU)
+     A                                 23 25'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 24  2'Selection: 1=Display Details'
+     A                                      COLOR(BLU)
+     A*
+     A* ================================================================
+     A* Detail Display Record Format
+     A* ================================================================
+     A          R DETAILREC
+     A                                      OVERLAY
+     A                                  5  2'Person Details'
+     A                                      DSPATR(HI)
+     A                                  7  5'Name:'
+     A            DNAME         50A  O  7 20
+     A                                  9  5'Date of Birth:'
+     A            DDOB            L  O  9 20
+     A                                 11  5'Address:'
+     A            DADDRESS     100A  O 11 20
+     A                                 23  2'F12=Return'
+     A                                      COLOR(BLU)

@@ -1,0 +1,158 @@
+/* Program: CLRPFRDATA - Clear Performance Data and Report                   */
+/* Purpose: End performance collections, clear QPFRDATA library, restart     */
+/*          collections, and email before/after reports                      */
+/* Author:  Nick Litten                                                      */
+/* Date:    2026-02-05                                                       */
+
+PGM
+  /* Email configuration */
+  DCL VAR(&RECIPIENT)   TYPE(*CHAR) LEN(256) VALUE('admin@yourdomain.com')
+
+  DCL VAR(&EMAILRPT)  TYPE(*CHAR) LEN(20000)
+  DCL VAR(&NEWLINE)   TYPE(*CHAR) LEN(1) VALUE(X'25')
+  DCL VAR(&ERRMSG)    TYPE(*CHAR) LEN(512)
+  DCL VAR(&MSGID)     TYPE(*CHAR) LEN(7)
+  DCL VAR(&MSGDTA)    TYPE(*CHAR) LEN(512)
+  
+  MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR))
+
+  /* Step 1: Generate BEFORE Cleanup Report                              */
+  SNDPGMMSG MSG('Starting QPFRDATA cleanup process...') MSGTYPE(*COMP)
+
+  /* Run SQL report for data before cleanup */
+  /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  /* !!!!!UPDATE THIS TO MATCH YOUR LOCATION!!!!!!!! */
+  /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  RUNSQLSTM SRCFILE(MYUTIL/QSQLSRC) +
+            SRCMBR(FATQPFRB) +
+            COMMIT(*NONE) +
+            NAMING(*SQL)
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    CHGVAR VAR(&ERRMSG) VALUE('Error running BEFORE report: ' +
+                              *CAT &MSGID)
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Export report to IFS */
+  CPYTOIMPF FROMFILE(QTEMP/FATQPFRB) +
+            TOSTMF('/tmp/fatqpfrb.txt') +
+            MBROPT(*REPLACE) +
+            RCDDLM(*CRLF) +
+            DTAFMT(*DLM) +
+            STRDLM(*NONE)
+
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    CHGVAR VAR(&ERRMSG) VALUE('Error exporting BEFORE report')
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+
+  /* Step 2: End All Active Performance Collections                      */
+  SNDPGMMSG MSG('Ending performance collections...') MSGTYPE(*COMP)
+
+  /* End Collection Services */
+  ENDPFRCOL FRCCOLEND(*NO)   
+  MONMSG MSGID(CPF0000)
+
+  /* Allow time for collections to fully end */
+  DLYJOB DLY(5)
+
+  /* Step 3: Clear QPFRDATA Library                                       */
+  SNDPGMMSG MSG('Clearing QPFRDATA library...') MSGTYPE(*COMP)
+
+  CLRLIB LIB(QPFRDATA)
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    CHGVAR VAR(&ERRMSG) VALUE('Error clearing QPFRDATA: ' *CAT &MSGID)
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Step 4: Restart Collection Services                                  */
+  SNDPGMMSG MSG('Restarting collection services...') MSGTYPE(*COMP)
+
+  STRPFRCOL COLPRF(*CFG)
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    CHGVAR VAR(&ERRMSG) VALUE('Error starting collections: ' *CAT &MSGID)
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Step 5: Generate AFTER Cleanup Report                               */
+  SNDPGMMSG MSG('Generating AFTER cleanup report...') MSGTYPE(*COMP)
+
+  /* Run SQL report for data after cleanup */
+  RUNSQLSTM SRCFILE(MYUTIL/QSQLSRC) +
+            SRCMBR(FATQPFRA) +
+            COMMIT(*NONE) +
+            NAMING(*SQL)
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    CHGVAR VAR(&ERRMSG) VALUE('Error running AFTER report: ' *CAT &MSGID)
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Export report to IFS */
+  CPYTOIMPF FROMFILE(QTEMP/FATQPFRA) +
+            TOSTMF('/tmp/fatqpfra.txt') +
+            MBROPT(*REPLACE) +
+            RCDDLM(*CRLF) +
+            DTAFMT(*DLM) +
+            STRDLM(*NONE)
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    CHGVAR VAR(&ERRMSG) VALUE('Error exporting AFTER report')
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Step 6: Build and Send Email Report                                  */
+  SNDPGMMSG MSG('Building email report...') MSGTYPE(*COMP)
+
+  QSH CMD('zip /tmp/clrpfrdata_bundle.zip /home/nick/file1.pdf /home/nick/file2.pdf')
+
+  /* Send email notification */
+  SNDSMTPEMM RCP(&RECIPIENT) SUBJECT('CLRPFRDATA Cleanup completed successfully') +
+           ATTACH('/tmp/clrpfrdata_bundle.zip')
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    SNDPGMMSG MSG('Warning: Email failed to send - ' *CAT &MSGID) +
+              TOPGMQ(*EXT) MSGTYPE(*DIAG)
+  ENDDO
+
+  /* Completion Message                                                   */
+  SNDPGMMSG MSG('QPFRDATA cleanup completed successfully') +
+            TOPGMQ(*EXT) MSGTYPE(*COMP)
+
+  GOTO CMDLBL(END_PGM)
+
+  /* Error Handler                                                        */
+ERROR:
+  /* Get error details if not already captured */
+  IF COND(&ERRMSG *EQ ' ') THEN(DO)
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+    CHGVAR VAR(&ERRMSG) VALUE('Unexpected error: ' *CAT &MSGID +
+                              *CAT ' - ' *CAT &MSGDTA)
+  ENDDO
+
+  /* Log error */
+  SNDPGMMSG MSG(&ERRMSG) MSGTYPE(*DIAG)
+
+  /* Attempt to send error notification email */
+  CHGVAR VAR(&EMAILRPT) VALUE('QPFRDATA Cleanup FAILED' +
+         *CAT &NEWLINE *CAT &NEWLINE +
+         *CAT 'Error Details:' +
+         *CAT &NEWLINE +
+         *CAT &ERRMSG)
+
+  SNDSMTPEMM RCP(&RECIPIENT) +
+             SUBJECT('ERROR: QPFRDATA Cleanup Failed') +
+             NOTE(&EMAILRPT) 
+  MONMSG MSGID(CPF0000)
+
+  /* Clean up overrides */
+  DLTOVR FILE(*ALL)
+  MONMSG MSGID(CPF0000)
+
+END_PGM:
+  RETURN
+
+ENDPGM

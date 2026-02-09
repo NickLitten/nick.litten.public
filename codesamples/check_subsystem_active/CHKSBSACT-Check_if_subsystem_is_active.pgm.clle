@@ -1,0 +1,102 @@
+/* Program: CHKSBSACT - Check if Subsystem is Active                          */
+/* Purpose: Determines if a specified subsystem is currently active           */
+/* Parameters:                                                                */
+/*   &SBS    - Subsystem name (10 chars)                                      */
+/*   &LIB    - Subsystem library (10 chars)                                   */
+/*   &RESULT - Return value: 'YES' if active, 'NO' if inactive, 'ERR' error   */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
+
+PGM        PARM(&SBS &LIB &RESULT)
+
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('CHKSBSACT Ver:001 Check if Subsystem is Active')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+DCL        VAR(&SBS) TYPE(*CHAR) LEN(10)
+DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+DCL        VAR(&RESULT) TYPE(*CHAR) LEN(3)
+DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+DCL        VAR(&SQLSTMT) TYPE(*CHAR) LEN(512)
+
+
+/* File declaration for SQL result */
+DCLF       FILE(CHKSBSTMP) ALWVARLEN(*YES)
+
+/* Initialize result to error state */
+CHGVAR     VAR(&RESULT) VALUE('ERR')
+
+/* Clean up any existing temp file */
+DLTF       FILE(QTEMP/CHKSBSTMP)
+MONMSG     MSGID(CPF2105 CPF2110) /* File not found errors */
+
+/* Build dynamic SQL statement using actual parameters */
+CHGVAR     VAR(&SQLSTMT) VALUE('CREATE TABLE +
+                 QTEMP.CHKSBSTMP AS (SELECT STATUS FROM +
+                 QSYS2.SUBSYSTEM_INFO WHERE +
+                 SUBSYSTEM_DESCRIPTION = ''' *CAT %TRIM(&SBS) +
+                 *CAT ''' AND SUBSYSTEM_DESCRIPTION_LIBRARY = +
+                 ''' *CAT %TRIM(&LIB) *CAT ''') WITH DATA')
+
+/* Execute SQL to retrieve subsystem status */
+RUNSQL     SQL(&SQLSTMT) COMMIT(*NONE) NAMING(*SQL)
+MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(SQL_ERROR))
+
+/* Read the status from temp file */
+RCVF       RCDFMT(*FILE)
+MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(NO_DATA)) /* EOF */
+MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(READ_ERROR))
+
+/* Check if subsystem is active */
+IF         COND(%TRIM(&STATUS) *EQ 'ACTIVE') THEN(DO)
+   CHGVAR     VAR(&RESULT) VALUE('YES')
+ENDDO
+ELSE       CMD(DO)
+   CHGVAR     VAR(&RESULT) VALUE('NO')
+ENDDO
+
+/* Clean up and return */
+GOTO       CMDLBL(CLEANUP)
+
+
+
+
+
+/* Error handling routines                                                   */
+
+/* No data found - subsystem doesn't exist or no match */
+NO_DATA:
+CHGVAR     VAR(&RESULT) VALUE('NO')
+SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+              MSGDTA('Subsystem' *BCAT %TRIM(&SBS) *BCAT +
+              'not found in library' *BCAT %TRIM(&LIB)) +
+              MSGTYPE(*DIAG)
+GOTO       CMDLBL(CLEANUP)
+
+/* SQL execution error */
+SQL_ERROR:
+RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+              MSGDTA('SQL error' *BCAT &MSGID *BCAT '-' +
+              *BCAT %SST(&MSGDTA 1 100)) MSGTYPE(*DIAG)
+GOTO       CMDLBL(CLEANUP)
+
+/* File read error */
+READ_ERROR:
+RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+              MSGDTA('Read error' *BCAT &MSGID *BCAT '-' +
+              *BCAT %SST(&MSGDTA 1 100)) MSGTYPE(*DIAG)
+GOTO       CMDLBL(CLEANUP)
+
+/* Cleanup routine */
+CLEANUP:
+DLTF       FILE(QTEMP/CHKSBSTMP)
+MONMSG     MSGID(CPF2105 CPF2110) /* Ignore if not found */
+
+RETURN
+
+ENDPGM

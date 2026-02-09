@@ -1,0 +1,128 @@
+/* ------------------------------------------------------------ */
+/* TEMPLATE - Code Snippet IBMi Control Language                */
+/* ------------------------------------------------------------ */
+/* Program.......... TEMPLATE                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... This is a template for a simple CL program */
+/*                    - edit & use as you please                */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. This is a CLLE *MODULE bound into *PGM     */
+/* CRTCLMOD: CRTCLMOD MODULE('library'/TEMPLATE)                */
+/* CRTPGM:   CRTPGM PGM('library'/TEMPLATE) MODULE(TEMPLATE*)   */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2017.10.17 V01 Created                            */
+/* NickLitten 2025.04.11 V02 Refreshed and imported to GITHUB   */
+/* NickLitten 2025.09.21 V03 Check for QTEMP/IDONTEXIST         */
+/* NickLitten 2025.09.28 V04 Minor Layout Tweaks                */
+/* ------------------------------------------------------------ */
+PGM
+
+DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+DCL VAR(&PGMNAME) TYPE(*CHAR) LEN(10)
+DCL VAR(&CRASHED) TYPE(*LGL) VALUE('0')
+DCL VAR(&MSGID) TYPE(*CHAR) LEN(7)
+DCL VAR(&MSGDTA) TYPE(*CHAR) LEN(256)
+DCL VAR(&MSGFIL) TYPE(*CHAR) LEN(10)
+DCL VAR(&MSGFLIB) TYPE(*CHAR) LEN(10)
+DCL VAR(&MSGKEY) TYPE(*CHAR) LEN(4)
+DCL VAR(&RTNTYPE) TYPE(*CHAR) LEN(2)
+DCL VAR(&SENDER) TYPE(*CHAR) LEN(80)
+
+/* NOTE: the COPYRIGHT statement will display when you do a DSPPGM */
+COPYRIGHT TEXT('TEMPLATE Ver:004 Simple CL template.  Add any comments you like here')
+
+/* we can go an extra step and include more text with a variable so that it */
+/* displays in DUMP outputs (not that my code ever dumps of course ;) */
+DCL VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+ VALUE('YOUR COMPANY © 2025 | IBM i V7.5 https://www.nicklitten.com')
+DCL VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT) /* &VARIABLES are not +
+ shown in DUMPS unless theyre used but we can *fool* IBM i into using it - how +
+ about something like a little pointer? */
+
+MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH)) /* Global monitor for any error messages */
+
+
+/* ---------------- */
+/* MAINLINE SECTION */
+/* ---------------- */
+
+CALLSUBR SUBR(INZSR) /* a little initialization subroutine to do pre-run gubbins */
+
+/* begin regular program logic here */
+CALLSUBR SUBR(MAINLINE)
+
+SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) +
+ MSGDTA('Program' *BCAT &PGMNAME *TCAT 'completed normally') MSGTYPE(*COMP)
+
+RETURN
+
+CRASH: CALLSUBR SUBR(CRASH)
+
+
+/* ------------------ */
+/* SUBROUTINE SECTION */
+/* ---------------------------------------------------------------------------------------------- */
+/* Initialization Routine - could contains anything but lets use it to get the pgm name */
+/* ---------------------------------------------------------------------------------------------- */
+SUBR SUBR(INZSR)
+  SNDPGMMSG MSG('What is this program name?') TOPGMQ(*SAME) MSGTYPE(*INFO) KEYVAR(&MSGKEY)
+  RCVMSG PGMQ(*SAME) MSGTYPE(*INFO) WAIT(0) RMV(*YES) SENDER(&SENDER) SENDERFMT(*SHORT)
+  CHGVAR VAR(&PGMNAME) VALUE(%SST(&SENDER 56 10))
+ENDSUBR
+
+/* ---------------------------------------------------------------------------------------------- */
+/* MAINLINE - If you prefer you could use this for your mainline */
+/* ---------------------------------------------------------------------------------------------- */
+SUBR SUBR(MAINLINE)
+
+/* This is where all your main code will go */
+
+/* if any error occurs the global MONMSG will pick it up and spit us into the error handling subroutine */ 
+CHKOBJ OBJ(QTEMP/IDONTEXIST) OBJTYPE(*PGM) /* Here is an example command that will deliberately crash, forcing a program ABEND so you can see the error message in use. Obviously you should replace this with the actual logic you are writing... */
+ 
+/*  The RTNSUBR can be used (like LEAVESR in RPGLE) and will exit the subroutine immediately  */
+RTNSUBR
+
+ENDSUBR
+
+/* ---------------------------------------------------------------------------------------------- */
+/* CRASH : Routine to handle unexpected errors */
+/* ---------------------------------------------------------------------------------------------- */
+SUBR SUBR(CRASH)
+  IF COND(&CRASHED) THEN(RETURN)
+  CHGVAR VAR(&CRASHED) VALUE('1')
+
+/* This subroutine will read back through this programs joblog */
+/* and pump out messages to your joblog based on the status */
+/* codes returned from RCVMSG. RTNTYPE values include: */
+/* - 01 Completion */
+/* - 02 Diagnostic */
+/* - 04 Information */
+/* - 05 Inquiry */
+/* - 06 Copy */
+/* - 08 Request */
+/* - 10 Request with prompting */
+/* - 14 Notify (exception already handled at time of RCVMSG) */
+/* - 15 Escape (exception already handled at time of RCVMSG) */
+/* - 16 Notify (exception not handled at time of RCVMSG) */
+/* - 17 Escape (exception not handled at time of RCVMSG) */
+/* - 21 Reply, not checked for validity */
+/* - 22 Reply, already checked for validity */
+/* - 23 Reply, message default used */
+/* - 24 Reply, system default used */
+/* - 25 Reply, from System Reply List */
+/* - 26 Reply, from exit program */
+   RCVMSG MSGTYPE(*LAST) MSGDTA(&MSGDTA) MSGID(&MSGID) RTNTYPE(&RTNTYPE) MSGF(&MSGFIL) +
+     SNDMSGFLIB(&MSGFLIB)
+   IF COND(&RTNTYPE *EQ '15' *OR &RTNTYPE *EQ '17') THEN(DO) /* *escape */
+     SNDPGMMSG MSGID(&MSGID) MSGF(&MSGFIL) MSGDTA(&MSGDTA) MSGTYPE(*DIAG)
+   ENDDO
+   SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('* Program' *BCAT &PGMNAME *BCAT 'ended abnormally') MSGTYPE(*ESCAPE)
+ENDSUBR
+ENDPGM: ENDPGM

@@ -1,0 +1,39 @@
+/* Program: CHKQINACT - Check if Subsystem is Active                          */
+/* Purpose: Determines if a specified subsystem is currently active           */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
+
+PGM
+
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('CHKSBSACT Ver:001 Check if Subsystem is Active')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+DCL        VAR(&SBSNAME) TYPE(*CHAR) LEN(10) VALUE(QINTER)
+DCL        VAR(&SBSLIB) TYPE(*CHAR) LEN(10) VALUE(QSYS)
+DCL        VAR(&QUALNAME) TYPE(*CHAR) LEN(20)
+DCL        VAR(&RCVVAR) TYPE(*CHAR) LEN(512)
+DCL        VAR(&RCVLEN) TYPE(*INT) LEN(4) VALUE(512)
+DCL        VAR(&FORMAT) TYPE(*CHAR) LEN(8) VALUE('SBSI0100')
+DCL        VAR(&ERRCODE) TYPE(*CHAR) LEN(16) VALUE(X'00000000')
+DCL        VAR(&STATUS) TYPE(*CHAR) LEN(10)
+
+CHGVAR     VAR(&QUALNAME) VALUE(&SBSNAME *CAT &SBSLIB)
+
+CALL       PGM(QWDRSBSD) PARM((&RCVVAR) (&RCVLEN) +
+                              (&FORMAT) (&QUALNAME) (&ERRCODE))
+MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(FAIL))
+
+/* Extract subsystem status (positions 29-38 in SBSI0100) */
+CHGVAR     VAR(&STATUS) VALUE(%SST(&RCVVAR 29 10))
+
+SNDPGMMSG  MSG('Subsystem QINTER is' *BCAT &STATUS)
+
+RETURN
+
+FAIL:
+SNDPGMMSG  MSG('* Unable to retrieve subsystem status!')
+
+ENDPGM

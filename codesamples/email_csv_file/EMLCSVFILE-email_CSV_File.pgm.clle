@@ -1,0 +1,59 @@
+/* --------------------------------------------------------- */
+/*                                                           */
+/* EMLCSVFILE *CLLE - called by EMLCSVFILE *CMD              */
+/*                                                           */
+/* This is a very simple example Control Language Program    */
+/* that will recieve a file, email address, subject and body */
+/* and attach the file (as a CSV spreasdheet) and email it   */
+/*                                                           */
+/* NOTE: Minimal error handling to show simple code example  */
+/*                                                           */
+/* CRTBNDCL PGM(EMLCSVFILE) SRCFILE(LITTENN/QCLLESRC)        */
+/* SRCMBR(EMLCSVFILE)                                        */
+/*                                                           */
+/* --------------------------------------------------------- */
+/* Modification History                                      */
+/* NJL01 Nick Litten 04/01/2022 Created                      */
+/* --------------------------------------------------------- */
+
+PGM PARM(&DATAPARM &EML &SUBJECT &BODY)
+
+DCL VAR(&DATAPARM) TYPE(*CHAR) LEN(20)
+DCL VAR(&DATAFILE) TYPE(*CHAR) LEN(10)
+DCL VAR(&DATALIB) TYPE(*CHAR) LEN(10)
+DCL VAR(&EML) TYPE(*CHAR) LEN(255)
+DCL VAR(&SUBJECT) TYPE(*CHAR) LEN(100)
+DCL VAR(&BODY) TYPE(*CHAR) LEN(400)
+
+DCL VAR(&USER) TYPE(*CHAR) LEN(10)
+DCL VAR(&IFS) TYPE(*CHAR) LEN(255)
+DCL VAR(&STMF) TYPE(*CHAR) LEN(255)
+
+/* get the user name running the command */
+RTVJOBA USER(&USER)
+
+/* break file and lib out of the incoming parm */
+CHGVAR VAR(&DATAFILE) VALUE(&DATAPARM)
+CHGVAR VAR(&DATALIB) VALUE(%SUBSTRING(&DATAPARM 11 10))
+
+/* construct the working IFS folder name for this user */
+CHGVAR VAR(&IFS) VALUE('/home/' *CAT %TRIM(&USER) *CAT '/')
+
+/* create the folder and ignore if it already exists */
+CRTDIR DIR(&IFS)
+MONMSG MSGID(CPFA0A0) /* already exists */
+
+CHGVAR VAR(&STMF) VALUE(%TRIM(&IFS) *CAT %TRIM(&DATAFILE) *CAT '.csv')
+
+CPYTOIMPF FROMFILE(&DATALIB/&DATAFILE) TOSTMF(&STMF) MBROPT(*REPLACE) +
+FROMCCSID(*FILE) STMFCCSID(*PCASCII) RCDDLM(*CRLF) +
+DTAFMT(*DLM) STRDLM(*DBLQUOTE)
+
+SNDSMTPEMM RCP((&EML)) SUBJECT(&SUBJECT) NOTE(&BODY) ATTACH((&STMF))
+
+/* some housekeeping - if you want to delete the streamfile after sending */
+RMVLNK OBJLNK(&STMF)
+
+RETURN
+
+ENDPGM: ENDPGM

@@ -1,0 +1,679 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(QSNAPI_H)
+        /eof
+        /endif
+        /define QSNAPI_H
+
+          // -------------------------------------------------------------
+          //  Simple data types
+          // -------------------------------------------------------------
+         dcl-s Q_Handle_T int(10)  based(Template);
+         dcl-s Qsn_Cmd_Buf_T   like(Q_Handle_T) based(Template);
+         dcl-s Qsn_Inp_Buf_T   like(Q_Handle_T) based(Template);
+         dcl-s Qsn_Env_T   like(Q_Handle_T) based(Template);
+         dcl-c QSN_FAIL -1;
+
+          // -------------------------------------------------------------
+          //  QsnCrtCmdBuf(): Create command buffer
+          // -------------------------------------------------------------
+         dcl-pr QsnCrtCmdBuf int(10) extproc('QsnCrtCmdBuf');
+          InitSize int(10) const;
+          IncrAmt int(10) const options(*omit);
+          MaxSize int(10) const options(*omit);
+          Handle int(10) options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnCrtCmdBuf;
+
+          // -------------------------------------------------------------
+          //  QsnCrtInpBuf(): Create Input Buffer
+          // -------------------------------------------------------------
+         dcl-pr QsnCrtInpBuf int(10) extproc('QsnCrtInpBuf');
+          BufSize int(10) const;
+          IncrAmt int(10) const options(*omit);
+          MaxSize int(10) const options(*omit);
+          Handle int(10) options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnCrtInpBuf;
+
+          // -------------------------------------------------------------
+          //  QsnClrBuf(): Clear/Reset Buffer (any type)
+          // -------------------------------------------------------------
+         dcl-pr QsnClrBuf int(10) extproc('QsnClrBuf');
+          BufHandle int(10) const;
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnClrBuf;
+
+          // -------------------------------------------------------------
+          //  QsnDltBuf(): Delete buffer (any type)
+          // -------------------------------------------------------------
+         dcl-pr QsnDltBuf int(10) extproc('QsnDltBuf');
+          BufHandle int(10) const;
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnDltBuf;
+
+          // -------------------------------------------------------------
+          //  QsnClrScr():  Clear screen
+          // -------------------------------------------------------------
+         dcl-pr QsnClrScr int(10) extproc('QsnClrScr');
+          mode char(1) const options(*omit);
+          cmdbuf int(10) const options(*omit);
+          LowEnvHandle int(10) const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnClrScr;
+
+          // -------------------------------------------------------------
+          //  QsnWrtDta():  Write data to the display
+          // -------------------------------------------------------------
+         dcl-pr QsnWrtDta int(10) extproc('QsnWrtDta');
+          Data char(32767) const options(*varsize);
+          DataLen int(10) const;
+          FieldID int(10) const options(*omit);
+          Row int(10) const options(*omit);
+          Column int(10) const options(*omit);
+          StrMonoAttr char(1) const options(*omit);
+          EndMonoAttr char(1) const options(*omit);
+          StrColorAttr char(1) const options(*omit);
+          EndColorAttr char(1) const options(*omit);
+          CmdBufHandle int(10) const options(*omit);
+          LowEnvHandle int(10) const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnWrtDta;
+
+          // -------------------------------------------------------------
+          //  QsnSetFld():  Add a field to the display
+          // -------------------------------------------------------------
+         dcl-pr QsnSetFld int(10) extproc('QsnSetFld');
+          FieldID int(10) const options(*omit);
+          FieldLen int(10) const options(*omit);
+          Row int(10) const options(*omit);
+          Column int(10) const options(*omit);
+          FFW char(2) const options(*omit);
+          FCW char(2) const dim(32767) options(*omit: *varsize);
+          NumOfFCW int(10) const options(*omit);
+          MonoAttr char(1) const options(*omit);
+          ColorAttr char(1) const options(*omit);
+          CmdBufHandle int(10) const options(*omit);
+          LowEnvHandle int(10) const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnSetFld;
+
+          // -------------------------------------------------------------
+          //  QsnReadInp(): Read data and wait for AID key
+          // -------------------------------------------------------------
+         dcl-pr QsnReadInp int(10) extproc('QsnReadInp');
+          CC1 char(1) const;
+          CC2 char(1) const;
+          DataBytes int(10) options(*omit);
+          InpBufHandle int(10) options(*omit);
+          CmdBufHandle int(10) options(*omit);
+          LowEnvHandle int(10) options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnReadInp;
+
+          // -------------------------------------------------------------
+          //  QsnReadMDT(): Read modified fields only
+          // -------------------------------------------------------------
+         dcl-pr QsnReadMDT int(10) extproc('QsnReadMDT');
+          CC1 char(1) const;
+          CC2 char(1) const;
+          FldCount int(10) options(*omit);
+          InpBufHandle int(10) options(*omit);
+          CmdBufHandle int(10) options(*omit);
+          LowEnvHandle int(10) options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnReadMDT;
+
+          // -------------------------------------------------------------
+          //  QsnPutGetBuf():  Send command output buffer to terminal
+          //                   then wait for input buffer from terminal
+          // -------------------------------------------------------------
+         dcl-pr QsnPutGetBuf int(10) extproc('QsnPutGetBuf');
+          CmdBufHandle int(10) const;
+          InpBufHandle int(10) const;
+          LowEnvHandle int(10) const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnPutGetBuf;
+
+          // -------------------------------------------------------------
+          //  QsnRtvDta(): Get pointer to input data in input buffer
+          // -------------------------------------------------------------
+         dcl-pr QsnRtvDta pointer extproc('QsnRtvDta');
+          InpBufHandle int(10) const;
+          PtrToData pointer const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnRtvDta;
+
+          // -------------------------------------------------------------
+          //  QsnRtvDtaLen(): Get length of input data in input buffer
+          // -------------------------------------------------------------
+         dcl-pr QsnRtvDtaLen int(10) extproc('QsnRtvDtaLen');
+          InpBufHandle int(10) const;
+          DataLen int(10) const options(*omit);
+          ErrorCode char(32767) options(*omit: *varsize);
+         end-pr QsnRtvDtaLen;
+
+          // -------------------------------------------------------------
+
+          // -------------------------------------------------------------
+         dcl-ds Qsn_Env_Desc_T INZ qualified based(Template);
+          color_support char(1);
+          CDRA char(1);
+          CDRA_3F char(1);
+          DBCS_support char(1);
+          coexist char(1);
+          alt_help char(1);
+          tgt_dev char(10);
+          disp_file char(20);
+          invite_active char(1);
+          prevent_ovrd char(1);
+         end-ds Qsn_Env_Desc_T;
+
+          // -------------------------------------------------------------
+         dcl-ds Qsn_Env_Rtv_Desc_T INZ qualified based(Template);
+          bytes_rtn int(10);
+          bytes_avail int(10);
+          color_support char(1);
+          CDRA char(1);
+          CDRA_3F char(1);
+          DBCS_support char(1);
+          coexist char(1);
+          alt_help char(1);
+          tgt_dev char(10);
+          dsp_file char(20);
+          invite_active char(1);
+          prevent_ovrd char(1);
+         end-ds Qsn_Env_Rtv_Desc_T;
+
+          // -------------------------------------------------------------
+          //  Constants used for creating/querying the environment
+          // -------------------------------------------------------------
+         dcl-c QSN_COLOR_NO '1';
+         dcl-c QSN_COLOR_YES '2';
+         dcl-c QSN_COLOR_SELECT '3';
+
+         dcl-c QSN_CDRA_STD '1';
+         dcl-c QSN_CDRA_CNVT '2';
+         dcl-c QSN_DBCS_STD '1';
+         dcl-c QSN_DBCS_ONLY '2';
+         dcl-c QSN_DBCS_EITHER '3';
+         dcl-c QSN_DBCS_MIXED '4';
+         dcl-c QSN_COEXIST_YES '1';
+         dcl-c QSN_COEXIST_NO '2';
+         dcl-c QSN_ALTHELP_NO '1';
+         dcl-c QSN_TGT_REQ '*REQUESTER';
+         dcl-c QSN_INVITE_NO '1';
+         dcl-c QSN_INVITE_YES '2';
+         dcl-c QSN_PREVENT_OVERRIDE_NO '1';
+         dcl-c QSN_PREVENT_OVERRIDE_YES '2';
+
+         dcl-c QSN_SAME '0';
+         dcl-c QSN_DSP03 '3';
+         dcl-c QSN_DSP04 '4';
+
+          // -------------------------------------------------------------
+          //  AID keys (function keys, et al)
+          // -------------------------------------------------------------
+         dcl-c Qsn_F1 X'31';
+         dcl-c Qsn_F2 X'32';
+         dcl-c Qsn_F3 X'33';
+         dcl-c Qsn_F4 X'34';
+         dcl-c Qsn_F5 X'35';
+         dcl-c Qsn_F6 X'36';
+         dcl-c Qsn_F7 X'37';
+         dcl-c Qsn_F8 X'38';
+         dcl-c Qsn_F9 X'39';
+         dcl-c Qsn_F10 X'3A';
+         dcl-c Qsn_F11 X'3B';
+         dcl-c Qsn_F12 X'3C';
+         dcl-c Qsn_F13 X'B1';
+         dcl-c Qsn_F14 X'B2';
+         dcl-c Qsn_F15 X'B3';
+         dcl-c Qsn_F16 X'B4';
+         dcl-c Qsn_F17 X'B5';
+         dcl-c Qsn_F18 X'B6';
+         dcl-c Qsn_F19 X'B7';
+         dcl-c Qsn_F20 X'B8';
+         dcl-c Qsn_F21 X'B9';
+         dcl-c Qsn_F22 X'BA';
+         dcl-c Qsn_F23 X'BB';
+         dcl-c Qsn_F24 X'BC';
+         dcl-c Qsn_SLP X'3F';
+         dcl-c Qsn_FET X'50';
+         dcl-c Qsn_PA1 X'6C';
+         dcl-c Qsn_PA2 X'6E';
+         dcl-c Qsn_PA3 X'6B';
+         dcl-c Qsn_Clear X'BD';
+         dcl-c Qsn_Enter X'F1';
+         dcl-c Qsn_Help X'F3';
+         dcl-c Qsn_RollDown X'F4';
+         dcl-c Qsn_RollUp X'F5';
+         dcl-c Qsn_PageUp X'F4';
+         dcl-c Qsn_PageDown X'F5';
+         dcl-c Qsn_Print X'F6';
+         dcl-c Qsn_RecBS X'F8';
+
+         dcl-c Qsn5250QY '1';
+         dcl-c Qsn5250QN '2';
+         dcl-c Qsn5250QF '3';
+
+          // -------------------------------------------------------------
+          //  Control Characters ( CC1 & CC2 )
+          // -------------------------------------------------------------
+         dcl-c QSN_CC1_NULL X'00';
+         dcl-c QSN_CC1_LOCKBD X'20';
+         dcl-c QSN_CC1_MDTNBY X'40';
+         dcl-c QSN_CC1_MDTALL X'60';
+         dcl-c QSN_CC1_CLRMOD X'80';
+         dcl-c QSN_CC1_MDTNBY_CLRALL X'A0';
+         dcl-c QSN_CC1_MDTNBY_CLRMOD X'C0';
+         dcl-c QSN_CC1_MDTALL_CLRALL X'E0';
+
+         dcl-c QSN_CC2_NULL X'00';
+         dcl-c QSN_CC2_NO_IC X'40';
+         dcl-c QSN_CC2_RST_CSR_BL X'20';
+         dcl-c QSN_CC2_SET_CSR_BL X'10';
+         dcl-c QSN_CC2_UNLOCKBD X'08';
+         dcl-c QSN_CC2_ALARM X'04';
+         dcl-c QSN_CC2_MSG_OFF X'02';
+         dcl-c QSN_CC2_MSG_ON X'01';
+
+          // -------------------------------------------------------------
+          //   Screen Attributes
+          // -------------------------------------------------------------
+         dcl-c QSN_NO_SA X'00';
+         dcl-c QSN_SA_NORM X'20';
+         dcl-c QSN_SA_CS X'30';
+         dcl-c QSN_SA_BL X'28';
+         dcl-c QSN_SA_UL X'24';
+         dcl-c QSN_SA_HI X'22';
+         dcl-c QSN_SA_RI X'21';
+         dcl-c QSN_SA_ND X'27';
+
+         dcl-c QSN_SA_GRN X'20';
+         dcl-c QSN_SA_GRN_RI X'21';
+         dcl-c QSN_SA_WHT X'22';
+         dcl-c QSN_SA_WHT_RI X'23';
+         dcl-c QSN_SA_GRN_UL X'24';
+         dcl-c QSN_SA_GRN_UL_RI X'25';
+         dcl-c QSN_SA_WHT_UL X'26';
+         dcl-c QSN_SA_RED X'28';
+         dcl-c QSN_SA_RED_RI X'29';
+         dcl-c QSN_SA_RED_BL X'2A';
+         dcl-c QSN_SA_RED_RI_BL X'2B';
+         dcl-c QSN_SA_RED_UL X'2C';
+         dcl-c QSN_SA_RED_UL_RI X'2D';
+         dcl-c QSN_SA_RED_UL_BL X'2E';
+         dcl-c QSN_SA_ND_2F X'2F';
+         dcl-c QSN_SA_TRQ_CS X'30';
+         dcl-c QSN_SA_TRQ_CS_RI X'31';
+         dcl-c QSN_SA_YLW_CS X'32';
+         dcl-c QSN_SA_YLW_CS_RI X'33';
+         dcl-c QSN_SA_TRQ_UL X'34';
+         dcl-c QSN_SA_TRQ_UL_RI X'35';
+         dcl-c QSN_SA_YLW_UL X'36';
+         dcl-c QSN_SA_ND_37 X'37';
+         dcl-c QSN_SA_PNK X'38';
+         dcl-c QSN_SA_PNK_RI X'39';
+         dcl-c QSN_SA_BLU X'3A';
+         dcl-c QSN_SA_BLU_RI X'3B';
+         dcl-c QSN_SA_PNK_UL X'3C';
+         dcl-c QSN_SA_PNK_UL_RI X'3D';
+         dcl-c QSN_SA_BLU_UL X'3E';
+         dcl-c QSN_SA_ND_3F X'3F';
+
+          // -------------------------------------------------------------
+          //  Ideographic shift-in and shift-out
+          // -------------------------------------------------------------
+         dcl-c QSN_SO X'0E';
+         dcl-c QSN_SI X'0F';
+
+          // -------------------------------------------------------------
+          //   Field Format Words
+          // -------------------------------------------------------------
+         dcl-c QSN_NO_FFW X'0000';
+         dcl-c QSN_FFW_BYPASS X'6000';
+         dcl-c QSN_FFW_DUP X'5000';
+         dcl-c QSN_FFW_MDT X'4800';
+         dcl-c QSN_FFW_ALPHA_SHIFT X'4000';
+         dcl-c QSN_FFW_ALPHA_ONLY X'4100';
+         dcl-c QSN_FFW_NUM_SHIFT X'4200';
+         dcl-c QSN_FFW_NUM_ONLY X'4300';
+         dcl-c QSN_FFW_KATA X'4400';
+         dcl-c QSN_FFW_DIGIT_ONLY X'4500';
+         dcl-c QSN_FFW_IO X'4600';
+         dcl-c QSN_FFW_SIGNED_NUMERIC X'4700';
+         dcl-c QSN_FFW_AUTO_ENTER X'4080';
+         dcl-c QSN_FFW_FER X'4040';
+         dcl-c QSN_FFW_AUTO_FER X'4040';
+         dcl-c QSN_FFW_MONOCASE X'4020';
+         dcl-c QSN_FFW_AUTO_MONOCASE X'4020';
+         dcl-c QSN_FFW_ME X'4008';
+         dcl-c QSN_FFW_NOADJUST X'4000';
+         dcl-c QSN_FFW_RA_ZERO X'4005';
+         dcl-c QSN_FFW_RA_BLANK X'4006';
+         dcl-c QSN_FFW_MF X'4007';
+
+         dcl-c QSN_FCW_RESEQ X'8000';
+         dcl-c QSN_FCW_MSR X'8101';
+         dcl-c QSN_FCW_SLP X'8102';
+         dcl-c QSN_FCW_MSR_SLP X'8103';
+         dcl-c QSN_FCW_SLP_SA X'8106';
+         dcl-c QSN_FCW_DBCS_ONLY X'8200';
+         dcl-c QSN_FCW_DBCS_PURE X'8220';
+         dcl-c QSN_FCW_DBCS_EITHER X'8240';
+         dcl-c QSN_FCW_DBCS_OPEN X'8280';
+         dcl-c QSN_FCW_DBCS_OPEN_CO X'82C0';
+         dcl-c QSN_FCW_TRANSPARENT X'8400';
+         dcl-c QSN_FCW_FET X'8501';
+         dcl-c QSN_FCW_CONT_FIRST X'8601';
+         dcl-c QSN_FCW_CONT_LAST X'8602';
+         dcl-c QSN_FCW_CONT_MIDDLE X'8603';
+         dcl-c QSN_FCW_CP X'8800';
+         dcl-c QSN_FCW_HL X'8900';
+         dcl-c QSN_FCW_PDS X'8A00';
+         dcl-c QSN_FCW_MOD11 X'B140';
+         dcl-c QSN_FCW_MOD10 X'B1A0';
+
+         dcl-c QSN_READ_INP X'42';
+         dcl-c QSN_READ_MDT X'52';
+         dcl-c QSN_READ_IMM X'72';
+         dcl-c QSN_READ_MDT_ALT X'82';
+
+
+        /if defined(TO_BE_CONVERTED_LATER)
+          //  Structure definitions.
+         dcl-ds QsnEnvExtI INZ;
+            //  Data structure for QsnCrtEnv API.
+          QsnEEDta pointer;
+          QsnEEChg pointer procptr;
+          QsnEEDlt pointer procptr;
+         end-ds QsnEnvExtI;
+
+         dcl-ds QsnEnvWM INZ;
+            //  Data structures for QsnSetEnvWinMod API.
+          QsnEWAtrC char(1);
+          QsnEWULR int(10);
+          QsnEWULC int(10);
+          QsnEWNumR int(10);
+          QsnEWNumC int(10);
+         end-ds QsnEnvWM;
+
+         dcl-ds QsnREnvWM INZ;
+            //  Data structures for QsnRtvEnvWinMod API.
+          QsnREWRet int(10);
+          QsnREWAvl int(10);
+          QsnREWMode char(1);
+          QsnREWAtr char(1);
+          QsnREWULR int(10);
+          QsnREWULC int(10);
+          QsnREWNumR int(10);
+          QsnREWNumC int(10);
+         end-ds QsnREnvWM;
+
+         dcl-ds QsnQ5250 INZ;
+            //  Data structure for QsnQry5250 API.
+          QsnQ5Ret int(10);
+          QsnQ5Avl int(10);
+          QsnQ5Stat char(1);
+          QsnQ5Wkstn int(4);
+          QsnQ5CLvl char(3);
+          QsnQ5R1 char(16);
+          QsnQ5WType char(1);
+          QsnQ5MType char(4);
+          QsnQ5Model char(3);
+          QsnQ5KbdID char(1);
+          QsnQ5EKbd char(1);
+          QsnQ5PcKbd char(1);
+          QsnQ5SNum char(4);
+          QsnQ5MaxIn int(4);
+          QsnQ5WSCSp char(2);
+          QsnQ5R2 char(1);
+          QsnQ5WSCB1 char(1);
+          QsnQ5WSCB2 char(1);
+          QsnQ5WSCB3 char(1);
+          QsnQ5WSCB4 char(1);
+          QsnQ5WSCB5 char(1);
+          QsnQ5R3 char(5);
+          QsnQ5Prt char(1);
+          QsnQ5R4 char(1);
+          QsnQ5GrdBf char(1);
+          QsnQ5R5 char(9);
+         end-ds QsnQ5250;
+          // Note: this may be expanded in the future
+
+         dcl-ds QsnReadInf INZ;
+            //  Data structure for QsnRtvReadInf API.
+          QsnRIRet int(10);
+          QsnRIAvl int(10);
+          QsnRIR1 char(8);
+          QsnRIDta pointer;
+          QsnRIFDta pointer;
+          QsnRIDtaL int(10);
+          QsnRIFDtaL int(10);
+          QsnRINumF int(10);
+          ReadLen int(10);
+          QsnRIRow int(10);
+          QsnRICol int(10);
+          QsnRIAID char(1);
+          QsnRIR2 char(7);
+         end-ds QsnReadInf;
+
+         dcl-ds QsnFldInf INZ;
+            //  Data structure for QsnRtvFldInf API.
+          QsnFIRet int(10);
+          QsnFIAvl int(10);
+          QsnFIType char(1);
+          QsnFIRow int(10);
+          QsnFICol int(10);
+          QsnFIFDtaL int(10);
+          QsnFIR1 char(11);
+          QsnFIDta pointer;
+         end-ds QsnFldInf;
+
+         dcl-ds QsnWinExtI INZ;
+            //  Data structure for QsnCrtWin API
+          QsnWEDta pointer;
+          QsnWEChg pointer procptr;
+          QsnWEDlt pointer procptr;
+          QsnWECoord pointer procptr;
+          QsnWEDraw pointer procptr;
+          QsnWECur pointer procptr;
+         end-ds QsnWinExtI;
+
+         dcl-ds QsnWinD INZ;
+            //  Data structures for QsnCrtWin and QsnChgWin APIs.
+          QsnWTopR int(10);
+          QsnWLeftC int(10);
+          QsnWNumR int(10);
+          QsnWNumC int(10);
+          QsnWMinR int(10);
+          QsnWMinC int(10);
+          QsnWMaxR int(10);
+          QsnWMaxC int(10);
+          QsnWFS char(1);
+          QsnWAtrM1 char(1);
+          QsnWAtrM2 char(1);
+          QsnWAtrM3 char(1);
+          QsnWAtrC1 char(1);
+          QsnWAtrC2 char(1);
+          QsnWAtrC3 char(1);
+          QsnWShowB char(1);
+          QsnWShowBA char(1);
+          QsnWShowLA char(1);
+          QsnWShowRA char(1);
+          QsnWMsgL char(1);
+          QsnWULCh char(1);
+          QsnWTopCh char(1);
+          QsnWURCh char(1);
+          QsnWLCh char(1);
+          QsnWRCh char(1);
+          QsnWLLCh char(1);
+          QsnWBotCh char(1);
+          QsnWLRCh char(1);
+          QsnWGUI char(1);
+          QsnWFlg1 char(1);
+          QsnWFlg2 char(1);
+          QsnWR1 char(1);
+          QsnWBdrF char(1);
+          QsnWTtlF char(1);
+          QsnWTAtrM char(1);
+          QsnWTAtrC char(1);
+          QsnWR2 char(1);
+          QsnWR3 char(3);
+          QsnWTtlO int(10);
+          QsnWTtlL int(10);
+          QsnWR4 int(10);
+         end-ds QsnWinD;
+
+         dcl-ds QsnRWinD INZ;
+            //  Data structure for QsnRtvWinD API.
+          QsnRWRet int(10);
+          QsnRWAvl int(10);
+          QsnRWTopR int(10);
+          QsnRWLeftC int(10);
+          QsnRWNumR int(10);
+          QsnRWNumC int(10);
+          QsnRWMinR int(10);
+          QsnRWMinC int(10);
+          QsnRWMaxR int(10);
+          QsnRWMaxC int(10);
+          QsnRWFS char(1);
+          QsnRWAtrM1 char(1);
+          QsnRWAtrM2 char(1);
+          QsnRWAtrM3 char(1);
+          QsnRWAtrC1 char(1);
+          QsnRWAtrC2 char(1);
+          QsnRWAtrC3 char(1);
+          QsnRWShwB char(1);
+          QsnRWShwBA char(1);
+          QsnRWShwLA char(1);
+          QsnRWShwRA char(1);
+          QsnRWMsgL char(1);
+          QsnRWULCh char(1);
+          QsnRWTopCh char(1);
+          QsnRWURCh char(1);
+          QsnRWLCh char(1);
+          QsnRWRCh char(1);
+          QsnRWLLCh char(1);
+          QsnRWBotCh char(1);
+          QsnRWLRCh char(1);
+          QsnRWGUI char(1);
+          QsnRWFlg1 char(1);
+          QsnRWFlg2 char(1);
+          QsnRWR1 char(1);
+          QsnRWBdrF char(1);
+          QsnRWTtlF char(1);
+          QsnRWTAtrM char(1);
+          QsnRWTAtrC char(1);
+          QsnRWR2 char(1);
+          QsnRWR3 char(3);
+          QsnRWTtlO int(10);
+          QsnRWTtlL int(10);
+          QsnRWR4 int(10);
+         end-ds QsnRWinD;
+
+         dcl-ds QsnSsnExtI INZ;
+            //  Data structure for QsnCrtSsn API
+          QsnSEDta pointer;
+          QsnSEChg pointer procptr;
+          QsnSEDlt pointer procptr;
+          QsnSECoord pointer procptr;
+          QsnSEDraw pointer procptr;
+          QsnSECur pointer procptr;
+         end-ds QsnSsnExtI;
+
+         dcl-ds QsnSsnD INZ;
+            //  Data structure for QsnCrtSsn and QsnChgSsn APIs
+          QsnSActn pointer procptr Dim(24);
+          QsnSTRow int(10);
+          QsnSLCol int(10);
+          QsnSNRows int(10);
+          QsnSNCols int(10);
+          QsnSRollA int(10);
+          QsnSShftA int(10);
+          QsnSISize int(10);
+          QsnSMSize int(10);
+          QsnSIncr int(10);
+          QsnSIRows int(10);
+          QsnSR1 char(1);
+          QsnSWrap char(1);
+          QsnSR2 char(1);
+          QsnEBCDIC char(1);
+          QsnSEcho char(1);
+          QsnSLDsp char(1);
+          QsnSCDsp char(1);
+          QsnSShowC char(1);
+          QsnSCmdAM char(1);
+          QsnSCmdAC char(1);
+          QsnSInLAM char(1);
+          QsnSInLAC char(1);
+          QsnSPmtO int(10);
+          QsnSPmtL int(10);
+          QsnSCmdO1 int(10);
+          QsnSCmdL1 int(10);
+          QsnSCmdO2 int(10);
+          QsnSCmdL2 int(10);
+          QsnSR4 char(20);
+         end-ds QsnSsnD;
+
+         dcl-ds QsnRSsnD INZ;
+            //  Data structure for QsnRtvSsnD APIs
+          QsnRSRet int(10);
+          QsnRSAvl int(10);
+          QsnRSR1 char(8);
+          QsnRSActn pointer procptr Dim(24);
+          QsnRSTRow int(10);
+          QsnRSLCol int(10);
+          QsnRSNRows int(10);
+          QsnRSNCols int(10);
+          QsnRSRollA int(10);
+          QsnRSShftA int(10);
+          QsnRSISize int(10);
+          QsnRSMSize int(10);
+          QsnRSIncr int(10);
+          QsnRSIRows int(10);
+          QsnRSR2 char(1);
+          QsnRSWrap char(1);
+          QsnRSR3 char(1);
+          QsnREBCDIC char(1);
+          QsnRSEcho char(1);
+          QsnRSLDsp char(1);
+          QsnRSCDsp char(1);
+          QsnRSShowC char(1);
+          QsnRSCmdAM char(1);
+          QsnRSCmdAC char(1);
+          QsnRSInLAM char(1);
+          QsnRSInLAC char(1);
+          QsnRSPmtO int(10);
+          QsnRSPmtL int(10);
+          QsnRSCmdO1 int(10);
+          QsnRSCmdL1 int(10);
+          QsnRSCmdO2 int(10);
+          QsnRSCmdL2 int(10);
+          QsnRSR5 char(20);
+         end-ds QsnRSsnD;
+        /endif

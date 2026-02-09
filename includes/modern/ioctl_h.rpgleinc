@@ -1,0 +1,338 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+
+        /if defined(IOCTL_H)
+        /eof
+        /endif
+        /define IOCTL_H
+
+        /if defined(USE_QUALIFIED)
+        /if not defined(*V5R2M0)
+        /undefine USE_QUALIFIED
+        /endif
+        /endif
+
+          // *****************************************************************
+          //   The following requests can be made using ioctl():
+          // *****************************************************************
+          //                                          Gen SIGIO signals for
+          //                                          async I/O
+         dcl-c FIOASYNC 131075;
+        /if defined(*V5R2M0)
+          //                                          Get I/O CCSID
+         dcl-c FIOCCSID 131085;
+        /endif
+          //                                          Set/Clear Non-Blocking I/O
+         dcl-c FIONBIO 131074;
+          //                                          Return number of bytes
+          //                                          available to read
+         dcl-c FIONREAD 131073;
+          //                                          Set PID or GID that is
+          //                                          to receive SIGIO/SIGURG
+         dcl-c FIOSETOWN 131081;
+          //                                          Add a TCP/IP Route
+         dcl-c SIOCADDRT 65538;
+          //                                          Check if at OOB Mark
+         dcl-c SIOCATMARK 65537;
+          //                                          Delete a TCP/IP Route
+         dcl-c SIOCDELRT 65539;
+          //                                          Get Interface Address
+         dcl-c SIOCGIFADDR 65541;
+          //                                          Get Interface Broadcast
+          //                                          Address
+         dcl-c SIOCGIFBRDADDR 65543;
+          //                                          Get Configured Interfaces
+         dcl-c SIOCGIFCONF 65549;
+          //                                          Get Interface flags
+         dcl-c SIOCGIFFLAGS 65542;
+          //                                          Get Interface *LIND
+         dcl-c SIOCGIFLIND 65547;
+          //                                          Get Interface MTU
+         dcl-c SIOCGIFMTU 65545;
+          //                                          Get Interface Netmask
+         dcl-c SIOCGIFNETMASK 65544;
+          //                                          Get Interface Reassembly
+          //                                          Buffer Size
+         dcl-c SIOCGIFRBUFS 65546;
+          //                                          Get Interface Type Of
+          //                                          Service
+         dcl-c SIOCGIFTOS 65548;
+          //                                          Get PID or GID that is
+          //                                          to receive SIGIO/SIGURG
+         dcl-c SIOCGPGRP 65560;
+          //                                          Get Configured TCP/IP
+          //                                          Routes
+         dcl-c SIOCGRTCONF 65540;
+        /if defined(*V5R1M0)
+          //                                          Get the Number of Bytes
+          //                                          in TCP/IP send queue
+          //                                          that have not been acked
+         dcl-c SIOCSENDQ 65565;
+        /endif
+          //                                          Set PID or GID that is
+          //                                          to receive SIGIO/SIGURG
+         dcl-c SIOCSPGRP 65561;
+        /if defined(*V4R4M0)
+          //                                          Set Telephony Resources
+         dcl-c SIOCSTELRSC 65562;
+        /endif
+
+
+          // *****************************************************************
+          //  Flags for the ifr_flags member of the ifreq structure
+          // *****************************************************************
+          //                                     receive all multicast packets
+         dcl-c IFF_ALLMULTI 1;
+          //                                     token-ring routing supported
+         dcl-c IFF_BRIDGE 2;
+          //                                     IP broadcast address valid
+         dcl-c IFF_BROADCAST 4;
+          //                                     compress PPP address/control
+         dcl-c IFF_COMPAC 8;
+          //                                     compress PPP protocol
+         dcl-c IFF_COMPPROT 16;
+          //                                     activate interface debugging
+         dcl-c IFF_DEBUG 32;
+          //                                     loopback network interface
+         dcl-c IFF_LOOPBACK 64;
+          //                                     ARP not supported
+         dcl-c IFF_NOARP 128;
+          //                                     do not use trailers
+         dcl-c IFF_NOTRAILERS 256;
+          //                                     promiscuous mode
+          //                                     (receive all packets)
+         dcl-c IFF_PROMISC 512;
+          //                                     interface is p-2-p link
+         dcl-c IFF_POINTOPOINT 1024;
+          //                                     resources alloced and running
+         dcl-c IFF_RUNNING 2048;
+          //                                     extended SAP header
+         dcl-c IFF_SNAP 4096;
+          //                                     logical interfaces up/active
+         dcl-c IFF_UP 8192;
+          //                                     supports multicast
+         dcl-c IFF_MULTICAST 16384;
+
+
+          // *****************************************************************
+          //  Flags for the rt_flags field of the rtentry structure:
+          // *****************************************************************
+          //                                       black hole -- silently drop
+         dcl-c RTF_BLACKHOLE 64;
+          //                                       created dynamically
+         dcl-c RTF_DYNAMIC 16;
+          //                                       destination is a gateway
+         dcl-c RTF_GATEWAY 2;
+          //                                       gateway may have problems
+         dcl-c RTF_GATEWAY_PROBLEMATIC 128;
+          //                                       destination is a host
+         dcl-c RTF_HOST 4;
+          //                                       modified dynamically
+         dcl-c RTF_MODIFIED 32;
+          //                                       do not rebind to another
+          //                                       interface on activate/deactiv
+         dcl-c RTF_NOREBIND_IFC_ACTV 512;
+          //                                       do not rebind to another
+          //                                       interface if interface fails
+         dcl-c RTF_NOREBIND_IFC_FAIL 256;
+          //                                       route is usable
+         dcl-c RTF_UP 1;
+
+
+          // *****************************************************************
+          //  Constants for the rt_protocol field of the rtentry structure:
+          // *****************************************************************
+          //                                      route learned, sockets, etc
+         dcl-c RTP_OTHER 1;
+          //                                      route learned, configuration
+         dcl-c RTP_CONFIG 2;
+          //                                      route learned, SNMP
+         dcl-c RTP_SNMP 3;
+          //                                      route learned, ICMP
+         dcl-c RTP_ICMP 4;
+          //                                      route learned, EGP
+         dcl-c RTP_EGP 5;
+          //                                      route learned, GGP
+         dcl-c RTP_GGP 6;
+          //                                      route learned, HELLO
+         dcl-c RTP_HELLO 7;
+          //                                      route learned, RIP
+         dcl-c RTP_RIP 8;
+          //                                      route learned, IS-IS
+         dcl-c RTP_ISIS 9;
+          //                                      route learned, ES-IS
+         dcl-c RTP_ESIS 10;
+          //                                      route learned, Cisco IGRP
+         dcl-c RTP_CIGRP 11;
+          //                                      route learned, BBN SPF IGRP
+         dcl-c RTP_BSIGRP 12;
+          //                                      route learned, OSPF
+         dcl-c RTP_OSPF 13;
+          //                                      route learned, BGP
+         dcl-c RTP_BGP 14;
+
+
+          // *****************************************************************
+          //  Interface Entry Request Structure (ifreq)
+          //  #define ifr_addr        ifr_ifru.ifru_addr
+          //  #define ifr_mask        ifr_ifru.ifru_mask
+          //  #define ifr_broadaddr   ifr_ifru.ifru_broadaddr
+          //  #define ifr_flags       ifr_ifru.ifru_flags
+          //  #define ifr_mtu         ifr_ifru.ifru_mtu
+          //  #define ifr_rbufsize    ifr_ifru.ifru_rbufsize
+          //  #define ifr_linename    ifr_ifru.ifru_linename
+          //  #define ifr_TOS         ifr_ifru.ifru_TOS
+          //  struct ifreq {                        /* interface entry request */
+          //    char ifr_name[IFNAMSIZ];            /* interface name         */
+          //    union {
+          //       struct sockaddr ifru_addr;       /* local IP address       */
+          //       struct sockaddr ifru_mask;       /* subnetwork mask        */
+          //       struct sockaddr ifru_broadaddr;  /* broadcast address      */
+          //       short  ifru_flags;               /* interface flags        */
+          //       int    ifru_mtu;                 /* interface MTU size     */
+          //       int    ifru_rbufsize;            /* reassembly buffer size */
+          //       char   ifru_linename[IFLINSIZ];  /* line description name  */
+          //       u_char ifru_TOS;                 /* type-of-service       */
+          //    } ifr_ifru;
+          //  };
+          // *****************************************************************
+          dcl-s p_ifreq pointer;
+          dcl-ds ifreq INZ based(p_ifreq) align;
+            /if defined(USE_QUALIFIED)
+            *n  qualified;
+            /endif
+            ifr_name char(16);
+            /if defined(USE_QUALIFIED)
+            ifr_addr  likeds(sockaddr_in);
+            ifr_mask  likeds(sockaddr_in) overlay(ifr_addr);
+            ifr_broadadd  likeds(sockaddr_in) overlay(ifr_addr);
+            /else
+            ifr_addr  like(sockaddr_in);
+            ifr_mask  like(sockaddr_in) overlay(ifr_addr);
+            ifr_broadadd  like(sockaddr_in) overlay(ifr_addr);
+            /endif
+            ifr_flags int(5) overlay(ifr_addr);
+            ifr_mtu int(10) overlay(ifr_addr);
+            ifr_rbufsize int(10) overlay(ifr_addr);
+            ifr_linename char(10) overlay(ifr_addr);
+            ifr_TOS uns(3) overlay(ifr_addr);
+          end-ds ifreq;
+
+          // *****************************************************************
+          //  Interface Configuration List Structure (ifconf)
+          //  #define ifc_buf         ifc_ifcu.ifcu_buf
+          //  #define ifc_req         ifc_ifcu.ifcu_req
+          //  struct ifconf {                 /* interface configuration list*/
+          //    int ifc_len;                  /* size of user-supplied buffer*/
+          //    int ifc_configured;           /* number of interfaces
+          //                                      configured                 */
+          //    int ifc_returned;             /* number of interfaces
+          //                                      returned                   */
+          //    union {
+          //       caddr_t      ifcu_buf;     /* user-supplied buffer address*/
+          //       struct ifreq *ifcu_req;    /* returned list of interfaces */
+          //    } ifc_ifcu;
+          //  };
+          // *****************************************************************
+         dcl-s p_ifconf pointer;
+         dcl-ds ifconf INZ based(p_ifconf) align;
+          ifc_len int(10);
+          ifc_configuredifc_returned int(10);
+          ifc_buf pointer;
+          ifc_req pointer overlay(ifc_buf);
+         end-ds ifconf;
+
+
+          // *****************************************************************
+          //  Route Entry Structure (rtentry)
+          //  struct rtentry {                /* route entry                 */
+          //    struct sockaddr rt_dst;       /* route destination
+          //                                     net/subnet/host             */
+          //    struct sockaddr rt_mask;      /* route mask                  */
+          //    struct sockaddr rt_gateway;   /* gateway's IP address        */
+          //    int     rt_mtu;               /* MTU for route               */
+          //    u_short rt_flags;             /* route flags                 */
+          //    u_short rt_refcnt;            /* number held references      */
+          //    u_char  rt_protocol;          /* route protocol, how route
+          //                                     was learned                 */
+          //    u_char  rt_TOS;               /* route type-of-service       */
+          //    char    rt_if[IFNAMSIZ];      /* interface used for route    */
+          //  };
+          // **************************************************************
+         dcl-s p_rtentry pointer;
+         dcl-ds rtentry INZ based(p_rtentry) align;
+            /if defined(USE_QUALIFIED)
+            rt_dst  qualified likeds(sockaddr_in);
+            rt_mask  likeds(sockaddr_in);
+            rt_gateway  likeds(sockaddr_in);
+            /else
+            rt_dst  like(sockaddr_in);
+            rt_mask  like(sockaddr_in);
+            rt_gateway  like(sockaddr_in);
+            /endif
+            rt_mtu int(10);
+            rt_flags uns(5);
+            rt_refcnt uns(5);
+            rt_protocol uns(3);
+            rt_TOS uns(3);
+            rt_if char(16);
+         end-ds rtentry;
+
+          // **************************************************************
+          //  Route Configuration List Structure (rtconf)
+          //  #define rtc_buf    rtc_rtcu.rtcu_buf
+          //  #define rtc_req    rtc_rtcu.rtcu_req
+          //  struct rtconf {                /* route configuration list    */
+          //    int rtc_len;                 /* size of user-supplied buffer*/
+          //    int rtc_configured;          /* number of interfaces
+          //                                    configured                  */
+          //    int rtc_returned;            /* number of interfaces
+          //                                    returned                    */
+          //    union {
+          //       caddr_t      rtcu_buf;    /* user-supplied buffer address*/
+          //       struct rtentry *rtcu_req; /* returned list of interfaces */
+          //    } rtc_rtcu;
+          //  };
+          // **************************************************************
+         dcl-s p_rtconf pointer;
+         dcl-ds rtconf INZ based(p_rtconf) align;
+          rtc_len int(10);
+          rtc_configuredrtc_returned int(10);
+          rtc_buf pointer;
+          rtc_req pointer overlay(rtc_buf);
+         end-ds rtconf;
+
+
+          //  --------------------------------------------------------------------
+          //    ioctl()--Perform I/O Control Request
+          //    int ioctl(int descriptor, unsigned long request, ...)
+          //   returns -1 upon error, 0 when successful
+          //  --------------------------------------------------------------------
+         dcl-pr ioctl int(10) ExtProc('ioctl');
+          descriptor int(10) value;
+          request uns(10) value;
+          arg pointer value options(*nopass);
+         end-pr ioctl;

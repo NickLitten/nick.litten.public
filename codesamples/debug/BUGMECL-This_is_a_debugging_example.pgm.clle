@@ -1,0 +1,26 @@
+/* --------------------------------------------------------- */
+/* SIMPLE CLLE MODULE CALLING AN ILE PROGRAM FOR DEBUG       */
+/* --------------------------------------------------------- */
+/* THIS RECEIVES A 10 CHARACTER INPUT PARAMETER, WHICH IS    */
+/* DEFINED IN THE 'INCLUDE.CLLEINC' COPYBOOK. THIS COPYBOOK  */
+/* LOCATION IS DEFINED IN THE "INCLUDE PATHS" SECTION OF     */
+/* VS CODE FOR IBM I - PROJECT EXPLORER                      */
+/* THIS WILL THEN APPEND THE TEXT '(CLMODULE)' AND RETURN IT */
+/* --------------------------------------------------------- */
+/* AUTHOR: NICK@NICKLITTEN.COM                               */
+/* DATE:   NOVEMBER 25TH 2024                                */
+/* --------------------------------------------------------- */
+
+PGM PARM(&DEBUGPARM)
+
+  DCL VAR(&DEBUGPARM) TYPE(*CHAR) LEN(100)
+
+  CHGVAR VAR(&DEBUGPARM) VALUE(&DEBUGPARM *TCAT ' - modified by CLLE')
+
+  SNDPGMMSG MSG(&DEBUGPARM) MSGTYPE(*COMP)
+  
+  CALL PGM(BUGMERPG) PARM(&DEBUGPARM)
+
+  SNDPGMMSG MSG(&DEBUGPARM) MSGTYPE(*COMP)
+
+ENDPGM

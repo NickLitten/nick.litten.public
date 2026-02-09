@@ -1,0 +1,131 @@
+      *  SIMPCRUD.DSPF - Simple CRUD Display File for Recipes
+      *  Page-at-a-time subfile with PageUp/PageDown support
+      *  10 rows per page, 24x80 screen format
+
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA06(06 'Add New')
+     A                                      PAGEDOWN(25)
+     A                                      PAGEUP(26)
+     A                                      PRINT
+     A                                      ERRSFL
+      *  SUBFILE RECORD - Contains the data rows (10 per page)
+
+     A          R SFLREC                    SFL
+     A            OPT            1A  B  6 02VALUES(' ' '2' '4' '5')
+     A  41                                  DSPATR(PC)
+     A            RECID          5S 0O  6 05EDTCDE(4)
+     A            RECNAME       40A  O  6 12
+     A            CATEGORY      15A  O  6 54
+     A            PREPTIME       5S 0O  6 71EDTCDE(4)
+      *  SUBFILE CONTROL RECORD - Page-at-a-time control
+     A          R HEADER
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 28'RECIPE MANAGEMENT'
+     A                                      DSPATR(HI)
+     A                                  1 70TIME
+     A                                  2  2'Program:'
+     A            PGMNAME       10A  O  2 11
+     A                                  2 63'User:'
+     A            USERNAME      10A  O  2 69
+     A*
+      *  COLUMN HEADERS
+
+     A                                  5  2'Op'
+     A                                      DSPATR(HI)
+     A                                  5  5'ID'
+     A                                      DSPATR(HI)
+     A                                  5 12'Recipe Name'
+     A                                      DSPATR(HI)
+     A                                  5 54'Category'
+     A                                      DSPATR(HI)
+     A                                  5 71'Time'
+     A                                      DSPATR(HI)
+     A                                  3  2'Option: 2=Change  4=Delete  5=Disp-
+     A                                      lay'
+     A                                      COLOR(BLU)
+
+     A          R SFLCTL                    SFLCTL(SFLREC)
+     A                                      SFLSIZ(0009)
+     A                                      SFLPAG(0009)
+     A                                      OVERLAY
+     A  31                                  SFLDSP
+     A  32                                  SFLDSPCTL
+     A  33                                  SFLCLR
+     A  34                                  SFLEND(*MORE)
+     A            SFLRRN         4S 0H      SFLRCDNBR(CURSOR)
+
+     A                                 19  2'Position to ID:'
+     A            POSTOID        5S 0B 19 18EDTCDE(4)
+
+
+     A                                 20  2'Records:'
+     A            RECCOUNT       5S 0O 20 12EDTCDE(4)
+     A                                 20 25'Page:'
+     A            PAGENUM        3S 0O 20 32EDTCDE(4)
+     A                                 20 36'of'
+     A            TOTPAGES       3S 0O 20 39EDTCDE(4)
+
+     A                                 22  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 22 12'F5=Refresh'
+     A                                      COLOR(BLU)
+     A                                 22 25'F6=Add New'
+     A                                      COLOR(BLU)
+     A                                 22 38'PageUp/PageDown'
+     A                                      COLOR(BLU)
+     A*
+      *  DETAIL RECORD - For Add/Change/Display operations
+
+     A          R DETAIL                    OVERLAY
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Cancel')
+     A                                      CF04(04 'Prompt')
+     A*
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 70TIME
+     A                                  2  2'Program:'
+     A            PGMNAME       10A  O  2 11
+     A                                  2 63'User:'
+     A            USERNAME      10A  O  2 66
+     A                                  4 25'RECIPE DETAIL'
+     A                                      DSPATR(HI)
+     A*
+     A                                  6  5'Recipe ID . . . . :'
+     A            RECID          5S 0O  6 27EDTCDE(4)
+     A*
+     A                                  8  5'Recipe Name . . . :'
+     A            RECNAME       50A  B  8 27 
+     A            NAMEATTR       1A  H
+     A                                 10  5'Category  . . . . :'
+     A            DCATEGORY     20A  B 10 27 
+     A            CATATTR        1A  H
+     A                                 10 50'(Cookies/Bread/Pies/Cakes)'
+     A                                      COLOR(BLU)
+     A*
+     A                                 12  5'Prep Time (min) . :'
+     A            DPREPTIME      5S 0B 12 27EDTCDE(4)  
+     A            TIMEATTR       1A  H
+     A*
+     A                                 14  5'Servings  . . . . :'
+     A            DSERVINGS      5S 0B 14 27EDTCDE(4)  
+     A            SERVATTR       1A  H
+     A*
+     A                                 16  5'Difficulty  . . . :'
+     A            DDIFFICULTY   10A  B 16 27 
+     A            DIFFATTR       1A  H
+     A                                 16 50'(Easy/Medium/Hard)'
+     A                                      COLOR(BLU)
+     A*
+     A            ERRMSG        78A  O 22  2COLOR(RED)
+     A*
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 12'F4=Prompt'
+     A                                      COLOR(BLU)
+     A                                 23 25'F12=Cancel'
+     A                                      COLOR(BLU)

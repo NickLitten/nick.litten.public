@@ -1,0 +1,9 @@
+     A* ================================================================
+     A* Physical File: PERSONTBL
+     A* Description: Person table with Name, Date of Birth, and Address
+     A* ================================================================
+     A          R PERSONR
+     A            PNAME         50A         COLHDG('Name')
+     A            PDOB            L         COLHDG('Date of' 'Birth')
+     A            PADDRESS     100A         COLHDG('Address')
+     A          K PNAME

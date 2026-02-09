@@ -1,0 +1,110 @@
+**FREE
+dcl-ds psds psds qualified;
+  program char(10) pos(1);
+  procedureName *PROC;
+  statusCode *STATUS;
+  // Values of StatusCode (*STATUS) --  %Status = 00100 ...
+  // Code Condition
+  // 00000 No exception/error occurred
+  // 00001 Called program returned with the LR indicator on.
+  // Exception/Error Codes
+  // Code Condition
+  // 00100 Value out of range for string operation
+  // 00101 Negative square root
+  // 00102 Divide by zero
+  // 00103 An intermediate result is not large enough to
+  // contain the result.
+  // 00104 Float underflow. An intermediate value is too
+  // small to be contained in the intermediate
+  // result field
+  // 00112 Invalid Date, Time or Timestamp value.
+  // 00113 Date overflow or underflow. (For example, when
+  // the result of a Date calculation
+  // results in a number greater than HIVAL or less
+  // than LOVAL.)
+  // 00114 Date mapping errors, where a Date is mapped from a 4
+  // character year to a 2 character year and the date range
+  // is not 1940-2039.
+  // 00120 Table or array out of sequence.
+  // 00121 Array index not valid
+  // 00122 OCCUR outside of range
+  // 00123 Reset attempted during initialization step of program
+  // 00202 Called program or procedure failed; halt indicator
+  // (H1 through H9) not on
+  // 00211 Error calling program or procedure
+  // 00222 Pointer or parameter error
+  // 00231 Called program or procedure returned with halt
+  // indicator on
+  // 00232 Halt indicator on in this program
+  // 00233 Halt indicator on when RETURN operation run
+  // 00299 RPG IV formatted dump failed
+  // 00333 Error on DSPLY operation
+  // 00401 Data area specified on IN/OUT not found
+  // 00402 PDA not valid for non-prestart job
+  // 00411 Data area type or length does not match
+  // 00412 Data area not locked for output
+  // 00413 Error on IN/OUT operation
+  // 00414 User not authorized to use data area
+  // 00415 User not authorized to change data area
+  // 00421 Error on UNLOCK operation
+  // 00425 Length requested for storage allocation is out of range
+  // 00426 Error encountered during storage management operation
+  // 00431 Data area previously locked by another program
+  // 00432 Data area locked by program in the same process
+  // 00450 Character field not entirely enclosed by shift-out
+  // and shift-in characters
+  // 00501 Failure to retrieve sort sequence.
+  // 00502 Failure to convert sort sequence.
+  // 00802 Commitment control not active.
+  // 00803 Rollback operation failed.
+  // 00804 Error occurred on COMMIT operation
+  // 00805 Error occurred on ROLBK operation
+  // 00907 Decimal data error (digit or sign not valid)
+  // 00970 The level number of the compiler used to generate
+  // the program does not agree with the level number
+  // of the RPG IV run-time subroutines
+  // 09998 Internal failure in ILE RPG/400 compiler or in
+  // run-time subroutines
+  // 09999 Program exception in system routine.
+  prvStatus zoned(5) pos(16);
+  srcListLineNum char(8) pos(21);
+  routineName *ROUTINE;
+  nbrPassedParms *PARMS;
+  exceptionType char(3) pos(40);
+  exceptionNumber char(4) pos(43);
+  pgmLib char(10) pos(81);
+  ExceptionData char(80) pos(91);
+  messageText char(80) pos(91);
+  ExceptionId char(4) pos(171);
+  date char(8) pos(191);
+  year zoned(2) pos(199);
+  lastFileUsed char(8) pos(201);
+  fileErrorInfo char(35) pos(209);
+  rpgFileRoutine char(6) pos(214);
+  rpgStatement char(6) pos(214);
+  fileRecordFormat char(8) pos(236);
+  jobUserNumber char(26) pos(244);
+  job char(10) pos(244);
+  jobName char(10) pos(244);
+  User char(10) pos(254);
+  jobUser char(10) pos(254);
+  number zoned(6) pos(264);
+  jobnumber zoned(6) pos(264);
+  jobnumberalpha char(6) pos(264);
+  jobDate zoned(6) pos(270);
+  runDate zoned(6) pos(276);
+  runTime zoned(6) pos(282);
+  runtimeHour char(2) pos(282);
+  runtimeMinute char(2) pos(284);
+  runtimeSecond char(2) pos(286);
+  createDate char(6) pos(288);
+  createTime char(6) pos(294);
+  compilerLevel char(4) pos(300);
+  srcFile char(10) pos(304);
+  srcLib char(10) pos(314);
+  srcMbr char(10) pos(324);
+  currentPgmProc char(10) pos(334);
+  currentModule char(10) pos(344);
+  currentUser char(10) pos(358);
+  systemName char(8) pos(396);
+end-ds;

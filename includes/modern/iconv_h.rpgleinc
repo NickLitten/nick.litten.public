@@ -1,0 +1,87 @@
+          //
+          //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+          //  Modernised September 2025 Nick Litten
+
+          //  Redistribution and use in source and binary forms, with or without
+          //  modification, are permitted provided that the following conditions
+          //  are met:
+          //  1. Redistributions of source code must retain the above copyright
+          //     notice, this list of conditions and the following disclaimer.
+          //  2. Redistributions in binary form must reproduce the above copyright
+          //     notice, this list of conditions and the following disclaimer in the
+          //     documentation and/or other materials provided with the distribution.
+
+          //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+          //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+          //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+          //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+          //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+          //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+          //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+          //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+          //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+          //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+          //  SUCH DAMAGE.
+
+        /if defined(ICONV_H)
+        /eof
+        /endif
+        /define ICONV_H
+         dcl-ds iconv_t INZ qualified based(StructureTemplate);
+            return_value int(10);
+            cd int(10) dim(12);
+         end-ds iconv_t;
+
+         dcl-ds QtqCode_T INZ qualified;
+            CCSID int(10) inz;
+            ConvAlt int(10) inz;
+            SubsAlt int(10) inz;
+            ShiftAlt int(10) inz;
+            InpLenOp int(10) inz;
+            ErrorOpt int(10) inz;
+            Reserved char(8) inz(*ALLx'00');
+         end-ds QtqCode_T;
+
+         dcl-ds iconv_code_t INZ qualified;
+            owner char(8) inz('IBMCCSID');
+            CCSID char(5) inz('00000');
+            ReservedToConvAlt  inz('000') overlay(ReservedTo);
+            SubsAlt char(1) inz('0') overlay(ReservedTo:*next);
+            ShiftAlt char(1) inz('0') overlay(ReservedTo:*next);
+            InpLenOpt char(1) inz('0') overlay(ReservedTo:*next);
+            ErrorOpt char(1) inz('0') overlay(ReservedTo:*next);
+            ReservedFrom char(12) inz(*ALLx'00') overlay(ReservedTo:*next);
+         end-ds iconv_code_t;
+
+         dcl-pr QtqIconvOpen  extproc('QtqIconvOpen') like(iconv_t);
+            toCode  likeds(QtqCode_t) const;
+            fromCode  likeds(QtqCode_t) const;
+         end-pr QtqIconvOpen;
+
+         dcl-pr iconv_open  extproc('iconv_open') like(iconv_t);
+            toCode  like(iconv_code_t) const;
+            fromCode  like(iconv_code_t) const;
+         end-pr iconv_open;
+
+         dcl-pr iconv uns(10) extproc('iconv');
+            cd  like(iconv_t) value;
+            inbuf pointer;
+            inbytesleft uns(10);
+            outbuf pointer;
+            outbytesleft uns(10);
+         end-pr iconv;
+
+         dcl-pr QlgTransformUCSData uns(10) extproc('QlgTransformUCSData');
+            xformtype int(10) value;
+            inbuf pointer;
+            inbytesleft uns(10);
+            outbuf pointer;
+            outbytesleft uns(10);
+            outspacereq uns(10);
+         end-pr QlgTransformUCSData;
+
+         dcl-c ICONV_FAIL CONST(4294967295);
+
+         dcl-pr iconv_close int(10) extproc('iconv_close');
+            cd  like(iconv_t) value;  
+         end-pr iconv_close;

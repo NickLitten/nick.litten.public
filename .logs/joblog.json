@@ -1,0 +1,44 @@
+[
+    {
+        "cmd": "CRTSQLRPGI srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/crud/CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle') OBJ(NICKLITTEN/CRUD01RPG) COMMIT(*NONE ) OBJTYPE(*PGM) OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Change Read Update Delete Example') TGTRLS(V7R4M0) DBGVIEW(*SOURCE) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR(''includes'')')",
+        "cmd_time": "2026-02-09-16.36.34.00",
+        "msgs": [
+            {
+                "msgid": "CPC2198",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2026-02-09-16.36.33.857795",
+                "message_text": "Current library changed to NICKLITTEN.",
+                "second_level": "&N Cause . . . . . :   The current library in the library list was changed to NICKLITTEN.",
+                "from_program": "QLICHLLE",
+                "from_library": "QSYS",
+                "from_instruction": "01A3",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            },
+            {
+                "msgid": "CPC2196",
+                "type": "COMPLETION",
+                "severity": 0,
+                "message_time": "2026-02-09-16.36.33.858616",
+                "message_text": "Library NICKLITTEN added to library list.",
+                "second_level": "&N Cause . . . . . :   If the ADDLIBLE command was used, NICKLITTEN was added to the user library list.  If the CHGSYSLIBL command was used, NICKLITTEN was added to the system portion of the library list.",
+                "from_program": "QLICUSRL",
+                "from_library": "QSYS",
+                "from_instruction": "0114",
+                "to_program": "QP2USER2",
+                "to_library": "QSYS",
+                "to_module": "QP2API",
+                "to_procedure": "runpase_common__FiPvT2",
+                "to_instruction": "4"
+            }
+        ],
+        "object": "CRUD01RPG.PGM",
+        "source": "/home/NICKLITTEN/builds/nick.litten.public/codesamples/crud/CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle",
+        "output": "/home/NICKLITTEN/builds/nick.litten.public/.logs/codesamples_crud_CRUD01RPG-Change_Read_Update_Delete_Example_pgm_sqlrpgle.splf",
+        "failed": true
+    }
+]

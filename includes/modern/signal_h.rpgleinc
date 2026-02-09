@@ -1,0 +1,325 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if DEFINED(SIGNAL_H_INCLUDED)
+        /eof
+        /endif
+        /define SIGNAL_H_INCLUDED
+
+          // --------------------------------------------------------
+          //  Available signals
+          // --------------------------------------------------------
+         dcl-c SIGABRT const(1);
+         dcl-c SIGIOT const(1);
+         dcl-c SIGLOST const(1);
+         dcl-c SIGFPE const(2);
+         dcl-c SIGILL const(3);
+         dcl-c SIGINT const(4);
+         dcl-c SIGSEGV const(5);
+         dcl-c SIGTERM const(6);
+         dcl-c SIGUSR1 const(7);
+         dcl-c SIGUSR2 const(8);
+         dcl-c SIGIO const(9);
+         dcl-c SIGAIO const(9);
+         dcl-c SIGPTY const(9);
+         dcl-c SIGALL const(10);
+         dcl-c SIGOTHER const(11);
+         dcl-c SIGKILL const(12);
+         dcl-c SIGPIPE const(13);
+         dcl-c SIGALRM const(14);
+         dcl-c SIGHUP const(15);
+         dcl-c SIGQUIT const(16);
+         dcl-c SIGSTOP const(17);
+         dcl-c SIGTSTP const(18);
+         dcl-c SIGCONT const(19);
+         dcl-c SIGCHLD const(20);
+         dcl-c SIGCLD const(20);
+         dcl-c SIGTTIN const(21);
+         dcl-c SIGTTOU const(22);
+         dcl-c SIGURG const(23);
+         dcl-c SIGIOINT const(23);
+         dcl-c SIGPOLL const(24);
+         dcl-c SIGPCANCEL const(25);
+         dcl-c SIGPALRM const(26);
+         dcl-c SIGBUS const(32);
+         dcl-c SIGDANGER const(33);
+         dcl-c SIGPRE const(34);
+         dcl-c SIGSYS const(35);
+         dcl-c SIGTRAP const(36);
+         dcl-c SIGPROF const(37);
+         dcl-c SIGVTALRM const(38);
+         dcl-c SIGXCPU const(39);
+         dcl-c SIGXFSZ const(40);
+
+          // --------------------------------------------------------
+          //  flags
+          // --------------------------------------------------------
+         dcl-c SA_NOCLDSTOP const(1);
+         dcl-c SA_NODEFER const(2);
+         dcl-c SA_RESETHAND const(4);
+         dcl-c SA_SIGINFO const(8);
+
+          // --------------------------------------------------------
+          //  sigprocmask() "how" argument
+          // --------------------------------------------------------
+         dcl-c SIG_BLOCK const(0);
+         dcl-c SIG_UNBLOCK const(1);
+         dcl-c SIG_SETMASK const(2);
+
+          // --------------------------------------------------------
+          //  setitimer() "which" argument
+          // --------------------------------------------------------
+         dcl-c ITIMER_REAL 1;
+         dcl-c ITIMER_VIRTUAL 2;
+         dcl-c ITIMER_PROF 2;
+
+          // --------------------------------------------------------
+          //   sigset_t: signal set data structure
+          //   ===================================
+          //   Note: There's not much point in trying to copy the
+          //         way this is done in the ILE C header files,
+          //         since RPG doesn't support integers that are
+          //         1-bit long. Instead, I've defined the mask as
+          //         one big field, and you can test/set bits with
+          //         the %bitand() and %bitor() BIFs
+          // --------------------------------------------------------
+        /if not defined(SIGSET_T)
+         dcl-s sigset_t uns(20)  based(TEMPLATE);
+        /define SIGSET_T
+        /endif
+
+          // --------------------------------------------------------
+          //  sigaction_t: signal action data structure
+          //  Prototype for signal handler (only if not SA_SIGINFO)
+          //    D sa_handler      PR
+          //    D   signo                       10I 0 value
+          //  Prototype for signal action handler (only if SA_SIGINFO)
+          //    D sa_sigaction    PR
+          //    D   signo                       10I 0 value
+          //    D   info                              likeds(siginfo_t)
+          //    D   context                       *   value
+          // --------------------------------------------------------
+         dcl-ds sigaction_t INZ qualified align based(TEMPLATE);
+          sa_handler pointer procptr;
+          sa_mask like(sigset_t);
+          sa_flags int(10);
+          sa_sigaction pointer procptr;
+         end-ds sigaction_t;
+
+          // --------------------------------------------------------
+          //  siginfo_t: signal information data structure
+          // --------------------------------------------------------
+         dcl-ds siginfo_t INZ qualified align based(TEMPLATE);
+          si_signo int(10);
+          si_bits uns(5);
+          si_data_size int(5);
+          si_time char(8);
+          si_job char(10);
+          si_user char(10);
+          si_jobno char(6);
+          si_code char(4);
+          si_errno int(10);
+          si_pid int(10);
+          si_uid uns(10);
+          si_data char(1);
+         end-ds siginfo_t;
+
+          // --------------------------------------------------------
+          //  itimerval: interval timer value
+          // --------------------------------------------------------
+         dcl-ds it_timeval INZ qualified based(template);
+          tv_sec int(10);
+          tv_usec int(10);
+         end-ds it_timeval;
+
+         dcl-ds itimerval INZ qualified based(template);
+          int_tv_sec int(10);
+          int_tv_usec int(10);
+          val_tv_sec int(10);
+          val_tv_usec int(10);
+         end-ds itimerval;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  alarm(): Send an alarm signal after XX seconds
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr alarm uns(10) extproc('alarm');
+          secs uns(10) value;
+         end-pr alarm;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  Qp0sEnableSignals():  Enable a process for signals
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr Qp0sEnableSignals int(10) extproc('Qp0sEnableSignals');
+         end-pr Qp0sEnableSignals;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  Qp0sDisableSignals(): Disable signals
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr Qp0sDisableSignals int(10) extproc('Qp0sEnableSignals');
+         end-pr Qp0sDisableSignals;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  default signal handlers
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr C_sig_err  extproc('_C_sig_err');
+          signal int(10) value;
+         end-pr C_sig_err;
+
+         dcl-s SIG_ERR pointer  procptr inz(%paddr(C_sig_err));
+
+         dcl-pr C_sig_dfl  extproc('_C_sig_dfl');
+          signal int(10) value;
+         end-pr C_sig_dfl;
+
+         dcl-s SIG_DFL pointer  procptr inz(%paddr(C_sig_dfl));
+
+         dcl-pr C_sig_ign  extproc('_C_sig_ign');
+          signal int(10) value;
+         end-pr C_sig_ign;
+
+         dcl-s SIG_IGN pointer  procptr inz(%paddr(C_sig_ign));
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigaction():  Set signal action
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigaction  extproc('sigaction');
+          sig int(10) value;
+          act  likeds(sigaction_t) const options(*omit);
+          oact  likeds(sigaction_t) options(*omit);
+         end-pr sigaction;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigaddset():  add signal to signal set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigaddset int(10) extproc('sigaddset');
+          set like(sigset_t);
+          signo int(10) value;
+         end-pr sigaddset;
+
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigdelset():  remove signal from signal set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigdelset int(10) extproc('sigdelset');
+          set like(sigset_t);
+          signo int(10) value;
+         end-pr sigdelset;
+
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigemptyset(): initialize an empty signal set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigemptyset int(10) extproc('sigemptyset');
+          set like(sigset_t);
+         end-pr sigemptyset;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigfillset(): initialize a full signal set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigfillset int(10) extproc('sigfillset');
+          set like(sigset_t);
+         end-pr sigfillset;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigismember(): test if signal is in signal set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigismember int(10) extproc('sigismember');
+          set like(sigset_t);
+          signo int(10) value;
+         end-pr sigismember;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  signal(): set signal action (simplified version of
+          //            sigaction() API)
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr signal pointer procptr extproc('signal');
+          sig int(10) value;
+          handler pointer procptr value;
+         end-pr signal;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigpending(): examine pending signals
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigpending int(10) extproc('sigpending');
+          set like(sigset_t);
+         end-pr sigpending;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigprocmask(): Examine and change blocked signals
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigprocmask int(10) extproc('sigprocmask');
+          how int(10) value;
+          set like(sigset_t) const;
+          oset like(sigset_t);
+         end-pr sigprocmask;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigsuspend(): replace signal mask and suspend
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigsuspend int(10) extproc('sigsuspend');
+          mask like(sigset_t)   const;
+         end-pr sigsuspend;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigwait(): wait for a signal in a set
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigwait int(10) extproc('sigwait');
+          set like(sigset_t)   const;
+         end-pr sigwait;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  setitimer(): set value for interval timer
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr setitimer int(10) extproc('setitimer');
+          which int(10) value;
+          value like(itimerval) const;
+          ovalue like(itimerval) options(*omit);
+         end-pr setitimer;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  getitimer(): Get value of interval timer
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr getitimer int(10) extproc('getitimer');
+          which int(10) value;
+          value like(itimerval);
+         end-pr getitimer;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  kill(): Send a signal to another process
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr kill int(10) extproc('kill');
+          pid int(10) value;
+          signo int(10) value;
+         end-pr kill;
+
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  sigtimedwait(): Wait for X seconds for a pending
+          //                  signal to appear
+          // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr sigtimedwait int(10) extproc('sigtimedwait');
+          set like(sigset_t) const;
+          info  likeds(siginfo_t) options(*omit);
+          timeout char(8) const options(*omit);
+         end-pr sigtimedwait;

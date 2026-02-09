@@ -1,0 +1,84 @@
+{
+    "users": [
+        {
+            "userID": "@123",
+            "firstName": "Billy",
+            "lastName": "Bob",
+            "initials": "123",
+            "company": 110,
+            "division": 30,
+            "department": 325,
+            "secProfile": ""
+        },
+        {
+            "userID": "AAATEMP",
+            "firstName": "Albert",
+            "lastName": "Smith",
+            "initials": "AAA",
+            "company": 110,
+            "division": 1,
+            "department": 1,
+            "secProfile": ""
+        },
+        {
+            "userID": "AAATEST",
+            "firstName": "Andy",
+            "lastName": "Tester",
+            "initials": "AAA",
+            "company": 110,
+            "division": 1,
+            "department": 530,
+            "secProfile": "AAT"
+        },
+        {
+            "userID": "AAA3",
+            "firstName": "Fred",
+            "lastName": "Blogs",
+            "initials": "AA3",
+            "company": 110,
+            "division": 1,
+            "department": 1,
+            "secProfile": "AAA"
+        },
+        {
+            "userID": "AATEST",
+            "firstName": "AA",
+            "lastName": "TEST",
+            "initials": "AAT",
+            "company": 110,
+            "division": 1,
+            "department": 1,
+            "secProfile": ""
+        },
+        {
+            "userID": "ABB",
+            "firstName": "Abba",
+            "lastName": "Dancing Queen",
+            "initials": "",
+            "company": 110,
+            "division": 1,
+            "department": 1,
+            "secProfile": ""
+        },
+        {
+            "userID": "BINGBONG",
+            "firstName": "Bing",
+            "lastName": "Bong",
+            "initials": "BB",
+            "company": 110,
+            "division": 2,
+            "department": 2,
+            "secProfile": ""
+        },
+        {
+            "userID": "LITTENN",
+            "firstName": "Nick",
+            "lastName": "Litten",
+            "initials": "NJL",
+            "company": 1,
+            "division": 1,
+            "department": 123,
+            "secProfile": "Secret Squirrel"
+        }
+    ]
+}

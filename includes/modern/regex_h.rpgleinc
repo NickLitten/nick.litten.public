@@ -1,0 +1,208 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(REGEX_H)
+        /eof
+        /endif
+        /define REGEX_H
+
+          // *------------------------------------------------------------
+          //  cflags for regcomp()
+          // *------------------------------------------------------------
+         dcl-c REG_BASIC CONST(0);
+         dcl-c REG_EXTENDED CONST(1);
+         dcl-c REG_ICASE CONST(2);
+         dcl-c REG_NEWLINE CONST(4);
+         dcl-c REG_NOSUB CONST(8);
+
+          // *------------------------------------------------------------
+          //  eflags for regexec()
+          // *------------------------------------------------------------
+         dcl-c REG_NOTBOL CONST(256);
+         dcl-c REG_NOTEOL CONST(512);
+
+          // *------------------------------------------------------------
+          //   errors returned
+          // *------------------------------------------------------------
+         dcl-c REG_NOMATCH CONST(1);
+         dcl-c REG_BADPAT CONST(2);
+         dcl-c REG_ECOLLATE CONST(3);
+         dcl-c REG_ECTYPE CONST(4);
+         dcl-c REG_EESCAPE CONST(5);
+         dcl-c REG_ESUBREG CONST(6);
+         dcl-c REG_EBRACK CONST(7);
+         dcl-c REG_EPAREN CONST(8);
+         dcl-c REG_EBRACE CONST(9);
+         dcl-c REG_BADBR CONST(10);
+         dcl-c REG_ERANGE CONST(11);
+         dcl-c REG_ESPACE CONST(12);
+         dcl-c REG_BADRPT CONST(13);
+         dcl-c REG_ECHAR CONST(14);
+         dcl-c REG_EBOL CONST(15);
+         dcl-c REG_EEOL CONST(16);
+         dcl-c REG_ECOMP CONST(17);
+         dcl-c REG_EEXEC CONST(18);
+
+          // *------------------------------------------------------------
+          //   Structure of a compiled regular expression:
+          //      typedef struct {        /* regcomp() data saved for regexec()  */
+          //          size_t  re_nsub;    /* # of subexpressions in RE pattern   */
+          //          void    *re_comp;   /* compiled RE; freed by regfree()     */
+          //          int     re_cflags;  /* saved cflags for regexec()          */
+          //          size_t  re_erroff;  /* RE pattern error offset             */
+          //          size_t  re_len;     /* length in bytes of compiled pattern */
+          //          _LC_colval_t re_ucoll[2]; /* min/max uniq collating values */
+          //          size_t  *re_lsub;   /* start subexp                        */
+          //          size_t  lsub_ar[16]; /* default lsub array                 */
+          //          size_t  esub_ar[16]; /* default esub array                 */
+          //          void    *reserved1; /* reserved field                      */
+          //          size_t  *re_esub;   /* end subexp                          */
+          //          void    *re_specchar; /* converted special characters      */
+          //          void    *re_phdl;   /* ptr to collation information        */
+          //          unsigned char comp_spc[112]; /* compiled RE space          */
+          //          unsigned char re_map[256]; /* maps valid pattern characters*/
+          //          mbstate_t re_shift; /* Saved shift state                   */
+          //          short   re_dbcs;    /* May start with DBCS character       */
+          //      } regex_t;
+          // *------------------------------------------------------------
+         dcl-ds regex_t INZ qualified template;
+          re_nsub uns(10);
+          re_comp char(12);
+          re_cflags int(10);
+          re_erroff uns(10);
+          re_len uns(10);
+          re_ucoll int(10) dim(2);
+          re_lsub char(12);
+          lsub_ar uns(10) Dim(16);
+          esub_ar uns(10) Dim(16);
+          re_esub pointer;
+          re_specchar pointer;
+          re_phdl pointer;
+          comp_spc char(112);
+          re_map char(256);
+          re_shift int(5);
+          re_dbcs int(5);
+          *n char(12);
+         end-ds regex_t;
+
+          // *------------------------------------------------------------
+          //   structure used to report matches found by regexec()
+          //      typedef struct {
+          //          _off_t     rm_so; /* offset of substring             */
+          //          mbstate_t  rm_ss; /* shift state at start of subst   */
+          //          _off_t     rm_eo; /* offset of next char after subst */
+          //          mbstate_t  rm_es; /* shift state at end of subst     */
+          //      } regmatch_t;
+          //  NOTE: It's important to remember that C starts numbering
+          //     string positions with '0' and RPG starts with '1'.
+          //     Thus, rm_so+1 is the first char in substring, rm_eo is
+          //     the last char in the substring in RPG.
+          // *------------------------------------------------------------
+         dcl-ds regmatch_t INZ qualified template align;
+          rm_so int(10);
+          rm_ss int(5);
+          rm_eo int(10);
+          rm_es int(5);
+         end-ds regmatch_t;
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  regcomp() -- Compile a Regular Expression ("RE")
+          //      int regcomp(regex_t *preg, const char *pattern,
+          //               int cflags);
+          //  where:
+          //        preg (output) = the compiled regular expression.
+          //     pattern (input)  = the RE to be compiled.
+          //      cflags (input)  = the sum of the cflag constants
+          //                        (listed above) for this RE.
+          //  Returns 0 = success, otherwise an error number.
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr regcomp int(10) extproc('regcomp');
+          preg  like(regex_t);
+          pattern pointer value options(*string);
+          cflags int(10) value;
+         end-pr regcomp;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  regexec() -- Execute a compiled Regular Expression ("RE")
+          //      int regexec(const regex_t *preg, const char *string,
+          //               size_t nmatch, regmatch_t *pmatch, int eflags);
+          //  where:
+          //        preg (input)  = the compiled regular expression
+          //                        (the output of regcomp())
+          //      string (input)  = string to run the RE upon
+          //      nmatch (input)  = the number of matches to return.
+          //      pmatch (output) = array of regmatch_t DS's
+          //                        showing what matches were found.
+          //      eflags (input)  = the sum of the flags (constants
+          //                        provided above) modifying the RE
+          //  Returns 0 = success, otherwise an error number.
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr regexec int(10) extproc('regexec');
+          preg  like(regex_t) const;
+          string pointer value options(*string);
+          nmatch uns(10) value;
+          pmatch  likeds(regmatch_t) dim(100) options(*varsize);
+          eflags int(10) value;
+         end-pr regexec;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  regerror() -- return error information from regcomp/regexec
+          //    size_t regerror(int errcode, const regex_t *preg,
+          //               char *errbuf, size_t errbuf_size);
+          //   where:
+          //     errcode (input)  = the error code to return info on
+          //                       (obtained as the return value from
+          //                       either regcomp() or regexec())
+          //        preg (input)  = the (compiled) RE to return the
+          //                       error for.
+          //      errbuf (output) = buffer containing human-readable
+          //                       error message.
+          //  errbuf_size (input) = size of errbuf (max length of msg
+          //                       that will be returned)
+          //  returns:  length of buffer needed to get entire error msg
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr regerror uns(10) extproc('regerror');
+          errcode int(10) value;
+          preg  like(regex_t) const;
+          errbuf char(65535) options(*varsize);
+          errbuf_size int(10) value;
+         end-pr regerror;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  regfree() -- free memory locked by Regular Expression
+          //     void regfree(regex_t *preg);
+          //    where:
+          //         preg (input) = regular expression to free mem for.
+          //    NOTE:  regcomp() will always allocate extra memory
+          //         to be pointed to by the various pointers in
+          //         the regex_t structure.  If you don't call this,
+          //         that memory will never be returned to the system!
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr regfree  extproc('regfree');
+          preg  like(regex_t);
+         end-pr regfree;

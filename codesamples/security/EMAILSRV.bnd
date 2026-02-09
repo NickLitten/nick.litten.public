@@ -1,0 +1,16 @@
+/*==================================================================*/
+/* Binder Source: EMAILSRV                                          */
+/* Description: Export list for Email Service Program              */
+/*==================================================================*/
+
+STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('EMAILSRV V1.0')
+
+  /* Email notification procedures */
+  EXPORT     SYMBOL('SendEmail')
+  EXPORT     SYMBOL('BuildPasswordExpiryReport')
+  EXPORT     SYMBOL('BuildEmailSubject')
+  EXPORT     SYMBOL('LogMessage')
+  EXPORT     SYMBOL('ValidateEmailConfig')
+  EXPORT     SYMBOL('EscapeSqlString')
+
+ENDPGMEXP

@@ -1,0 +1,1496 @@
+-- ============================================================================
+-- Table: SAMPLEDB
+-- Description: Sample table containing European country information
+-- Author: Nick Litten
+-- Created: 2026-02-06
+-- ============================================================================
+DROP INDEX IDX_SAMPLEDB_NAME;
+DROP INDEX IDX_SAMPLEDB_REGION;
+DROP INDEX IDX_SAMPLEDB_EU;
+DROP VIEW V_SAMPLEDB_SUMMARY;
+
+CREATE OR REPLACE TABLE
+    SAMPLEDB (
+        -- Primary Key: ISO 3166-1 alpha-2 country code
+        COUNTRY_CODE CHAR(2) NOT NULL,
+        -- Country information
+        COUNTRY_NAME VARCHAR(100) NOT NULL,
+        COUNTRY_NAME_LOCAL VARCHAR(100),
+        CAPITAL_CITY VARCHAR(100),
+        -- Geographic and demographic data
+        REGION VARCHAR(50) NOT NULL,
+        POPULATION DECIMAL(12, 0),
+        AREA_KM2 DECIMAL(12, 2),
+        -- EU membership
+        EU_MEMBER CHAR(1) DEFAULT 'N' NOT NULL,
+        EU_JOIN_DATE DATE,
+        -- Currency information
+        CURRENCY_CODE CHAR(3),
+        CURRENCY_NAME VARCHAR(50),
+        -- Audit fields
+        CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        -- Primary key constraint
+        CONSTRAINT PK_SAMPLEDB PRIMARY KEY (COUNTRY_CODE),
+        -- Check constraints
+        CONSTRAINT CHK_SAMPLEDB_EU_MEMBER CHECK (EU_MEMBER IN ('Y', 'N')),
+        CONSTRAINT CHK_SAMPLEDB_POPULATION CHECK (
+            POPULATION IS NULL
+            OR POPULATION >= 0
+        ),
+        CONSTRAINT CHK_SAMPLEDB_AREA CHECK (
+            AREA_KM2 IS NULL
+            OR AREA_KM2 > 0
+        ),
+        CONSTRAINT CHK_SAMPLEDB_NAME CHECK (LENGTH(TRIM(COUNTRY_NAME)) > 0)
+    ) RCDFMT SAMPLEDBR;
+
+
+-- ============================================================================
+-- Indexes for performance optimization
+-- ============================================================================
+CREATE INDEX IDX_SAMPLEDB_NAME ON SAMPLEDB (COUNTRY_NAME);
+
+CREATE INDEX IDX_SAMPLEDB_REGION ON SAMPLEDB (REGION);
+
+CREATE INDEX IDX_SAMPLEDB_EU ON SAMPLEDB (EU_MEMBER);
+
+
+-- ============================================================================
+-- Comments for documentation
+-- ============================================================================
+COMMENT ON TABLE SAMPLEDB IS 'European countries reference table with geographic and demographic data';
+
+
+COMMENT ON COLUMN SAMPLEDB.COUNTRY_CODE IS 'ISO 3166-1 alpha-2 country code (Primary Key)';
+
+
+COMMENT ON COLUMN SAMPLEDB.COUNTRY_NAME IS 'Official country name in English';
+
+
+COMMENT ON COLUMN SAMPLEDB.COUNTRY_NAME_LOCAL IS 'Country name in local language';
+
+
+COMMENT ON COLUMN SAMPLEDB.CAPITAL_CITY IS 'Capital city name';
+
+
+COMMENT ON COLUMN SAMPLEDB.REGION IS 'European region (e.g., Western Europe, Eastern Europe, Nordic)';
+
+
+COMMENT ON COLUMN SAMPLEDB.EU_MEMBER IS 'European Union membership flag: Y=Yes, N=No';
+
+
+-- ============================================================================
+-- Data Population: All European Countries
+-- ============================================================================
+-- Western Europe
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'AT',
+        'Austria',
+        'Österreich',
+        'Vienna',
+        'Western Europe',
+        9042000,
+        83879.00,
+        'Y',
+        '1995-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'BE',
+        'Belgium',
+        'België/Belgique',
+        'Brussels',
+        'Western Europe',
+        11590000,
+        30528.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'FR',
+        'France',
+        'France',
+        'Paris',
+        'Western Europe',
+        67750000,
+        643801.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'DE',
+        'Germany',
+        'Deutschland',
+        'Berlin',
+        'Western Europe',
+        83240000,
+        357022.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'LI',
+        'Liechtenstein',
+        'Liechtenstein',
+        'Vaduz',
+        'Western Europe',
+        39000,
+        160.00,
+        'N',
+        NULL,
+        'CHF',
+        'Swiss Franc'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'LU',
+        'Luxembourg',
+        'Luxembourg',
+        'Luxembourg',
+        'Western Europe',
+        640000,
+        2586.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'MC',
+        'Monaco',
+        'Monaco',
+        'Monaco',
+        'Western Europe',
+        39000,
+        2.02,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'NL',
+        'Netherlands',
+        'Nederland',
+        'Amsterdam',
+        'Western Europe',
+        17530000,
+        41543.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'CH',
+        'Switzerland',
+        'Schweiz/Suisse',
+        'Bern',
+        'Western Europe',
+        8703000,
+        41285.00,
+        'N',
+        NULL,
+        'CHF',
+        'Swiss Franc'
+    );
+
+
+-- Northern Europe (Nordic)
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'DK',
+        'Denmark',
+        'Danmark',
+        'Copenhagen',
+        'Northern Europe',
+        5857000,
+        42933.00,
+        'Y',
+        '1973-01-01',
+        'DKK',
+        'Danish Krone'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'FI',
+        'Finland',
+        'Suomi',
+        'Helsinki',
+        'Northern Europe',
+        5541000,
+        338424.00,
+        'Y',
+        '1995-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'IS',
+        'Iceland',
+        'Ísland',
+        'Reykjavik',
+        'Northern Europe',
+        372000,
+        103000.00,
+        'N',
+        NULL,
+        'ISK',
+        'Icelandic Króna'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'NO',
+        'Norway',
+        'Norge',
+        'Oslo',
+        'Northern Europe',
+        5457000,
+        323802.00,
+        'N',
+        NULL,
+        'NOK',
+        'Norwegian Krone'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'SE',
+        'Sweden',
+        'Sverige',
+        'Stockholm',
+        'Northern Europe',
+        10420000,
+        450295.00,
+        'Y',
+        '1995-01-01',
+        'SEK',
+        'Swedish Krona'
+    );
+
+
+-- British Isles
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'IE',
+        'Ireland',
+        'Éire',
+        'Dublin',
+        'Northern Europe',
+        5033000,
+        70273.00,
+        'Y',
+        '1973-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'GB',
+        'United Kingdom',
+        'United Kingdom',
+        'London',
+        'Northern Europe',
+        67330000,
+        242495.00,
+        'N',
+        NULL,
+        'GBP',
+        'Pound Sterling'
+    );
+
+
+-- Southern Europe
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'AD',
+        'Andorra',
+        'Andorra',
+        'Andorra la Vella',
+        'Southern Europe',
+        79000,
+        468.00,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'AL',
+        'Albania',
+        'Shqipëria',
+        'Tirana',
+        'Southern Europe',
+        2838000,
+        28748.00,
+        'N',
+        NULL,
+        'ALL',
+        'Albanian Lek'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'BA',
+        'Bosnia and Herzegovina',
+        'Bosna i Hercegovina',
+        'Sarajevo',
+        'Southern Europe',
+        3271000,
+        51209.00,
+        'N',
+        NULL,
+        'BAM',
+        'Convertible Mark'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'HR',
+        'Croatia',
+        'Hrvatska',
+        'Zagreb',
+        'Southern Europe',
+        3899000,
+        56594.00,
+        'Y',
+        '2013-07-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'CY',
+        'Cyprus',
+        'Κύπρος',
+        'Nicosia',
+        'Southern Europe',
+        1244000,
+        9251.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'GR',
+        'Greece',
+        'Ελλάδα',
+        'Athens',
+        'Southern Europe',
+        10640000,
+        131957.00,
+        'Y',
+        '1981-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'IT',
+        'Italy',
+        'Italia',
+        'Rome',
+        'Southern Europe',
+        59110000,
+        301340.00,
+        'Y',
+        '1958-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'XK',
+        'Kosovo',
+        'Kosova',
+        'Pristina',
+        'Southern Europe',
+        1800000,
+        10887.00,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'MT',
+        'Malta',
+        'Malta',
+        'Valletta',
+        'Southern Europe',
+        526000,
+        316.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'ME',
+        'Montenegro',
+        'Crna Gora',
+        'Podgorica',
+        'Southern Europe',
+        622000,
+        13812.00,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'MK',
+        'North Macedonia',
+        'Северна Македонија',
+        'Skopje',
+        'Southern Europe',
+        2083000,
+        25713.00,
+        'N',
+        NULL,
+        'MKD',
+        'Macedonian Denar'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'PT',
+        'Portugal',
+        'Portugal',
+        'Lisbon',
+        'Southern Europe',
+        10300000,
+        92090.00,
+        'Y',
+        '1986-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'SM',
+        'San Marino',
+        'San Marino',
+        'San Marino',
+        'Southern Europe',
+        34000,
+        61.00,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'RS',
+        'Serbia',
+        'Србија',
+        'Belgrade',
+        'Southern Europe',
+        6834000,
+        88361.00,
+        'N',
+        NULL,
+        'RSD',
+        'Serbian Dinar'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'SI',
+        'Slovenia',
+        'Slovenija',
+        'Ljubljana',
+        'Southern Europe',
+        2119000,
+        20273.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'ES',
+        'Spain',
+        'España',
+        'Madrid',
+        'Southern Europe',
+        47420000,
+        505990.00,
+        'Y',
+        '1986-01-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'VA',
+        'Vatican City',
+        'Città del Vaticano',
+        'Vatican City',
+        'Southern Europe',
+        800,
+        0.44,
+        'N',
+        NULL,
+        'EUR',
+        'Euro'
+    );
+
+
+-- Eastern Europe
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'BY',
+        'Belarus',
+        'Беларусь',
+        'Minsk',
+        'Eastern Europe',
+        9349000,
+        207600.00,
+        'N',
+        NULL,
+        'BYN',
+        'Belarusian Ruble'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'BG',
+        'Bulgaria',
+        'България',
+        'Sofia',
+        'Eastern Europe',
+        6878000,
+        110879.00,
+        'Y',
+        '2007-01-01',
+        'BGN',
+        'Bulgarian Lev'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'CZ',
+        'Czech Republic',
+        'Česká republika',
+        'Prague',
+        'Eastern Europe',
+        10510000,
+        78867.00,
+        'Y',
+        '2004-05-01',
+        'CZK',
+        'Czech Koruna'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'EE',
+        'Estonia',
+        'Eesti',
+        'Tallinn',
+        'Eastern Europe',
+        1331000,
+        45227.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'HU',
+        'Hungary',
+        'Magyarország',
+        'Budapest',
+        'Eastern Europe',
+        9689000,
+        93028.00,
+        'Y',
+        '2004-05-01',
+        'HUF',
+        'Hungarian Forint'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'LV',
+        'Latvia',
+        'Latvija',
+        'Riga',
+        'Eastern Europe',
+        1884000,
+        64589.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'LT',
+        'Lithuania',
+        'Lietuva',
+        'Vilnius',
+        'Eastern Europe',
+        2795000,
+        65300.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'MD',
+        'Moldova',
+        'Moldova',
+        'Chișinău',
+        'Eastern Europe',
+        2597000,
+        33846.00,
+        'N',
+        NULL,
+        'MDL',
+        'Moldovan Leu'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'PL',
+        'Poland',
+        'Polska',
+        'Warsaw',
+        'Eastern Europe',
+        37750000,
+        312696.00,
+        'Y',
+        '2004-05-01',
+        'PLN',
+        'Polish Złoty'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'RO',
+        'Romania',
+        'România',
+        'Bucharest',
+        'Eastern Europe',
+        19120000,
+        238397.00,
+        'Y',
+        '2007-01-01',
+        'RON',
+        'Romanian Leu'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'RU',
+        'Russia',
+        'Россия',
+        'Moscow',
+        'Eastern Europe',
+        144100000,
+        17098242.00,
+        'N',
+        NULL,
+        'RUB',
+        'Russian Ruble'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'SK',
+        'Slovakia',
+        'Slovensko',
+        'Bratislava',
+        'Eastern Europe',
+        5460000,
+        49035.00,
+        'Y',
+        '2004-05-01',
+        'EUR',
+        'Euro'
+    );
+
+
+INSERT INTO
+    SAMPLEDB (
+        COUNTRY_CODE,
+        COUNTRY_NAME,
+        COUNTRY_NAME_LOCAL,
+        CAPITAL_CITY,
+        REGION,
+        POPULATION,
+        AREA_KM2,
+        EU_MEMBER,
+        EU_JOIN_DATE,
+        CURRENCY_CODE,
+        CURRENCY_NAME
+    )
+VALUES
+    (
+        'UA',
+        'Ukraine',
+        'Україна',
+        'Kyiv',
+        'Eastern Europe',
+        41130000,
+        603628.00,
+        'N',
+        NULL,
+        'UAH',
+        'Ukrainian Hryvnia'
+    );
+
+
+-- ============================================================================
+-- Summary Statistics View
+-- ============================================================================
+CREATE OR REPLACE VIEW
+    V_SAMPLEDB_SUMMARY AS
+SELECT
+    REGION,
+    COUNT(*) AS COUNTRY_COUNT,
+    SUM(
+        CASE
+            WHEN EU_MEMBER = 'Y' THEN 1
+            ELSE 0
+        END
+    ) AS EU_MEMBERS,
+    SUM(POPULATION) AS TOTAL_POPULATION,
+    SUM(AREA_KM2) AS TOTAL_AREA_KM2,
+    AVG(POPULATION) AS AVG_POPULATION
+FROM
+    SAMPLEDB
+GROUP BY
+    REGION
+ORDER BY
+    REGION;
+
+
+COMMENT ON VIEW V_SAMPLEDB_SUMMARY IS 'Summary statistics of European countries by region';

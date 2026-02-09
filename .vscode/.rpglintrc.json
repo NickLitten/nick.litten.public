@@ -1,0 +1,29 @@
+    {
+        "rules": {
+            "no-tabs": "warn", // Warn if tabs are used instead of spaces
+            "max-line-length": [
+                "error",
+                100
+            ], // Error if a line exceeds 100 characters
+            "require-prototype": "error", // Require prototypes for all procedures
+            "no-hardcoded-paths": "warn", // Warn if hardcoded paths are found
+            "no-unused-vars": "warn", // Warn for unused variables
+            "indent": [
+                "warn",
+                4
+            ] // Enforce 4-space indentation
+        },
+        "format": {
+            "indent": 4,
+            "uppercaseKeywords": true,
+            "alignAssignments": true
+        },
+        "include": [
+            "**/*.rpgle",
+            "**/*.sqlrpgle"
+        ],
+        "exclude": [
+            "**/node_modules/**",
+            "**/dist/**"
+        ]
+    }

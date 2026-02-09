@@ -1,0 +1,22 @@
+/* --------------------------------------------------------- */
+/* SIMPLE CLLE MODULE TO BE USED IN ILE PROGRAM              */
+/* --------------------------------------------------------- */
+/* THIS RECEIVES A 100 CHARACTER INPUT PARAMETER, WHICH IS   */
+/* DEFINED IN THE 'INCLUDE.CLLEINC' COPYBOOK. THIS COPYBOOK  */
+/* LOCATION IS DEFINED IN THE "INCLUDE PATHS" SECTION OF     */
+/* VS CODE FOR IBM I - PROJECT EXPLORER                      */
+/* THIS WILL THEN APPEND THE TEXT '(CLMODULE)' AND RETURN IT */
+/* --------------------------------------------------------- */
+/* AUTHOR: NICK@NICKLITTEN.COM                               */
+/* DATE:   NOVEMBER 25TH 2024                                */
+/* --------------------------------------------------------- */
+
+PGM &MSG
+
+  INCLUDE SRCSTMF('header.clleinc') 
+
+  CHGVAR VAR(&MSG) VALUE('ILE says -' *BCAT &MSG)
+  
+  SNDPGMMSG MSG(&MSG) MSGTYPE(*COMP)
+
+ENDPGM

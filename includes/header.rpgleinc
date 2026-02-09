@@ -1,0 +1,9 @@
+**free
+// Common Header Specifications
+ctl-opt
+  main(mainline)
+  optimize(*full)
+  option(*nodebugio:*srcstmt:*nounref)
+  pgminfo(*pcml:*module)
+  actgrp(*new)
+  indent('| ');

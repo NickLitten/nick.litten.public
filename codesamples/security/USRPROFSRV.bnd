@@ -1,0 +1,14 @@
+/*==================================================================*/
+/* Binder Source: USRPROFSRV                                        */
+/* Description: Export list for User Profile Service Program       */
+/*==================================================================*/
+
+STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('USRPROFSRV V1.0')
+
+  /* User profile query procedures */
+  EXPORT     SYMBOL('GetExpiringUsers')
+  EXPORT     SYMBOL('FormatUserInfo')
+  EXPORT     SYMBOL('GetSystemName')
+  EXPORT     SYMBOL('ValidateWarningDays')
+
+ENDPGMEXP

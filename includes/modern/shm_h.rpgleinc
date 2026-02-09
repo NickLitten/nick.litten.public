@@ -1,0 +1,94 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(SHM_H_DEFINED)
+        /eof
+        /endif
+        /define SHM_H_DEFINED
+
+         dcl-c IPC_PRIVATE 0;
+         dcl-c IPC_CREAT x'0200';
+         dcl-c IPC_EXCL x'0400';
+         dcl-c IPC_NOWAIT x'0800';
+         dcl-c IPC_RMID 0;
+         dcl-c IPC_SET 1;
+         dcl-c IPC_STAT 2;
+
+         dcl-c SHM_RDONLY x'001000';
+         dcl-c SHM_RND x'002000';
+         dcl-c SHM_DEST x'000400';
+         dcl-c SHM_TS_NP x'010000';
+         dcl-c SHM_RESIZE_NP x'040000';
+         dcl-c SHM_MAP_FIXED_NP x'100000';
+         dcl-c SHM_SIZE 6;
+
+         dcl-pr shmat pointer extproc('shmat');
+          shmid int(10) value;
+          shmaddr pointer value;
+          shmflg int(10) value;
+         end-pr shmat;
+
+         dcl-pr shmctl int(10) extproc('shmctl');
+          shmid int(10) value;
+          cmd int(10) value;
+          buf  likeds(shmtablentry_t) options(*omit);
+         end-pr shmctl;
+
+         dcl-pr shmdt int(10) extproc('shmdt');
+          shmaddr pointer value;
+         end-pr shmdt;
+
+        /if defined(TERASPACE)
+         dcl-pr shmget int(10) extproc('qp0zShmgetTs');
+          key int(10) value;
+          size uns(10) value;
+          shmflg int(10) value;
+         end-pr shmget;
+        /else
+         dcl-pr shmget int(10) extproc('shmget');
+          key int(10) value;
+          size uns(10) value;
+          shmflg int(10) value;
+         end-pr shmget;
+        /endif
+
+         dcl-ds ipc_perm_t INZ qualified based(Template);
+          uid uns(10);
+          gid uns(10);
+          cuid uns(10);
+          cgid uns(10);
+          mode uns(10);
+         end-ds ipc_perm_t;
+
+         dcl-ds shmtablentry_t INZ qualified based(Template);
+          shm_perm  likeds(ipc_perm_t);
+          shm_segsz uns(10);
+          shm_lpid int(10);
+          shm_cpid int(10);
+          shm_nattch int(10);
+          shm_atime uns(10);
+          shm_dtime uns(10);
+          shm_ctime uns(10);
+         end-ds shmtablentry_t;

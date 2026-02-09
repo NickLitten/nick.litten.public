@@ -1,0 +1,23 @@
+/* Code sample from https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status/ */
+
+PGM                                                    
+        DCLF       FILE(NICKLITTEN/CHKSBSTMP) ALWVARLEN(*YES)     
+                                                                  
+        DLTF       FILE(NICKLITTEN/CHKSBSTMP)                     
+        MONMSG     MSGID(CPF0000)                                            
+                                                                          
+        RUNSQL     SQL('CREATE TABLE NICKLITTEN/CHKSBSTMP AS (SELECT +    
+                        STATUS FROM QSYS2/SUBSYSTEM_INFO WHERE +        
+                        SUBSYSTEM_DESCRIPTION = ''QINTER'' AND +        
+                        SUBSYSTEM_DESCRIPTION_LIBRARY = ''QSYS'') +     
+                        WITH DATA') COMMIT(*NONE) NAMING(*SYS)          
+                                                                          
+        RCVF       RCDFMT(*FILE)                                       
+        MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(FAIL))              
+                                                                          
+        SNDPGMMSG  MSG('Subsystem QINTER is Active')                                                   
+                                                                      
+        RETURN                                                       
+
+FAIL:   SNDPGMMSG MSG('* Unable to retrieve subsystem status!') 
+ENDPGM

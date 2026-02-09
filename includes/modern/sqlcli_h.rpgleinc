@@ -1,0 +1,2659 @@
+      // 
+      //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+      //  Modernised September 2025 Nick Litten
+
+      //  Redistribution and use in source and binary forms, with or without
+      //  modification, are permitted provided that the following conditions
+      //  are met:
+      //  1. Redistributions of source code must retain the above copyright
+      //     notice, this list of conditions and the following disclaimer.
+      //  2. Redistributions in binary form must reproduce the above copyright
+      //     notice, this list of conditions and the following disclaimer in the
+      //     documentation and/or other materials provided with the distribution.
+
+      //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+      //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+      //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+      //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+      //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+      //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+      //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+      //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+      //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+      //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+      //  SUCH DAMAGE.
+
+      /if defined(SQLCLI_H_DEFINED)
+      /eof
+      /endif
+      /define SQLCLI_H_DEFINED
+
+        //  General purpose constants
+        dcl-c SQL_FALSE 0;
+        dcl-c SQL_TRUE 1;
+        dcl-c SQL_NTS -3;
+        dcl-c SQL_SQLSTATE_SIZE 5;
+        dcl-c SQL_MAX_MESSAGE_LENGTH 512;
+        dcl-c SQL_MAX_OPTION_STRING_LENGTH 128;
+
+        //  return values
+        dcl-c SQL_SUCCESS 0;
+        dcl-c SQL_SUCCESS_WITH_INFO 1;
+        dcl-c SQL_NO_DATA_FOUND 100;
+        dcl-c SQL_NEED_DATA 99;
+        dcl-c SQL_NO_DATA 100;
+        dcl-c SQL_ERROR -1;
+        dcl-c SQL_INVALID_HANDLE -2;
+        dcl-c SQL_STILL_EXECUTING 2;
+        dcl-c SQL_ROW_SUCCESS 0;
+        dcl-c SQL_ROW_NOROW -1;
+
+        //  values for SQLFreeStmt
+        dcl-c SQL_CLOSE 0;
+        dcl-c SQL_DROP 1;
+        dcl-c SQL_UNBIND 2;
+        dcl-c SQL_RESET_PARAMS 3;
+
+        //   SQLSetParam defines
+        dcl-c SQL_C_DEFAULT 99;
+
+        //  SqlEndTran option values
+        dcl-c SQL_COMMIT 0;
+        dcl-c SQL_ROLLBACK 1;
+        dcl-c SQL_COMMIT_HOLD 2;
+        dcl-c SQL_ROLLBACK_HOLD 3;
+        dcl-c SQL_SAVEPOINT_NAME_RELEASE 4;
+        dcl-c SQL_SAVEPOINT_NAME_ROLLBACK 5;
+
+        //  SQLDriverConnect option values
+        dcl-c SQL_DRIVER_COMPLETE 1;
+        dcl-c SQL_DRIVER_COMPLETE_REQUIRED 1;
+        dcl-c SQL_DRIVER_NOPROMPT 1;
+        dcl-c SQL_DRIVER_PROMPT 0;
+
+        //  Valid option codes for GetInfo procedure
+        dcl-c SQL_ACTIVE_CONNECTIONS 0;
+        dcl-c SQL_MAX_DRIVER_CONNECTIONS 0;
+        dcl-c SQL_MAX_CONCURRENT_ACTIVITIES 1;
+        dcl-c SQL_ACTIVE_STATEMENTS 1;
+        dcl-c SQL_PROCEDURES 2;
+        dcl-c SQL_DRIVER_NAME 6;
+        dcl-c SQL_ODBC_API_CONFORMANCE 9;
+        dcl-c SQL_ODBC_SQL_CONFORMANCE 10;
+        dcl-c SQL_DBMS_NAME 17;
+        dcl-c SQL_DBMS_VER 18;
+        dcl-c SQL_DRIVER_VER 18;
+        dcl-c SQL_IDENTIFIER_CASE 28;
+        dcl-c SQL_IDENTIFIER_QUOTE_CHAR 29;
+        dcl-c SQL_MAX_COLUMN_NAME_LEN 30;
+        dcl-c SQL_MAX_CURSOR_NAME_LEN 31;
+        dcl-c SQL_MAX_OWNER_NAME_LEN 32;
+        dcl-c SQL_MAX_SCHEMA_NAME_LEN 33;
+        dcl-c SQL_MAX_TABLE_NAME_LEN 35;
+        dcl-c SQL_MAX_COLUMNS_IN_GROUP_BY 36;
+        dcl-c SQL_MAX_COLUMNS_IN_ORDER_BY 37;
+        dcl-c SQL_MAX_COLUMNS_IN_SELECT 38;
+        dcl-c SQL_MAX_COLUMNS_IN_TABLE 39;
+        dcl-c SQL_MAX_TABLES_IN_SELECT 40;
+        dcl-c SQL_COLUMN_ALIAS 41;
+        dcl-c SQL_DATA_SOURCE_NAME 42;
+        dcl-c SQL_DATASOURCE_NAME 42;
+        dcl-c SQL_DATABASE_NAME 42;
+        dcl-c SQL_MAX_COLUMNS_IN_INDEX 43;
+        dcl-c SQL_PROCEDURE_TERM 44;
+        dcl-c SQL_QUALIFIER_TERM 45;
+        dcl-c SQL_TXN_CAPABLE 46;
+        dcl-c SQL_OWNER_TERM 47;
+        dcl-c SQL_DATA_SOURCE_READ_ONLY 48;
+        dcl-c SQL_DEFAULT_TXN_ISOLATION 49;
+        dcl-c SQL_MULTIPLE_ACTIVE_TXN 55;
+        dcl-c SQL_QUALIFIER_NAME_SEPARATOR 65;
+        dcl-c SQL_CORRELATION_NAME 74;
+        dcl-c SQL_NON_NULLABLE_COLUMNS 75;
+        dcl-c SQL_DRIVER_ODBC_VER 77;
+        dcl-c SQL_GROUP_BY 88;
+        dcl-c SQL_ORDER_BY_COLUMNS_IN_SELECT 90;
+        dcl-c SQL_OWNER_USAGE 91;
+        dcl-c SQL_QUALIFIER_USAGE 92;
+        dcl-c SQL_QUOTED_IDENTIFIER_CASE 93;
+        dcl-c SQL_MAX_ROW_SIZE 104;
+        dcl-c SQL_QUALIFIER_LOCATION 114;
+        dcl-c SQL_MAX_CATALOG_NAME_LEN 115;
+        dcl-c SQL_MAX_STATEMENT_LEN 116;
+        dcl-c SQL_SEARCH_PATTERN_ESCAPE 117;
+        dcl-c SQL_OUTER_JOINS 118;
+        dcl-c SQL_LIKE_ESCAPE_CLAUSE 119;
+        dcl-c SQL_CATALOG_NAME 120;
+        dcl-c SQL_DESCRIBE_PARAMETER 121;
+        dcl-c SQL_STRING_FUNCTIONS 50;
+        dcl-c SQL_NUMERIC_FUNCTIONS 51;
+        dcl-c SQL_CONVERT_FUNCTIONS 52;
+        dcl-c SQL_TIMEDATE_FUNCTIONS 53;
+        dcl-c SQL_SQL92_PREDICATES 160;
+        dcl-c SQL_SQL92_VALUE_EXPRESSIONS 165;
+        dcl-c SQL_AGGREGATE_FUNCTIONS 169;
+        dcl-c SQL_SQL_CONFORMANCE 170;
+        dcl-c SQL_CONVERT_CHAR 171;
+        dcl-c SQL_CONVERT_NUMERIC 172;
+        dcl-c SQL_CONVERT_DECIMAL 173;
+        dcl-c SQL_CONVERT_INTEGER 174;
+        dcl-c SQL_CONVERT_SMALLINT 175;
+        dcl-c SQL_CONVERT_FLOAT 176;
+        dcl-c SQL_CONVERT_REAL 177;
+        dcl-c SQL_CONVERT_DOUBLE 178;
+        dcl-c SQL_CONVERT_VARCHAR 179;
+        dcl-c SQL_CONVERT_LONGVARCHAR 180;
+        dcl-c SQL_CONVERT_BINARY 181;
+        dcl-c SQL_CONVERT_VARBINARY 182;
+        dcl-c SQL_CONVERT_BIT 183;
+        dcl-c SQL_CONVERT_TINYINT 184;
+        dcl-c SQL_CONVERT_BIGINT 185;
+        dcl-c SQL_CONVERT_DATE 186;
+        dcl-c SQL_CONVERT_TIME 187;
+        dcl-c SQL_CONVERT_TIMESTAMP 188;
+        dcl-c SQL_CONVERT_LONGVARBINARY 189;
+        dcl-c SQL_CONVERT_INTERVAL_YEAR_MONTH 190;
+        dcl-c SQL_CONVERT_INTERVAL_DAY_TIME 191;
+        dcl-c SQL_CONVERT_WCHAR 192;
+        dcl-c SQL_CONVERT_WLONGVARCHAR 193;
+        dcl-c SQL_CONVERT_WVARCHAR 194;
+        dcl-c SQL_CONVERT_BLOB 195;
+        dcl-c SQL_CONVERT_CLOB 196;
+        dcl-c SQL_CONVERT_DBCLOB 197;
+        dcl-c SQL_CURSOR_COMMIT_BEHAVIOR 198;
+        dcl-c SQL_CURSOR_ROLLBACK_BEHAVIOR 199;
+        dcl-c SQL_POSITIONED_STATEMENTS 200;
+        dcl-c SQL_KEYWORDS 201;
+        dcl-c SQL_CONNECTION_JOB_NAME 202;
+
+        //  Aliased option codes (ODBC 3.0)
+        dcl-c SQL_SCHEMA_TERM 47;
+        dcl-c SQL_SCHEMA_USAGE 91;
+        dcl-c SQL_CATALOG_LOCATION 114;
+        dcl-c SQL_CATALOG_TERM 45;
+        dcl-c SQL_CATALOG_USAGE 92;
+        dcl-c SQL_CATALOG_NAME_SEPARATOR 65;
+
+        //  Output values for SQL_ODBC_API_CONFORMANCE
+        //  info type in SQLGetInfo
+        dcl-c SQL_OAC_NONE 0;
+        dcl-c SQL_OAC_LEVEL1 1;
+        dcl-c SQL_OAC_LEVEL2 2;
+
+        //  Output values for SQL_ODBC_SQL_CONFORMANCE
+        //  info type in SQLGetInfo
+        dcl-c SQL_OSC_MINIMUM 0;
+        dcl-c SQL_OSC_CORE 1;
+        dcl-c SQL_OSC_EXTENDED 2;
+
+        //  Output values for SQL_QUALIFIER_USAGE
+        //  info type in SQLGetInfo
+        dcl-c SQL_QU_NOT_SUPPORTED x'00000000';
+        dcl-c SQL_QU_DML_STATEMENTS x'00000001';
+        dcl-c SQL_QU_PROCEDURE_INVOCATION x'00000002';
+        dcl-c SQL_QU_TABLE_DEFINITION x'00000004';
+        dcl-c SQL_QU_INDEX_DEFINITION x'00000008';
+        dcl-c SQL_QU_PRIVILEGE_DEFINITION x'00000010';
+
+        //  Output values for SQL_QUALIFIER_LOCATION
+        //  info type in SQLGetInfo
+        dcl-c SQL_QL_START 1;
+        dcl-c SQL_QL_END 2;
+
+        //  Output values for SQL_OWNER_USAGE
+        //  info type in SQLGetInfo
+        dcl-c SQL_OU_DML_STATEMENTS x'00000001';
+        dcl-c SQL_OU_PROCEDURE_INVOCATION x'00000002';
+        dcl-c SQL_OU_TABLE_DEFINITION x'00000004';
+        dcl-c SQL_OU_INDEX_DEFINITION x'00000008';
+        dcl-c SQL_OU_PRIVILEGE_DEFINITION x'00000010';
+
+        //  Output values for SQL_TXN_CAPABLE
+        //  info type in SQLGetInfo
+        dcl-c SQL_TC_NONE 0;
+        dcl-c SQL_TC_DML 1;
+        dcl-c SQL_TC_ALL 2;
+        dcl-c SQL_TC_DDL_COMMIT 3;
+        dcl-c SQL_TC_DDL_IGNORE 4;
+
+        //  Output values for SQL_DEFAULT_TXN_ISOLATION
+        //  info type in SQLGetInfo
+        dcl-c SQL_TXN_READ_UNCOMMITTED_MASK x'00000001';
+        dcl-c SQL_TXN_READ_COMMITTED_MASK x'00000002';
+        dcl-c SQL_TXN_REPEATABLE_READ_MASK x'00000004';
+        dcl-c SQL_TXN_SERIALIZABLE_MASK x'00000008';
+
+        //  Output values for SQL_STRING_FUNCTIONS
+        //  info type in SQLGetInfo
+        dcl-c SQL_FN_STR_CONCAT x'00000001';
+        dcl-c SQL_FN_STR_UCASE x'00000002';
+        dcl-c SQL_FN_STR_LCASE x'00000004';
+        dcl-c SQL_FN_STR_SUBSTRING x'00000008';
+        dcl-c SQL_FN_STR_LENGTH x'00000010';
+        dcl-c SQL_FN_STR_POSITION x'00000020';
+        dcl-c SQL_FN_STR_LTRIM x'00000040';
+        dcl-c SQL_FN_STR_RTRIM x'00000080';
+
+        //  Output values for SQL_NUMERIC_FUNCTIONS
+        //  info type in SQLGetInfo
+        dcl-c SQL_FN_NUM_ABS x'00000001';
+        dcl-c SQL_FN_NUM_ACOS x'00000002';
+        dcl-c SQL_FN_NUM_ASIN x'00000004';
+        dcl-c SQL_FN_NUM_ATAN x'00000008';
+        dcl-c SQL_FN_NUM_ATAN2 x'00000010';
+        dcl-c SQL_FN_NUM_CEILING x'00000020';
+        dcl-c SQL_FN_NUM_COS x'00000040';
+        dcl-c SQL_FN_NUM_COT x'00000080';
+        dcl-c SQL_FN_NUM_EXP x'00000100';
+        dcl-c SQL_FN_NUM_FLOOR x'00000200';
+        dcl-c SQL_FN_NUM_LOG x'00000400';
+        dcl-c SQL_FN_NUM_MOD x'00000800';
+        dcl-c SQL_FN_NUM_SIGN x'00001000';
+        dcl-c SQL_FN_NUM_SIN x'00002000';
+        dcl-c SQL_FN_NUM_SQRT x'00004000';
+        dcl-c SQL_FN_NUM_TAN x'00008000';
+        dcl-c SQL_FN_NUM_PI x'00010000';
+        dcl-c SQL_FN_NUM_RAND x'00020000';
+        dcl-c SQL_FN_NUM_DEGREES x'00040000';
+        dcl-c SQL_FN_NUM_LOG10 x'00080000';
+        dcl-c SQL_FN_NUM_POWER x'00100000';
+        dcl-c SQL_FN_NUM_RADIANS x'00200000';
+        dcl-c SQL_FN_NUM_ROUND x'00400000';
+        dcl-c SQL_FN_NUM_TRUNCATE x'00800000';
+
+        //  SQL_SQL92_VALUE_EXPRESSIONS bitmasks
+        dcl-c SQL_SVE_CASE x'00000001';
+        dcl-c SQL_SVE_CAST x'00000002';
+        dcl-c SQL_SVE_COALESCE x'00000004';
+        dcl-c SQL_SVE_NULLIF x'00000008';
+
+        //  SQL_SQL92_PREDICATES bitmasks
+        dcl-c SQL_SP_EXISTS x'00000001';
+        dcl-c SQL_SP_ISNOTNULL x'00000002';
+        dcl-c SQL_SP_ISNULL x'00000004';
+        dcl-c SQL_SP_MATCH_FULL x'00000008';
+        dcl-c SQL_SP_MATCH_PARTIAL x'00000010';
+        dcl-c SQL_SP_MATCH_UNIQUE_FULL x'00000020';
+        dcl-c SQL_SP_MATCH_UNIQUE_PARTIAL x'00000040';
+        dcl-c SQL_SP_OVERLAPS x'00000080';
+        dcl-c SQL_SP_UNIQUE x'00000100';
+        dcl-c SQL_SP_LIKE x'00000200';
+        dcl-c SQL_SP_IN x'00000400';
+        dcl-c SQL_SP_BETWEEN x'00000800';
+        dcl-c SQL_SP_COMPARISON x'00001000';
+        dcl-c SQL_SP_QUANTIFIED_COMPARISON x'00002000';
+
+        //  SQL_SQL92_AGGREGATE_FUNCTIONS bitmasks
+        dcl-c SQL_AF_AVG x'00000001';
+        dcl-c SQL_AF_COUNT x'00000002';
+        dcl-c SQL_AF_MAX x'00000004';
+        dcl-c SQL_AF_MIN x'00000008';
+        dcl-c SQL_AF_SUM x'00000010';
+        dcl-c SQL_AF_DISTINCT x'00000020';
+        dcl-c SQL_AF_ALL x'00000040';
+
+        //  SQL_SQL_CONFORMANCE bitmasks
+        dcl-c SQL_SC_SQL92_ENTRY x'00000001';
+        dcl-c SQL_SC_FIPS127_2_TRANSITIONAL x'00000002';
+        dcl-c SQL_SC_SQL92_INTERMEDIATE x'00000004';
+        dcl-c SQL_SC_SQL92_FULL x'00000008';
+
+        //  SQL_CONVERT_FUNCTIONS bitmasks
+        dcl-c SQL_FN_CVT_CONVERT x'00000001';
+        dcl-c SQL_FN_CVT_CAST x'00000002';
+
+        //  SQL_POSITIONED_STATEMENTS bitmasks
+        dcl-c SQL_PS_POSITIONED_DELETE x'00000001';
+        dcl-c SQL_PS_POSITIONED_UPDATE x'00000002';
+        dcl-c SQL_PS_SELECT_FOR_UPDATE x'00000004';
+
+        //  SQL supported conversion bitmasks
+        dcl-c SQL_CVT_CHAR x'00000001';
+        dcl-c SQL_CVT_NUMERIC x'00000002';
+        dcl-c SQL_CVT_DECIMAL x'00000004';
+        dcl-c SQL_CVT_INTEGER x'00000008';
+        dcl-c SQL_CVT_SMALLINT x'00000010';
+        dcl-c SQL_CVT_FLOAT x'00000020';
+        dcl-c SQL_CVT_REAL x'00000040';
+        dcl-c SQL_CVT_DOUBLE x'00000080';
+        dcl-c SQL_CVT_VARCHAR x'00000100';
+        dcl-c SQL_CVT_LONGVARCHAR x'00000200';
+        dcl-c SQL_CVT_BINARY x'00000400';
+        dcl-c SQL_CVT_VARBINARY x'00000800';
+        dcl-c SQL_CVT_BIT x'00001000';
+        dcl-c SQL_CVT_TINYINT x'00002000';
+        dcl-c SQL_CVT_BIGINT x'00004000';
+        dcl-c SQL_CVT_DATE x'00008000';
+        dcl-c SQL_CVT_TIME x'00010000';
+        dcl-c SQL_CVT_TIMESTAMP x'00020000';
+        dcl-c SQL_CVT_LONGVARBINARY x'00040000';
+        dcl-c SQL_CVT_INTERVAL_YEAR_MONTH x'00080000';
+        dcl-c SQL_CVT_INTERVAL_DAY_TIME x'00100000';
+        dcl-c SQL_CVT_WCHAR x'00200000';
+        dcl-c SQL_CVT_WLONGVARCHAR x'00400000';
+        dcl-c SQL_CVT_WVARCHAR x'00800000';
+        dcl-c SQL_CVT_BLOB x'01000000';
+        dcl-c SQL_CVT_CLOB x'02000000';
+        dcl-c SQL_CVT_DBCLOB x'04000000';
+
+        //  SQL_TIMEDATE_FUNCTIONS bitmasks
+        dcl-c SQL_FN_TD_NOW x'00000001';
+        dcl-c SQL_FN_TD_CURDATE x'00000002';
+        dcl-c SQL_FN_TD_DAYOFMONTH x'00000004';
+        dcl-c SQL_FN_TD_DAYOFWEEK x'00000008';
+        dcl-c SQL_FN_TD_DAYOFYEAR x'00000010';
+        dcl-c SQL_FN_TD_MONTH x'00000020';
+        dcl-c SQL_FN_TD_QUARTER x'00000040';
+        dcl-c SQL_FN_TD_WEEK x'00000080';
+        dcl-c SQL_FN_TD_YEAR x'00000100';
+        dcl-c SQL_FN_TD_CURTIME x'00000200';
+        dcl-c SQL_FN_TD_HOUR x'00000400';
+        dcl-c SQL_FN_TD_MINUTE x'00000800';
+        dcl-c SQL_FN_TD_SECOND x'00001000';
+        dcl-c SQL_FN_TD_TIMESTAMPADD x'00002000';
+        dcl-c SQL_FN_TD_TIMESTAMPDIFF x'00004000';
+        dcl-c SQL_FN_TD_DAYNAME x'00008000';
+        dcl-c SQL_FN_TD_MONTHNAME x'00010000';
+        dcl-c SQL_FN_TD_CURRENT_DATE x'00020000';
+        dcl-c SQL_FN_TD_CURRENT_TIME x'00040000';
+        dcl-c SQL_FN_TD_CURRENT_TIMESTAMP x'00080000';
+        dcl-c SQL_FN_TD_EXTRACT x'00100000';
+
+        //  Output values for SQL_CORRELATION_NAME
+        //  info type in SQLGetInfo
+        dcl-c SQL_CN_NONE 0;
+        dcl-c SQL_CN_DIFFERENT 1;
+        dcl-c SQL_CN_ANY 2;
+
+        //  Output values for SQL_IDENTIFIER_CASE
+        //  info type in SQLGetInfo
+        dcl-c SQL_IC_UPPER 1;
+        dcl-c SQL_IC_LOWER 2;
+        dcl-c SQL_IC_SENSITIVE 3;
+        dcl-c SQL_IC_MIXED 4;
+
+        //  Output values for SQL_NON_NULLABLE_COLUMNS
+        //  info type in SQLGetInfo
+        dcl-c SQL_NNC_NULL 0;
+        dcl-c SQL_NNC_NON_NULL 1;
+
+        //  Output values for SQL_GROUP_BY
+        //  info type in SQLGetInfo
+        dcl-c SQL_GB_NO_RELATION 0;
+        dcl-c SQL_GB_NOT_SUPPORTED 1;
+        dcl-c SQL_GB_GROUP_BY_EQUALS_SELECT 2;
+        dcl-c SQL_GB_GROUP_BY_CONTAINS_SELECT 3;
+
+        //  Standard SQL data types
+        dcl-c SQL_CHAR 1;
+        dcl-c SQL_NUMERIC 2;
+        dcl-c SQL_DECIMAL 3;
+        dcl-c SQL_INTEGER 4;
+        dcl-c SQL_SMALLINT 5;
+        dcl-c SQL_FLOAT 6;
+        dcl-c SQL_REAL 7;
+        dcl-c SQL_DOUBLE 8;
+        dcl-c SQL_DATETIME 9;
+        dcl-c SQL_VARCHAR 12;
+        dcl-c SQL_BLOB 13;
+        dcl-c SQL_CLOB 14;
+        dcl-c SQL_DBCLOB 15;
+        dcl-c SQL_DATALINK 16;
+        dcl-c SQL_WCHAR 17;
+        dcl-c SQL_WUARCHAR 18;
+        dcl-c SQL_BIGINT 19;
+        dcl-c SQL_BLOB_LOCATOR 20;
+        dcl-c SQL_CLOB_LOCATOR 21;
+        dcl-c SQL_DBCLOB_LOCATOR 22;
+        dcl-c SQL_UTF8_CHAR 23;
+        dcl-c SQL_GRAPHIC 95;
+        dcl-c SQL_VARGRAPHIC 96;
+        dcl-c SQL_BINARY 97;
+        dcl-c SQL_VARBINARY 98;
+        dcl-c SQL_DATE 91;
+        dcl-c SQL_TYPE_DATE 91;
+        dcl-c SQL_TIME 92;
+        dcl-c SQL_TYPE_TIME 92;
+        dcl-c SQL_TIMESTAMP 93;
+        dcl-c SQL_TYPE_TIMESTAMP 93;
+        // Output values for cursor behavior
+        dcl-c SQL_ALL_TYPESSQL_CB_DELETE 0;
+        dcl-c SQL_CB_DELETE 1;  
+        dcl-c SQL_CB_CLOSE 2;
+        dcl-c SQL_CB_PRESERVE 3;
+
+        //  Templates for SQL data types
+        dcl-s SQLSMALLINT int(5)  based(Template);
+        dcl-s SQLUSMALLINT uns(5)  based(Template);
+        dcl-s SQLUINTEGER uns(10)  based(Template);
+        dcl-s SQLDOUBLE float(8)  based(Template);
+        dcl-s SQLREAL float(4)  based(Template);
+        dcl-s SQLINTEGER int(10)  based(Template);
+        dcl-s SQLHENV int(10)  based(Template);
+        dcl-s SQLHDBC int(10)  based(Template);
+        dcl-s SQLHSTMT int(10)  based(Template);
+        dcl-s SQLHDESC int(10)  based(Template);
+        dcl-s SQLHANDLE int(10)  based(Template);
+        dcl-s SQLRETURN  like(SQLINTEGER) based(Template);
+        dcl-s SFLOAT float(4)  based(Template);
+        dcl-s SQLPOINTER pointer  based(Template);
+        dcl-s SQLHWND pointer  based(Template);
+
+        //  Handle types
+        dcl-c SQL_UNUSED 0;
+        dcl-c SQL_HANDLE_ENV 1;
+        dcl-c SQL_HANDLE_DBC 2;
+        dcl-c SQL_HANDLE_STMT 3;
+        dcl-c SQL_HANDLE_DESC 4;
+        dcl-c SQL_NULL_HANDLE 0;
+        dcl-c SQL_HANDLE_DBC_UNICODE 100;
+
+        //  NULL status constants; these are used in SQLColAttributes,
+        //   SQLDescribeCol, to describe the nullability of a column
+        //   in a table.
+        dcl-c SQL_NO_NULLS 0;
+        dcl-c SQL_NULLABLE 1;
+        dcl-c SQL_NULLABLE_UNKNOWN 2;
+
+        //  Special length values
+        dcl-c SQL_NO_TOTAL 0;
+        dcl-c SQL_NULL_DATA -1;
+        dcl-c SQL_DATA_AT_EXEC -2;
+        dcl-c SQL_BIGINT_PREC 19;
+        dcl-c SQL_INTEGER_PREC 10;
+        dcl-c SQL_SMALLINT_PREC 5;
+
+        //  SQLColAttributes constants
+        dcl-c SQL_ATTR_READONLY 0;
+        dcl-c SQL_ATTR_WRITE 1;
+        dcl-c SQL_ATTR_READWRITE_UNKNOWN 2;
+
+        //  Valid concurrency values
+        dcl-c SQL_CONCUR_LOCK 0;
+        dcl-c SQL_CONCUR_READ_ONLY 1;
+        dcl-c SQL_CONCUR_ROWVER 3;
+        dcl-c SQL_CONCUR_VALUES 4;
+
+        //  Valid environment attributes
+        dcl-c SQL_ATTR_OUTPUT_NTS 10001;
+        dcl-c SQL_ATTR_SYS_NAMING 10002;
+        dcl-c SQL_ATTR_DEFAULT_LIB 10003;
+        dcl-c SQL_ATTR_SERVER_MODE 10004;
+        dcl-c SQL_ATTR_JOB_SORT_SEQUENCE 10005;
+        dcl-c SQL_ATTR_ENVHNDL_COUNTER 10009;
+        dcl-c SQL_ATTR_ESCAPE_CHAR 10010;
+        dcl-c SQL_ATTR_INCLUDE_NULL_IN_LEN 10031;
+        dcl-c SQL_ATTR_UTF8 10032;
+        dcl-c SQL_ATTR_SYSCAP 10033;
+        dcl-c SQL_ATTR_REQUIRE_PROFILE 10034;
+        dcl-c SQL_ATTR_UCS2 10035;
+        dcl-c SQL_ATTR_TRUNCATION_RTNC 10036;
+
+        //  Valid environment/connection attributes
+        dcl-c SQL_ATTR_EXTENDED_COL_INFO 10019;
+        dcl-c SQL_ATTR_DATE_FMT 10020;
+        dcl-c SQL_ATTR_DATE_SEP 10021;
+        dcl-c SQL_ATTR_TIME_FMT 10022;
+        dcl-c SQL_ATTR_TIME_SEP 10023;
+        dcl-c SQL_ATTR_DECIMAL_SEP 10024;
+        dcl-c SQL_ATTR_TXN_INFO 10025;
+        dcl-c SQL_ATTR_TXN_EXTERNAL 10026;
+        dcl-c SQL_ATTR_2ND_LEVEL_TEXT 10027;
+        dcl-c SQL_ATTR_SAVEPOINT_NAME 10028;
+        dcl-c SQL_ATTR_TRACE 10029;
+        dcl-c SQL_ATTR_MAX_PRECISION 10040;
+        dcl-c SQL_ATTR_MAX_SCALE 10041;
+        dcl-c SQL_ATTR_MIN_DIVIDE_SCALE 10042;
+        dcl-c SQL_ATTR_HEX_LITERALS 10043;
+        dcl-c SQL_ATTR_CORRELATOR 10044;
+
+        //  Valid transaction info operations
+        dcl-c SQL_TXN_FIND 1;
+        dcl-c SQL_TXN_CREATE 2;
+        dcl-c SQL_TXN_CLEAR 3;
+        dcl-c SQL_TXN_END 4;
+        dcl-c SQL_TXN_HOLD 5;
+
+        //  Valid environment/connection values
+        dcl-c SQL_FMT_ISO 1;
+        dcl-c SQL_FMT_USA 2;
+        dcl-c SQL_FMT_EUR 3;
+        dcl-c SQL_FMT_JIS 4;
+        dcl-c SQL_FMT_MDY 5;
+        dcl-c SQL_FMT_DMY 6;
+        dcl-c SQL_FMT_YMD 7;
+        dcl-c SQL_FMT_JUL 8;
+        dcl-c SQL_FMT_HMS 9;
+        dcl-c SQL_FMT_JOB 10;
+        dcl-c SQL_SEP_SLASH 1;
+        dcl-c SQL_SEP_DASH 2;
+        dcl-c SQL_SEP_PERIOD 3;
+        dcl-c SQL_SEP_COMMA 4;
+        dcl-c SQL_SEP_BLANK 5;
+        dcl-c SQL_SEP_COLON 6;
+        dcl-c SQL_SEP_JOB 7;
+        dcl-c SQL_HEX_IS_CHAR 1;
+        dcl-c SQL_HEX_IS_BINARY 2;
+
+        //  Valid values for type in GetCol
+        dcl-c SQL_DEFAULT 99;
+        dcl-c SQL_ARD_TYPE -99;
+
+        //  Valid values for UPDATE_RULE and DELETE_RULE in SQLForeignKeys
+        dcl-c SQL_CASCADE 1;
+        dcl-c SQL_RESTRICT 2;
+        dcl-c SQL_NO_ACTION 3;
+        dcl-c SQL_SET_NULL 4;
+        dcl-c SQL_SET_DEFAULT 5;
+
+        //  Valid values for COLUMN_TYPE in SQLProcedureColumns
+        dcl-c SQL_PARAM_INPUT 1;
+        dcl-c SQL_PARAM_OUTPUT 2;
+        dcl-c SQL_PARAM_INPUT_OUTPUT 3;
+
+        //  Statement attributes
+        dcl-c SQL_ATTR_APP_ROW_DESC 10010;
+        dcl-c SQL_ATTR_APP_PARAM_DESC 10011;
+        dcl-c SQL_ATTR_IMP_ROW_DESC 10012;
+        dcl-c SQL_ATTR_IMP_PARAM_DESC 10013;
+        dcl-c SQL_ATTR_FOR_FETCH_ONLY 10014;
+        dcl-c SQL_ATTR_CONCURRENCY 10014;
+        dcl-c SQL_CONCURRENCY 10014;
+        dcl-c SQL_ATTR_CURSOR_SCROLLABLE 10015;
+        dcl-c SQL_ATTR_ROWSET_SIZE 10016;
+        dcl-c SQL_ROWSET_SIZE 10016;
+        dcl-c SQL_ATTR_ROW_ARRAY_SIZE 10016;
+        dcl-c SQL_ATTR_CURSOR_HOLD 10017;
+        dcl-c SQL_ATTR_FULL_OPEN 10018;
+        dcl-c SQL_ATTR_BIND_TYPE 10049;
+        dcl-c SQL_BIND_TYPE 10049;
+        dcl-c SQL_ATTR_CURSOR_TYPE 10050;
+        dcl-c SQL_CURSOR_TYPE 10050;
+        dcl-c SQL_ATTR_CURSOR_SENSITIVITY 10051;
+        dcl-c SQL_CURSOR_SENSITIVE 10051;
+
+        //  Values for setting statement attributes
+        dcl-c SQL_BIND_BY_ROW 0;
+        dcl-c SQL_BIND_BY_COLUMN 1;
+        dcl-c SQL_CURSOR_FORWARD_ONLY 0;
+        dcl-c SQL_CURSOR_STATIC 1;
+        dcl-c SQL_CURSOR_DYNAMIC 2;
+        dcl-c SQL_CURSOR_KEYSET_DRIVEN 3;
+        dcl-c SQL_UNSPECIFIED 0;
+        dcl-c SQL_INSENSITIVE 1;
+        dcl-c SQL_SENSITIVE 2;
+
+        //  Codes used in SQLFetchScroll and SQLExtendedFetch
+        dcl-c SQL_FETCH_NEXT 1;
+        dcl-c SQL_FETCH_FIRST 2;
+        dcl-c SQL_FETCH_LAST 3;
+        dcl-c SQL_FETCH_PRIOR 4;
+        dcl-c SQL_FETCH_ABSOLUTE 5;
+        dcl-c SQL_FETCH_RELATIVE 6;
+
+        //  SQLColAttributes constants
+        dcl-c SQL_DESC_COUNT 1;
+        dcl-c SQL_DESC_TYPE 2;
+        dcl-c SQL_DESC_LENGTH 3;
+        dcl-c SQL_DESC_LENGTH_PTR 4;
+        dcl-c SQL_DESC_PRECISION 5;
+        dcl-c SQL_DESC_SCALE 6;
+        dcl-c SQL_DESC_DATETIME_INTERVAL_CODE 7;
+        dcl-c SQL_DESC_NULLABLE 8;
+        dcl-c SQL_DESC_INDICATOR_PTR 9;
+        dcl-c SQL_DESC_DATA_PTR 10;
+        dcl-c SQL_DESC_NAME 11;
+        dcl-c SQL_DESC_UNNAMED 12;
+        dcl-c SQL_DESC_DISPLAY_SIZE 13;
+        dcl-c SQL_DESC_AUTO_INCREMENT 14;
+        dcl-c SQL_DESC_SEARCHABLE 15;
+        dcl-c SQL_DESC_UPDATABLE 16;
+        dcl-c SQL_DESC_BASE_COLUMN 17;
+        dcl-c SQL_DESC_BASE_TABLE 18;
+        dcl-c SQL_DESC_BASE_SCHEMA 19;
+        dcl-c SQL_DESC_LABEL 20;
+        dcl-c SQL_DESC_MONEY 21;
+        dcl-c SQL_DESC_ALLOC_TYPE 99;
+        dcl-c SQL_DESC_ALLOC_AUTO 1;
+        dcl-c SQL_DESC_ALLOC_USER 2;
+        dcl-c SQL_COLUMN_COUNT 1;
+        dcl-c SQL_COLUMN_TYPE 2;
+        dcl-c SQL_COLUMN_LENGTH 3;
+        dcl-c SQL_COLUMN_LENGTH_PTR 4;
+        dcl-c SQL_COLUMN_PRECISION 5;
+        dcl-c SQL_COLUMN_SCALE 6;
+        dcl-c SQL_COLUMN_DATETIME_INTERVAL_CODE 7;
+        dcl-c SQL_COLUMN_NULLABLE 8;
+        dcl-c SQL_COLUMN_INDICATOR_PTR 9;
+        dcl-c SQL_COLUMN_DATA_PTR 10;
+        dcl-c SQL_COLUMN_NAME 11;
+        dcl-c SQL_COLUMN_UNNAMED 12;
+        dcl-c SQL_COLUMN_DISPLAY_SIZE 13;
+        dcl-c SQL_COLUMN_AUTO_INCREMENT 14;
+        dcl-c SQL_COLUMN_SEARCHABLE 15;
+        dcl-c SQL_COLUMN_UPDATABLE 16;
+        dcl-c SQL_COLUMN_BASE_COLUMN 17;
+        dcl-c SQL_COLUMN_BASE_TABLE 18;
+        dcl-c SQL_COLUMN_BASE_SCHEMA 19;
+        dcl-c SQL_COLUMN_LABEL 20;
+        dcl-c SQL_COLUMN_MONEY 21;
+        dcl-c SQL_COLUMN_ALLOC_TYPE 99;
+        dcl-c SQL_COLUMN_ALLOC_AUTO 1;
+        dcl-c SQL_COLUMN_ALLOC_USER 2;
+
+        //  Valid codes for SpecialColumns procedure
+        dcl-c SQL_SCOPE_CURROW 0;
+        dcl-c SQL_SCOPE_TRANSACTION 1;
+        dcl-c SQL_SCOPE_SESSION 2;
+        dcl-c SQL_PC_UNKNOWN 0;
+        dcl-c SQL_PC_NOT_PSEUDO 1;
+        dcl-c SQL_PC_PSEUDO 2;
+
+        //  Valid values for connect attribute
+        dcl-c SQL_ATTR_AUTO_IPD 10001;
+        dcl-c SQL_ATTR_ACCESS_MODE 10002;
+        dcl-c SQL_ACCESS_MODE 10002;
+        dcl-c SQL_ATTR_AUTOCOMMIT 10003;
+        dcl-c SQL_AUTOCOMMIT 10003;
+        dcl-c SQL_ATTR_DBC_SYS_NAMING 10004;
+        dcl-c SQL_ATTR_DBC_DEFAULT_LIB 10005;
+        dcl-c SQL_ATTR_ADOPT_OWNER_AUTH 10006;
+        dcl-c SQL_ATTR_SYSBAS_CMT 10007;
+        dcl-c SQL_ATTR_COMMIT 0;
+        dcl-c SQL_MODE_READ_ONLY 0;
+        dcl-c SQL_MODE_READ_WRITE 1;
+        dcl-c SQL_MODE_DEFAULT 1;
+        dcl-c SQL_AUTOCOMMIT_OFF 0;
+        dcl-c SQL_AUTOCOMMIT_ON 1;
+        dcl-c SQL_TXN_ISOLATION 0;
+        dcl-c SQL_ATTR_TXN_ISOLATION 0;
+        dcl-c SQL_COMMIT_NONE 1;
+        dcl-c SQL_TXN_NO_COMMIT 1;
+        dcl-c SQL_TXN_NOCOMMIT 1;
+        dcl-c SQL_COMMIT_CHG 2;
+        dcl-c SQL_COMMIT_UR 2;
+        dcl-c SQL_TXN_READ_UNCOMMITTED 2;
+        dcl-c SQL_COMMIT_CS 3;
+        dcl-c SQL_TXN_READ_COMMITTED 3;
+        dcl-c SQL_COMMIT_ALL 4;
+        dcl-c SQL_COMMIT_RS 4;
+        dcl-c SQL_TXN_REPEATABLE_READ 4;
+        dcl-c SQL_COMMIT_RR 5;
+        dcl-c SQL_TXN_SERIALIZABLE 5;
+
+        //  Valid index flags
+        dcl-c SQL_INDEX_UNIQUE 0;
+        dcl-c SQL_INDEX_ALL 1;
+        dcl-c SQL_INDEX_OTHER 3;
+        dcl-c SQL_TABLE_STAT 0;
+        dcl-c SQL_ENSURE 1;
+        dcl-c SQL_QUICK 0;
+
+        //  Valid trace values
+        dcl-c SQL_ATTR_TRACE_CLI 1;
+        dcl-c SQL_ATTR_TRACE_DBMON 2;
+        dcl-c SQL_ATTR_TRACE_DEBUG 4;
+        dcl-c SQL_ATTR_TRACE_JOBLOG 8;
+        dcl-c SQL_ATTR_TRACE_STRTRC 16;
+
+        //  Valid file options
+        dcl-c SQL_FILE_READ 2;
+        dcl-c SQL_FILE_CREATE 8;
+        dcl-c SQL_FILE_OVERWRITE 16;
+        dcl-c SQL_FILE_APPEND 32;
+        dcl-c SQL_DIAG_RETURNCODE 1;
+        dcl-c SQL_DIAG_NUMBER 2;
+
+        //  Valid types for GetDiagField
+        dcl-c SQL_DIAG_ROW_COUNT 3;
+        dcl-c SQL_DIAG_SQLSTATE 4;
+        dcl-c SQL_DIAG_NATIVE 5;
+        dcl-c SQL_DIAG_MESSAGE_TEXT 6;
+        dcl-c SQL_DIAG_DYNAMIC_FUNCTION 7;
+        dcl-c SQL_DIAG_CLASS_ORIGIN 8;
+        dcl-c SQL_DIAG_SUBCLASS_ORIGIN 9;
+        dcl-c SQL_DIAG_CONNECTION_NAME 10;
+        dcl-c SQL_DIAG_SERVER_NAME 11;
+        dcl-c SQL_DIAG_MESSAGE_TOKENS 12;
+        dcl-c SQL_DIAG_AUTOGEN_KEY 14;
+
+        //  SQLColAttributes constants
+        //  These are also used by SQLGetInfo
+        dcl-c SQL_UNSEARCHABLE 0;
+        dcl-c SQL_LIKE_ONLY 1;
+        dcl-c SQL_ALL_EXCEPT_LIKE 2;
+        dcl-c SQL_SEARCHABLE 3;
+
+        //  GetFunctions() values to identify CLI functions
+        dcl-c SQL_API_SQLALLOCCONNECT 1;
+        dcl-c SQL_API_SQLALLOCENV 2;
+        dcl-c SQL_API_SQLALLOCHANDLE 1001;
+        dcl-c SQL_API_SQLALLOCSTMT 3;
+        dcl-c SQL_API_SQLBINDCOL 4;
+        dcl-c SQL_API_SQLBINDFILETOCOL 2002;
+        dcl-c SQL_API_SQLBINDFILETOPARAM 2003;
+        dcl-c SQL_API_SQLBINDPARAM 1002;
+        dcl-c SQL_API_SQLBINDPARAMETER 1023;
+        dcl-c SQL_API_SQLCANCEL 5;
+        dcl-c SQL_API_SQLCLOSECURSOR 1003;
+        dcl-c SQL_API_SQLCOLATTRIBUTES 6;
+        dcl-c SQL_API_SQLCOLUMNPRIVILEGES 2010;
+        dcl-c SQL_API_SQLCOLUMNS 40;
+        dcl-c SQL_API_SQLCONNECT 7;
+        dcl-c SQL_API_SQLCOPYDESC 1004;
+        dcl-c SQL_API_SQLDATASOURCES 57;
+        dcl-c SQL_API_SQLDESCRIBECOL 8;
+        dcl-c SQL_API_SQLDESCRIBEPARAM 58;
+        dcl-c SQL_API_SQLDISCONNECT 9;
+        dcl-c SQL_API_SQLDRIVERCONNECT 68;
+        dcl-c SQL_API_SQLENDTRAN 1005;
+        dcl-c SQL_API_SQLERROR 10;
+        dcl-c SQL_API_SQLEXECDIRECT 11;
+        dcl-c SQL_API_SQLEXECUTE 12;
+        dcl-c SQL_API_SQLEXTENDEDFETCH 1022;
+        dcl-c SQL_API_SQLFETCH 13;
+        dcl-c SQL_API_SQLFETCHSCROLL 1021;
+        dcl-c SQL_API_SQLFOREIGNKEYS 60;
+        dcl-c SQL_API_SQLFREECONNECT 14;
+        dcl-c SQL_API_SQLFREEENV 15;
+        dcl-c SQL_API_SQLFREEHANDLE 1006;
+        dcl-c SQL_API_SQLFREESTMT 16;
+        dcl-c SQL_API_SQLGETCOL 43;
+        dcl-c SQL_API_SQLGETCONNECTATTR 1007;
+        dcl-c SQL_API_SQLGETCONNECTOPTION 42;
+        dcl-c SQL_API_SQLGETCURSORNAME 17;
+        dcl-c SQL_API_SQLGETDATA 43;
+        dcl-c SQL_API_SQLGETDESCFIELD 1008;
+        dcl-c SQL_API_SQLGETDESCREC 1009;
+        dcl-c SQL_API_SQLGETDIAGFIELD 1010;
+        dcl-c SQL_API_SQLGETDIAGREC 1011;
+        dcl-c SQL_API_SQLGETENVATTR 1012;
+        dcl-c SQL_API_SQLGETFUNCTIONS 44;
+        dcl-c SQL_API_SQLGETINFO 45;
+        dcl-c SQL_API_SQLGETLENGTH 2004;
+        dcl-c SQL_API_SQLGETPOSITION 2005;
+        dcl-c SQL_API_SQLGETSTMTATTR 1014;
+        dcl-c SQL_API_SQLGETSTMTOPTION 46;
+        dcl-c SQL_API_SQLGETSUBSTRING 2006;
+        dcl-c SQL_API_SQLGETTYPEINFO 47;
+        dcl-c SQL_API_SQLLANGUAGES 2001;
+        dcl-c SQL_API_SQLMORERESULTS 61;
+        dcl-c SQL_API_SQLNATIVESQL 62;
+        dcl-c SQL_API_SQLNEXTRESULT 2009;
+        dcl-c SQL_API_SQLNUMPARAMS 63;
+        dcl-c SQL_API_SQLNUMRESULTCOLS 18;
+        dcl-c SQL_API_SQLPARAMDATA 48;
+        dcl-c SQL_API_SQLPARAMOPTIONS 2007;
+        dcl-c SQL_API_SQLPREPARE 19;
+        dcl-c SQL_API_SQLPRIMARYKEYS 65;
+        dcl-c SQL_API_SQLPROCEDURECOLUMNS 66;
+        dcl-c SQL_API_SQLPROCEDURES 67;
+        dcl-c SQL_API_SQLPUTDATA 49;
+        dcl-c SQL_API_SQLRELEASEENV 1015;
+        dcl-c SQL_API_SQLROWCOUNT 20;
+        dcl-c SQL_API_SQLSETCONNECTATTR 1016;
+        dcl-c SQL_API_SQLSETCONNECTOPTION 50;
+        dcl-c SQL_API_SQLSETCURSORNAME 21;
+        dcl-c SQL_API_SQLSETDESCFIELD 1017;
+        dcl-c SQL_API_SQLSETDESCREC 1018;
+        dcl-c SQL_API_SQLSETENVATTR 1019;
+        dcl-c SQL_API_SQLSETPARAM 22;
+        dcl-c SQL_API_SQLSETSTMTATTR 1020;
+        dcl-c SQL_API_SQLSETSTMTOPTION 51;
+        dcl-c SQL_API_SQLSPECIALCOLUMNS 52;
+        dcl-c SQL_API_SQLSTARTTRAN 2008;
+        dcl-c SQL_API_SQLSTATISTICS 53;
+        dcl-c SQL_API_SQLTABLEPRIVILEGES 2011;
+        dcl-c SQL_API_SQLTABLES 54;
+        dcl-c SQL_API_SQLTRANSACT 23;
+
+        //  NULL handle constants
+        dcl-c SQL_NULL_HENV 0;
+        dcl-c SQL_NULL_HDBC 0;
+        dcl-c SQL_NULL_HSTMT 0;
+
+        //  truncated values return this sqlstate
+        dcl-c SQL_WARN_VAL_TRUNC '01004';
+
+        //  date structure
+        dcl-ds DATE_STRUCT INZ qualified based(Template) align;
+          year like(SQLSMALLINT);
+          month like(SQLSMALLINT);
+          day like(SQLSMALLINT);
+        end-ds DATE_STRUCT;
+
+        //  time structure
+        dcl-ds TIME_STRUCT INZ qualified based(Template) align;
+          hour like(SQLSMALLINT);
+          minute like(SQLSMALLINT);
+          second like(SQLSMALLINT);
+        end-ds TIME_STRUCT;
+
+        //  timestamp structure
+        dcl-ds TIMESTAMP_STRUCT INZ qualified based(Template) align;
+          year like(SQLSMALLINT);
+          month like(SQLSMALLINT);
+          day like(SQLSMALLINT);
+          hour like(SQLSMALLINT);
+          minute like(SQLSMALLINT);
+          second like(SQLSMALLINT);
+          fraction like(SQLINTEGER);
+        end-ds TIMESTAMP_STRUCT;
+
+        //  Transaction info structure
+        dcl-ds TXN_STRUCT INZ qualified based(Template) align;
+          operation like(SQLINTEGER);
+          tminfo char(10);
+          XID char(2);
+          timeoutval like(SQLINTEGER);
+          locktimeout like(SQLINTEGER);
+          *n char(8);
+        end-ds TXN_STRUCT;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLAllocConnect(): Allocate a connection handle
+        //      henv = (input) environment to allocate in
+        //     phdbc = (output) new connection handle
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SqlAllocConnect  ExtProc('SQLAllocConnect') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          phdbc like(SQLHDBC);
+        end-pr SqlAllocConnect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLAllocEnv(): Allocate an environment for SQL and return
+        //                 an environment handle
+        //         phenv = (output) environment handle
+        //  Returns SQL_SUCCESS or SQL_ERROR
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SqlAllocEnv  ExtProc('SQLAllocEnv') like(SQLRETURN);
+          phenv like(SQLHENV);
+        end-pr SqlAllocEnv;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLAllocHandle(): Allocate any type of handle
+        //         type = (input) handle type
+        //      ihandle = (input) handle describing context
+        //                (i.e. is the new handle inside an env? conn?)
+        //      ohandle = (output) new handle returned
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SqlAllocHandle  ExtProc('SQLAllocHandle') like(SQLRETURN);
+          type like(SQLSMALLINT) value;
+          ihandle like(SQLINTEGER) value;
+          ohandle like(SQLINTEGER);
+        end-pr SqlAllocHandle;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLAllocStmt(): Allocate a new SQL statement handle
+        //     hdbc = (input) handle to database connection
+        //   phstmt = (output) new statement handle
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLAllocStmt  ExtProc('SQLAllocStmt') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          phstmt like(SQLHSTMT);
+        end-pr SQLAllocStmt;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLBindCol(): Bind column to application variable
+        //       hstmt = (input) statement handle
+        //        icol = (input) column number to bind
+        //      fCType = (input) application data type for column
+        //    rgbValue = (output) pointer to variable where data is placed
+        //  cbValueMax = (input) max size of variable (in bytes or DBCS chars))
+        //    pcbValue = (output) number of bytes returned
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLBindCol  ExtProc('SQLBindCol') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          icol like(SQLSMALLINT) value;
+          fCType like(SQLSMALLINT) value;
+          rgbValue like(SQLPOINTER) value;
+          cbValueMax like(SQLINTEGER) value;
+          pcbValue like(SQLINTEGER) options(*omit);
+        end-pr SQLBindCol;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLBindFileToCol():  Bind LOB File Reference to LOB Column
+        //  (This is used to populate an IFS stream file with the
+        //   contents of a LOB, or vice-versa)
+        //          stmt = (input) statement handle
+        //      ColumnNo = (input) ordinal column number to bind
+        //      FileName = (input/deferred) variable that contains filename.
+        //                 this is not used immediately, but the var will
+        //                 be read when the file is actually created (so
+        //                 if you change it, you'll change the filename.)
+        //   FileNameLen = (input/deferred) variable that contains the
+        //                 %len of the file name in the FileName parm.
+        //      FileOpts = (input/deferred) variable that contains the
+        //                 option for SQL_FILE_CREATE, SQL_FILE_OVERWRITE
+        //                 or SQL_FILE_APPEND.
+        //   MaxFileName = (input) %size of FileName variable
+        //     StringLen = (output/deferred) variable to contain the length
+        //                 in bytes of the LOB returned.  This variable will
+        //                 be changed on each fetch.
+        //         Indic = (output/deferred) variable to contain the
+        //                 indicator value for the column. This variable will
+        //                 be changed on each fetch.
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLBindFileToCol  ExtProc('SQLBindFileToCol') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ColumnNo like(SQLSMALLINT) value;
+          FileName char(32767) options(*varsize);
+          FileNameLen like(SQLINTEGER) options(*omit);
+          FileOpts like(SQLINTEGER);
+          MaxFileName like(SQLINTEGER) value;
+          StringLen like(SQLINTEGER) options(*omit);
+          Indic like(SQLINTEGER) options(*omit);
+        end-pr SQLBindFileToCol;
+
+        dcl-pr SQLBindFileToCo  ExtProc('SQLBindFileToCol') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ColumnNo like(SQLSMALLINT) value;
+          FileName pointer dim(32767) options(*varsize);
+          FileNameLen like(SQLINTEGER) dim(32767) options(*varsize:*omit);
+          FileOpts like(SQLINTEGER) dim(32767) options(*varsize);
+          MaxFileName like(SQLINTEGER) value;
+          StringLen like(SQLINTEGER) dim(32767) options(*omit:*varsize);
+          Indic like(SQLINTEGER) dim(32767) options(*omit:*varsize);
+        end-pr SQLBindFileToCo;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLBindFileToParam(): Bind LOB File reference to LOB Parm
+        //    (Associates a parameter marker for a LOB with an IFS
+        //     stream file.)
+        //          stmt = (input) statement handle
+        //        ParmNo = (input) ordinal parameter number to bind
+        //      FileName = (input/deferred) variable that contains filename.
+        //                 this is not used immediately, but the var will
+        //                 be read when the file is actually created (so
+        //                 if you change it, you'll change the filename.)
+        //   FileNameLen = (input/deferred) variable that contains the
+        //                 %len of the file name in the FileName parm.
+        //      FileOpts = (input/deferred) variable that contains the
+        //                 option. It must be SQL_FILE_READ
+        //   MaxFileName = (input) %size of FileName variable
+        //     StringLen = (output/deferred) variable to contain the length
+        //                 in bytes of the LOB returned.  This variable will
+        //                 be changed on each fetch.
+        //         Indic = (input/deferred) variable to contain the
+        //                 indicator value for the column. This variable will
+        //                 be changed on each fetch.
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLBindFileToParam  ExtProc('SQLBindFileToParam') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ParmNo like(SQLSMALLINT) value;
+          DataType like(SQLSMALLINT) value;
+          FileName char(32767) options(*varsize);
+          FileNameLen like(SQLINTEGER);
+          FileOpts like(SQLINTEGER);
+          MaxFileName like(SQLINTEGER) value;
+          IndicSQLBindFileTo like(SQLINTEGER) options(*omit);
+        end-pr;
+
+        dcl-pr SQLBindFileToParamA  ExtProc('SQLBindFileToParam') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ParmNo like(SQLSMALLINT) value;
+          DataType like(SQLSMALLINT) value;
+          FileName pointer dim(32767) options(*varsize);
+          FileNameLen like(SQLINTEGER) dim(32767) options(*varsize:*omit);
+          FileOpts like(SQLINTEGER) dim(32767) options(*varsize);
+          MaxFileName like(SQLINTEGER) value;
+          Indic like(SQLINTEGER) dim(32767) options(*omit:*varsize);
+        end-pr;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLBindParam(): Set Parameter
+        //       hstmt = (input) statement handle
+        //        ipar = (input) parameter marker number to bind
+        //      fCType = (input) application data type for column
+        //    fSqlType = (input) SQL data type for column
+        //  cbParamDef = (input) precision of corresponding param marker
+        //     ibScale = (input) scale of parm marker (decimal places)
+        //    rgbValue = (i/o)   pointer to variable for data
+        //                         or SQL_NULL_DATA if no data.
+        //    pcbValue = (input) length of data, or SQL_NTS, or zero
+        //                         or *OMIT if no data
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLBindParam  ExtProc('SQLBindParam') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          ipar like(SQLSMALLINT) value;
+          fCType like(SQLSMALLINT) value;
+          fSqlType like(SQLSMALLINT) value;
+          cbParamDef like(SQLINTEGER) value;
+          ibScale like(SQLSMALLINT) value;
+          rgbValue like(SQLPOINTER) value;
+          pcbValue like(SQLINTEGER) options(*omit);
+        end-pr SQLBindParam;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLBindParameter(): Set Parameter (extended)
+        //        stmt = (input) statement handle
+        //      ParmNo = (input) parameter marker number to bind
+        //   InOutType = (input) whether parameter is input,output or both
+        //    DataType = (input) RPG data type of the parameter
+        //     SqlType = (input) SQL data type for the parameter
+        //     ColSize = (input) precision of corresponding param marker
+        //                       (This is the length or number of digits)
+        //       Scale = (input) scale of parm marker (decimal places)
+        //       Value = (i/o/deferred) Variable that contains the value
+        //                         of the data (variable is used when the
+        //                         statement is executed, not when this
+        //                         procedure is called)
+        //                         can be *NULL if InOutType=SQL_PARAM_OUTPUT
+        //                         and you don't want the data.
+        //   BufferLen = (input) Not used.
+        //  Len_Or_Ind = (i/o/deferred) Variable containing the length of
+        //                              the *data* (vs. the size of the field)
+        //                              This variable is used when the
+        //                              statement is executed (not when
+        //                              SQLBindParameter is run.)
+        //                              May contain SQL_NULL_DATA if an SQL
+        //                              null value is desired, SQL_NTS if
+        //                              a zero-terminated string is used,
+        //                              or SQL_DATA_AT_EXEC if the data
+        //                              should be supplied by SQLPutData()
+        //                              For output fields, this will also be
+        //                              used to return the length of the data,
+        //                              (or SQL_NULL_DATA/SQL_NTS)
+        //                              can be *OMIT if the InOutType parm
+        //                              is SQL_PARAM_OUTPUT and you don't
+        //                              want the data.
+        //   NOTE: You can *OMIT/*NULL both the 'Value' and 'Len_Or_Ind'
+        //         parameters for an output-only parameter if you want
+        //         to discard the data.
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLBindParamete  ExtProc('SQLBindParameter') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ParmNo like(SQLSMALLINT) value;
+          inouttype like(SQLSMALLINT) value;
+          datatype like(SQLSMALLINT) value;
+          SqlType like(SQLSMALLINT) value;
+          ColSize like(SQLINTEGER) value;
+          Scale like(SQLSMALLINT) value;
+          Value like(SQLPOINTER) value;
+          BufferLen like(SQLINTEGER) value;
+          Len_Or_Ind like(SQLINTEGER) options(*omit);
+        end-pr SQLBindParamete;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLCancel(): This doesn't do anything, it's here for
+        //               the sake of matching the CLI standards.
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLCancel  ExtProc('SQLCancel') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+        end-pr SQLCancel;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLCloseCursor(): Close cursor
+        //        stmt = (input) statement handle
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLCloseCursor  ExtProc('SQLCloseCursor') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+        end-pr SQLCloseCursor;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLColAttributes():  Get Column Attributes
+        //        stmt = (input)  statement handle
+        //       ColNo = (input)  ordinal column number
+        //    DescType = (input)  attribute to retrieve
+        //     DescBuf = (output) value of attribute (if a char string)
+        //    DescSize = (input)  maximum size of desc buf
+        //     rtnSize = (output) actual number of bytes used in desc buf
+        //     DescInt = (output) value of attribute (if numeric)
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLColAttribute  ExtProc('SQLColAttributes') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ColNo like(SQLSMALLINT) value;
+          DescType like(SQLSMALLINT) value;
+          DescBuf char(32767) options(*varsize: *omit);
+          DescSize like(SQLINTEGER) value;
+          RtnSize like(SQLINTEGER);
+          DescInt like(SQLINTEGER) options(*omit);
+        end-pr SQLColAttribute;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLColumnPrivledges(): Get privleges associated with the
+        //                         columns of a table.
+        //   The result data is returned in a result set, so you should
+        //   use SQLBindCol() and SQLFetch() to get the results.
+        //          stmt = (input) statement handle
+        //   CatalogName = (input) catalog qualifier of 3 part table name
+        //                         This must ALWAYS be *OMIT.
+        //   NameLength1 = (input) length of catalog name, ALWAYS 0
+        //    SchemaName = (input) Schema qualifier of table name
+        //   NameLength2 = (input) Length of SchemaName
+        //     TableName = (input) Table name
+        //   NameLength3 = (input) Length of TableName
+        //    ColumnName = (input) Column name
+        //   NameLength4 = (input) Length of ColumnName
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          -- data is returned in a result set --
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr DSQLColumnPrivledges  ExtProc('SqlColumnPrivledges') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          CatalogName char(32767) options(*varsize:*omit);
+          NameLength1 like(SQLSMALLINT) value;
+          SchemaName char(32767) options(*varsize:*omit);
+          NameLength2 like(SQLSMALLINT) value;
+          TableName char(32767) options(*varsize:*omit);
+          NameLength3 like(SQLSMALLINT) value;
+          ColumnName char(32767) options(*varsize:*omit);
+          NameLength4 like(SQLSMALLINT) value;
+        end-pr DSQLColumnPrivledges;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLColumns(): Get column information for a table
+        //   The result data is returned in a result set, so you should
+        //   use SQLBindCol() and SQLFetch() to get the results.
+        //          stmt = (input) statement handle
+        //   CatalogName = (input) catalog qualifier of 3 part table name
+        //                         This must ALWAYS be *OMIT.
+        //   NameLength1 = (input) length of catalog name, ALWAYS 0
+        //    SchemaName = (input) Schema qualifier of table name
+        //   NameLength2 = (input) Length of SchemaName
+        //     TableName = (input) Table name
+        //   NameLength3 = (input) Length of TableName
+        //    ColumnName = (input) Column name
+        //   NameLength4 = (input) Length of ColumnName
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          -- data is returned in a result set --
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLColumns  ExtProc('SQLColumns') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          CatalogName char(32767) options(*varsize:*omit);
+          NameLength1 like(SQLSMALLINT) value;
+          SchemaName char(32767) options(*varsize:*omit);
+          NameLength2 like(SQLSMALLINT) value;
+          TableName char(32767) options(*varsize:*omit);
+          NameLength3 like(SQLSMALLINT) value;
+          ColumnName char(32767) options(*varsize:*omit);
+          NameLength4 like(SQLSMALLINT) value;
+        end-pr SQLColumns;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLConnect(): Connect to a data source
+        //        hdbc = (input) connection handle
+        //       szDSN = (input) Data source name to connect to
+        //       cbDSN = (input) length of szDSN parameter
+        //       szUID = (input) Autorization name (UserID)
+        //       cbUID = (input) Length of szUID parameter
+        //   szAuthStr = (input) Autorization name (UserID)
+        //   cbAuthStr = (input) Length of szUID parameter
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLConnect  Extproc('SQLConnect') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          szDSN pointer value options(*string);
+          cbDSN like(SQLSMALLINT) value;
+          szUID pointer value options(*string);
+          cbUID like(SQLSMALLINT) value;
+          szAuthStr pointer value options(*string);
+          cbAuthStr like(SQLSMALLINT) value;
+        end-pr SQLConnect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLCopyDesc(): Copy description statement
+        //     sDesc = (input) source descriptor handle
+        //     tDesc = (input) target descriptor handle
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLCopyDesc  ExtProc('SQLCopyDesc') like(SQLRETURN);
+          sDesc like(SQLHDESC) value;
+          tDesc like(SQLHDESC) value;
+        end-pr SQLCopyDesc;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLDataSources(): Get List of Data Sources
+        //          env = (input)  environment handle
+        //    direction = (input)  SQL_FETCH_FIRST or SQL_FETCH_NEXT
+        //                  used to get the first, or next, data source
+        //   serverName = (output) name of DSN
+        //   BufferLen1 = (input)  size of serverName variable
+        //     NameLen1 = (output) len used in serverName variable
+        //  Description = (output) description of data source
+        //   BufferLen2 = (input)  size of description variable
+        //     NameLen2 = (output) len used in description variable
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLDataSources  ExtProc('SQLDataSources') like(SQLRETURN);
+          env like(SQLHENV) value;
+          direction like(SQLSMALLINT) value;
+          serverName char(513) options(*varsize:*omit);
+          BufferLen1 like(SQLSMALLINT) value;
+          NameLen1 like(SQLSMALLINT) options(*omit);
+          Description char(513) options(*varsize:*omit);
+          BufferLen2 like(SQLSMALLINT) value;
+          NameLen2 like(SQLSMALLINT) options(*omit);
+        end-pr SQLDataSources;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLDescribeCol(): Describe Column Attributes
+        //          stmt = (input)  statement handle
+        //         ColNo = (input)  ordinal column number to describe
+        //       ColName = (output) returned column name
+        //    ColNameMax = (input)  %size() of ColName parameter
+        //    ColNameLen = (output) returned length of ColName parameter
+        //   SqlDataType = (output) returned data type of column
+        //     Precision = (output) returned precision (length) of column
+        //         Scale = (output) returned scale (dec pos) of numeric columns
+        //      Nullable = (output) returned info about null capability.
+        //                          SQL_NO_NULLS or SQL_NULLABLE
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLDescribeCol  ExtProc('SQLDescribeCol') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ColNo like(SQLSMALLINT) value;
+          ColName char(513) options(*varsize: *omit);
+          ColNameMax like(SQLSMALLINT) value;
+          ColNameLen like(SQLSMALLINT);
+          SqlDataType like(SQLSMALLINT);
+          Precision like(SQLINTEGER);
+          Scale like(SQLSMALLINT);
+          Nullable like(SQLSMALLINT);
+        end-pr SQLDescribeCol;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLDescribeParam(): Describe Parameter Marker
+        //        stmt = (input)  statement handle
+        //     ParamNo = (input)  ordinal parameter number to describe
+        //    datatype = (output) returned data type of parameter
+        //        size = (output) returned size of parameter
+        //      decpos = (output) returned decimal digits of parameter
+        //    nullable = (output) returned info about null capability
+        //            SQL_NO_NULLS, SQL_NULLABLE or SQL_NULLABLE_UNKNOWN
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLDescribeParam  ExtProc('SQLDescribeParam') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          ParamNo like(SQLSMALLINT) value;
+          datatype like(SQLSMALLINT);
+          size like(SQLINTEGER);
+          decpos like(SQLSMALLINT);
+          nullable like(SQLSMALLINT);
+        end-pr SQLDescribePara;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLDisconnect(): Disconnect from a data source
+        //   hdbc = (input) database connection handle to disconnect
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLDisconnect  Extproc('SQLDisconnect') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+        end-pr SQLDisconnect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLDriverConnect(): Connect to a data source (expanded)
+        //           hdbc = (input)  Connection handle
+        //           hwnd = (input)  Window handle (ignored on iSeries)
+        //     in_ConnStr = (input)  Connection string
+        //     in_ConnLen = (input)  length of in_ConnStr (SQL_NTS)
+        //    out_ConnStr = (output) completed connection string
+        //    out_ConnSiz = (input)  %size() of outConnStr variable
+        //    out_ConnRtn = (output) length of out_ConnStr used
+        //    drivercompl = (input)  when should DB2 prompt user?
+        //            SQL_DRIVER_COMPLETE, SQL_DRIVER_COMPLETE_REQUIRED
+        //            or SQL_DRIVER_NOPROMPT
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLDriverConnect  extproc('SQLDriverConnect') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          hwnd like(SQLHWND) value;
+          in_ConnStr pointer value options(*string);
+          in_ConnLen like(SQLSMALLINT) value;
+          out_ConnStr char(32767) options(*varsize:*omit);
+          out_ConnSiz like(SQLSMALLINT) value;
+          out_ConnRtn like(SQLSMALLINT);
+          drivercompl like(SQLSMALLINT) value;
+        end-pr SQLDriverConnect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLEndTran(): Commit or rollback a transaction
+        //    htype = (input) type of handle:
+        //                          SQL_HANDLE_ENV or SQL_HANDLE_DBC
+        //   handle = (input) handle to use
+        //   action = (input) action to perform:
+        //                          SQL_COMMIT
+        //                          SQL_ROLLBACK
+        //                          SQL_COMMIT_HOLD
+        //                          SQL_ROLLBACK_HOLD
+        //                          SQL_SAVEPOINT_NAME_ROLLBACK
+        //                          SQL_SAVEPOINT_NAME_RELEASE
+        //  Returns SQL_SUCCESS
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLEndTran  extproc('SQLEndTran') like(SQLRETURN);
+          htype like(SQLSMALLINT) value;
+          handle like(SQLINTEGER) value;
+          action like(SQLSMALLINT) value;
+        end-pr SQLEndTran;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLError(): Retrieve Error Information
+        //         henv = (input) environment handle
+        //         hdbc = (input) database connection handle
+        //                        (or SQL_NULL_HDBC)
+        //        hstmt = (input) statement handle (or SQL_NULL_HSTMT)
+        //   szSqlState = (output) SQL State (null-terminated)
+        //  pfNativeErr = (output) Native error code
+        //   szErrorMsg = (output) Message text of error message
+        //  cbErrMsgMax = (input) max size of szErrorMsg parameter
+        //  pcbErrorMsg = (output) total bytes available for err msg.
+        //  Returns SQL_SUCCESS,
+        //          SQL_NO_DATA_FOUND
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLError  extproc('SQLError') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          hdbc like(SQLHDBC) value;
+          hstmt like(SQLHSTMT) value;
+          szSqlState char(6);
+          pfNativeErr like(SQLINTEGER);
+          szErrorMsg char(513) options(*varsize);
+          cbErrMsgMax like(SQLSMALLINT) value;
+          pcbErrorMsg like(SQLSMALLINT);
+        end-pr SQLError;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //   SQLExecDirect(): Execute an SQL Statement Directly
+        //      hstmt = (input) handle of SQL Statement
+        //   szSqlStr = (input) SQL statement to execute
+        //   cbSqlStr = (input) length of SQL statement
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLExecDirect  Extproc('SQLExecDirect') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          szSqlStr pointer value options(*string);
+          cbSqlStr like(SQLINTEGER) value;
+        end-pr SQLExecDirect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLExecute(): Execute a prepared statement
+        //      hstmt = (input) handle of prepared SQL Statement
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLExecute  Extproc('SQLExecute') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+        end-pr SQLExecute;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLExtendedFetch(): Fetch Array of Rows
+        //  Note: Number of rows fetched is set by calling SQLSetStmtAttr()
+        //        and specifying SQL_ROWSET_SIZE
+        //      hstmt = (input) handle of prepared SQL Statement
+        //     orient = (input) fetch orientation
+        //                      (must be SQL_FETCH_NEXT if non-scrollable)
+        //     offset = (input) Row offset for relative positioning
+        //   rowcount = (output) rows that were fetched by API
+        //  rowstatus = (output) array of success/fail flags for
+        //                       each row returned.  This can be
+        //                       SQL_ROW_SUCCESS or SQL_ROW_NOROW
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND  (also indicates end of result set)
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLExtendedFetc  Extproc('SQLExtendedFetch') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          orient like(SQLSMALLINT) value;
+          offset like(SQLINTEGER) value;
+          rowcount like(SQLINTEGER);
+          rowstatus like(SQLSMALLINT) dim(32767) options(*varsize);
+        end-pr SQLExtendedFetc;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFetch(): Fetch next row from result set
+        //      hstmt = (input) handle of prepared SQL Statement
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND  (also indicates end of result set)
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFetch  Extproc('SQLFetch') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+        end-pr SQLFetch;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFetchScroll(): Fetch next row from scrollable cursor
+        //      hstmt = (input) handle of prepared SQL Statement
+        //     orient = (input) fetch orientation
+        //                      (must be SQL_FETCH_NEXT if non-scrollable)
+        //     offset = (input) Row offset for relative positioning
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND  (also indicates end of result set)
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFetchScroll  Extproc('SQLFetchScroll') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          orient like(SQLSMALLINT) value;
+          offset like(SQLINTEGER) value;
+        end-pr SQLFetchScroll;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLForeignKeys(): Get the list of foreign key columns
+        //   NOTE: Results from this API are returned in a result set.
+        //         To get them, use SQLFetch() and friends.
+        //           stmt = (input) statement handle
+        //      pkcatalog = (input) must be *OMIT
+        //   pkcataloglen = (input) must be 0
+        //       pkschema = (input) schema qualifier of primary key tbl
+        //    pkschemalen = (input) pkschema len, or SQL_NTS
+        //        pktable = (input) name of table containing primary key
+        //     pktablelen = (input) pktable len, or SQL_NTS
+        //      fkcatalog = (input) must be *OMIT
+        //   fkcataloglen = (input) must be 0
+        //       fkschema = (input) schema qualifier of foreign key tbl
+        //    fkschemalen = (input) fkschema len, or SQL_NTS
+        //        fktable = (input) name of table containing foreign key
+        //     fktablelen = (input) fktable len, or SQL_NTS
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLForeignKeys  Extproc('SQLForeignKeys') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          pkcatalog char(32767) const options(*varsize:*omit);
+          pkcataloglen like(SQLINTEGER) value;
+          pkschema pointer value options(*string);
+          pkschemalen like(SQLINTEGER) value;
+          pktable pointer value options(*string);
+          pktablelen like(SQLINTEGER) value;
+          fkcatalog char(32767) const options(*varsize:*omit);
+          fkcataloglen like(SQLINTEGER) value;
+          fkschema pointer value options(*string);
+          fkschemalen like(SQLINTEGER) value;
+          fktable pointer value options(*string);
+          fktablelen like(SQLINTEGER) value;
+        end-pr SQLForeignKeys;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFreeConnect(): Free SQL connection handle
+        //      hdbc = (input) handle of data source connection
+        //                    that has already been disconnected
+        //                    by SQLDisconnect()
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFreeConnect  Extproc('SQLFreeConnect') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+        end-pr SQLFreeConnect;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFreeEnv(): Free Environment Handle
+        //               (SQLFreeConnect needs to be called first)
+        //      henv = (input) environment handle to free up
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFreeEnv  Extproc('SQLFreeEnv') like(SQLRETURN);
+          henv like(SQLHENV) value;
+        end-pr SQLFreeEnv;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFreeHandle(): Free a Handle (any type)
+        //    htype = (input) type of handle to free
+        //               SQL_HANDLE_ENV, SQL_HANDLE_DBC, SQL_HANDLE_STMT
+        //               SQL_HANDLE_DESC
+        //   handle = (input) handle to free
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFreeHandle  Extproc('SQLFreeHandle') like(SQLRETURN);
+          htype like(SQLSMALLINT) value;
+          handle like(SQLINTEGER) value;
+        end-pr SQLFreeHandle;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLFreeStmt(): Free or Reset an SQL Statement Handle
+        //     hstmt = (input) statement handle to free or reset
+        //   fOption = (input) option to perform, the values are:
+        //               SQL_CLOSE  = Close a cursor
+        //               SQL_DROP   = Drop a statement handle/free resources
+        //               SQL_UNBIND = unbind columns from variables
+        //               SQL_RESET_PARAMS = Reset parameters
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLFreeStmt  Extproc('SQLFreeStmt') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          fOption like(SQLSMALLINT) value;
+        end-pr SQLFreeStmt;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetCol(): Gets a column from a fetched row
+        //      hstmt  = (input) statement handle of fetch
+        //       icol  = (input) column number to get
+        //     fCType  = (input) application (not database) data type
+        //                       of column identified by icol
+        //                       (SQL_CHAR, SQL_VARCHAR, etc...)
+        //    rgbValue = (input) pointer to memory (variable) where the
+        //                       retrieved column data will be stored
+        //  cbValueMax = (input) maximum size of data to return
+        //                         for DECIMAL or NUMERIC, this is
+        //                         (precision * 256) + scale.
+        //                         For anything else, it's bytes.
+        //    pcbValue = (output) size of data available in database
+        //                         or, amount remaining if fetching in pieces
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND (also indicates end of result set)
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetCol  ExtProc('SQLGetCol') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          icol like(SQLSMALLINT) value;
+          fCType like(SQLSMALLINT) value;
+          rgbValue like(SQLPOINTER) value;
+          cbValueMax like(SQLINTEGER) value;
+          pcbValue like(SQLINTEGER) options(*omit);
+        end-pr SQLGetCol;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetConnectAttr(): Get connection attribute
+        //     hdbc = (input)  connection handle
+        //     attr = (input)  attribute to retrieve
+        //   vParam = (output) returned value, can be an integer or
+        //                       a null-terminated char string.
+        //     bLen = (input)  %size() of variable passed for vParam
+        //     sLen = (output) Length used if output is a string.
+        //   Returns SQL_SUCCESS
+        //           SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr DSQLGetConnectAttr  ExtProc('SQLGetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          Attr like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetConnectAt;
+
+        dcl-pr SQLGetConnect  ExtProc('SQLGetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          Attr like(SQLINTEGER) value;
+          vParam like(SQLINTEGER);
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetConnect;
+
+        dcl-pr SQLGetConnec  ExtProc('SQLGetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          Attr like(SQLINTEGER) value;
+          vParam char(32767) options(*varsize:*omit);
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetConnec;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetConnectOption(): Get connection attribute
+        //  Deprecated: Use SQLGetConnectAttr()
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetConnectOption  ExtProc('SQLGetConnectOption') like(SQLRETURN)
+          ;
+          hdbc like(SQLHDBC) value;
+          fOption like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+        end-pr SQLGetConnectOp;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetCursorName():  Retrieve cursor name
+        //        stmt = (input) statement handle
+        //      cursor = (output) returned cursor name
+        //   cursormax = (input)  %size() of variable for cursor
+        //   cursorlen = (output) returned length of cursor name
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetCursorNam  EXTFLD ExtProc('SQLGetCursorName') like(
+          SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          cursor char(32767) options(*varsize);
+          cursormax like(SQLSMALLINT) value;
+          cursorlen like(SQLSMALLINT);
+        end-pr SQLGetCursorNam;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetData():  Get Data From a Column
+        //   Note: This is identical to SQLGetCol.
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetData  ExtProc('SQLGetData') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          icol like(SQLSMALLINT) value;
+          fCType like(SQLSMALLINT) value;
+          rgbValue like(SQLPOINTER) value;
+          cbValueMax like(SQLINTEGER) value;
+          pcbValue like(SQLINTEGER) options(*omit);
+        end-pr SQLGetData;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetDescField():  Get Descriptor Field
+        //        hdesc = (input) descriptor handle
+        //         irec = (input) record number (column or parameter no)
+        //    fDescType = (input) descriptor type
+        //      rgbDesc = (output) pointer to buffer for result
+        //         bLen = (input) length of rgbDesc buffer
+        //         sLen = (output) actual number of bytes returnable
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetDescField  ExtProc('SQLGetDescField') like(SQLRETURN);
+          hdesc like(SQLHDESC) value;
+          irec like(SQLSMALLINT) value;
+          fDescType like(SQLSMALLINT) value;
+          rgbDesc like(SQLPOINTER) value;
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER);
+        end-pr SQLGetDescField;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetDescRec(): Get Descriptor record
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetDescRec  ExtProc('SQLGetDescRec') like(SQLRETURN);
+          hdesc like(SQLHDESC) value;
+          irec like(SQLSMALLINT) value;
+          name char(513) options(*varsize:*omit);
+          namelen like(SQLSMALLINT) value;
+          totallen like(SQLSMALLINT);
+          type like(SQLSMALLINT);
+          subtype like(SQLSMALLINT);
+          length like(SQLINTEGER);
+          prec like(SQLSMALLINT);
+          scale like(SQLSMALLINT);
+          nullable like(SQLSMALLINT);
+        end-pr SQLGetDescRec;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetDiagField(): Get Diagnostic Info by Field
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetDiagFiel  ExtProc('SQLGetDiagField') like(SQLRETURN);
+          htype like(SQLSMALLINT) value;
+          handle like(SQLINTEGER) value;
+          recNum like(SQLSMALLINT) value;
+          diagId like(SQLSMALLINT) value;
+          diagInfo like(SQLPOINTER) value;
+          bLen like(SQLSMALLINT) value;
+          sLen like(SQLSMALLINT) options(*omit);
+        end-pr SQLGetDiagFiel;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetDiagRec(): Get Diagnostic Info by Record
+        //         htype = (input) handle type
+        //        handle = (input) handle for which diagnostics are reqd
+        //      SqlState = (output) SQL state (error) code
+        //       SqlCode = (output) IBM SQL status/error code
+        //      errorMsg = (output) message text for error
+        //   errorMsgMax = (input) %size() of errorMsg variable
+        //   errorMsgLen = (output) length of returned data for errorMsg
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetDiagRec  ExtProc('SQLGetDiagRec') like(SQLRETURN);
+          htype like(SQLSMALLINT) value;
+          handle like(SQLINTEGER) value;
+          recNum like(SQLSMALLINT) value;
+          SqlState char(6);
+          SqlCode like(SQLINTEGER);
+          errorMsg char(513) options(*varsize);
+          errorMsgMax like(SQLSMALLINT) value;
+          errorMsgLen like(SQLSMALLINT);
+        end-pr SQLGetDiagRec;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetEnvAttr(): Get environment attribute
+        //     henv = (input)  environment handle
+        //     attr = (input)  attribute to retrieve
+        //   vParam = (output) returned value, can be an integer or
+        //                       a null-terminated char string.
+        //     bLen = (input)  %size() of variable passed for vParam
+        //     sLen = (output) Length used if output is a string.
+        //   Returns SQL_SUCCESS
+        //           SQL_NO_DATA_FOUND
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetEnvAttr  ExtProc('SQLGetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          Attr like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetEnvAttr;
+
+        dcl-pr SQLGetEnvAttrI  ExtProc('SQLGetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          Attr like(SQLINTEGER) value;
+          vParam like(SQLINTEGER);
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetEnvAttrI;
+
+        dcl-pr SQLGetEnvAttrS  ExtProc('SQLGetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          Attr like(SQLINTEGER) value;
+          vParam char(32767) options(*varsize:*omit);
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER) options(*omit);
+        end-pr SQLGetEnvAttrS;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetFunctions(): Get functions
+        //    Checks which functions are available.
+        //         hdbc = (input) connection handle
+        //    fFunction = (input) one of the SQL_API_xxx flags
+        //   fSupported = (output) SQL_TRUE if function supported,
+        //                         SQL_FALSE otherwise.
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetFunction  ExtProc('SQLGetFunctions') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          fFunction like(SQLSMALLINT) value;
+          fSupported like(SQLSMALLINT);
+        end-pr SQLGetFunction;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetInfo(): Get general information about the DBMS
+        //           hdbc = (input) connection handle
+        //       InfoType = (input) type of information desired
+        //      InfoValue = (output) address of variable that will
+        //                           contain returned result.
+        //     InfoValMax = (input) %size() of variable provided for
+        //                           InfoValue.
+        //   InfoValAvail = (output) amount of data available to be
+        //                            returned in InfoValue
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetInfo  ExtProc('SQLGetInfo') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          InfoType like(SQLSMALLINT) value;
+          InfoValue like(SQLPOINTER) value;
+          InfoValueMax like(SQLSMALLINT) value;
+          InfoValAvail like(SQLSMALLINT);
+        end-pr SQLGetInfo;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetLength(): Get the length of a LOB column
+        //          hstmt = (input) statement handle
+        //    LocatorType = (input) type of locator. values are:
+        //                          SQL_C_BLOB_LOCATOR
+        //                          SQL_C_CLOB_LOCATOR
+        //                          SQL_C_DBCLOB_LOCATOR
+        //        Locator = (input) LOB locator to get length for
+        //         Length = (output) returned length of LOB
+        //          Indic = (output) always returns 0.
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_STILL_EXECUTING
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetLength  ExtProc('SQLGetLength') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          LocatorType like(SQLSMALLINT) value;
+          Locator like(SQLINTEGER) value;
+          Length like(SQLINTEGER);
+          Indic like(SQLINTEGER);
+        end-pr SQLGetLength;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetPosition(): Get the position of a search string in
+        //                    a LOB column.
+        //          hstmt = (input) statement handle
+        //    LocatorType = (input) type of locator. values are:
+        //                          SQL_C_BLOB_LOCATOR
+        //                          SQL_C_CLOB_LOCATOR
+        //                          SQL_C_DBCLOB_LOCATOR
+        //        Locator = (input) Source LOB locator (the LOB to be
+        //                          searched)
+        //    SrchLocator = (input) Search LOB locator (the LOB containing
+        //                          the string to search for -- only used
+        //                          if SearchLen = 0)
+        //      SearchFor = (input) String to search for, or *OMIT if
+        //                          SrchLocator should be used.
+        //      SearchLen = (input) Length of string to search for, or
+        //                          0 if SrchLocator should be used.
+        //        FromPos = (input) position to start searching at
+        //                          (byte position for a BLOB/CLOB or
+        //                          character position for a DBCLOB)
+        //      LocatedAt = (output) position where matching string was
+        //                           found.
+        //          Indic = (output) always returns 0.
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_STILL_EXECUTING
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetPosition  ExtProc('SQLGetPosition') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          LocatorType like(SQLSMALLINT) value;
+          Locator like(SQLINTEGER) value;
+          SrchLocator like(SQLINTEGER) value;
+          SearchFor char(32767) const options(*varsize:*omit);
+          SearchLen like(SQLINTEGER) value;
+          FromPos like(SQLINTEGER) value;
+          LocatedAt like(SQLINTEGER);
+          Indic like(SQLINTEGER);
+        end-pr SQLGetPosition;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetStmtAttr(): Get statement attribute
+        //      hstmt = (input) statement handle
+        //      fAttr = (input) attribute to retrieve
+        //    pvParam = (output) address of variable to receive value
+        //       bLen = (input) %size() of pvParam variable
+        //       sLen = (output) length of returned data
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetStmtAttr  ExtProc('SQLGetStmtAttr') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          fAttr like(SQLINTEGER) value;
+          pvParam like(SQLPOINTER) value;
+          bLen like(SQLINTEGER) value;
+          sLen like(SQLINTEGER);
+        end-pr SQLGetStmtAttr;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetStmtOption(): Get statement option
+        //   Deprecated:  Use SQLGetStmtAttr()
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetStmtOptio  ExtProc('SQLGetStmtOption') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          fAttr like(SQLINTEGER) value;
+          pvParam like(SQLPOINTER) value;
+        end-pr SQLGetStmtOptio;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetSubString(): Retrieve a portion of a LOB value
+        //          hstmt = (input) statement handle
+        //    LocatorType = (input) type of locator. values are:
+        //                          SQL_C_BLOB_LOCATOR
+        //                          SQL_C_CLOB_LOCATOR
+        //                          SQL_C_DBCLOB_LOCATOR
+        //        Locator = (input) Source LOB locator
+        //        FromPos = (input) position of the first byte (BLOB/CLOB)
+        //                          or character (DBCLOB) to be returned
+        //      ForLength = (input) length of the substring
+        //     TargetType = (input) data type of the variable that results
+        //                          are placed into.
+        //        DataPtr = (output) address of the variable that results
+        //                           are placed into
+        //        VarSize = (input) %size() of the variable that results
+        //                           are placed into
+        //         RtnLen = (output) returned length of data retrieved
+        //          Indic = (output) always returns 0
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_STILL_EXECUTING
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetSubStrin  ExtProc('SQLGetSubString') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          LocatorType like(SQLSMALLINT) value;
+          Locator like(SQLINTEGER) value;
+          FromPos like(SQLINTEGER) value;
+          ForLength like(SQLINTEGER) value;
+          TargetType like(SQLSMALLINT) value;
+          DataPtr like(SQLPOINTER) value;
+          VarSize like(SQLINTEGER) value;
+          RtnLen like(SQLINTEGER);
+          Indic like(SQLINTEGER);
+        end-pr SQLGetSubStrin;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLGetTypeInfo(): Get Information About the Data Types
+        //                    supported by the connected DBMS
+        //       hstmt = (input) statement handle
+        //    DataType = (input) SQL data type to query for
+        //  Returns SQL_SUCCESS
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //   -results are supplied in a result set-
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLGetTypeInfo  ExtProc('SQLGetTypeInfo') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          DataType like(SQLINTEGER) value;
+        end-pr SQLGetTypeInfo;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLLanguages(): Get SQL Dialect or conformance information
+        //     hstmt = (input) statement handle
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //   -results are supplied in a result set-
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLLanguages  ExtProc('SQLLanguages') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+        end-pr SQLLanguages;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLMoreResults(): Close the cursor to the current result
+        //                    set and determine if there are more
+        //                    result sets available.
+        //     hstmt = (input) statement handle
+        //  Returns SQL_SUCCESS          <- when more result sets found
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_STILL_EXECUTING
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND    <- when no more are found.
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLMoreResults  ExtProc('SQLLanguages') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+        end-pr SQLMoreResults;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLNativeSQL(): Get native SQL Text
+        //  This is ostensibly provided to see the statement after any
+        //  vendor escape clauses have been interpreted.  However, the
+        //  iSeries doesn't use vendor escape clauses.  This function
+        //  is still useful as an SQL statement syntax checker.
+        //        hstmt = (input) statement handle
+        //       inStmt = (input) SQL statement to interpret
+        //    inStmtLen = (input) should be SQL_NTS
+        //      outStmt = (output) returned statement
+        //  outStmtSize = (i/o) variable size of output statement.
+        //                 this'll be changed to SQL_NULL_DATA if
+        //                 no output string is generated.
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLNativeSQL  ExtProc('SQLNativeSQL') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          inStmt pointer value options(*string);
+          inStmtLen like(SQLINTEGER) value;
+          outStmt char(32767) options(*varsize);
+          outStmtSize like(SQLINTEGER);
+        end-pr SQLNativeSQL;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLNextResult(): Associate Next Result Set with a
+        //                   statement handle.
+        //  This lets you move the next result set from the current
+        //  statement handle to another one so that it can be processed
+        //  at the same time as the current one.
+        //      hstmt = (input) Statement handle containing result sets
+        //   nextstmt = (input) Statement handle to move the next
+        //                      result set to.
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NO_DATA_FOUND   <-- if no more result sets found
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLNextResult  ExtProc('SQLNextResult') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          nextstmt like(SQLHSTMT) value;
+        end-pr SQLNextResult;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLNumParams(): Returns the number of parameter markers
+        //                  in an SQL statement.
+        //   hstmt = (input) statement handle
+        //   count = (output) number of parameters
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_STILL_EXECUTING
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLNumParams  ExtProc('SQLNumParams') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          count like(SQLSMALLINT);
+        end-pr SQLNumParams;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLNumResultCols(): Returns the number of columns in the
+        //                  result set.
+        //   hstmt = (input) statement handle
+        //   count = (output) number of result columns
+        //  Returns SQL_SUCCESS
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLNumResultCol  ExtProc('SQLNumResultCols') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          count like(SQLSMALLINT);
+        end-pr SQLNumResultCol;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLParamData(): Get next parameter for which data is needed
+        //  This is used when SQL_DATA_AT_EXEC is passed to SQLBindParam
+        //  it is used to iterate through the parameters, while
+        //  SQLPutData() is used to set the actual data values.
+        //     hstmt = (input) Statement handle
+        //  rgbValue = (output) This is assigned by your application
+        //                  when SQLBindParam() is called.  Here it's
+        //                  returned to you.  Use it as you like.
+        //  Returns SQL_SUCCESS         <-- returned when all data set.
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_NEED_DATA       <-- returned to tell you to call
+        //                                  SQLPutData()
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLParamData  ExtProc('SQLParamData') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          rgbValue like(SQLINTEGER) options(*omit);
+        end-pr SQLParamData;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLParamOptions():  Specify an Input Array for a Parameter
+        //   Signals that multiple row INSERT statements are to be
+        //   used.  This statement specifies the size of the array
+        //   of values to be inserted, SQLBindParam() must specify
+        //   the array to insert from.  Parameter values must be
+        //   arranged in a row-wise fashion and must be contiguous.
+        //         hstmt = (input) statement handle
+        //          Crow = (input) number of values for each parameter
+        //                         (i.e. size of array.)
+        //   FetchOffset = (output) not used
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLParamOption  ExtProc('SQLParamOptions') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          Crow like(SQLINTEGER) value;
+          FetchOffset like(SQLINTEGER) options(*omit);
+        end-pr SQLParamOption;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLPrepare(): Prepare an SQL statement to be executed
+        //                one or more times.
+        //     hstmt = (input) statement handle to prepare into
+        //  szSqlStr = (input) SQL Statement to prepare
+        //  cbSqlStr = (input) length of SQL statement
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLPrepare  Extproc('SQLPrepare') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          szSqlStr pointer value options(*string);
+          cbSqlStr like(SQLINTEGER) value;
+        end-pr SQLPrepare;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLPrimaryKeys(): Get the list of primary key columns
+        //   NOTE: Results from this API are returned in a result set.
+        //         To get them, use SQLFetch() and friends.
+        //           stmt = (input) statement handle
+        //        catalog = (input) must be *OMIT
+        //     cataloglen = (input) must be 0
+        //         schema = (input) schema qualifier of table
+        //      schemalen = (input) schema len, or SQL_NTS
+        //          table = (input) name of table
+        //       tablelen = (input) table name len, or SQL_NTS
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLPrimaryKeys  Extproc('SQLPrimaryKeys') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          catalog char(32767) const options(*varsize:*omit);
+          cataloglen like(SQLINTEGER) value;
+          schema pointer value options(*string);
+          schemalen like(SQLINTEGER) value;
+          table pointer value options(*string);
+          tablelen like(SQLINTEGER) value;
+        end-pr SQLPrimaryKeys;
+
+
+        //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLProcedureColumns(): Get I/O Parameter Info for a procedure
+        //         stmt = (input) statement handle
+        //      catalog = (input) must be *OMIT
+        //   cataloglen = (input) must be 0
+        //       schema = (input) schema name (pattern)
+        //    schemalen = (input) length of schema (SQL_NTS)
+        //     procName = (input) procedure name to return
+        //      procLen = (input) length of procName (SQL_NTS)
+        //      procLen = (input) length of procName (SQL_NTS)
+        //   columnName = (input) pattern value for cols to return
+        //    columnLen = (input) length of columnName (SQL_NTS)
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        //  - results are returned in a result set -
+        //  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLProcedureColumns  Extproc('SQLProcedureColumns') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          catalog char(32767) const options(*varsize:*omit);
+          cataloglen like(SQLINTEGER) value;
+          schema pointer value options(*string);
+          schemalen like(SQLINTEGER) value;
+          procName pointer value options(*string);
+          procLen like(SQLINTEGER) value;
+          columnName pointer value options(*string);
+          colLen like(SQLINTEGER) value;
+        end-pr SQLProcedure;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLProcedures(): Return a list of registered procedures
+        //         stmt = (input) statement handle
+        //      catalog = (input) must be *OMIT
+        //   cataloglen = (input) must be 0
+        //       schema = (input) pattern-value of schema
+        //    schemalen = (input) length of schema (SQL_NTS)
+        //     procName = (input) pattern-value of procedure name
+        //      proclen = (input) length of procName (SQL_NTS)
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLProcedures  Extproc('SQLProcedures') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          catalog char(32767) const options(*varsize:*omit);
+          cataloglen like(SQLINTEGER) value;
+          schema pointer value options(*string);
+          schemalen like(SQLINTEGER) value;
+          procName pointer value options(*string);
+          procLen like(SQLINTEGER) value;
+        end-pr SQLProcedures;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLPutData(): Pass data values at exec time for a parameter
+        //   This procedure is always called after SQLParamData()
+        //   and can be called multiple times to set a large value
+        //   in chunks.  When finished, SQLParamData() must be
+        //   called again to move to the next parameter.
+        //       stmt = (input) statement handle
+        //       data = (input) pointer to data to place in parameter
+        //    datalen = (input) length of data in previous parameter
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLPutData  Extproc('SQLPutData') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          data like(SQLPOINTER) value;
+          datalen like(SQLINTEGER) value;
+        end-pr SQLPutData;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLReleaseEnv(): Release all SQL CLI Environment Resources
+        //      henv = (input) environment handle to blow away
+        //                     (SQLFreeConnect must already be done.)
+        //  Returns SQL_SUCCESS
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLReleaseEnv  Extproc('SQLReleaseEnv') like(SQLRETURN);
+          henv like(SQLHENV) value;
+        end-pr SQLReleaseEnv;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLRowCount(): Get Row Count of last SQL statement
+        //   Call this after an UPDATE, DELETE or INSERT to get a count
+        //   of the number of rows that were affected.
+        //     hstmt = (input) statement handle
+        //      crow = (output) count of rows returned by statement
+        //  Returns SQL_SUCCESS
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLRowCount  Extproc('SQLRowCount') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          crow like(SQLINTEGER);
+        end-pr SQLRowCount;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetConnectAttr(): Set connection attributes
+        //     hdbc = (input) connection handle to set attributes of
+        //    fAttr = (input) Attribute to set
+        //   vParam = (input) pointer to new attribute value
+        //     sLen = (input) length of new attribute value
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetConnectAttr  Extproc('SQLSetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetConnectAttr;
+
+        dcl-pr SQLSetConnectAttrI  Extproc('SQLSetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLINTEGER) const;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetConnectAttrI;
+
+        dcl-pr SQLSetConnectAttrA  Extproc('SQLSetConnectAttr') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          fAttr like(SQLINTEGER) value;
+          vParam char(32767) options(*varsize) const;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetConnectAttrA;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetConnectOption(): Set connection option
+        //  DEPRECATED: Use SQLSetConnectAttr() instead.  This is the
+        //  same function, but the API will make assuptions about the
+        //  size of vParam.
+        //     hdbc = (input) connection handle to set attributes of
+        //  fOption = (input) Option to set
+        //   vParam = (input) pointer to new attribute value
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetConnectOption  Extproc('SQLSetConnectOption') like(SQLRETURN);
+          hdbc like(SQLHDBC) value;
+          fOption like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+        end-pr SQLSetConnectOption;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetCursorName(): Set a friendly name for an SQL Cursor
+        //         hstmt = (input) statement handle
+        //    CursorName = (input) New cursor name to set (<=18 chars)
+        //     CursorLen = (input) Length of cursor name (SQL_NTS)
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetCursorNam  EXTFLD Extproc('SQLSetCursorName') like(
+          SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          CursorName pointer value options(*string);
+          CursorLen like(SQLSMALLINT) value;
+        end-pr SQLSetCursorNam;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetDescField(): Set a descriptor field
+        //        hdesc = (input) descriptor handle
+        //         irec = (input) record number
+        //    fDescType = (input) descriptor field to set
+        //       buffer = (input) pointer to buffer (value to set)
+        //    bufferlen = (input) length of buffer parameter
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetDescField  Extproc('SQLSetDescField') like(SQLRETURN);
+          hdesc like(SQLHDESC) value;
+          irec like(SQLSMALLINT) value;
+          fDescType like(SQLSMALLINT) value;
+          buffer like(SQLPOINTER) value;
+          bufferlen like(SQLINTEGER) value;
+        end-pr SQLSetDescField;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetDescRec(): Set all descriptor fields
+        //        hdesc = (input) descriptor handle
+        //         irec = (input) record number
+        //         Type = (input) TYPE field for record
+        //      subtype = (input) DATETIME_INTERVAL_CODE field for
+        //                        records where TYPE=SQL_DATETIME
+        //       length = (input) LENGTH field for record
+        //         prec = (input) PRECISION field for record
+        //        scale = (input) SCALE field for record
+        //         data = (input) DATA_PTR field for record
+        //         sLen = (input) LENGTH_PTR field for record
+        //        indic = (input) INDICATOR_PTR field for record
+        //  Returns SQL_SUCCESS
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetDescRec  Extproc('SQLSetDescRec') like(SQLRETURN);
+          hdesc like(SQLHDESC) value;
+          irec like(SQLSMALLINT) value;
+          type like(SQLSMALLINT) value;
+          subtype like(SQLSMALLINT) value;
+          length like(SQLINTEGER) value;
+          prec like(SQLSMALLINT) value;
+          scale like(SQLSMALLINT) value;
+          data like(SQLPOINTER) value;
+          sLen like(SQLINTEGER);
+          indic like(SQLINTEGER);
+        end-pr SQLSetDescRec;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetEnvAttr(): Set environment attributes
+        //     henv = (input) environment to set attributes of
+        //    fAttr = (input) Attribute to set
+        //   vParam = (input) pointer to new attribute value
+        //     sLen = (input) length of new attribute value
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetEnvAttr  Extproc('SQLSetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetEnvAttr;
+
+        dcl-pr SQLSetEnvAttrI  Extproc('SQLSetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLINTEGER) const;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetEnvAttrI;
+
+        dcl-pr SQLSetEnvAttrS  Extproc('SQLSetEnvAttr') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          fAttr like(SQLINTEGER) value;
+          vParam char(32767) options(*varsize) const;
+          sLen like(SQLINTEGER) value;
+        end-pr SQLSetEnvAttrS;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetParam(): Set Parameter
+        //       hstmt = (input) statement handle
+        //        ipar = (input) parameter marker number to bind
+        //      fCType = (input) application data type for column
+        //    fSqlType = (input) SQL data type for column
+        //  cbParamDef = (input) precision of corresponding param marker
+        //     ibScale = (input) scale of parm marker (decimal places)
+        //    rgbValue = (i/o)   pointer to variable for data
+        //                         or SQL_NULL_DATA if no data.
+        //    pcbValue = (input) length of data, or SQL_NTS, or zero
+        //                         or *OMIT if no data
+        //  Returns SQL_SUCCESS, SQL_ERROR or SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetParam  ExtProc('SQLSetParam') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          ipar like(SQLSMALLINT) value;
+          fCType like(SQLSMALLINT) value;
+          fSqlType like(SQLSMALLINT) value;
+          cbParamDef like(SQLINTEGER) value;
+          ibScale like(SQLSMALLINT) value;
+          rgbValue like(SQLPOINTER) value;
+          pcbValue like(SQLINTEGER) const options(*omit);
+        end-pr;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetStmtAttr(): Set statement attributes
+        //     stmt = (input) statement to set attributes of
+        //    fAttr = (input) Attribute to set
+        //   vParam = (input) pointer to new attribute value
+        //     sLen = (input) length of new attribute value
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetStmtAttr  Extproc('SQLSetStmtAttr') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+          sLen like(SQLINTEGER) value;
+        end-pr;
+
+        dcl-pr SQLSetStmtAttrI  Extproc('SQLSetStmtAttr') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          fAttr like(SQLINTEGER) value;
+          vParam like(SQLINTEGER) const;
+          sLen like(SQLINTEGER) value;
+        end-pr;
+
+        dcl-pr SQLSetStmtAttrS  Extproc('SQLSetStmtAttr') like(SQLRETURN);
+          stmt like(SQLHSTMT) value;
+          fAttr like(SQLINTEGER) value;
+          vParam char(32767) options(*varsize) const;
+          sLen like(SQLINTEGER) value;
+        end-pr;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSetStmtOption(): Set Statement Option
+        //   Deprecated:  Use SQLSetStmtAttr() instead.
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSetStmtOption Extproc('SQLSetStmtOption') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          fOption like(SQLINTEGER) value;
+          vParam like(SQLPOINTER) value;
+        end-pr SQLSetStmtOptio;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLSpecialColumns(): Get Special (Row identifying) columns
+        //        hstmt = (input) Statement handle
+        //      ColType = (input) reserved for future use (ignored)
+        //      Catalog = (input) Must be *OMIT
+        //   CatalogLen = (input) Must be 0
+        //   SchemaName = (input) Schema qualifier for table
+        //    SchemaLen = (input) Length of SchemaName parm, use SQL_NTS
+        //    TableName = (input) Table name to get cols from
+        //     TableLen = (input) Length of TableName parm, use SQL_NTS
+        //        Scope = (input) duration for which identifier is valid
+        //                        SQL_SCOPE_CURROW      -- until fetch
+        //                        SQL_SCOPE_TRANSACTION -- until commit
+        //                        SQL_SCOPE_SESSION     -- until disconnect
+        //     Nullable = (input) Return null-capable columns?
+        //                        SQL_NO_NULLS = don't return them.
+        //                        SQL_NULLABLE = return them.
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLSpecialColumns  Extproc('SQLSpecialColumns') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          ColType like(SQLSMALLINT) value;
+          Catalog char(32767) const options(*varsize:*omit);
+          CataLogLen like(SQLSMALLINT) value;
+          SchemaName pointer value options(*string);
+          SchemaLen like(SQLSMALLINT) value;
+          TableName pointer value options(*string);
+          TableLen like(SQLSMALLINT) value;
+          Scope like(SQLSMALLINT) value;
+          Nullable like(SQLSMALLINT) value;
+        end-pr SQLSpecialColumns;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLStatistics(): Get Index and Statistics Information
+        //                   For a Base Table
+        //        hstmt = (input) Statement handle
+        //      Catalog = (input) Must be *omit
+        //   CatalogLen = (input) Must be 0
+        //   SchemaName = (input) Schema qualifier of table
+        //    SchemaLen = (input) Length of SchemaName parm, use SQL_NTS
+        //    TableName = (input) Name of table to get stats/index for
+        //     TableLen = (input) Length of TableName parm, use SQL_NTS
+        //       Unique = (input) Type of index info to return
+        //                       SQL_INDEX_UNIQUE = only unique indexes
+        //                       SQL_INDEX_ALL = every index
+        //     Accuracy = (input) Not used.  Pass 0
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLStatistics  Extproc('SQLStatistics') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          Catalog char(32767) const options(*varsize:*omit);
+          CataLogLen like(SQLSMALLINT) value;
+          SchemaName pointer value options(*string);
+          SchemaLen like(SQLSMALLINT) value;
+          TableName pointer value options(*string);
+          TableLen like(SQLSMALLINT) value;
+          Unique like(SQLSMALLINT) value;
+          Accuracy like(SQLSMALLINT) value;
+        end-pr SQLStatistics;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLTablePriveledges(): Get tables and associated priveldges
+        //        hstmt = (input) Statement handle
+        //      Catalog = (input) Must be *omit
+        //   CatalogLen = (input) Must be 0
+        //   SchemaName = (input) Schema qualifier, may contain patterns
+        //    SchemaLen = (input) Length of SchemaName parm, use SQL_NTS
+        //    TableName = (input) Name of table, may contain patterns
+        //     TableLen = (input) Length of TableName parm, use SQL_NTS
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //          SQL_STILL_EXECUTING
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLTablePriveledges  Extproc('SQLTablePriveledges') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          Catalog char(32767) const options(*varsize:*omit);
+          CataLogLen like(SQLSMALLINT) value;
+          SchemaName pointer value options(*string);
+          SchemaLen like(SQLSMALLINT) value;
+          TableName pointer value options(*string);
+          TableLen like(SQLSMALLINT) value;
+        end-pr SQLTablePriveledges;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLTables(): Get Table Information
+        //        hstmt = (input) Statement handle
+        //      Catalog = (input) Must be *omit
+        //   CatalogLen = (input) Must be 0
+        //   SchemaName = (input) Schema qualifier, may contain patterns
+        //    SchemaLen = (input) Length of SchemaName parm, use SQL_NTS
+        //    TableName = (input) Name of table, may contain patterns
+        //     TableLen = (input) Length of TableName parm, use SQL_NTS
+        //    TableType = (input) Types of tables to return.  This is
+        //                        a comma-separated list of the following
+        //                         ALL,BASE TABLE,TABLE,VIEW,SYSTEM TABLE
+        //                        or you can pass *NULL to mean "ALL"
+        //  TableTypLen = (input) Length of TableType parm, use SQL_NTS
+        //                        or 0 if you pass *NULL
+        //  Returns SQL_SUCCESS,
+        //          SQL_SUCCESS_WITH_INFO
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        //  - results are returned in a result set -
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLTables  Extproc('SQLTables') like(SQLRETURN);
+          hstmt like(SQLHSTMT) value;
+          Catalog char(32767) const options(*varsize:*omit);
+          CataLogLen like(SQLSMALLINT) value;
+          SchemaName pointer value options(*string);
+          SchemaLen like(SQLSMALLINT) value;
+          TableName pointer value options(*string);
+          TableLen like(SQLSMALLINT) value;
+          TableType pointer value options(*string);
+          TableTypLen like(SQLSMALLINT) value;
+        end-pr SQLTables;
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  SQLTransact():  Commit or roll-back the current transaction
+        //     henv = (input) environment handle.  Ignored unless
+        //                    hdbc is set to SQL_NULL_HDBC
+        //     hdbc = (input) connection handle.
+        //    fType = (input) desired action for transaction
+        //                    SQL_COMMIT
+        //                    SQL_ROLLBACK
+        //                    SQL_COMMIT_HOLD
+        //                    SQL_ROLLBACK_HOLD
+        //  Returns SQL_SUCCESS,
+        //          SQL_ERROR
+        //          SQL_INVALID_HANDLE
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        dcl-pr SQLTransact  Extproc('SQLTransact') like(SQLRETURN);
+          henv like(SQLHENV) value;
+          hdbc like(SQLHDBC) value;
+          fType like(SQLSMALLINT) value;
+        end-pr SQLTransact;

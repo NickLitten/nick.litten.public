@@ -1,0 +1,10 @@
+     A          R ALWNOT
+     A            NOTDATE        8S 0       COLHDG('Date')
+     A            NOTTIME        6S 0       COLHDG('Time')
+     A            NOTUSER       10A         COLHDG('User ID')
+     A            NOTCMD        10A         COLHDG('Procedure\Command')
+     A            NOTSTATUS      3A         COLHDG('Status(YES\NO )')
+     A          K NOTDATE
+     A          K NOTTIME
+     A          K NOTUSER
+     A          K NOTCMD
