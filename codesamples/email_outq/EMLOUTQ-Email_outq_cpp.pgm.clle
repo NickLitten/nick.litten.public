@@ -1,0 +1,330 @@
+/******************************************************************************/
+/* Program: EMLOUTQ - Email Output Queue Spooled Files                       */
+/* Description: Generates a list of all spool files in an output queue and   */
+/*              emails them as PDF or TXT attachments                         */
+/*                                                                            */
+/* Note: WRKOUTQ does not have an OUTPUT(*OUTFILE) option, so this program   */
+/*       uses APIs to process all spooled files from a specific OUTQ         */
+/*                                                                            */
+/* Parameters:                                                                */
+/*   &OUTQPARM  - Output queue name and library (20 chars)                   */
+/*   &IFS_FLR   - IFS folder for temporary PDF storage                       */
+/*   &EMAIL     - Email recipient address                                    */
+/*   &SUBJECT   - Email subject line                                         */
+/*   &TYPE      - Attachment format (*PDF or *TXT)                           */
+/*   &IGNOREHLD - Ignore held spooled files (*YES/*NO)                       */
+/*   &DELETE    - Delete spooled files after emailing (*YES/*NO)             */
+/*                                                                            */
+/* Author: Nick Litten                                                        */
+/* Created: October 4th 2017                                                  */
+/* Modified: May 7th 2021 - Fix 20 char fields to ensure blanks not truncated*/
+/******************************************************************************/
+
+             PGM        PARM(&OUTQPARM &IFS_FLR &EMAIL &SUBJECT &TYPE +
+                          &IGNOREHLD &DELETE)
+
+             COPYRIGHT  TEXT('EMLOUTQ Email all *SPLFS from Outq - Ver.001')
+
+/* Parameter declarations */
+             DCL        VAR(&OUTQPARM) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&OUTQ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&OUTQLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TYPE) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&DELETE) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&IGNOREHLD) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&COUNT) TYPE(*DEC) LEN(7 0)
+             DCL        VAR(&OCTET) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&BIN) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USERDATA) TYPE(*CHAR) LEN(10) +
+                          VALUE('*EMAILED')
+
+/* IFS and email variables */
+             DCL        VAR(&IFS_FLR) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&IFS_SPLF) TYPE(*CHAR) LEN(200)
+             DCL        VAR(&EMAIL) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&SUBJECT) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&EMAILBODY) TYPE(*CHAR) LEN(200) +
+                          VALUE('<h1>this is the body of the email in +
+                          HTML format</h1>')
+
+/* System and spooled file variables */
+             DCL        VAR(&SYSTEMNAME) TYPE(*CHAR) LEN(8)
+             DCL        VAR(&FILE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JOBNAME) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JOBNUMBER) TYPE(*CHAR) LEN(6)
+             DCL        VAR(&STATUS) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SPLNBR) TYPE(*DEC) LEN(4)
+             DCL        VAR(&SPLNBRALF) TYPE(*CHAR) LEN(4)
+
+/* Error handling variables */
+             DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+             DCL        VAR(&MSGDTALN) TYPE(*DEC) LEN(9 0)
+             DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(80)
+             DCL        VAR(&NO_ERROR) TYPE(*CHAR) LEN(4) +
+                          VALUE(X'00000000')
+
+/* User space default names */
+             DCL        VAR(&DFTUSNAME) TYPE(*CHAR) LEN(10) +
+                          VALUE('UPD_UDTA')
+             DCL        VAR(&DFTUSLIB) TYPE(*CHAR) LEN(10) +
+                          VALUE('QTEMP')
+
+/* QUSCRTUS - Create User Space API parameters */
+             DCL        VAR(&QCUS_NAME) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&QCUS_EXATR) TYPE(*CHAR) LEN(10) +
+                          VALUE('USRSPC ')
+             DCL        VAR(&QCUS_SIZE) TYPE(*CHAR) LEN(4) +
+                          VALUE(X'00010000')
+             DCL        VAR(&QCUS_INIT) TYPE(*CHAR) LEN(1) +
+                          VALUE(X'00')
+             DCL        VAR(&QCUS_PUBA) TYPE(*CHAR) LEN(10) +
+                          VALUE('*ALL ')
+             DCL        VAR(&QCUS_TEXT) TYPE(*CHAR) LEN(50)
+             DCL        VAR(&QCUS_REPL) TYPE(*CHAR) LEN(10) +
+                          VALUE('*YES ')
+             DCL        VAR(&QCUS_DOMN) TYPE(*CHAR) LEN(10) +
+                          VALUE('*DEFAULT ')
+
+/* QUSLSPL - List Spooled Files API parameters */
+             DCL        VAR(&QLSF_NAME) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&QLSF_FOMT) TYPE(*CHAR) LEN(8) +
+                          VALUE('SPLF0100')
+             DCL        VAR(&QLSF_USER) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&QLSF_OUTQ) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&QLSF_FORM) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&QLSF_USRD) TYPE(*CHAR) LEN(10)
+
+/* QUSRTVUS - Retrieve User Space API parameters */
+             DCL        VAR(&QRUS_NAME) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&QRUS_STRT) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&QRUS_LENG) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&QRUS_HEAD) TYPE(*CHAR) LEN(16)
+             DCL        VAR(&QRUS_LINE) TYPE(*CHAR) LEN(82)
+             DCL        VAR(&INT_OFFSET) TYPE(*DEC) LEN(9 0)
+             DCL        VAR(&INT_NUMBER) TYPE(*DEC) LEN(9 0)
+             DCL        VAR(&INT_SIZE) TYPE(*DEC) LEN(9 0)
+             DCL        VAR(&INT_POSIT) TYPE(*DEC) LEN(9 0)
+
+/* QUSRSPLA - Get Spooled File Attributes API parameters */
+             DCL        VAR(&QGSA_RCV) TYPE(*CHAR) LEN(3772)
+             DCL        VAR(&QGSA_RCVLN) TYPE(*CHAR) LEN(4) +
+                          VALUE(X'00000EBC')
+             DCL        VAR(&QGSA_FOMT) TYPE(*CHAR) LEN(8) +
+                          VALUE('SPLA0200')
+             DCL        VAR(&QGSA_JOB) TYPE(*CHAR) LEN(26) +
+                          VALUE('*INT ')
+             DCL        VAR(&QGSA_IJOB) TYPE(*CHAR) LEN(16)
+             DCL        VAR(&QGSA_ISPL) TYPE(*CHAR) LEN(16)
+             DCL        VAR(&QGSA_SPLF) TYPE(*CHAR) LEN(10) +
+                          VALUE('*INT ')
+             DCL        VAR(&QGSA_SPLNB) TYPE(*CHAR) LEN(4) +
+                          VALUE(X'00000000')
+
+/* QUSDLTUS - Delete User Space API parameters */
+             DCL        VAR(&QDUS_NAME) TYPE(*CHAR) LEN(20)
+
+/* Error code structure for API calls */
+             DCL        VAR(&QERRCD) TYPE(*CHAR) LEN(96)
+
+
+/* ========================================================================= */
+/* Main Processing Logic                                                     */
+/* ========================================================================= */
+
+/* Construct 20-character API values for object and library names */
+             CHGVAR     VAR(&QDUS_NAME) VALUE(&DFTUSNAME *CAT +
+                          &DFTUSLIB)
+             CHGVAR     VAR(&QRUS_NAME) VALUE(&DFTUSNAME *CAT +
+                          &DFTUSLIB)
+             CHGVAR     VAR(&QLSF_NAME) VALUE(&DFTUSNAME *CAT +
+                          &DFTUSLIB)
+             CHGVAR     VAR(&QCUS_NAME) VALUE(&DFTUSNAME *CAT +
+                          &DFTUSLIB)
+
+/* Remove asterisk from attachment type parameter */
+             CHGVAR     VAR(&TYPE) VALUE(%SUBSTRING(&TYPE 2 3))
+
+/* Parse output queue name and library from parameter */
+             CHGVAR     VAR(&OUTQ) VALUE(&OUTQPARM)
+             CHGVAR     VAR(&OUTQLIB) VALUE(%SUBSTRING(&OUTQPARM 11 10))
+
+/* Build email subject with system name and output queue */
+             RTVNETA    SYSNAME(&SYSTEMNAME)
+             CHGVAR     VAR(&SUBJECT) VALUE(&SUBJECT *BCAT '|System:' +
+                          *TCAT &SYSTEMNAME *TCAT ' Outq:' *TCAT &OUTQ)
+
+/* Create user space for spooled file list */
+             CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSCRTUS) PARM(&QCUS_NAME &QCUS_EXATR +
+                          &QCUS_SIZE &QCUS_INIT &QCUS_PUBA &QCUS_TEXT +
+                          &QCUS_REPL &QERRCD &QCUS_DOMN)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+/* List all spooled files from the specified output queue */
+             CHGVAR     VAR(&QLSF_USER) VALUE('*ALL')
+             CHGVAR     VAR(&QLSF_OUTQ) VALUE(&OUTQ *CAT &OUTQLIB)
+             CHGVAR     VAR(&QLSF_FORM) VALUE('*ALL')
+             CHGVAR     VAR(&QLSF_USRD) VALUE('*ALL')
+             CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSLSPL) PARM(&QLSF_NAME &QLSF_FOMT +
+                          &QLSF_USER &QLSF_OUTQ &QLSF_FORM &QLSF_USRD +
+                          &QERRCD)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+/* Read header data from user space */
+             CHGVAR     VAR(%BIN(&QRUS_STRT)) VALUE(125)
+             CHGVAR     VAR(%BIN(&QRUS_LENG)) VALUE(16)
+             CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSRTVUS) PARM(&QRUS_NAME &QRUS_STRT +
+                          &QRUS_LENG &QRUS_HEAD &QERRCD)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+/* Extract list information from header */
+             CHGVAR     VAR(&INT_OFFSET) VALUE(%BIN(&QRUS_HEAD 1 4))
+             CHGVAR     VAR(&INT_NUMBER) VALUE(%BIN(&QRUS_HEAD 9 4))
+             CHGVAR     VAR(&INT_SIZE) VALUE(%BIN(&QRUS_HEAD 13 4))
+
+
+/* ========================================================================= */
+/* Process Each Spooled File                                                 */
+/* ========================================================================= */
+
+             CHGVAR     VAR(&INT_POSIT) VALUE(0)
+
+ LOOP_SPACE: CHGVAR     VAR(&INT_POSIT) VALUE(&INT_POSIT + 1)
+             IF         COND(&INT_POSIT *GT &INT_NUMBER) THEN(GOTO +
+                          CMDLBL(END_SPACE))
+
+/* Read next spooled file entry from user space */
+             CHGVAR     VAR(%BIN(&QRUS_STRT)) VALUE(&INT_OFFSET + +
+                          ((&INT_POSIT - 1) * &INT_SIZE) + 1)
+             CHGVAR     VAR(%BIN(&QRUS_LENG)) VALUE(82)
+             CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSRTVUS) PARM(&QRUS_NAME &QRUS_STRT +
+                          &QRUS_LENG &QRUS_LINE &QERRCD)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+/* Get detailed spooled file attributes */
+             CHGVAR     VAR(&QGSA_IJOB) VALUE(%SST(&QRUS_LINE 51 16))
+             CHGVAR     VAR(&QGSA_ISPL) VALUE(%SST(&QRUS_LINE 67 16))
+             CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSRSPLA) PARM(&QGSA_RCV &QGSA_RCVLN +
+                          &QGSA_FOMT &QGSA_JOB &QGSA_IJOB &QGSA_ISPL +
+                          &QGSA_SPLF &QGSA_SPLNB &QERRCD)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+/* Extract spooled file information */
+             CHGVAR     VAR(&JOBNAME) VALUE(%SST(&QGSA_RCV 49 10))
+             CHGVAR     VAR(&FILE) VALUE(%SST(&QGSA_RCV 75 10))
+             CHGVAR     VAR(&USER) VALUE(%SST(&QGSA_RCV 59 10))
+             CHGVAR     VAR(&JOBNUMBER) VALUE(%SST(&QGSA_RCV 69 10))
+             CHGVAR     VAR(&SPLNBR) VALUE(%BIN(&QGSA_RCV 85 4))
+             CHGVAR     VAR(&STATUS) VALUE(%SST(&QGSA_RCV 110 4))
+
+/* Skip held spooled files if requested */
+             IF         COND(&IGNOREHLD *EQ *YES *AND &STATUS *EQ +
+                          'HELD') THEN(GOTO CMDLBL(LOOP_SPACE))
+
+/* Construct unique filename for spooled file */
+             CHGVAR     VAR(&SPLNBRALF) VALUE(&SPLNBR)
+             CHGVAR     VAR(&IFS_SPLF) VALUE(&IFS_FLR *TCAT +
+                          '/EMLOUTQ from' *BCAT &SYSTEMNAME *TCAT +
+                          ' outq' *BCAT &OUTQ *TCAT ' file' *BCAT +
+                          &FILE *TCAT ' number' *BCAT &SPLNBRALF +
+                          *TCAT '.' *TCAT &TYPE)
+
+/* Build email body with attachment information */
+             CHGVAR     VAR(&EMAILBODY) VALUE('<H1>IBM i SPOOL +
+                          EMAIL</H1><P>Spool file' *BCAT &IFS_SPLF +
+                          *TCAT ' is attached in PDF format.</p>')
+
+/* Copy spooled file to IFS as TXT or PDF */
+             IF         COND(&TYPE *EQ 'TXT') THEN(DO)
+                CPYSPLF    FILE(&FILE) TOFILE(*TOSTMF) +
+                             JOB(&JOBNUMBER/&USER/&JOBNAME) +
+                             SPLNBR(&SPLNBR) TOSTMF(&IFS_SPLF) +
+                             WSCST(*NONE) STMFOPT(*REPLACE)
+                CHGVAR     VAR(&OCTET) VALUE('*PLAIN')
+                CHGVAR     VAR(&BIN) VALUE('*TXT')
+             ENDDO
+             ELSE       CMD(DO)
+                CPYSPLF    FILE(&FILE) TOFILE(*TOSTMF) +
+                             JOB(&JOBNUMBER/&USER/&JOBNAME) +
+                             SPLNBR(&SPLNBR) TOSTMF(&IFS_SPLF) +
+                             WSCST(*PDF) STMFOPT(*REPLACE)
+                CHGVAR     VAR(&OCTET) VALUE('*OCTET')
+                CHGVAR     VAR(&BIN) VALUE('*BIN')
+             ENDDO
+
+/* Send email with attachment */
+             SNDSMTPEMM RCP((&EMAIL *PRI)) SUBJECT(&SUBJECT) +
+                          NOTE(&EMAILBODY) ATTACH((&IFS_SPLF &OCTET +
+                          &BIN)) CONTENT(*HTML)
+             MONMSG     MSGID(CPF0000) EXEC(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('* Email +
+                             NOT sent to' *BCAT &EMAIL *TCAT ' with +
+                             *PDF of' *BCAT &IFS_SPLF) TOPGMQ(*PRV) +
+                             MSGTYPE(*COMP)
+                GOTO       CMDLBL(LOOP_SPACE)
+             ENDDO
+
+/* Increment counter and send success message */
+             CHGVAR     VAR(&COUNT) VALUE(&COUNT + 1)
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('Email +
+                          sent to' *BCAT &EMAIL *TCAT ' with *' *TCAT +
+                          &TYPE *BCAT 'of' *BCAT &IFS_SPLF) +
+                          TOPGMQ(*PRV) MSGTYPE(*COMP)
+
+/* Delete or mark spooled file as emailed */
+             IF         COND(&DELETE *EQ *YES) THEN(DO)
+                DLTSPLF    FILE(&FILE) JOB(&JOBNUMBER/&USER/&JOBNAME) +
+                             SPLNBR(&SPLNBR)
+                RMVLNK     OBJLNK(&IFS_SPLF)
+             ENDDO
+             ELSE       CMD(DO)
+                CHGSPLFA   FILE(&FILE) JOB(&JOBNUMBER/&USER/&JOBNAME) +
+                             SPLNBR(&SPLNBR) SAVE(*NO) USRDTA(&USERDATA)
+             ENDDO
+
+/* Process next spooled file */
+             GOTO       CMDLBL(LOOP_SPACE)
+
+
+/* ========================================================================= */
+/* Cleanup and Exit                                                          */
+/* ========================================================================= */
+
+ END_SPACE:  CHGVAR     VAR(%SST(&QERRCD 1 8)) +
+                          VALUE(X'0000006000000000')
+             CALL       PGM(QUSDLTUS) PARM(&QDUS_NAME &QERRCD)
+             IF         COND(%SST(&QERRCD 5 4) *NE &NO_ERROR) +
+                          THEN(GOTO CMDLBL(ERROR_API))
+
+ ENDPROGRAM: RETURN
+
+
+/* ========================================================================= */
+/* Error Handling                                                            */
+/* ========================================================================= */
+
+ ERROR_API:  CHGVAR     VAR(&MSGID) VALUE(%SST(&QERRCD 9 7))
+             CHGVAR     VAR(&MSGDTALN) VALUE(%BIN(&QERRCD 5 4))
+             CHGVAR     VAR(&MSGDTALN) VALUE(&MSGDTALN - 16)
+             CHGVAR     VAR(&MSGDTA) VALUE(%SST(&QERRCD 17 &MSGDTALN))
+             SNDPGMMSG  MSGID(&MSGID) MSGF(QCPFMSG) MSGDTA(&MSGDTA) +
+                          MSGTYPE(*DIAG)
+
+ ERROR:      SNDPGMMSG  MSGID(CPF9899) MSGF(QCPFMSG) MSGTYPE(*ESCAPE)
+
+ ENDPGM:     ENDPGM
