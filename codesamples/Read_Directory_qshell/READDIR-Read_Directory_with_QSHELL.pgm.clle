@@ -1,0 +1,210 @@
+
+/******************************************************************************/
+/* Program Name: READDIR - Read Directory with QSHELL                         */
+/* Description:  List and process files in an IFS directory using QSHELL      */
+/*                                                                            */
+/* Function:     - Validates IFS directory existence and access               */
+/*               - Lists files matching filter pattern using QSHELL           */
+/*               - Processes each file in the directory                       */
+/*               - Restores original directory on completion                  */
+/*                                                                            */
+/* Parameters:   &DIR    - IFS directory path (CHAR 255)                      */
+/*               &FILTER - File filter pattern (CHAR 30) e.g., *.CSV          */
+/*                                                                            */
+/* Compile:      1. CRTPF FILE(QTEMP/READ_DIRF) RCDLEN(1000)                  */
+/*               2. CRTBNDCL PGM(library/READDIR)                             */
+/*                  SRCFILE(library/QCLLESRC) SRCMBR(READDIR)                 */
+/*                                                                            */
+/* Author:       Nick Litten                                                  */
+/* Created:      [Date]                                                       */
+/* Modified:     2026-02-10 - Added comprehensive documentation               */
+/*                                                                            */
+/* Reference:    https://www.nicklitten.com/course/                           */
+/*               list-all-files-in-an-ifs-folder-with-qshell                  */
+/******************************************************************************/
+
+             PGM        PARM(&DIR &FILTER)
+
+             COPYRIGHT  TEXT('READDIR Ver.001')
+
+/* ------------------------------------------------------------------ */
+/* File Declarations                                                  */
+/* ------------------------------------------------------------------ */
+             DCLF       FILE(READ_DIRF) OPNID(FILE)
+
+/* ------------------------------------------------------------------ */
+/* Parameter Variables                                                */
+/* ------------------------------------------------------------------ */
+             DCL        VAR(&DIR) TYPE(CHAR) LEN(255)
+             DCL        VAR(&FILTER) TYPE(CHAR) LEN(30)
+
+/* ------------------------------------------------------------------ */
+/* Working Variables                                                  */
+/* ------------------------------------------------------------------ */
+             DCL        VAR(&PREVPATH) TYPE(CHAR) LEN(1024)
+             DCL        VAR(&PPATHLEN) TYPE(DEC) LEN(7 0)
+             DCL        VAR(&QSHSTRING) TYPE(*CHAR) LEN(1024)
+             DCL        VAR(&CNLSTS) TYPE(CHAR) LEN(1) VALUE('0')
+             DCL        VAR(&CRASHED) TYPE(LGL) VALUE('0')
+
+/* ------------------------------------------------------------------ */
+/* Message Handling Variables                                         */
+/* ------------------------------------------------------------------ */
+             DCL        VAR(&MSGID) TYPE(CHAR) LEN(7)
+             DCL        VAR(&MSGDTA) TYPE(CHAR) LEN(256)
+             DCL        VAR(&MSGFIL) TYPE(CHAR) LEN(10)
+             DCL        VAR(&MSGFLIB) TYPE(CHAR) LEN(10)
+             DCL        VAR(&MSGKEY) TYPE(CHAR) LEN(4)
+             DCL        VAR(&RTNTYPE) TYPE(CHAR) LEN(2)
+             DCL        VAR(&SENDER) TYPE(*CHAR) LEN(80)
+
+/* ------------------------------------------------------------------ */
+/* Global Error Monitor - Catch any unhandled errors                  */
+/* ------------------------------------------------------------------ */
+             MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH))
+
+/* ================================================================== */
+/* MAIN PROCESSING LOGIC                                              */
+/* ================================================================== */
+
+/* ------------------------------------------------------------------ */
+/* Step 1: Validate the IFS directory exists                         */
+/* ------------------------------------------------------------------ */
+             CHKLNK     OBJ(&DIR)
+             MONMSG     MSGID(CPF0000) EXEC(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                           MSGDTA('Directory' *BCAT &DIR *TCAT +
+                           'not found') TOPGMQ(PRV) +
+                           MSGTYPE(*ESCAPE)
+             ENDDO
+
+/* ------------------------------------------------------------------ */
+/* Step 2: Save current directory to restore later                   */
+/* ------------------------------------------------------------------ */
+             RTVCURDIR  RTNDIR(&PREVPATH) DIRNAMLEN(&PPATHLEN)
+
+/* ------------------------------------------------------------------ */
+/* Step 3: Change to target directory and verify access              */
+/* ------------------------------------------------------------------ */
+             CD         DIR(&DIR)
+             MONMSG     MSGID(CPFA09C) EXEC(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                           MSGDTA('Not authorised to directory' +
+                           *BCAT &DIR) TOPGMQ(PRV) +
+                           MSGTYPE(*ESCAPE)
+             ENDDO
+
+/* ------------------------------------------------------------------ */
+/* Step 4: Create work file to hold directory listing                */
+/* ------------------------------------------------------------------ */
+             DLTF       FILE(QTEMP/READ_DIRF)
+             MONMSG     MSGID(CPF0000)
+
+             CRTPF      FILE(QTEMP/READ_DIRF) RCDLEN(1000)
+
+/* ------------------------------------------------------------------ */
+/* Step 5: Execute QSHELL command to list files                      */
+/* ------------------------------------------------------------------ */
+             OVRDBF     FILE(STDOUT) TOFILE(QTEMP/READ_DIRF) +
+                        OVRSCOPE(*JOB)
+
+             CHGVAR     VAR(&QSHSTRING) VALUE('ls' *BCAT &DIR +
+                        *TCAT '/' *TCAT &FILTER *TCAT ' -a | sort')
+
+             QSH        CMD(&QSHSTRING)
+
+             DLTOVR     FILE(STDOUT) LVL(*JOB)
+
+/* ------------------------------------------------------------------ */
+/* Step 6: Restore previous directory                                */
+/* ------------------------------------------------------------------ */
+             IF         COND(&PPATHLEN *GT 0) THEN(CD +
+                        DIR(&PREVPATH))
+
+/* ------------------------------------------------------------------ */
+/* Step 7: Override to work file and position to start               */
+/* ------------------------------------------------------------------ */
+             OVRDBF     FILE(READ_DIRF) TOFILE(QTEMP/READ_DIRF) +
+                        POSITION(*START) OVRSCOPE(*CALLLVL)
+
+/* ------------------------------------------------------------------ */
+/* Step 8: Process each file in the directory listing                */
+/* ------------------------------------------------------------------ */
+             DOWHILE    COND(&CNLSTS = '0')
+
+                RCVF       OPNID(FILE)
+                MONMSG     MSGID(CPF0864) EXEC(LEAVE)
+
+                /* Send completion message with filename */
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                           MSGDTA('Processing file:' *BCAT +
+                           &FILE_READ_DIRF) TOPGMQ(*PRV) +
+                           MSGTYPE(*COMP)
+
+                /* ============================================== */
+                /* ADD YOUR FILE PROCESSING LOGIC HERE           */
+                /* Field &FILE_READ_DIRF contains the filename   */
+                /* ============================================== */
+
+                /* Check for job ending status */
+                RTVJOBA    ENDSTS(&CNLSTS)
+
+             ENDDO
+
+/* ------------------------------------------------------------------ */
+/* Step 9: Clean up overrides                                        */
+/* ------------------------------------------------------------------ */
+             DLTOVR     FILE(READ_DIRF) LVL(*)
+
+/* ------------------------------------------------------------------ */
+/* Step 10: Send completion message                                  */
+/* ------------------------------------------------------------------ */
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                        MSGDTA('Directory' *BCAT &DIR *TCAT +
+                        'processed. Files matching' *BCAT +
+                        &FILTER *TCAT 'completed') TOPGMQ(*PRV) +
+                        MSGTYPE(*COMP)
+
+             RETURN
+
+/* ================================================================== */
+/* ERROR HANDLING ROUTINES                                            */
+/* ================================================================== */
+
+/* ------------------------------------------------------------------ */
+/* CRASH: Handle unexpected errors                                    */
+/* ------------------------------------------------------------------ */
+ CRASH:
+             IF         COND(&CRASHED) THEN(RETURN)
+             CHGVAR     VAR(&CRASHED) VALUE('1')
+
+             /* Receive last error message details */
+             RCVMSG     MSGTYPE(*LAST) MSGDTA(&MSGDTA) +
+                        MSGID(&MSGID) RTNTYPE(&RTNTYPE) +
+                        MSGF(&MSGFIL) SNDMSGFLIB(&MSGFLIB)
+
+             /* Send diagnostic message if escape or notify */
+             IF         COND(&RTNTYPE *EQ '15' *OR &RTNTYPE +
+                        *EQ '17') THEN(DO)
+                SNDPGMMSG  MSGID(&MSGID) MSGF(&MSGFIL) +
+                           MSGDTA(&MSGDTA) MSGTYPE(*DIAG)
+             ENDDO
+
+/* ------------------------------------------------------------------ */
+/* ESCAPE: Final cleanup and error notification                      */
+/* ------------------------------------------------------------------ */
+ ESCAPE:
+             /* Restore original directory if saved */
+             IF         COND(&PPATHLEN *GT 0) THEN(DO)
+                CD         DIR(&PREVPATH)
+                MONMSG     MSGID(CPF0000)
+             ENDDO
+
+             /* Send escape message to caller */
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                        MSGDTA('Program READDIR ended abnormally') +
+                        MSGTYPE(*ESCAPE)
+
+             RETURN
+
+ ENDPGM:     ENDPGM
