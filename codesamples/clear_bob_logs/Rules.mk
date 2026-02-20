@@ -1,7 +1,8 @@
 # ==============================================================================
-# Rules.mk - Build rules for CL Code Snippets
+# Rules.mk - Build rules for CLRBOBLOG (Clear Bob Logs)
 # ==============================================================================
-# This file defines the build rules for various CL code examples and snippets.
+# This file defines the build rules for the CLRBOBLOG program which lists
+# and deletes specific log files from /home/nicklitten directory.
 #
 # Target Release: V7R4M0
 # Activation Group: NICKLITTEN
@@ -19,14 +20,5 @@
 # Object Dependencies
 # ==============================================================================
 
-# CLBNDPGM Program - Simple bound CL program example
-CLBNDPGM.PGM: CLBNDPGM-Simple_Bound_CL_Program.pgm.clle
-
-# CLMODULE Module - Simple CL module example
-CLMODULE.MODULE: CLMODULE-Simple_CL_Module.pgm.clle
-
-# IASP Program - Question and answer CL example
-IASP.PGM: IASP-Question_and_Answer_CL_Example.pgm.clle
-
-# IASPLOOP Program - DOU question and answer CL example
-IASPLOOP.PGM: IASPLOOP-DOU_Question_and_Answer_CL_Example.pgm.clle
+# CLRBOBLOG Program - CL program to list and delete log files
+CLRBOBLOG.PGM: CLRBOBLOG.pgm.clle
