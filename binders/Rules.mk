@@ -1,1 +1,2 @@
-SIMPLEBND.BNDDIR: SIMPLEBND-Nicks_Sample_Binding_Directory.bnddir SIMPLEBND.BNDDIR
+SIMPLEBND.BNDDIR: SIMPLEBND-Nicks_Sample_Binding_Directory.bnddir
+PWDMON.BNDDIR: PWDMON-Password_Monitor_Binding_Directory.bnddir

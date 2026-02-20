@@ -1,0 +1,25 @@
+-- ============================================================================
+-- Table: NICKLITTEN.LSTLIB - Library List Working File
+-- Purpose: Temporary table to hold library names and statistics for processing
+-- Usage: Used by LISTLIBSIMP program to iterate through system libraries
+--        and store library statistics from QLIRLIBD API
+-- Author: Nick Litten
+-- Date: 2026-02-19
+-- ============================================================================
+CREATE OR REPLACE TABLE
+    NICKLITTEN.LSTLIB (
+        LIBNAME CHAR(10) NOT NULL,
+        NUMOBJ INTEGER DEFAULT 0,
+        LIBSIZE BIGINT DEFAULT 0,
+        CONSTRAINT LSTLIB_PK PRIMARY KEY (LIBNAME)
+    ) ON REPLACE
+DELETE
+    ROWS;
+
+LABEL ON TABLE NICKLITTEN.LSTLIB IS 'Library List Working File with Statistics';
+
+LABEL ON COLUMN NICKLITTEN.LSTLIB.LIBNAME IS 'Library Name';
+
+LABEL ON COLUMN NICKLITTEN.LSTLIB.NUMOBJ IS 'Number of Objects in Library';
+
+LABEL ON COLUMN NICKLITTEN.LSTLIB.LIBSIZE IS 'Library Size in Bytes';

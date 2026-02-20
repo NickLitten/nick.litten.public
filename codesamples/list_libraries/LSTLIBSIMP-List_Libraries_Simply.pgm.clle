@@ -1,0 +1,73 @@
+ /* ========================================================== */
+ /* Program: LISTLIBSIMP - Simple Library Inventory            */
+ /* Purpose: List all libraries, call QLIRLIBD for each, and   */
+ /*          export results to CSV file in IFS                 */
+ /* Author:  Nick Litten                                       */
+ /* Date:    2026-02-19                                        */
+ /*                                                            */
+ /* Description:                                               */
+ /*   This program demonstrates a streamlined approach to:     */
+ /*   1. Query all libraries using QSYS2.SYSSCHEMAS            */
+ /*   2. Call QLIRLIBD API for each library to get statistics  */
+ /*   3. Store results in a temporary table                    */
+ /*   4. Export to CSV file using CPYTOIMPF                    */
+ /*                                                            */
+ /* Output: /home/libinventory.csv                             */
+ /*   Columns: Library Name, Number of Objects, Library Size   */
+ /* ========================================================== */
+ PGM
+ /* API receiver buffer for QLIRLIBD (format LIBD0100) */
+ DCL        VAR(&RECEIVER) TYPE(*CHAR) LEN(500)
+ DCL        VAR(&RECLEN) TYPE(*INT) LEN(4) VALUE(500)
+ DCL        VAR(&FMT) TYPE(*CHAR) LEN(8) VALUE('LIBD0100')
+ DCL        VAR(&ERR) TYPE(*CHAR) LEN(116)
+ /* Working variables */
+ DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+ DCL        VAR(&NUMOBJ) TYPE(*INT) LEN(4)
+ DCL        VAR(&LIBSIZ) TYPE(*INT) LEN(8)
+ /* Character conversion variables for SQL */
+ DCL        VAR(&CHARNUM) TYPE(*CHAR) LEN(11)
+ DCL        VAR(&CHARLIB) TYPE(*CHAR) LEN(20)
+ DCL        VAR(&STMT) TYPE(*CHAR) LEN(1000)
+ /* Declare file for reading library list */
+ DCLF       FILE(NICKLITTEN/LSTLIB)
+ /* Step 1: Create temporary table to hold library names */
+ CLRPFM     FILE(NICKLITTEN/LSTLIB)
+ /* Step 2: Populate with all libraries from system catalog */
+ RUNSQL     SQL('INSERT INTO NICKLITTEN.LSTLIB +
+              SELECT SCHEMA_NAME FROM QSYS2.SYSSCHEMAS')
+ /* Step 3: Create results table to store library statistics */
+ RUNSQL     SQL('CREATE OR REPLACE TABLE NICKLITTEN.RESULTS +
+              (LIBNAME CHAR(10), NUMOBJ INTEGER, LIBSIZE +
+              BIGINT)')
+ /* Step 4: Loop through each library and call QLIRLIBD API */
+LOOP:        RCVF
+ MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(ENDLOOP))
+ /* Get current library name from file */
+ CHGVAR     VAR(&LIB) VALUE(&LIBNAME)
+ /* Call QLIRLIBD API to retrieve library description */
+ CALL       PGM(QSYS/QLIRLIBD) PARM(&RECEIVER &RECLEN &LIB +
+              &FMT &ERR)
+ /* Extract number of objects (offset 83, length 4) */
+ CHGVAR     VAR(&NUMOBJ) VALUE(%BINARY(&RECEIVER 83 4))
+ /* Extract library size in bytes (offset 87, length 8) */
+ CHGVAR     VAR(&LIBSIZ) VALUE(%BINARY(&RECEIVER 87 8))
+ /* Convert numeric values to character for SQL */
+ CHGVAR     VAR(&CHARNUM) VALUE(&NUMOBJ)
+ CHGVAR     VAR(&CHARLIB) VALUE(&LIBSIZ)
+ /* Build dynamic SQL INSERT statement */
+ CHGVAR     VAR(&STMT) VALUE('INSERT INTO NICKLITTEN.RESULTS +
+              VALUES(''' || %TRIM(&LIB) || ''',' || +
+              %TRIM(&CHARNUM) || ',' || %TRIM(&CHARLIB) || +
+              ')')
+ /* Execute INSERT to store library statistics */
+ RUNSQL     SQL(&STMT)
+ /* Continue to next library */
+ GOTO       CMDLBL(LOOP)
+ENDLOOP:     /* End of library processing loop */
+ /* Step 5: Export results to CSV file in IFS */
+ CPYTOIMPF  FROMFILE(NICKLITTEN/RESULTS) +
+              TOSTMF('/home/libinventory.csv') +
+              MBROPT(*REPLACE) STMFCODPAG(*PCASCII) +
+              RCDDLM(*CRLF) FLDDLM(',')
+ ENDPGM
