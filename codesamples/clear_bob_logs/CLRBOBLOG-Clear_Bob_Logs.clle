@@ -1,0 +1,102 @@
+/* Program: CLRBOBLOG                                               */
+/* Purpose: List and delete specific log files from home directory  */
+/* Author:  Nick Litten and a very naughty IBM BOB                  */
+/* Date:    2026-02-20                                              */
+/* This program lists all files in specified directory and deletes  */
+/* files matching these patterns:                                   */
+/*   - core.*                                                       */
+/*   - javacore.*                                                   */
+/*   - jitdump.*                                                    */
+/*   - Snap.*                                                       */
+/* Modification History:                                            */
+/* v.001 2026-02-20 - IBM Bob - Initial creation                    */
+/* v.002 2026-02-21 - IBM Bob - Added HOMEDIR parameter support     */
+
+PGM        PARM(&HOMEDIR)
+
+  DCL        VAR(&HOMEDIR) TYPE(*CHAR) LEN(256)
+  DCL        VAR(&CMD) TYPE(*CHAR) LEN(512)
+  DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+  DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+  DCL        VAR(&MSGF) TYPE(*CHAR) LEN(10)
+  DCL        VAR(&MSGFLIB) TYPE(*CHAR) LEN(10)
+
+  /* Monitor for errors */
+  MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR))
+
+  /* Display header message */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Starting cleanup of log +
+               files in ' *CAT &HOMEDIR) TOPGMQ(*EXT) +
+               MSGTYPE(*INFO)
+
+  /* List all files in the directory */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Listing files in ' *CAT &HOMEDIR +
+               *TCAT ':') TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('ls -la ' *CAT &HOMEDIR)
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000) EXEC(DO)
+    SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+                 MSGDTA('Warning: Could not list directory +
+                 contents') TOPGMQ(*EXT) MSGTYPE(*INFO)
+  ENDDO
+
+  /* Delete core.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting core.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/core.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete javacore.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting javacore.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/javacore.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete jitdump.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting jitdump.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/jitdump.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete Snap.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting Snap.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/Snap.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Display completion message */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Cleanup completed +
+               successfully') TOPGMQ(*EXT) MSGTYPE(*COMP)
+
+  GOTO       CMDLBL(ENDPGM)
+
+ERROR:      /* Error handling */
+  RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID) +
+               MSGF(&MSGF) SNDMSGFLIB(&MSGFLIB)
+
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Error occurred - ' *CAT +
+               &MSGID *CAT ' - ' *CAT &MSGDTA) +
+               TOPGMQ(*PRV) MSGTYPE(*COMP)
+
+ENDPGM:     ENDPGM

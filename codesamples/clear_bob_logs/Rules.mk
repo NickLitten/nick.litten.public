@@ -2,7 +2,7 @@
 # Rules.mk - Build rules for CLRBOBLOG (Clear Bob Logs)
 # ==============================================================================
 # This file defines the build rules for the CLRBOBLOG program which lists
-# and deletes specific log files from /home/nicklitten directory.
+# and deletes specific log files from a specified home directory.
 #
 # Target Release: V7R4M0
 # Activation Group: NICKLITTEN
@@ -20,5 +20,8 @@
 # Object Dependencies
 # ==============================================================================
 
+# CLRBOBLOG Command - Clear Bob Logs command definition
+CLRBOBLOG.CMD: CLRBOBLOG-Clear_Bob_Logs.cmd
+
 # CLRBOBLOG Program - CL program to list and delete log files
-CLRBOBLOG.PGM: CLRBOBLOG.pgm.clle
+CLRBOBLOG.PGM: CLRBOBLOG-Clear_Bob_Logs
