@@ -1,0 +1,1470 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+CPC2198: Current library changed to NICKLITTEN.
+CPC2196: Library NICKLITTEN added to library list.
+
+>> executing command: CRTSQLRPGI srcstmf('/home/NICKLITTEN/builds/nick.litten.public/codesamples/update_iasp/UPDIASPSQL-Update_IASP_Job_Descriptions.pgm.sqlrpgle') OBJ(NICKLITTEN/UPDIASPSQL) COMMIT(*NONE ) OBJTYPE(*PGM) OPTION(*EVENTF) OUTPUT(*PRINT) TEXT('Update IASP Job Descriptions') TGTRLS(V7R4M0) DBGVIEW(*SOURCE) RPGPPOPT(*LVL2) COMPILEOPT('TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR(''includes'')')
+>> liblist: QSYS QSYS2 QHLPSYS QUSRSYS QSHELL NICKLITTEN NICKLITTEN QTEMP QGPL
+>> executing time: 2026-02-23-18.00.21.00
+
+RNS9308: Compilation stopped. Severity 30 errors found in program.
+RNS9310: Compilation failed. Program UPDIASPSQL not created in library NICKLITTEN.
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   UPDIASPSQL
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   Update IASP Job Descriptions
+  Source stream file   . . . . . . :   /home/NICKLITTEN/builds/nick.litten.public/codesam
+                                       ples/update_iasp/UPDIASPSQL-Update_IASP_Job_Descri
+                                       ptions.pgm.sqlrpgle
+    CCSID  . . . . . . . . . . . . :     1208
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   26-02-23  16:10:14
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *FULL
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *JOB
+  Language identifier  . . . . . . :   *JOB
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   V7R4M0
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NORMVCOMMENT *EXPINCLUDE   *NOSEQSRC
+  Output source file . . . . . . . :   QSQLPRE
+    Library  . . . . . . . . . . . :     QTEMP
+  Output source member . . . . . . :   UPDIASPSQL
+  MINIMUM OUTPUT LINE LENGTH . . . :   100
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **FREE                                                                                                               000001
+     2 // ================================================================                                                  000002
+     3 // Program: UPDIASPSQL                                                                                               000003
+     4 // Description: Find all job descriptions in USER libraries and                                                      000004
+     5 //              update INLASPGRP parameter from *NONE to ASP1                                                        000005
+     6 // Author: IBM Bob                                                                                                   000006
+     7 // Date: 2026-02-23                                                                                                  000007
+     8 // ================================================================                                                  000008
+     9 // This program uses SQL to query QSYS2.OBJECT_STATISTICS to find                                                    000009
+    10 // all job descriptions in non-system libraries, then uses the                                                       000010
+    11 // QWDRJOBD API to check the INLASPGRP parameter and updates it                                                      000011
+    12 // to ASP1 if it's currently set to *NONE.                                                                           000012
+    13 // ================================================================                                                  000013
+    14                                                                                                                      000014
+    15 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);                                                     000015
+    16                                                                                                                      000016
+    17 // ================================================================                                                  000017
+    18 // Prototypes                                                                                                        000018
+    19 // ================================================================                                                  000019
+    20                                                                                                                      000020
+    21 // Retrieve_Job_Description_Information API                                                                          000021
+    22 dcl-pr Retrieve_Job_Description_Information extpgm('QWDRJOBD');                                                      000022
+    23   ReceiverVar char(2000);                                                                                            000023
+    24   ReceiverLen int(10) const;                                                                                         000024
+    25   Format char(8) const;                                                                                              000025
+    26   QualJobd char(20) const;                                                                                           000026
+    27   ErrorCode char(116);                                                                                               000027
+    28 end-pr;                                                                                                              000028
+    29                                                                                                                      000029
+    30 // QCMDEXC - Execute Command API                                                                                     000030
+    31 dcl-pr QCMDEXC extpgm('QCMDEXC');                                                                                    000031
+    32   Command char(512) const options(*varsize);                                                                         000032
+    33   CommandLen packed(15:5) const;                                                                                     000033
+    34 end-pr;                                                                                                              000034
+    35                                                                                                                      000035
+    36 // QMHSNDPM - Send Program Message API                                                                               000036
+    37 dcl-pr QMHSNDPM extpgm('QMHSNDPM');                                                                                  000037
+    38   MessageId char(7) const;                                                                                           000038
+    39   QualMsgF char(20) const;                                                                                           000039
+    40   MessageData char(512) const options(*varsize);                                                                     000040
+    41   MessageDataLen int(10) const;                                                                                      000041
+    42   MessageType char(10) const;                                                                                        000042
+    43   CallStackEntry char(10) const;                                                                                     000043
+    44   CallStackCounter int(10) const;                                                                                    000044
+    45   MessageKey char(4);                                                                                                000045
+    46   ErrorCode likeds(ErrorCode);                                                                                       000046
+    47 end-pr;                                                                                                              000047
+    48                                                                                                                      000048
+    49 // ================================================================                                                  000049
+    50 // Data Structures                                                                                                   000050
+    51 // ================================================================                                                  000051
+    52                                                                                                                      000052
+    53 // Error code structure for APIs                                                                                     000053
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+    54 dcl-ds ErrorCode qualified;                                                                                          000054
+    55   BytesProvided int(10) inz(116);                                                                                    000055
+    56   BytesAvailable int(10) inz(0);                                                                                     000056
+    57   ExceptionId char(7);                                                                                               000057
+    58   Reserved char(1);                                                                                                  000058
+    59   ExceptionData char(100);                                                                                           000059
+    60 end-ds;                                                                                                              000060
+    61                                                                                                                      000061
+    62 // Receiver variable for QWDRJOBD API (JOBD0100 format)                                                              000062
+    63 dcl-ds JobdInfo qualified;                                                                                           000063
+    64   BytesReturned int(10);                                                                                             000064
+    65   BytesAvailable int(10);                                                                                            000065
+    66   JobdName char(10);                                                                                                 000066
+    67   JobdLib char(10);                                                                                                  000067
+    68   UserName char(10);                                                                                                 000068
+    69   JobdText char(50);                                                                                                 000069
+    70   JobQueue char(10);                                                                                                 000070
+    71   JobQueueLib char(10);                                                                                              000071
+    72   JobQueuePriority char(2);                                                                                          000072
+    73   OutQueue char(10);                                                                                                 000073
+    74   OutQueueLib char(10);                                                                                              000074
+    75   OutQueuePriority char(2);                                                                                          000075
+    76   PrinterDevice char(10);                                                                                            000076
+    77   InlAspGrp char(10);  // Offset 88 - This is what we need to check                                                  000077
+    78   // Additional fields exist but not needed for this program                                                         000078
+    79 end-ds;                                                                                                              000079
+    80                                                                                                                      000080
+    81 // ================================================================                                                  000081
+    82 // Standalone Variables                                                                                              000082
+    83 // ================================================================                                                  000083
+    84 dcl-s JobdName char(10);                                                                                             000084
+    85 dcl-s JobdLib char(10);                                                                                              000085
+    86 dcl-s QualJobd char(20);                                                                                             000086
+    87 dcl-s Command char(512);                                                                                             000087
+    88 dcl-s CommandLen packed(15:5);                                                                                       000088
+    89 dcl-s CheckCount int(10) inz(0);                                                                                     000089
+    90 dcl-s UpdateCount int(10) inz(0);                                                                                    000090
+    91 dcl-s ErrorCount int(10) inz(0);                                                                                     000091
+    92 dcl-s Message char(512);                                                                                             000092
+    93 dcl-s MessageKey char(4);                                                                                            000093
+    94                                                                                                                      000094
+    95 // ================================================================                                                  000095
+    96 // Main Processing                                                                                                   000096
+    97 // ================================================================                                                  000097
+    98                                                                                                                      000098
+    99 // Send start message                                                                                                000099
+   100 SendMsg('Starting IASP Job Description update process...');                                                          000100
+   101                                                                                                                      000101
+   102 // SQL cursor to find all job descriptions in USER libraries                                                         000102
+   103 exec sql declare JobdCursor cursor for                                                                               000103
+   104   select objname, objlib                                                                                             000104
+   105   from table(qsys2.object_statistics('*ALL', '*JOBD'))                                                               000105
+   106   where objlib not like 'Q%'                                                                                         000106
+   107     and objlib not like '#%'                                                                                         000107
+   108   order by objlib, objname;                                                                                          000108
+   109                                                                                                                      000109
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+   110 exec sql open JobdCursor;                                                                                            000110
+   111                                                                                                                      000111
+   112 // Process each job description                                                                                      000112
+   113 dow (1=1);                                                                                                           000113
+   114                                                                                                                      000114
+   115   // Fetch next job description                                                                                      000115
+   116   exec sql fetch next from JobdCursor                                                                                000116
+   117     into :JobdName, :JobdLib;                                                                                        000117
+   118                                                                                                                      000118
+   119   // Check for end of data                                                                                           000119
+   120   if (sqlcode = 100);                                                                                                000120
+   121     leave;                                                                                                           000121
+   122   endif;                                                                                                             000122
+   123                                                                                                                      000123
+   124   // Check for SQL errors                                                                                            000124
+   125   if (sqlcode < 0);                                                                                                  000125
+   126     ErrorCount += 1;                                                                                                 000126
+   127     Message = 'SQL error: ' + %char(sqlcode);                                                                        000127
+   128     SendMsg(Message: '*DIAG');                                                                                       000128
+   129     leave;                                                                                                           000129
+   130   endif;                                                                                                             000130
+   131                                                                                                                      000131
+   132   CheckCount += 1;                                                                                                   000132
+   133                                                                                                                      000133
+   134   // Build qualified job description name for API                                                                    000134
+   135   QualJobd = JobdName + JobdLib;                                                                                     000135
+   136                                                                                                                      000136
+   137   // Reset error code structure                                                                                      000137
+   138   ErrorCode.BytesProvided = 116;                                                                                     000138
+   139   ErrorCode.BytesAvailable = 0;                                                                                      000139
+   140                                                                                                                      000140
+   141   // Call QWDRJOBD API to retrieve job description details                                                           000141
+   142   Retrieve_Job_Description_Information (JobdInfo: %size(JobdInfo): 'JOBD0100': QualJobd: ErrorCode);                 000142
+   143                                                                                                                      000143
+   144   // Check for API errors                                                                                            000144
+   145   if (ErrorCode.BytesAvailable > 0);                                                                                 000145
+   146     ErrorCount += 1;                                                                                                 000146
+   147     Message = 'API error for ' + %trim(JobdLib) + '/' + %trim(JobdName) +                                            000147
+   148               ': ' + ErrorCode.ExceptionId;                                                                          000148
+   149     SendMsg(Message: '*DIAG');                                                                                       000149
+   150     iter;                                                                                                            000150
+   151   endif;                                                                                                             000151
+   152                                                                                                                      000152
+   153   // Check if INLASPGRP is *NONE                                                                                     000153
+   154   if (JobdInfo.InlAspGrp = '*NONE');                                                                                 000154
+   155                                                                                                                      000155
+   156     // Build CHGJOBD command                                                                                         000156
+   157     Command = 'CHGJOBD JOBD(' + %trim(JobdLib) + '/' +                                                               000157
+   158               %trim(JobdName) + ') INLASPGRP(ASP1)';                                                                 000158
+   159     CommandLen = %len(%trim(Command));                                                                               000159
+   160                                                                                                                      000160
+   161     // Execute the command                                                                                           000161
+   162     monitor;                                                                                                         000162
+   163       QCMDEXC(Command: CommandLen);                                                                                  000163
+   164       UpdateCount += 1;                                                                                              000164
+   165       Message = 'Updated ' + %trim(JobdLib) + '/' + %trim(JobdName) +                                                000165
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      5
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+   166                 ' INLASPGRP: *NONE -> ASP1';                                                                         000166
+   167       SendMsg(Message: '*INFO');                                                                                     000167
+   168     on-error;                                                                                                        000168
+   169       ErrorCount += 1;                                                                                               000169
+   170       Message = 'Error updating ' + %trim(JobdLib) + '/' + %trim(JobdName);                                          000170
+   171       SendMsg(Message: '*DIAG');                                                                                     000171
+   172     endmon;                                                                                                          000172
+   173                                                                                                                      000173
+   174   endif;                                                                                                             000174
+   175                                                                                                                      000175
+   176 enddo;                                                                                                               000176
+   177                                                                                                                      000177
+   178 // Close cursor                                                                                                      000178
+   179 exec sql close JobdCursor;                                                                                           000179
+   180                                                                                                                      000180
+   181 // Send completion message                                                                                           000181
+   182 Message = 'IASP update complete. Checked: ' + %char(CheckCount) +                                                    000182
+   183           ' Updated: ' + %char(UpdateCount) +                                                                        000183
+   184           ' Errors: ' + %char(ErrorCount);                                                                           000184
+   185 SendMsg(Message: '*COMP');                                                                                           000185
+   186                                                                                                                      000186
+   187 *inlr = *on;                                                                                                         000187
+   188 return;                                                                                                              000188
+   189                                                                                                                      000189
+   190 // ================================================================                                                  000190
+   191 // Procedures                                                                                                        000191
+   192 // ================================================================                                                  000192
+   193                                                                                                                      000193
+   194 // Send message to joblog                                                                                            000194
+   195 dcl-proc SendMsg;                                                                                                    000195
+   196   dcl-pi *n;                                                                                                         000196
+   197     MsgText char(512) const;                                                                                         000197
+   198     MsgType char(10) const options(*nopass);                                                                         000198
+   199   end-pi;                                                                                                            000199
+   200                                                                                                                      000200
+   201   dcl-s LocalMsgType char(10);                                                                                       000201
+   202   dcl-s MsgLen int(10);                                                                                              000202
+   203   dcl-s LocalMsgKey char(4);                                                                                         000203
+   204                                                                                                                      000204
+   205   dcl-ds LocalErrorCode qualified;                                                                                   000205
+   206     BytesProvided int(10) inz(116);                                                                                  000206
+   207     BytesAvailable int(10) inz(0);                                                                                   000207
+   208     ExceptionId char(7);                                                                                             000208
+   209     Reserved char(1);                                                                                                000209
+   210     ExceptionData char(100);                                                                                         000210
+   211   end-ds;                                                                                                            000211
+   212                                                                                                                      000212
+   213   // Default to *INFO if not specified                                                                               000213
+   214   if %parms() < 2;                                                                                                   000214
+   215     LocalMsgType = '*INFO';                                                                                          000215
+   216   else;                                                                                                              000216
+   217     LocalMsgType = MsgType;                                                                                          000217
+   218   endif;                                                                                                             000218
+   219                                                                                                                      000219
+   220   MsgLen = %len(%trim(MsgText));                                                                                     000220
+   221                                                                                                                      000221
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      6
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+   222   // Reset error code                                                                                                000222
+   223   LocalErrorCode.BytesProvided = 116;                                                                                000223
+   224   LocalErrorCode.BytesAvailable = 0;                                                                                 000224
+   225                                                                                                                      000225
+   226   QMHSNDPM('CPF9897': 'QCPFMSG   *LIBL': MsgText: MsgLen:                                                            000226
+   227            LocalMsgType: '*PGMBDY': 1: LocalMsgKey: LocalErrorCode);                                                 000227
+   228 end-proc;                                                                                                            000228
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      7
+Line   <---------------------- Data Records -------------------------------------------------------------->      Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10      Date   Id  Number
+                       C o m p i l e   T i m e   D a t a
+    * * * * *   E N D   O F   C O M P I L E   T I M E   D A T A   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      8
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      9
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :        0
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        0
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :        0
+  Source Totals:
+    Records . . . . . . . . . . . . :      228
+    Specifications  . . . . . . . . :      136
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :       89
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Diagnostic check of source is complete. Highest severity is 00.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     1
+Source type...............RPG
+Object name...............NICKLITTEN/UPDIASPSQL
+Source file...............QTEMP/QSQLPRE
+Member....................*OBJ
+To source file............QTEMP/QSQLTEMP1
+Options...................*LSTDBG
+RPG preprocessor options..*LVL2
+Listing option............*PRINT
+Target release............V7R4M0
+INCLUDE file..............*LIBL/QRPGLESRC
+Commit....................*NONE
+Allow copy of data........*OPTIMIZE
+Close SQL cursor..........*ENDACTGRP
+Allow blocking............*ALLREAD
+Delay PREPARE.............*NO
+Concurrent access
+  resolution..............*DFT
+Generation level..........10
+Printer file..............*LIBL/QSYSPRT
+Date format...............*JOB
+Date separator............*JOB
+Time format...............*HMS
+Time separator ...........*JOB
+Replace...................*YES
+Relational database.......*LOCAL
+User .....................*CURRENT
+RDB connect method........*DUW
+Default collection........*NONE
+Dynamic default
+  collection..............*NO
+Package name..............*OBJLIB/*OBJ
+Path......................*NAMING
+SQL rules.................*DB2
+Created object type.......*PGM
+Debugging view............*SOURCE
+Debugging encryption key..*NONE
+User profile .............*NAMING
+Dynamic user profile......*USER
+Sort sequence.............*JOB
+Language ID...............*JOB
+IBM SQL flagging..........*NOFLAG
+ANS flagging..............*NONE
+Text......................Update IASP Job Descriptions
+Source file CCSID.........37
+Job CCSID.................37
+Decimal result options:
+  Maximum precision.......31
+  Maximum scale...........31
+  Minimum divide scale....0
+DECFLOAT rounding mode....*HALFEVEN
+Compiler options..........TGTCCSID(*JOB) OPTIMIZE(*FULL) INCDIR('includes')
+Source member changed on 26-02-23  18:00:21
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     2
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+    1   **FREE                                                                                                 000001   26-02-23
+    2   // ================================================================                                    000002   26-02-23
+    3   // Program: UPDIASPSQL                                                                                 000003   26-02-23
+    4   // Description: Find all job descriptions in USER libraries and                                        000004   26-02-23
+    5   //              update INLASPGRP parameter from *NONE to ASP1                                          000005   26-02-23
+    6   // Author: IBM Bob                                                                                     000006   26-02-23
+    7   // Date: 2026-02-23                                                                                    000007   26-02-23
+    8   // ================================================================                                    000008   26-02-23
+    9   // This program uses SQL to query QSYS2.OBJECT_STATISTICS to find                                      000009   26-02-23
+   10   // all job descriptions in non-system libraries, then uses the                                         000010   26-02-23
+   11   // QWDRJOBD API to check the INLASPGRP parameter and updates it                                        000011   26-02-23
+   12   // to ASP1 if it's currently set to *NONE.                                                             000012   26-02-23
+   13   // ================================================================                                    000013   26-02-23
+   14                                                                                                          000014   26-02-23
+   15   ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);                                       000015   26-02-23
+   16                                                                                                          000016   26-02-23
+   17   // ================================================================                                    000017   26-02-23
+   18   // Prototypes                                                                                          000018   26-02-23
+   19   // ================================================================                                    000019   26-02-23
+   20                                                                                                          000020   26-02-23
+   21   // Retrieve_Job_Description_Information API                                                            000021   26-02-23
+   22   dcl-pr Retrieve_Job_Description_Information extpgm('QWDRJOBD');                                        000022   26-02-23
+   23     ReceiverVar char(2000);                                                                              000023   26-02-23
+   24     ReceiverLen int(10) const;                                                                           000024   26-02-23
+   25     Format char(8) const;                                                                                000025   26-02-23
+   26     QualJobd char(20) const;                                                                             000026   26-02-23
+   27     ErrorCode char(116);                                                                                 000027   26-02-23
+   28   end-pr;                                                                                                000028   26-02-23
+   29                                                                                                          000029   26-02-23
+   30   // QCMDEXC - Execute Command API                                                                       000030   26-02-23
+   31   dcl-pr QCMDEXC extpgm('QCMDEXC');                                                                      000031   26-02-23
+   32     Command char(512) const options(*varsize);                                                           000032   26-02-23
+   33     CommandLen packed(15:5) const;                                                                       000033   26-02-23
+   34   end-pr;                                                                                                000034   26-02-23
+   35                                                                                                          000035   26-02-23
+   36   // QMHSNDPM - Send Program Message API                                                                 000036   26-02-23
+   37   dcl-pr QMHSNDPM extpgm('QMHSNDPM');                                                                    000037   26-02-23
+   38     MessageId char(7) const;                                                                             000038   26-02-23
+   39     QualMsgF char(20) const;                                                                             000039   26-02-23
+   40     MessageData char(512) const options(*varsize);                                                       000040   26-02-23
+   41     MessageDataLen int(10) const;                                                                        000041   26-02-23
+   42     MessageType char(10) const;                                                                          000042   26-02-23
+   43     CallStackEntry char(10) const;                                                                       000043   26-02-23
+   44     CallStackCounter int(10) const;                                                                      000044   26-02-23
+   45     MessageKey char(4);                                                                                  000045   26-02-23
+   46     ErrorCode likeds(ErrorCode);                                                                         000046   26-02-23
+   47   end-pr;                                                                                                000047   26-02-23
+   48                                                                                                          000048   26-02-23
+   49   // ================================================================                                    000049   26-02-23
+   50   // Data Structures                                                                                     000050   26-02-23
+   51   // ================================================================                                    000051   26-02-23
+   52                                                                                                          000052   26-02-23
+   53   // Error code structure for APIs                                                                       000053   26-02-23
+   54   dcl-ds ErrorCode qualified;                                                                            000054   26-02-23
+   55     BytesProvided int(10) inz(116);                                                                      000055   26-02-23
+   56     BytesAvailable int(10) inz(0);                                                                       000056   26-02-23
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     3
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+   57     ExceptionId char(7);                                                                                 000057   26-02-23
+   58     Reserved char(1);                                                                                    000058   26-02-23
+   59     ExceptionData char(100);                                                                             000059   26-02-23
+   60   end-ds;                                                                                                000060   26-02-23
+   61                                                                                                          000061   26-02-23
+   62   // Receiver variable for QWDRJOBD API (JOBD0100 format)                                                000062   26-02-23
+   63   dcl-ds JobdInfo qualified;                                                                             000063   26-02-23
+   64     BytesReturned int(10);                                                                               000064   26-02-23
+   65     BytesAvailable int(10);                                                                              000065   26-02-23
+   66     JobdName char(10);                                                                                   000066   26-02-23
+   67     JobdLib char(10);                                                                                    000067   26-02-23
+   68     UserName char(10);                                                                                   000068   26-02-23
+   69     JobdText char(50);                                                                                   000069   26-02-23
+   70     JobQueue char(10);                                                                                   000070   26-02-23
+   71     JobQueueLib char(10);                                                                                000071   26-02-23
+   72     JobQueuePriority char(2);                                                                            000072   26-02-23
+   73     OutQueue char(10);                                                                                   000073   26-02-23
+   74     OutQueueLib char(10);                                                                                000074   26-02-23
+   75     OutQueuePriority char(2);                                                                            000075   26-02-23
+   76     PrinterDevice char(10);                                                                              000076   26-02-23
+   77     InlAspGrp char(10);  // Offset 88 - This is what we need to check                                    000077   26-02-23
+   78     // Additional fields exist but not needed for this program                                           000078   26-02-23
+   79   end-ds;                                                                                                000079   26-02-23
+   80                                                                                                          000080   26-02-23
+   81   // ================================================================                                    000081   26-02-23
+   82   // Standalone Variables                                                                                000082   26-02-23
+   83   // ================================================================                                    000083   26-02-23
+   84   dcl-s JobdName char(10);                                                                               000084   26-02-23
+   85   dcl-s JobdLib char(10);                                                                                000085   26-02-23
+   86   dcl-s QualJobd char(20);                                                                               000086   26-02-23
+   87   dcl-s Command char(512);                                                                               000087   26-02-23
+   88   dcl-s CommandLen packed(15:5);                                                                         000088   26-02-23
+   89   dcl-s CheckCount int(10) inz(0);                                                                       000089   26-02-23
+   90   dcl-s UpdateCount int(10) inz(0);                                                                      000090   26-02-23
+   91   dcl-s ErrorCount int(10) inz(0);                                                                       000091   26-02-23
+   92   dcl-s Message char(512);                                                                               000092   26-02-23
+   93   dcl-s MessageKey char(4);                                                                              000093   26-02-23
+   94                                                                                                          000094   26-02-23
+   95   // ================================================================                                    000095   26-02-23
+   96   // Main Processing                                                                                     000096   26-02-23
+   97   // ================================================================                                    000097   26-02-23
+   98                                                                                                          000098   26-02-23
+   99   // Send start message                                                                                  000099   26-02-23
+  100   SendMsg('Starting IASP Job Description update process...');                                            000100   26-02-23
+  101                                                                                                          000101   26-02-23
+  102   // SQL cursor to find all job descriptions in USER libraries                                           000102   26-02-23
+  103   exec sql declare JobdCursor cursor for                                                                 000103   26-02-23
+  104     select objname, objlib                                                                               000104   26-02-23
+  105     from table(qsys2.object_statistics('*ALL', '*JOBD'))                                                 000105   26-02-23
+  106     where objlib not like 'Q%'                                                                           000106   26-02-23
+  107       and objlib not like '#%'                                                                           000107   26-02-23
+  108     order by objlib, objname;                                                                            000108   26-02-23
+  109                                                                                                          000109   26-02-23
+  110   exec sql open JobdCursor;                                                                              000110   26-02-23
+  111                                                                                                          000111   26-02-23
+  112   // Process each job description                                                                        000112   26-02-23
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     4
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+  113   dow (1=1);                                                                                             000113   26-02-23
+  114                                                                                                          000114   26-02-23
+  115     // Fetch next job description                                                                        000115   26-02-23
+  116     exec sql fetch next from JobdCursor                                                                  000116   26-02-23
+  117       into :JobdName, :JobdLib;                                                                          000117   26-02-23
+  118                                                                                                          000118   26-02-23
+  119     // Check for end of data                                                                             000119   26-02-23
+  120     if (sqlcode = 100);                                                                                  000120   26-02-23
+  121       leave;                                                                                             000121   26-02-23
+  122     endif;                                                                                               000122   26-02-23
+  123                                                                                                          000123   26-02-23
+  124     // Check for SQL errors                                                                              000124   26-02-23
+  125     if (sqlcode < 0);                                                                                    000125   26-02-23
+  126       ErrorCount += 1;                                                                                   000126   26-02-23
+  127       Message = 'SQL error: ' + %char(sqlcode);                                                          000127   26-02-23
+  128       SendMsg(Message: '*DIAG');                                                                         000128   26-02-23
+  129       leave;                                                                                             000129   26-02-23
+  130     endif;                                                                                               000130   26-02-23
+  131                                                                                                          000131   26-02-23
+  132     CheckCount += 1;                                                                                     000132   26-02-23
+  133                                                                                                          000133   26-02-23
+  134     // Build qualified job description name for API                                                      000134   26-02-23
+  135     QualJobd = JobdName + JobdLib;                                                                       000135   26-02-23
+  136                                                                                                          000136   26-02-23
+  137     // Reset error code structure                                                                        000137   26-02-23
+  138     ErrorCode.BytesProvided = 116;                                                                       000138   26-02-23
+  139     ErrorCode.BytesAvailable = 0;                                                                        000139   26-02-23
+  140                                                                                                          000140   26-02-23
+  141     // Call QWDRJOBD API to retrieve job description details                                             000141   26-02-23
+  142     Retrieve_Job_Description_Information (JobdInfo: %size(JobdInfo): 'JOBD0100': QualJobd: ErrorCode);   000142   26-02-23
+  143                                                                                                          000143   26-02-23
+  144     // Check for API errors                                                                              000144   26-02-23
+  145     if (ErrorCode.BytesAvailable > 0);                                                                   000145   26-02-23
+  146       ErrorCount += 1;                                                                                   000146   26-02-23
+  147       Message = 'API error for ' + %trim(JobdLib) + '/' + %trim(JobdName) +                              000147   26-02-23
+  148                 ': ' + ErrorCode.ExceptionId;                                                            000148   26-02-23
+  149       SendMsg(Message: '*DIAG');                                                                         000149   26-02-23
+  150       iter;                                                                                              000150   26-02-23
+  151     endif;                                                                                               000151   26-02-23
+  152                                                                                                          000152   26-02-23
+  153     // Check if INLASPGRP is *NONE                                                                       000153   26-02-23
+  154     if (JobdInfo.InlAspGrp = '*NONE');                                                                   000154   26-02-23
+  155                                                                                                          000155   26-02-23
+  156       // Build CHGJOBD command                                                                           000156   26-02-23
+  157       Command = 'CHGJOBD JOBD(' + %trim(JobdLib) + '/' +                                                 000157   26-02-23
+  158                 %trim(JobdName) + ') INLASPGRP(ASP1)';                                                   000158   26-02-23
+  159       CommandLen = %len(%trim(Command));                                                                 000159   26-02-23
+  160                                                                                                          000160   26-02-23
+  161       // Execute the command                                                                             000161   26-02-23
+  162       monitor;                                                                                           000162   26-02-23
+  163         QCMDEXC(Command: CommandLen);                                                                    000163   26-02-23
+  164         UpdateCount += 1;                                                                                000164   26-02-23
+  165         Message = 'Updated ' + %trim(JobdLib) + '/' + %trim(JobdName) +                                  000165   26-02-23
+  166                   ' INLASPGRP: *NONE -> ASP1';                                                           000166   26-02-23
+  167         SendMsg(Message: '*INFO');                                                                       000167   26-02-23
+  168       on-error;                                                                                          000168   26-02-23
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     5
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+  169         ErrorCount += 1;                                                                                 000169   26-02-23
+  170         Message = 'Error updating ' + %trim(JobdLib) + '/' + %trim(JobdName);                            000170   26-02-23
+  171         SendMsg(Message: '*DIAG');                                                                       000171   26-02-23
+  172       endmon;                                                                                            000172   26-02-23
+  173                                                                                                          000173   26-02-23
+  174     endif;                                                                                               000174   26-02-23
+  175                                                                                                          000175   26-02-23
+  176   enddo;                                                                                                 000176   26-02-23
+  177                                                                                                          000177   26-02-23
+  178   // Close cursor                                                                                        000178   26-02-23
+  179   exec sql close JobdCursor;                                                                             000179   26-02-23
+  180                                                                                                          000180   26-02-23
+  181   // Send completion message                                                                             000181   26-02-23
+  182   Message = 'IASP update complete. Checked: ' + %char(CheckCount) +                                      000182   26-02-23
+  183             ' Updated: ' + %char(UpdateCount) +                                                          000183   26-02-23
+  184             ' Errors: ' + %char(ErrorCount);                                                             000184   26-02-23
+  185   SendMsg(Message: '*COMP');                                                                             000185   26-02-23
+  186                                                                                                          000186   26-02-23
+  187   *inlr = *on;                                                                                           000187   26-02-23
+  188   return;                                                                                                000188   26-02-23
+  189                                                                                                          000189   26-02-23
+  190   // ================================================================                                    000190   26-02-23
+  191   // Procedures                                                                                          000191   26-02-23
+  192   // ================================================================                                    000192   26-02-23
+  193                                                                                                          000193   26-02-23
+  194   // Send message to joblog                                                                              000194   26-02-23
+  195   dcl-proc SendMsg;                                                                                      000195   26-02-23
+  196     dcl-pi *n;                                                                                           000196   26-02-23
+  197       MsgText char(512) const;                                                                           000197   26-02-23
+  198       MsgType char(10) const options(*nopass);                                                           000198   26-02-23
+  199     end-pi;                                                                                              000199   26-02-23
+  200                                                                                                          000200   26-02-23
+  201     dcl-s LocalMsgType char(10);                                                                         000201   26-02-23
+  202     dcl-s MsgLen int(10);                                                                                000202   26-02-23
+  203     dcl-s LocalMsgKey char(4);                                                                           000203   26-02-23
+  204                                                                                                          000204   26-02-23
+  205     dcl-ds LocalErrorCode qualified;                                                                     000205   26-02-23
+  206       BytesProvided int(10) inz(116);                                                                    000206   26-02-23
+  207       BytesAvailable int(10) inz(0);                                                                     000207   26-02-23
+  208       ExceptionId char(7);                                                                               000208   26-02-23
+  209       Reserved char(1);                                                                                  000209   26-02-23
+  210       ExceptionData char(100);                                                                           000210   26-02-23
+  211     end-ds;                                                                                              000211   26-02-23
+  212                                                                                                          000212   26-02-23
+  213     // Default to *INFO if not specified                                                                 000213   26-02-23
+  214     if %parms() < 2;                                                                                     000214   26-02-23
+  215       LocalMsgType = '*INFO';                                                                            000215   26-02-23
+  216     else;                                                                                                000216   26-02-23
+  217       LocalMsgType = MsgType;                                                                            000217   26-02-23
+  218     endif;                                                                                               000218   26-02-23
+  219                                                                                                          000219   26-02-23
+  220     MsgLen = %len(%trim(MsgText));                                                                       000220   26-02-23
+  221                                                                                                          000221   26-02-23
+  222     // Reset error code                                                                                  000222   26-02-23
+  223     LocalErrorCode.BytesProvided = 116;                                                                  000223   26-02-23
+  224     LocalErrorCode.BytesAvailable = 0;                                                                   000224   26-02-23
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     6
+Record  *...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+... 8 ...+... 9 ...+... 0   SEQNBR  Last change
+  225                                                                                                          000225   26-02-23
+  226     QMHSNDPM('CPF9897': 'QCPFMSG   *LIBL': MsgText: MsgLen:                                              000226   26-02-23
+  227              LocalMsgType: '*PGMBDY': 1: LocalMsgKey: LocalErrorCode);                                   000227   26-02-23
+  228   end-proc;                                                                                              000228   26-02-23
+                                * * * * *  E N D  O F  S O U R C E  * * * * *
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     7
+                                               CROSS REFERENCE
+Data Names                    Define    Reference
+ALLOW_CHANGE_BY_PROGRAM          105      COLUMN FOR ALLOW00001
+ALLOW00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+APAR_ID                          105      CHARACTER(6) CCSID 37 COLUMN IN QSQTB00001
+APPLY_STARTING_RECEIVER          105      COLUMN FOR APPLY00001
+APPLY_STARTING_RECEIVER_LIBRARY  105      COLUMN FOR APPLY00002
+APPLY00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+APPLY00002                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+ASSOCIATED_SPACE_SIZE            105      COLUMN FOR ASSOC00001
+ASSOC00001                       105      INTEGER PRECISION(10,0) COLUMN IN QSQTB00001
+AUTHORITY_COLLECTION_VALUE       105      COLUMN FOR AUTHO00001
+AUTHO00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+BUILD_ID                         105      BINARY(16) IN QSQTB00001
+BYTESAVAILABLE                   56       INTEGER PRECISION(9,0) IN ERRORCODE
+BYTESAVAILABLE                   65       INTEGER PRECISION(9,0) IN JOBDINFO
+BYTESAVAILABLE                   207      INTEGER PRECISION(9,0) IN LOCALERRORCODE IN RPG PROCEDURE SENDMSG
+BYTESPROVIDED                    55       INTEGER PRECISION(9,0) IN ERRORCODE
+BYTESPROVIDED                    206      INTEGER PRECISION(9,0) IN LOCALERRORCODE IN RPG PROCEDURE SENDMSG
+BYTESRETURNED                    64       INTEGER PRECISION(9,0) IN JOBDINFO
+CHANGE_TIMESTAMP                 105      COLUMN FOR CHANG00001
+CHANGED_BY_PROGRAM               105      COLUMN FOR CHANG00002
+CHANG00001                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+CHANG00002                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+CHECKCOUNT                       89       INTEGER PRECISION(9,0)
+COMMAND                          87       CHARACTER(512)
+COMMANDLEN                       88       DECIMAL(15,5)
+COMPILER                         105      VARCHAR(7) CCSID 37 COLUMN IN QSQTB00001
+COMPILER_VERSION                 105      COLUMN FOR COMPI00001
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     8
+                                               CROSS REFERENCE
+COMPI00001                       105      VARCHAR(9) CCSID 37 COLUMN IN QSQTB00001
+COMPRESSED                       105      VARCHAR(4) CCSID 37 COLUMN IN QSQTB00001
+CREATED_SYSTEM                   105      COLUMN FOR CREAT00001
+CREATED_SYSTEM_VERSION           105      COLUMN FOR CREAT00002
+CREAT00001                       105      VARCHAR(8) CCSID 37 COLUMN IN QSQTB00001
+CREAT00002                       105      VARCHAR(9) CCSID 37 COLUMN IN QSQTB00001
+DAYS_USED_COUNT                  105      COLUMN FOR DAYS_00001
+DAYS_00001                       105      INTEGER PRECISION(10,0) COLUMN IN QSQTB00001
+ERRORCODE                        54       STRUCTURE
+ERRORCOUNT                       91       INTEGER PRECISION(9,0)
+EXCEPTIONDATA                    59       CHARACTER(100) IN ERRORCODE
+EXCEPTIONDATA                    210      CHARACTER(100) IN LOCALERRORCODE IN RPG PROCEDURE SENDMSG
+EXCEPTIONID                      57       CHARACTER(7) IN ERRORCODE
+EXCEPTIONID                      208      CHARACTER(7) IN LOCALERRORCODE IN RPG PROCEDURE SENDMSG
+IASP_NAME                        105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+IASP_NUMBER                      105      COLUMN FOR IASP_00001
+IASP_00001                       105      SMALL INTEGER PRECISION(5,0) COLUMN IN QSQTB00001
+INLASPGRP                        77       CHARACTER(10) IN JOBDINFO
+JOBDCURSOR                       103      CURSOR
+                                          110 116 179
+JOBDINFO                         63       STRUCTURE
+JOBDLIB                          67       CHARACTER(10) IN JOBDINFO
+JOBDLIB                          85       CHARACTER(10)
+                                          117
+JOBDNAME                         66       CHARACTER(10) IN JOBDINFO
+JOBDNAME                         84       CHARACTER(10)
+                                          117
+JOBDTEXT                         69       CHARACTER(50) IN JOBDINFO
+JOBQUEUE                         70       CHARACTER(10) IN JOBDINFO
+JOBQUEUELIB                      71       CHARACTER(10) IN JOBDINFO
+JOBQUEUEPRIORITY                 72       CHARACTER(2) IN JOBDINFO
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page     9
+                                               CROSS REFERENCE
+JOURNAL_IMAGES                   105      COLUMN FOR JOURN00003
+JOURNAL_LIBRARY                  105      COLUMN FOR JOURN00002
+JOURNAL_NAME                     105      COLUMN FOR JOURN00001
+JOURNAL_START_TIMESTAMP          105      COLUMN FOR JOURN00004
+JOURNALED                        105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+JOURN00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+JOURN00002                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+JOURN00003                       105      VARCHAR(6) CCSID 37 COLUMN IN QSQTB00001
+JOURN00004                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+LAST_RESET_TIMESTAMP             105      COLUMN FOR LAST_00003
+LAST_SAVE_SIZE                   105      COLUMN FOR LAST_00004
+LAST_USED_OBJECT                 105      COLUMN FOR LAST_00002
+LAST_USED_TIMESTAMP              105      COLUMN FOR LAST_00001
+LAST_00001                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+LAST_00002                       105      VARCHAR(4) CCSID 37 COLUMN IN QSQTB00001
+LAST_00003                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+LAST_00004                       105      DECIMAL(15,0) COLUMN IN QSQTB00001
+LICENSED_PROGRAM                 105      COLUMN FOR LICEN00001
+LICENSED_PROGRAM_VERSION         105      COLUMN FOR LICEN00002
+LICEN00001                       105      VARCHAR(7) CCSID 37 COLUMN IN QSQTB00001
+LICEN00002                       105      VARCHAR(9) CCSID 37 COLUMN IN QSQTB00001
+LOCALERRORCODE                   205      STRUCTURE IN RPG PROCEDURE SENDMSG
+LOCALMSGKEY                      203      CHARACTER(4) IN RPG PROCEDURE SENDMSG
+LOCALMSGTYPE                     201      CHARACTER(10) IN RPG PROCEDURE SENDMSG
+MESSAGE                          92       CHARACTER(512)
+MESSAGEKEY                       93       CHARACTER(4)
+MSGLEN                           202      INTEGER PRECISION(9,0) IN RPG PROCEDURE SENDMSG
+MSGTEXT                          197      CHARACTER(512) IN RPG PROCEDURE SENDMSG
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page    10
+                                               CROSS REFERENCE
+MSGTYPE                          198      CHARACTER(10) IN RPG PROCEDURE SENDMSG
+MULTIPLE_SIGNATURES              105      COLUMN FOR MULTI00001
+MULTI00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+OBJATTRIBUTE                     105      COLUMN FOR OBJAT00001
+OBJAT00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJCREATED                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+OBJDEFINER                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJECT_AUDIT                     105      COLUMN FOR OBJEC00003
+OBJECT_CONTROL_LEVEL             105      COLUMN FOR OBJEC00001
+OBJECT_DOMAIN                    105      COLUMN FOR OBJEC00002
+OBJECT_SIGNED                    105      COLUMN FOR OBJEC00004
+OBJEC00001                       105      CHARACTER(8) CCSID 37 COLUMN IN QSQTB00001
+OBJEC00002                       105      VARCHAR(7) CCSID 37 COLUMN IN QSQTB00001
+OBJEC00003                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJEC00004                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+OBJLIB                           ****     COLUMN
+                                          104 106 107 108
+OBJLIB                           105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJLONGNAME                      105      COLUMN FOR OBJLO00001
+OBJLONGSCHEMA                    105      COLUMN FOR OBJLO00002
+OBJLO00001                       105      VARCHAR(128) CCSID 37 COLUMN IN QSQTB00001
+OBJLO00002                       105      VARCHAR(128) CCSID 37 COLUMN IN QSQTB00001
+OBJNAME                          ****     COLUMN
+                                          104 108
+OBJNAME                          105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJOWNER                         105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+OBJSIZE                          105      DECIMAL(15,0) COLUMN IN QSQTB00001
+OBJTEXT                          105      VARCHAR(50) CCSID 37 COLUMN IN QSQTB00001
+OBJTYPE                          105      VARCHAR(8) CCSID 37 COLUMN IN QSQTB00001
+OMIT_JOURNAL_ENTRY               105      COLUMN FOR OMIT_00001
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page    11
+                                               CROSS REFERENCE
+OMIT_00001                       105      VARCHAR(7) CCSID 37 COLUMN IN QSQTB00001
+OPTIMUM_SPACE_ALIGNMENT          105      COLUMN FOR OPTIM00001
+OPTIM00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+OUTQUEUE                         73       CHARACTER(10) IN JOBDINFO
+OUTQUEUELIB                      74       CHARACTER(10) IN JOBDINFO
+OUTQUEUEPRIORITY                 75       CHARACTER(2) IN JOBDINFO
+OVERFLOW_STORAGE                 105      COLUMN FOR OVERF00001
+OVERF00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+PRIMARY_GROUP                    105      COLUMN FOR PRIMA00001
+PRIMA00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+PRINTERDEVICE                    76       CHARACTER(10) IN JOBDINFO
+PTF_NUMBER                       105      CHARACTER(7) CCSID 37 COLUMN IN QSQTB00001
+QCMDEXC                          31
+QMHSNDPM                         37
+                                 ****
+QUALJOBD                         86       CHARACTER(20)
+REMOTE_JOURNAL_FILTER            105      COLUMN FOR REMOT00001
+REMOT00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+RESERVED                         58       CHARACTER(1) IN ERRORCODE
+RESERVED                         209      CHARACTER(1) IN LOCALERRORCODE IN RPG PROCEDURE SENDMSG
+RESTORE_TIMESTAMP                105      COLUMN FOR RESTO00001
+RESTO00001                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+RETRIEVE_JOB_DESCRIPTION_INFORMATION
+                                 22
+SAVE_COMMAND                     105      COLUMN FOR SAVE_00003
+SAVE_DEVICE                      105      COLUMN FOR SAVE_00004
+SAVE_FILE_LIBRARY                105      COLUMN FOR SAVE_00006
+SAVE_FILE_NAME                   105      COLUMN FOR SAVE_00005
+SAVE_LABEL                       105      VARCHAR(17) CCSID 37 COLUMN IN QSQTB00001
+SAVE_SEQUENCE_NUMBER             105      COLUMN FOR SAVE_00008
+SAVE_TIMESTAMP                   105      COLUMN FOR SAVE_00001
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page    12
+                                               CROSS REFERENCE
+SAVE_VOLUME                      105      COLUMN FOR SAVE_00007
+SAVE_WHILE_ACTIVE_TIMESTAMP      105      COLUMN FOR SAVE_00002
+SAVE_00001                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+SAVE_00002                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+SAVE_00003                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SAVE_00004                       105      VARCHAR(5) CCSID 37 COLUMN IN QSQTB00001
+SAVE_00005                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SAVE_00006                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SAVE_00007                       105      VARCHAR(71) CCSID 37 COLUMN IN QSQTB00001
+SAVE_00008                       105      DECIMAL(10,0) COLUMN IN QSQTB00001
+SENDMSG                          195      RPG PROCEDURE
+SOURCE_FILE                      105      COLUMN FOR SOURC00001
+SOURCE_LIBRARY                   105      COLUMN FOR SOURC00002
+SOURCE_MEMBER                    105      COLUMN FOR SOURC00003
+SOURCE_TIMESTAMP                 105      COLUMN FOR SOURC00004
+SOURC00001                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SOURC00002                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SOURC00003                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+SOURC00004                       105      TIMESTAMP(26) COLUMN IN QSQTB00001
+SQL_OBJECT_TYPE                  105      COLUMN FOR SQL_O00001
+SQL_O00001                       105      VARCHAR(9) CCSID 37 COLUMN IN QSQTB00001
+STORAGE_FREED                    105      COLUMN FOR STORA00001
+STORA00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+SYSTEM_TRUSTED_SOURCE            105      COLUMN FOR SYSTE00001
+SYSTE00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+TEXT                             105      VARGRAPHIC(50) CCSID 1200 COLUMN IN QSQTB00001
+UPDATECOUNT                      90       INTEGER PRECISION(9,0)
+USER_CHANGED                     105      COLUMN FOR USER_00001
+5770ST1 V7R5M0 220415            Create SQL ILE RPG Object         UPDIASPSQL                  26-02-23 18:00:21          Page    13
+                                               CROSS REFERENCE
+USER_DEFINED_ATTRIBUTE           105      COLUMN FOR USER_00002
+USER_00001                       105      VARCHAR(3) CCSID 37 COLUMN IN QSQTB00001
+USER_00002                       105      VARCHAR(10) CCSID 37 COLUMN IN QSQTB00001
+USERNAME                         68       CHARACTER(10) IN JOBDINFO
+No errors found in source
+  228 Source records processed
+                               * * * * *  E N D  O F  L I S T I N G  * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      1
+  Command  . . . . . . . . . . . . :   CRTBNDRPG
+    Issued by  . . . . . . . . . . :     NICKLITTEN
+  Program  . . . . . . . . . . . . :   UPDIASPSQL
+    Library  . . . . . . . . . . . :     NICKLITTEN
+  Text 'description' . . . . . . . :   Update IASP Job Descriptions
+  Source stream file   . . . . . . :   /QSYS.LIB/QTEMP.LIB/QSQLTEMP1.FILE/UPDIASPSQL.MBR
+    CCSID  . . . . . . . . . . . . :     37
+  Target CCSID . . . . . . . . . . :   *JOB (37)
+  Text 'description' . . . . . . . :
+  Last Change  . . . . . . . . . . :   26-02-23  18:00:21
+  Generation severity level  . . . :   10
+  Default activation group . . . . :   *YES
+  Compiler options . . . . . . . . :   *XREF      *GEN       *NOSECLVL  *SHOWCPY
+                                       *EXPDDS    *EXT       *NOSHOWSKP *NOSRCSTMT
+                                       *DEBUGIO   *UNREF     *EVENTF
+  Debugging views  . . . . . . . . :   *ALL
+  Debug encryption key . . . . . . :   *NONE
+  Output . . . . . . . . . . . . . :   *PRINT
+  Optimization level . . . . . . . :   *FULL
+  Source listing indentation . . . :   *NONE
+  Type conversion options  . . . . :   *NONE
+  Sort sequence  . . . . . . . . . :   *JOB
+  Language identifier  . . . . . . :   *JOB
+  Replace program  . . . . . . . . :   *YES
+  User profile . . . . . . . . . . :   *USER
+  Authority  . . . . . . . . . . . :   *LIBCRTAUT
+  Truncate numeric . . . . . . . . :   *YES
+  Fix numeric  . . . . . . . . . . :   *NONE
+  Target release . . . . . . . . . :   V7R4M0
+  Allow null values  . . . . . . . :   *NO
+  Define condition names . . . . . :   *NONE
+  Enable performance collection  . :   *PEP
+  Profiling data . . . . . . . . . :   *NOCOL
+  Licensed Internal Code options . :
+  Generate program interface . . . :   *NO
+  Include directory  . . . . . . . :   includes
+  Preprocessor options . . . . . . :   *NONE
+  Require prototype for export . . :   *NO
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      2
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+                          S o u r c e   L i s t i n g
+     1 **FREE                                                                                                               000001
+     2 // ================================================================                                                  000002
+     3 // Program: UPDIASPSQL                                                                                               000003
+     4 // Description: Find all job descriptions in USER libraries and                                                      000004
+     5 //              update INLASPGRP parameter from *NONE to ASP1                                                        000005
+     6 // Author: IBM Bob                                                                                                   000006
+     7 // Date: 2026-02-23                                                                                                  000007
+     8 // ================================================================                                                  000008
+     9 // This program uses SQL to query QSYS2.OBJECT_STATISTICS to find                                                    000009
+    10 // all job descriptions in non-system libraries, then uses the                                                       000010
+    11 // QWDRJOBD API to check the INLASPGRP parameter and updates it                                                      000011
+    12 // to ASP1 if it's currently set to *NONE.                                                                           000012
+    13 // ================================================================                                                  000013
+    14                                                                                                                      000014
+    15 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);                                                     000015
+000016                                                                                                                      000016
+000017 // ================================================================                                                  000017
+000018 // Prototypes                                                                                                        000018
+000019 // ================================================================                                                  000019
+000020                                                                                                                      000020
+000021 // Retrieve_Job_Description_Information API                                                                          000021
+        *--------------------------------------------------------------------*
+        * Compiler Options in Effect:                                        *
+        *--------------------------------------------------------------------*
+        *  Text 'description' . . . . . . . :                                *
+        *                 Update IASP Job Descriptions                       *
+        *  Generation severity level  . . . :   10                           *
+        *  Default activation group . . . . :   *NO                          *
+        *  Compiler options . . . . . . . . :   *XREF      *GEN              *
+        *                                       *NOSECLVL  *SHOWCPY          *
+        *                                       *EXPDDS    *EXT              *
+        *                                       *NOSHOWSKP *SRCSTMT          *
+        *                                       *NODEBUGIO *UNREF            *
+        *                                       *EVENTF                      *
+        *  Optimization level . . . . . . . :   *FULL                        *
+        *  Source listing indentation . . . :   *NONE                        *
+        *  Type conversion options  . . . . :   *NONE                        *
+        *  Sort sequence  . . . . . . . . . :   *JOB                         *
+        *  Language identifier  . . . . . . :   *JOB                         *
+        *  User profile . . . . . . . . . . :   *USER                        *
+        *  Authority  . . . . . . . . . . . :   *LIBCRTAUT                   *
+        *  Truncate numeric . . . . . . . . :   *YES                         *
+        *  Fix numeric  . . . . . . . . . . :   *NONE                        *
+        *  Allow null values  . . . . . . . :   *NO                          *
+        *  Storage model . . .  . . . . . . :   *SNGLVL                      *
+        *  Binding directory from Command . :   *NONE                        *
+        *  Binding directory from Source  . :   *NONE                        *
+        *  Activation group . . . . . . . . :   *NEW                         *
+        *  Enable performance collection  . :   *PEP                         *
+        *  Profiling data . . . . . . . . . :   *NOCOL                       *
+        *  Generate program interface . . . :   *NO                          *
+        *  REQUIRE PROTOTYPE FOR EXPORT . . :   *NO                          *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      3
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+        *--------------------------------------------------------------------*
+000022 dcl-pr Retrieve_Job_Description_Information extpgm('QWDRJOBD');                                                      000022
+000023   ReceiverVar char(2000);                                                                                            000023
+000024   ReceiverLen int(10) const;                                                                                         000024
+000025   Format char(8) const;                                                                                              000025
+000026   QualJobd char(20) const;                                                                                           000026
+000027   ErrorCode char(116);                                                                                               000027
+000028 end-pr;                                                                                                              000028
+000029                                                                                                                      000029
+000030 // QCMDEXC - Execute Command API                                                                                     000030
+000031 dcl-pr QCMDEXC extpgm('QCMDEXC');                                                                                    000031
+000032   Command char(512) const options(*varsize);                                                                         000032
+000033   CommandLen packed(15:5) const;                                                                                     000033
+000034 end-pr;                                                                                                              000034
+000035                                                                                                                      000035
+000036 // QMHSNDPM - Send Program Message API                                                                               000036
+000037 dcl-pr QMHSNDPM extpgm('QMHSNDPM');                                                                                  000037
+000038   MessageId char(7) const;                                                                                           000038
+000039   QualMsgF char(20) const;                                                                                           000039
+000040   MessageData char(512) const options(*varsize);                                                                     000040
+000041   MessageDataLen int(10) const;                                                                                      000041
+000042   MessageType char(10) const;                                                                                        000042
+000043   CallStackEntry char(10) const;                                                                                     000043
+000044   CallStackCounter int(10) const;                                                                                    000044
+000045   MessageKey char(4);                                                                                                000045
+000046   ErrorCode likeds(ErrorCode);                                                                                       000046
+000047 end-pr;                                                                                                              000047
+000048                                                                                                                      000048
+000049 // ================================================================                                                  000049
+000050 // Data Structures                                                                                                   000050
+000051 // ================================================================                                                  000051
+000052                                                                                                                      000052
+000053 // Error code structure for APIs                                                                                     000053
+000054 dcl-ds ErrorCode qualified;                                                                                          000054
+000055   BytesProvided int(10) inz(116);                                                                                    000055
+000056   BytesAvailable int(10) inz(0);                                                                                     000056
+000057   ExceptionId char(7);                                                                                               000057
+000058   Reserved char(1);                                                                                                  000058
+000059   ExceptionData char(100);                                                                                           000059
+000060 end-ds;                                                                                                              000060
+000061                                                                                                                      000061
+000062 // Receiver variable for QWDRJOBD API (JOBD0100 format)                                                              000062
+000063 dcl-ds JobdInfo qualified;                                                                                           000063
+000064   BytesReturned int(10);                                                                                             000064
+000065   BytesAvailable int(10);                                                                                            000065
+000066   JobdName char(10);                                                                                                 000066
+000067   JobdLib char(10);                                                                                                  000067
+000068   UserName char(10);                                                                                                 000068
+000069   JobdText char(50);                                                                                                 000069
+000070   JobQueue char(10);                                                                                                 000070
+000071   JobQueueLib char(10);                                                                                              000071
+000072   JobQueuePriority char(2);                                                                                          000072
+000073   OutQueue char(10);                                                                                                 000073
+000074   OutQueueLib char(10);                                                                                              000074
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      4
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000075   OutQueuePriority char(2);                                                                                          000075
+000076   PrinterDevice char(10);                                                                                            000076
+000077   InlAspGrp char(10);  // Offset 88 - This is what we need to check                                                  000077
+000078   // Additional fields exist but not needed for this program                                                         000078
+000079 end-ds;                                                                                                              000079
+000080                                                                                                                      000080
+000081 // ================================================================                                                  000081
+000082 // Standalone Variables                                                                                              000082
+000083 // ================================================================                                                  000083
+000084 dcl-s JobdName char(10);                                                                                             000084
+000085 dcl-s JobdLib char(10);                                                                                              000085
+000086 dcl-s QualJobd char(20);                                                                                             000086
+000087 dcl-s Command char(512);                                                                                             000087
+000088 dcl-s CommandLen packed(15:5);                                                                                       000088
+000089 dcl-s CheckCount int(10) inz(0);                                                                                     000089
+000090 dcl-s UpdateCount int(10) inz(0);                                                                                    000090
+000091 dcl-s ErrorCount int(10) inz(0);                                                                                     000091
+000092 dcl-s Message char(512);                                                                                             000092
+000093 dcl-s MessageKey char(4);                                                                                            000093
+000094                                                                                                                      000094
+000095 // ================================================================                                                  000095
+000096 // Main Processing                                                                                                   000096
+000097 // ================================================================                                                  000097
+000098                                                                                                                      000098
+000099 // Send start message                                                                                                000099
+000100        /SET CCSID(*CHAR:*JOBRUNMIX)                                                                                  000100
+000101        // SQL COMMUNICATION AREA                                                //SQL                                000101
+000102        DCL-DS SQLCA;                                                            //SQL                                000102
+000103          SQLCAID CHAR(8) INZ(X'0000000000000000');                              //SQL                                000103
+000104           SQLAID CHAR(8) OVERLAY(SQLCAID);                                      //SQL                                000104
+000105          SQLCABC INT(10);                                                       //SQL                                000105
+000106           SQLABC BINDEC(9) OVERLAY(SQLCABC);                                    //SQL                                000106
+000107          SQLCODE INT(10);                                                       //SQL                                000107
+000108           SQLCOD BINDEC(9) OVERLAY(SQLCODE);                                    //SQL                                000108
+000109          SQLERRML INT(5);                                                       //SQL                                000109
+000110           SQLERL BINDEC(4) OVERLAY(SQLERRML);                                   //SQL                                000110
+000111          SQLERRMC CHAR(70);                                                     //SQL                                000111
+000112           SQLERM CHAR(70) OVERLAY(SQLERRMC);                                    //SQL                                000112
+000113          SQLERRP CHAR(8);                                                       //SQL                                000113
+000114           SQLERP CHAR(8) OVERLAY(SQLERRP);                                      //SQL                                000114
+000115          SQLERR CHAR(24);                                                       //SQL                                000115
+000116           SQLER1 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000116
+000117           SQLER2 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000117
+000118           SQLER3 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000118
+000119           SQLER4 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000119
+000120           SQLER5 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000120
+000121           SQLER6 BINDEC(9) OVERLAY(SQLERR:*NEXT);                               //SQL                                000121
+000122           SQLERRD INT(10) DIM(6) OVERLAY(SQLERR);                               //SQL                                000122
+000123          SQLWRN CHAR(11);                                                       //SQL                                000123
+000124           SQLWN0 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000124
+000125           SQLWN1 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000125
+000126           SQLWN2 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000126
+000127           SQLWN3 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000127
+000128           SQLWN4 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000128
+000129           SQLWN5 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000129
+000130           SQLWN6 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000130
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      5
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000131           SQLWN7 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000131
+000132           SQLWN8 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000132
+000133           SQLWN9 CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000133
+000134           SQLWNA CHAR(1) OVERLAY(SQLWRN:*NEXT);                                 //SQL                                000134
+000135           SQLWARN CHAR(1) DIM(11) OVERLAY(SQLWRN);                              //SQL                                000135
+000136          SQLSTATE CHAR(5);                                                      //SQL                                000136
+000137           SQLSTT CHAR(5) OVERLAY(SQLSTATE);                                     //SQL                                000137
+000138        END-DS SQLCA;                                                            //SQL                                000138
+000139        DCL-PR SQLROUTE_CALL EXTPGM(SQLROUTE);                                   //SQL                                000139
+000140          CA LIKEDS(SQLCA);                                                      //SQL                                000140
+000141          *N BINDEC(4) OPTIONS(*NOPASS);                                         //SQL                                000141
+000142          *N CHAR(1) OPTIONS(*NOPASS);                                           //SQL                                000142
+000143        END-PR SQLROUTE_CALL;                                                    //SQL                                000143
+000144        DCL-PR SQLOPEN_CALL EXTPGM(SQLOPEN);                                     //SQL                                000144
+000145          CA LIKEDS(SQLCA);                                                      //SQL                                000145
+000146          *N BINDEC(4);                                                          //SQL                                000146
+000147        END-PR SQLOPEN_CALL;                                                     //SQL                                000147
+000148        DCL-PR SQLCLSE_CALL EXTPGM(SQLCLSE);                                     //SQL                                000148
+000149          CA LIKEDS(SQLCA);                                                      //SQL                                000149
+000150          *N BINDEC(4);                                                          //SQL                                000150
+000151        END-PR SQLCLSE_CALL;                                                     //SQL                                000151
+000152        DCL-PR SQLCMIT_CALL EXTPGM(SQLCMIT);                                     //SQL                                000152
+000153          CA LIKEDS(SQLCA);                                                      //SQL                                000153
+000154          *N BINDEC(4);                                                          //SQL                                000154
+000155        END-PR SQLCMIT_CALL;                                                     //SQL                                000155
+000156        /RESTORE CCSID(*CHAR)                                                                                         000156
+000157        DCL-C SQLROUTE CONST('QSYS/QSQROUTE');                                   //SQL                                000157
+000158        DCL-C SQLOPEN CONST('QSYS/QSQROUTE');                                    //SQL                                000158
+000159        DCL-C SQLCLSE CONST('QSYS/QSQLCLSE');                                    //SQL                                000159
+000160        DCL-C SQLCMIT CONST('QSYS/QSQLCMIT');                                    //SQL                                000160
+000161        DCL-C SQFRD CONST(2);                                                    //SQL                                000161
+000162        DCL-C SQFCRT CONST(8);                                                   //SQL                                000162
+000163        DCL-C SQFOVR CONST(16);                                                  //SQL                                000163
+000164        DCL-C SQFAPP CONST(32);                                                  //SQL                                000164
+000165 **END-FREE                                                                                                           000165
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+000166 D                 DS                                                       OPEN                                      000166
+000167 D  SQL_00000              1      2B 0 INZ(128)                             length of header                          000167
+000168 D  SQL_00001              3      4B 0 INZ(2)                               statement number                          000168
+000169 D  SQL_00002              5      8U 0 INZ(0)                               invocation mark                           000169
+000170 D  SQL_00003              9      9A   INZ('0') CCSID(*JOBRUNMIX)           data is okay                              000170
+000171 D  SQL_00004             10    127A   CCSID(*JOBRUNMIX)                    end of header                             000171
+000172 D  SQL_00005            128    128A   CCSID(*JOBRUNMIX)                    end of header                             000172
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000173 **FREE                                                                                                               000173
+000174 **END-FREE                                                                                                           000174
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      6
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+000175 D                 DS                                                       FETCH                                     000175
+000176 D  SQL_00006              1      2B 0 INZ(128)                             length of header                          000176
+000177 D  SQL_00007              3      4B 0 INZ(3)                               statement number                          000177
+000178 D  SQL_00008              5      8U 0 INZ(0)                               invocation mark                           000178
+000179 D  SQL_00009              9      9A   INZ('0') CCSID(*JOBRUNMIX)           data is okay                              000179
+000180 D  SQL_00010             10    127A   CCSID(*JOBRUNMIX)                    end of header                             000180
+000181 D  SQL_00011            129    138A   CCSID(*JOBRUNMIX)                    JOBDNAME                                  000181
+000182 D  SQL_00012            139    148A   CCSID(*JOBRUNMIX)                    JOBDLIB                                   000182
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000183 **FREE                                                                                                               000183
+000184 **END-FREE                                                                                                           000184
+Line   <---------------------- Source Specifications ----------------------------><---- Comments ----> Do  Page  Change Src Seq
+Number ....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10 Num Line  Date   Id  Number
+000185 D                 DS                                                       CLOSE                                     000185
+000186 D  SQL_00013              1      2B 0 INZ(128)                             length of header                          000186
+000187 D  SQL_00014              3      4B 0 INZ(4)                               statement number                          000187
+000188 D  SQL_00015              5      8U 0 INZ(0)                               invocation mark                           000188
+000189 D  SQL_00016              9      9A   INZ('0') CCSID(*JOBRUNMIX)           data is okay                              000189
+000190 D  SQL_00017             10    127A   CCSID(*JOBRUNMIX)                    end of header                             000190
+000191 D  SQL_00018            128    128A   CCSID(*JOBRUNMIX)                    end of header                             000191
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000192 **FREE                                                                                                               000192
+000193 SendMsg('Starting IASP Job Description update process...');                                                          000193
+000194                                                                                                                      000194
+000195 // SQL cursor to find all job descriptions in USER libraries                                                         000195
+000196 //*exec sql declare JobdCursor cursor for                                                                            000196
+000197 //*  select objname, objlib                                                                                          000197
+000198 //*  from table(qsys2.object_statistics('*ALL', '*JOBD'))                                                            000198
+000199 //*  where objlib not like 'Q%'                                                                                      000199
+000200 //*    and objlib not like '#%'                                                                                      000200
+000201 //*  order by objlib, objname;                                                                                       000201
+000202                                                                                                                      000202
+000203 //*exec sql open JobdCursor;                                                                                         000203
+000204           SQLER6 = -4;                                                          //SQL                                000204
+000205           IF SQL_00002 = 0                                                      //SQL                B01             000205
+000206           OR SQL_00003 <> *LOVAL;                                               //SQL                B01             000206
+000207           SQLROUTE_CALL(                                                        //SQL                 01             000207
+000208                SQLCA                                                            //SQL                 01             000208
+000209              : SQL_00000                                                        //SQL                 01             000209
+000210           );                                                                    //SQL                 01             000210
+000211           ELSE;                                                                 //SQL                X01             000211
+000212           SQLOPEN_CALL(                                                         //SQL                 01             000212
+000213                SQLCA                                                            //SQL                 01             000213
+000214              : SQL_00000                                                        //SQL                 01             000214
+000215           );                                                                    //SQL                 01             000215
+000216           ENDIF;                                                                //SQL                E01             000216
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      7
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000217                                                                                                                      000217
+000218 // Process each job description                                                                                      000218
+000219 dow (1=1);                                                                                           B01             000219
+000220                                                                                                                      000220
+000221   // Fetch next job description                                                                                      000221
+000222 //*  exec sql fetch next from JobdCursor                                                                             000222
+000223 //*    into :JobdName, :JobdLib;                                                                                     000223
+000224           SQLER6 = -4;                                                          //SQL 3               01             000224
+000225           SQLROUTE_CALL(                                                        //SQL                 01             000225
+000226                SQLCA                                                            //SQL                 01             000226
+000227              : SQL_00006                                                        //SQL                 01             000227
+000228           );                                                                    //SQL                 01             000228
+000229           IF SQL_00009 = '1';                                                   //SQL                B02             000229
+000230           EVAL JOBDNAME = SQL_00011;                                            //SQL                 02             000230
+000231           EVAL JOBDLIB = SQL_00012;                                             //SQL                 02             000231
+000232           ENDIF;                                                                //SQL                E02             000232
+000233                                                                                                                      000233
+000234   // Check for end of data                                                                                           000234
+000235   if (sqlcode = 100);                                                                                B02             000235
+000236     leave;                                                                                            02             000236
+000237   endif;                                                                                             E02             000237
+000238                                                                                                                      000238
+000239   // Check for SQL errors                                                                                            000239
+000240   if (sqlcode < 0);                                                                                  B02             000240
+000241     ErrorCount += 1;                                                                                  02             000241
+000242     Message = 'SQL error: ' + %char(sqlcode);                                                         02             000242
+000243     SendMsg(Message: '*DIAG');                                                                        02             000243
+000244     leave;                                                                                            02             000244
+000245   endif;                                                                                             E02             000245
+000246                                                                                                                      000246
+000247   CheckCount += 1;                                                                                    01             000247
+000248                                                                                                                      000248
+000249   // Build qualified job description name for API                                                                    000249
+000250   QualJobd = JobdName + JobdLib;                                                                      01             000250
+000251                                                                                                                      000251
+000252   // Reset error code structure                                                                                      000252
+000253   ErrorCode.BytesProvided = 116;                                                                      01             000253
+000254   ErrorCode.BytesAvailable = 0;                                                                       01             000254
+000255                                                                                                                      000255
+000256   // Call QWDRJOBD API to retrieve job description details                                                           000256
+000257   Retrieve_Job_Description_Information (JobdInfo: %size(JobdInfo): 'JOBD0100': QualJobd: ErrorCode);  01             000257
+000258                                                                                                                      000258
+000259   // Check for API errors                                                                                            000259
+000260   if (ErrorCode.BytesAvailable > 0);                                                                 B02             000260
+000261     ErrorCount += 1;                                                                                  02             000261
+000262     Message = 'API error for ' + %trim(JobdLib) + '/' + %trim(JobdName) +                             02             000262
+000263               ': ' + ErrorCode.ExceptionId;                                                           02             000263
+000264     SendMsg(Message: '*DIAG');                                                                        02             000264
+000265     iter;                                                                                             02             000265
+000266   endif;                                                                                             E02             000266
+000267                                                                                                                      000267
+000268   // Check if INLASPGRP is *NONE                                                                                     000268
+000269   if (JobdInfo.InlAspGrp = '*NONE');                                                                 B02             000269
+000270                                                                                                                      000270
+000271     // Build CHGJOBD command                                                                                         000271
+000272     Command = 'CHGJOBD JOBD(' + %trim(JobdLib) + '/' +                                                02             000272
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      8
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000273               %trim(JobdName) + ') INLASPGRP(ASP1)';                                                  02             000273
+000274     CommandLen = %len(%trim(Command));                                                                02             000274
+000275                                                                                                                      000275
+000276     // Execute the command                                                                                           000276
+000277     monitor;                                                                                         B03             000277
+000278       QCMDEXC(Command: CommandLen);                                                                   03             000278
+000279       UpdateCount += 1;                                                                               03             000279
+000280       Message = 'Updated ' + %trim(JobdLib) + '/' + %trim(JobdName) +                                 03             000280
+000281                 ' INLASPGRP: *NONE -> ASP1';                                                          03             000281
+000282       SendMsg(Message: '*INFO');                                                                      03             000282
+000283     on-error;                                                                                        X03             000283
+000284       ErrorCount += 1;                                                                                03             000284
+000285       Message = 'Error updating ' + %trim(JobdLib) + '/' + %trim(JobdName);                           03             000285
+000286       SendMsg(Message: '*DIAG');                                                                      03             000286
+000287     endmon;                                                                                          E03             000287
+000288                                                                                                                      000288
+000289   endif;                                                                                             E02             000289
+000290                                                                                                                      000290
+000291 enddo;                                                                                               E01             000291
+000292                                                                                                                      000292
+000293 // Close cursor                                                                                                      000293
+000294 //*exec sql close JobdCursor;                                                                                        000294
+000295           SQLER6 = 4;                                                           //SQL                                000295
+000296           IF SQL_00015 = 0;                                                     //SQL                B01             000296
+000297           SQLROUTE_CALL(                                                        //SQL                 01             000297
+000298                SQLCA                                                            //SQL                 01             000298
+000299              : SQL_00013                                                        //SQL                 01             000299
+000300           );                                                                    //SQL                 01             000300
+000301           ELSE;                                                                 //SQL                X01             000301
+000302           SQLCLSE_CALL(                                                         //SQL                 01             000302
+000303                SQLCA                                                            //SQL                 01             000303
+000304              : SQL_00013                                                        //SQL                 01             000304
+000305           );                                                                    //SQL                 01             000305
+000306           ENDIF;                                                                //SQL                E01             000306
+000307                                                                                                                      000307
+000308 // Send completion message                                                                                           000308
+000309 Message = 'IASP update complete. Checked: ' + %char(CheckCount) +                                                    000309
+000310           ' Updated: ' + %char(UpdateCount) +                                                                        000310
+000311           ' Errors: ' + %char(ErrorCount);                                                                           000311
+000312 SendMsg(Message: '*COMP');                                                                                           000312
+000313                                                                                                                      000313
+000314 *inlr = *on;                                                                                                         000314
+000315 return;                                                                                                              000315
+000316                                                                                                                      000316
+000317 // ================================================================                                                  000317
+000318 // Procedures                                                                                                        000318
+000319 // ================================================================                                                  000319
+000320                                                                                                                      000320
+000321 // Send message to joblog                                                                                            000321
+000322 dcl-proc SendMsg;                                                                                                    000322
+000323   dcl-pi *n;                                                                                                         000323
+000324     MsgText char(512) const;                                                                                         000324
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page      9
+Line   <---------------------- Source Specifications ----------------------------------------------------->  Do  Change Src Seq
+Number ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+...10  Num Date   Id  Number
+000325     MsgType char(10) const options(*nopass);                                                                         000325
+000326   end-pi;                                                                                                            000326
+000327                                                                                                                      000327
+000328   dcl-s LocalMsgType char(10);                                                                                       000328
+000329   dcl-s MsgLen int(10);                                                                                              000329
+000330   dcl-s LocalMsgKey char(4);                                                                                         000330
+000331                                                                                                                      000331
+000332   dcl-ds LocalErrorCode qualified;                                                                                   000332
+000333     BytesProvided int(10) inz(116);                                                                                  000333
+000334     BytesAvailable int(10) inz(0);                                                                                   000334
+000335     ExceptionId char(7);                                                                                             000335
+000336     Reserved char(1);                                                                                                000336
+000337     ExceptionData char(100);                                                                                         000337
+000338   end-ds;                                                                                                            000338
+000339                                                                                                                      000339
+000340   // Default to *INFO if not specified                                                                               000340
+000341   if %parms() < 2;                                                                                   B01             000341
+000342     LocalMsgType = '*INFO';                                                                           01             000342
+000343   else;                                                                                              X01             000343
+000344     LocalMsgType = MsgType;                                                                           01             000344
+000345   endif;                                                                                             E01             000345
+000346                                                                                                                      000346
+000347   MsgLen = %len(%trim(MsgText));                                                                                     000347
+000348                                                                                                                      000348
+000349   // Reset error code                                                                                                000349
+000350   LocalErrorCode.BytesProvided = 116;                                                                                000350
+000351   LocalErrorCode.BytesAvailable = 0;                                                                                 000351
+000352                                                                                                                      000352
+000353   QMHSNDPM('CPF9897': 'QCPFMSG   *LIBL': MsgText: MsgLen:                                                            000353
+000354            LocalMsgType: '*PGMBDY': 1: LocalMsgKey: LocalErrorCode);                                                 000354
+000355 end-proc;                                                                                                            000355
+       * * * * *   E N D   O F   S O U R C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     10
+          A d d i t i o n a l   D i a g n o s t i c   M e s s a g e s
+ Msg id  Sv   Statement    Message text
+*RNF7535 30        000257  The type and attributes of parameter 1 do not match those
+                           of the prototype.
+ * * * * *   E N D   O F   A D D I T I O N A L   D I A G N O S T I C   M E S S A G E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     11
+                          C r o s s   R e f e r e n c e
+      File and Record References:
+         File              Device             References (D=Defined)
+           Record
+         No references in the source.
+      Global Field References:
+         Field             Attributes         References (D=Defined M=Modified)
+         *INLR             N(1)                   000314M
+         CHECKCOUNT        I(10,0)                000089D     000247M     000309
+         COMMAND           A(512)                 000087D     000272M     000274      000278
+         COMMANDLEN        P(15,5)                000088D     000274M     000278
+         ERRORCODE         DS(116)                000046      000054D     000253M     000254M
+                                                  000257      000260      000263
+           BYTESAVAILABLE  I(10,0)                000056D     000254      000260
+           BYTESPROVIDED   I(10,0)                000055D     000253
+*RNF7031   EXCEPTIONDATA   A(100)                 000059D
+           EXCEPTIONID     A(7)                   000057D     000263
+*RNF7031   RESERVED        A(1)                   000058D
+         ERRORCOUNT        I(10,0)                000091D     000241M     000261M     000284M
+                                                  000311
+         JOBDINFO          DS(152)                000063D     000257      000257      000269
+*RNF7031   BYTESAVAILABLE  I(10,0)                000065D
+*RNF7031   BYTESRETURNED   I(10,0)                000064D
+           INLASPGRP       A(10)                  000077D     000269
+*RNF7031   JOBDLIB         A(10)                  000067D
+*RNF7031   JOBDNAME        A(10)                  000066D
+*RNF7031   JOBDTEXT        A(50)                  000069D
+*RNF7031   JOBQUEUE        A(10)                  000070D
+*RNF7031   JOBQUEUELIB     A(10)                  000071D
+*RNF7031   JOBQUEUEPRIORITY...
+                           A(2)                   000072D
+*RNF7031   OUTQUEUE        A(10)                  000073D
+*RNF7031   OUTQUEUELIB     A(10)                  000074D
+*RNF7031   OUTQUEUEPRIORITY...
+                           A(2)                   000075D
+*RNF7031   PRINTERDEVICE   A(10)                  000076D
+*RNF7031   USERNAME        A(10)                  000068D
+         JOBDLIB           A(10)                  000085D     000231M     000250      000262
+                                                  000272      000280      000285
+         JOBDNAME          A(10)                  000084D     000230M     000250      000262
+                                                  000273      000280      000285
+         MESSAGE           A(512)                 000092D     000242M     000243      000262M
+                                                  000264      000280M     000282      000285M
+                                                  000286      000309M     000312
+*RNF7031 MESSAGEKEY        A(4)                   000093D
+         QCMDEXC           PROTOTYPE              000031D     000278M
+         QMHSNDPM          PROTOTYPE              000037D     000353M
+         QUALJOBD          A(20)                  000086D     000250M     000257
+         RETRIEVE_JOB_DESCRIPTION_INFORMATION...
+                           PROTOTYPE              000022D     000257M
+         SENDMSG           PROTOTYPE              000193M     000243M     000264M     000282M
+                                                  000286M     000312M     000322
+*RNF7031 SQFAPP            CONST                  000164D
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     12
+*RNF7031 SQFCRT            CONST                  000162D
+*RNF7031 SQFOVR            CONST                  000163D
+*RNF7031 SQFRD             CONST                  000161D
+         SQL_00000         B(4,0)                 000167D     000209      000214
+*RNF7031 SQL_00001         B(4,0)                 000168D
+         SQL_00002         U(10,0)                000169D     000205
+         SQL_00003         A(1)                   000170D     000206
+*RNF7031 SQL_00004         A(118)                 000171D
+*RNF7031 SQL_00005         A(1)                   000172D
+         SQL_00006         B(4,0)                 000176D     000227
+*RNF7031 SQL_00007         B(4,0)                 000177D
+*RNF7031 SQL_00008         U(10,0)                000178D
+         SQL_00009         A(1)                   000179D     000229
+*RNF7031 SQL_00010         A(118)                 000180D
+         SQL_00011         A(10)                  000181D     000230
+         SQL_00012         A(10)                  000182D     000231
+         SQL_00013         B(4,0)                 000186D     000299      000304
+*RNF7031 SQL_00014         B(4,0)                 000187D
+         SQL_00015         U(10,0)                000188D     000296
+*RNF7031 SQL_00016         A(1)                   000189D
+*RNF7031 SQL_00017         A(118)                 000190D
+*RNF7031 SQL_00018         A(1)                   000191D
+*RNF7031 SQLABC            B(9,0)                 000106D
+*RNF7031 SQLAID            A(8)                   000104D
+         SQLCA             DS(136)                000102D     000140      000145      000149
+                                                  000153      000208      000213      000226
+                                                  000298      000303
+         SQLCABC           I(10,0)                000105D     000106
+         SQLCAID           A(8)                   000103D     000104
+         SQLCLSE           CONST                  000148      000159D
+         SQLCLSE_CALL      PROTOTYPE              000148D     000302M
+         SQLCMIT           CONST                  000152      000160D
+*RNF7031 SQLCMIT_CALL      PROTOTYPE              000152D
+*RNF7031 SQLCOD            B(9,0)                 000108D
+         SQLCODE           I(10,0)                000107D     000108      000235      000240
+                                                  000242
+*RNF7031 SQLERL            B(4,0)                 000110D
+*RNF7031 SQLERM            A(70)                  000112D
+*RNF7031 SQLERP            A(8)                   000114D
+         SQLERR            A(24)                  000115D     000116      000117      000118
+                                                  000119      000120      000121      000122
+*RNF7031 SQLERRD(6)        I(10,0)                000122D
+         SQLERRMC          A(70)                  000111D     000112
+         SQLERRML          I(5,0)                 000109D     000110
+         SQLERRP           A(8)                   000113D     000114
+*RNF7031 SQLER1            B(9,0)                 000116D
+*RNF7031 SQLER2            B(9,0)                 000117D
+*RNF7031 SQLER3            B(9,0)                 000118D
+*RNF7031 SQLER4            B(9,0)                 000119D
+*RNF7031 SQLER5            B(9,0)                 000120D
+         SQLER6            B(9,0)                 000121D     000204M     000224M     000295M
+         SQLOPEN           CONST                  000144      000158D
+         SQLOPEN_CALL      PROTOTYPE              000144D     000212M
+         SQLROUTE          CONST                  000139      000157D
+         SQLROUTE_CALL     PROTOTYPE              000139D     000207M     000225M     000297M
+         SQLSTATE          A(5)                   000136D     000137
+*RNF7031 SQLSTT            A(5)                   000137D
+*RNF7031 SQLWARN(11)       A(1)                   000135D
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     13
+*RNF7031 SQLWNA            A(1)                   000134D
+*RNF7031 SQLWN0            A(1)                   000124D
+*RNF7031 SQLWN1            A(1)                   000125D
+*RNF7031 SQLWN2            A(1)                   000126D
+*RNF7031 SQLWN3            A(1)                   000127D
+*RNF7031 SQLWN4            A(1)                   000128D
+*RNF7031 SQLWN5            A(1)                   000129D
+*RNF7031 SQLWN6            A(1)                   000130D
+*RNF7031 SQLWN7            A(1)                   000131D
+*RNF7031 SQLWN8            A(1)                   000132D
+*RNF7031 SQLWN9            A(1)                   000133D
+         SQLWRN            A(11)                  000123D     000124      000125      000126
+                                                  000127      000128      000129      000130
+                                                  000131      000132      000133      000134
+                                                  000135
+         UPDATECOUNT       I(10,0)                000090D     000279M     000310
+      Field References for subprocedure SENDMSG
+         Field             Attributes         References (D=Defined M=Modified)
+         LOCALERRORCODE    DS(116)                000332D     000350M     000351M     000354
+           BYTESAVAILABLE  I(10,0)                000334D     000351
+           BYTESPROVIDED   I(10,0)                000333D     000350
+*RNF7031   EXCEPTIONDATA   A(100)                 000337D
+*RNF7031   EXCEPTIONID     A(7)                   000335D
+*RNF7031   RESERVED        A(1)                   000336D
+         LOCALMSGKEY       A(4)                   000330D     000354
+         LOCALMSGTYPE      A(10)                  000328D     000342M     000344M     000354
+         MSGLEN            I(10,0)                000329D     000347M     000353
+         MSGTEXT           A(512)                 000324D     000347      000353
+         MSGTYPE           A(10)                  000325D     000344
+      Indicator References:
+         Indicator                            References (D=Defined M=Modified)
+         LR                                       000314M
+       * * * * *   E N D   O F   C R O S S   R E F E R E N C E   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     14
+                      E x t e r n a l   R e f e r e n c e s
+      Statically bound procedures:
+         Procedure                            References
+         No references in the source.
+      Imported fields:
+         Field             Attributes         Defined
+         No references in the source.
+      Exported fields:
+         Field             Attributes         Defined
+         No references in the source.
+   * * * * *   E N D   O F   E X T E R N A L   R E F E R E N C E S   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     15
+                          M e s s a g e   S u m m a r y
+ Msg id  Sv Number Message text
+*RNF7031 00     59 The name or indicator is not referenced.
+*RNF7535 30      1 The type and attributes of the parameter do not match those
+                   of the prototype.
+       * * * * *   E N D   O F   M E S S A G E   S U M M A R Y   * * * * *
+ 5770WDS V7R5M0  220415 RN        IBM ILE RPG             NICKLITTEN/UPDIASPSQL    PROJEX     26-02-23 18:00:21        Page     16
+                            F i n a l   S u m m a r y
+  Message Totals:
+    Information  (00) . . . . . . . :       59
+    Warning      (10) . . . . . . . :        0
+    Error        (20) . . . . . . . :        0
+    Severe Error (30+)  . . . . . . :        1
+    ---------------------------------  -------
+    Total . . . . . . . . . . . . . :       60
+  Source Totals:
+    Records . . . . . . . . . . . . :      355
+    Specifications  . . . . . . . . :      244
+    Data records  . . . . . . . . . :        0
+    Comments  . . . . . . . . . . . :      100
+         * * * * *   E N D   O F   F I N A L   S U M M A R Y   * * * * *
+Compilation stopped. Severity 30 errors found in program.
+          * * * * *   E N D   O F   C O M P I L A T I O N   * * * * *
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

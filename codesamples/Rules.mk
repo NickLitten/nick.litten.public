@@ -17,4 +17,5 @@ SUBDIRS = check_subsystem_active \
           stored_procs \
           subfile \
           triggers \
+          update_iasp \
           webservice

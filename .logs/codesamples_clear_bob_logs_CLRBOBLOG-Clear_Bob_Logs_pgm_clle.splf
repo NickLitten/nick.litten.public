@@ -1,6 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NICKLITTEN)
->  ADDLIBLE LIB(NICKLITTEN) POSITION(*FIRST)
-Backing up 1 object(s)...
->  CRTBNDCL PGM(NICKLITTEN/CLRBOBLOG) SRCFILE(QTEMP/QSOURCE) SRCMBR(CLRBOBLOG) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Clear Bob Logs') TGTRLS(V7R4M0) INCDIR('/home/projex/builds/nick.litten.public/includes')
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

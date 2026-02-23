@@ -1,0 +1,108 @@
+/* Program: UPDIASP - Update IASP Job Descriptions                     */
+/* Description: Find all job descriptions in USER libraries and update */
+/*              INLASPGRP parameter to ASP1                            */
+/*                                                                     */
+/* Author: Nick Litten                                                 */
+/* Date: 2026-02-23                                                    */
+
+PGM
+
+    /* Declare file for reading job description list */
+    DCLF FILE(NICKLITTEN/JOBDLIST) ALWVARLEN(*YES)
+
+    /* Declare variables */
+    DCL VAR(&INLASPGRP) TYPE(*CHAR) LEN(10)
+    DCL VAR(&EOF) TYPE(*LGL) LEN(1) VALUE('0')
+    DCL VAR(&MSGID) TYPE(*CHAR) LEN(7)
+    DCL VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+    DCL VAR(&MSGF) TYPE(*CHAR) LEN(10)
+    DCL VAR(&MSGFLIB) TYPE(*CHAR) LEN(10)
+    DCL VAR(&UPDCOUNT) TYPE(*DEC) LEN(5 0) VALUE(0)
+    DCL VAR(&ERRCOUNT) TYPE(*DEC) LEN(5 0) VALUE(0)
+    DCL VAR(&REPLACE) TYPE(*CHAR) LEN(10) VALUE('*YES')
+    DCL VAR(&ERRCOD) TYPE(*CHAR) LEN(116)
+    DCL VAR(&APIERR) TYPE(*CHAR) LEN(7)
+    
+    /* Variables for QWDRJOBD API */
+    DCL VAR(&RCVVAR) TYPE(*CHAR) LEN(2000)
+    DCL VAR(&RCVLEN) TYPE(*INT) LEN(4) VALUE(2000)
+    DCL VAR(&FORMAT) TYPE(*CHAR) LEN(8) VALUE('JOBD0100')
+    DCL VAR(&QUALJOBD) TYPE(*CHAR) LEN(20)
+
+    /* Monitor for errors */
+    MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR))
+
+    /* Use SQL to find and update job descriptions */
+    RUNSQL SQL('DROP TABLE NICKLITTEN/JOBDLIST') COMMIT(*NONE)
+    MONMSG MSGID(SQL0000 CPF0000)
+
+    RUNSQL SQL('CREATE TABLE NICKLITTEN/JOBDLIST AS ( +
+                SELECT CAST(OBJNAME AS CHAR(10)) AS JOBD, +   
+                CAST(OBJLIB  AS CHAR(10)) AS LIBRARY + 
+                FROM TABLE(QSYS2.OBJECT_STATISTICS(''*ALL'', +
+                                                    ''*JOBD'')) +
+                ) WITH DATA') COMMIT(*NONE)
+    MONMSG MSGID(SQL0000 CPF0000)
+
+    /* Process each job description found */
+    DOWHILE COND(&EOF *EQ '0')
+        
+        /* Read job description name and library from file */
+        RCVF RCDFMT(JOBDLIST)
+        MONMSG MSGID(CPF0864) EXEC(DO)
+            CHGVAR VAR(&EOF) VALUE('1')
+            LEAVE
+        ENDDO
+        
+        IF COND(&EOF *EQ '1') THEN(LEAVE)
+
+        /* Filter out system libraries (starting with Q or #) */
+        IF COND(%SST(&LIBRARY 1 1) *EQ 'Q') THEN(ITERATE)
+        IF COND(%SST(&LIBRARY 1 1) *EQ '#') THEN(ITERATE)
+
+        /* Retrieve job description details using QWDRJOBD API */
+        /* Format JOBD0200 provides enhanced job description information */
+        /* Build qualified job description name (10 char name + 10 char lib) */
+        
+        /* Validate input parameters before API call */
+        IF COND(&JOBD *EQ ' ' *OR &LIBRARY *EQ ' ') THEN(DO)
+            SNDPGMMSG MSG('Invalid JOBD or LIBRARY parameter') +
+                      TOPGMQ(*EXT) MSGTYPE(*DIAG)
+            CHGVAR VAR(&ERRCOUNT) VALUE(&ERRCOUNT + 1)
+            ITERATE
+        ENDDO
+
+            /* Update the job description */
+            CHGJOBD JOBD(&LIBRARY/&JOBD) INLASPGRP(ASP1)
+            MONMSG MSGID(CPF0000) EXEC(DO)
+                CHGVAR VAR(&ERRCOUNT) VALUE(&ERRCOUNT + 1)
+                SNDPGMMSG MSG('Error updating' *BCAT &LIBRARY *TCAT +
+                             '/' *CAT &JOBD) TOPGMQ(*EXT) MSGTYPE(*DIAG)
+                ITERATE
+            ENDDO
+
+            CHGVAR VAR(&UPDCOUNT) VALUE(&UPDCOUNT + 1)
+            SNDPGMMSG MSG('Updated' *BCAT &LIBRARY *TCAT '/' *CAT +
+                         &JOBD *BCAT 'INLASPGRP: *NONE -> ASP1') +
+                      TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+    ENDDO
+
+    /* Send completion message */
+    SNDPGMMSG MSG('IASP update complete. Updated:' *BCAT +
+                 %CHAR(&UPDCOUNT) *BCAT 'Errors:' *BCAT +
+                 %CHAR(&ERRCOUNT)) +
+              TOPGMQ(*prv) MSGTYPE(*COMP)
+
+    RETURN
+
+    ERROR:
+    /* Error handling */
+    RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID) +
+           MSGF(&MSGF) SNDMSGFLIB(&MSGFLIB)
+
+    SNDPGMMSG MSG('Error in UPDIASP:' *BCAT &MSGID *BCAT &MSGDTA) +
+              TOPGMQ(*PRV) MSGTYPE(*DIAG)
+
+    ENDPGM:
+    ENDPGM
