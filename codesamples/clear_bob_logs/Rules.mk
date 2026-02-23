@@ -24,4 +24,4 @@
 CLRBOBLOG.CMD: CLRBOBLOG-Clear_Bob_Logs.cmd
 
 # CLRBOBLOG Program - CL program to list and delete log files
-CLRBOBLOG.PGM: CLRBOBLOG-Clear_Bob_Logs
+CLRBOBLOG.PGM: CLRBOBLOG-Clear_Bob_Logs.pgm.clle

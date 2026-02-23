@@ -42,27 +42,3 @@ SUBDIRS = binders \
 
 # Default command settings
 %.CMD:    private OPTION := *EVENTF
-
-# ==============================================================================
-# Build Dependencies
-# ==============================================================================
-# Define inter-subdirectory dependencies to ensure correct build order
-
-# Services depend on binders being built first
-services: binders
-
-# Code samples may depend on services and tables
-codesamples: services tables
-
-# Templates are independent but should be built early
-templates: binders
-
-# ==============================================================================
-# Notes
-# ==============================================================================
-# - Each subdirectory's Rules.mk defines specific object targets
-# - Pattern rules (%.PGM, %.MODULE, etc.) set default compilation options
-# - Target-specific variables use 'private' to avoid inheritance issues
-# - SUBDIRS order determines default build sequence
-# - Dependencies ensure proper build order when using parallel make (-j)
-# ==============================================================================
