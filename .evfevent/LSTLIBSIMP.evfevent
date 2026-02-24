@@ -1,0 +1,7 @@
+TIMESTAMP  0 20260224111125
+PROCESSOR  0 000 1
+FILEID     0 001 000000 111 /home/NICKLITTEN/builds/nick.litten.public/codesamples/list_libraries/LSTLIBSIMP-List_Libraries_Simply.pgm.clle 20260224111125 0
+ERROR      0 001 1 000062 000062 000 000062 000 CPD0052 S 30 116 Argument 3 of built-in function %BINARY not valid.
+ERROR      0 001 1 000084 000084 000 000084 000 CPD0755 W 10 116 The preceding errors may be caused by previous release incompatibility.
+ERROR      0 001 1 000084 000084 000 000084 000 CPD0791 I 00 116 No labels used in program.
+FILEEND    0 001 000000

@@ -1,7 +1,7 @@
 /* Program: UPDIASP - Update IASP Job Descriptions                     */
 /* Description: Find all job descriptions in USER libraries and update */
 /*              INLASPGRP parameter to ASP1                            */
-/*                                                                     */
+/*              *WARNING* This will update all JOBD without any checks */
 /* Author: Nick Litten                                                 */
 /* Date: 2026-02-23                                                    */
 
@@ -73,7 +73,7 @@ PGM
         ENDDO
 
             /* Update the job description */
-            CHGJOBD JOBD(&LIBRARY/&JOBD) INLASPGRP(ASP1)
+            ? CHGJOBD JOBD(&LIBRARY/&JOBD) INLASPGRP(ASP1)
             MONMSG MSGID(CPF0000) EXEC(DO)
                 CHGVAR VAR(&ERRCOUNT) VALUE(&ERRCOUNT + 1)
                 SNDPGMMSG MSG('Error updating' *BCAT &LIBRARY *TCAT +

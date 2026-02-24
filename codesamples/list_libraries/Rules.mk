@@ -22,11 +22,5 @@
 # LSTLIB File - Library list workfile
 LSTLIB.FILE: LSTLIB-Library_List_workfile.table
 
-# LISTLIBS Program - List libraries and call QLIRLIBD API
-LISTLIBS.PGM: LISTLIBS-List_Libraries_and_Call_QLIRLIBD.pgm.clle
-
-# LISTLIBS2 Program - Enhanced library list with API
-LISTLIBS2.PGM: LISTLIBS2-Enhanced_Library_List_with_API.pgm.clle
-
 # LSTLIBSIMP Program - Simple library list example
 LSTLIBSIMP.PGM: LSTLIBSIMP-List_Libraries_Simply.pgm.clle
