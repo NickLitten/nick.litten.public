@@ -1,0 +1,32 @@
+PGM
+
+clrpfm nicklitten/flatfile
+monmsg CPF3142 exec(RUNSQL SQL('create table nicklitten.FLATFILE (DATA varchar(140))') COMMIT(*NONE) NAMING(*SQL))
+
+clrpfm nicklitten/csvfile
+monmsg CPF3142 exec(RUNSQL SQL('create table CSVFILE ( +
+      INGREDIENT varchar(40), +
+      QUANTITY varchar(10), +
+      UNIT varchar(10), +
+      CATEGORY varchar(20), +
+      NOTES varchar(60) +
+    )') COMMIT(*NONE) NAMING(*SQL))
+
+CPYFRMIMPF FROMSTMF('/home/nicklitten/ingredients.txt') +   
+           TOFILE(NICKLITTEN/FLATFILE)                  + 
+           MBROPT(*REPLACE)                             + 
+           RCDDLM(*CRLF)                                + 
+           DTAFMT(*DLM)                                 + 
+           STRDLM(*NONE)                                + 
+           RMVCOLNAM(*YES)                                
+
+CPYFRMIMPF FROMSTMF('/home/nicklitten/ingredients.csv') +
+           TOFILE(NICKLITTEN/CSVFILE)                   +
+           MBROPT(*REPLACE)                             +
+           RCDDLM(*CRLF)                                +
+           DTAFMT(*DLM)                                 +
+           RMVCOLNAM(*YES)                               
+
+SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('Files imported successfully')
+
+ENDPGM

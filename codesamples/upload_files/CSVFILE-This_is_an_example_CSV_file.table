@@ -1,0 +1,7 @@
+create or replace table CSVFILE (
+      INGREDIENT varchar(40),
+      QUANTITY varchar(10),
+      UNIT varchar(10),
+      CATEGORY varchar(20),
+      NOTES varchar(60)
+    );

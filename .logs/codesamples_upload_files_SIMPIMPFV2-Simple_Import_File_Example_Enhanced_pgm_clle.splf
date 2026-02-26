@@ -1,0 +1,5 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>  CHGCURLIB CURLIB(NICKLITTEN)
+>  ADDLIBLE LIB(NICKLITTEN) POSITION(*FIRST)
+>  CRTBNDCL PGM(NICKLITTEN/SIMPIMPFV2) SRCFILE(QTEMP/QSOURCE) SRCMBR(SIMPIMPFV2) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('Simple Import File Example Enhanced') TGTRLS(V7R4M0) INCDIR('/home/NICKLITTEN/builds/nick.litten.public/includes')
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

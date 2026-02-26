@@ -1,7 +1,0 @@
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->  CHGCURLIB CURLIB(NICKLITTEN)
->  ADDLIBLE LIB(NICKLITTEN) POSITION(*FIRST)
->  CRTBNDCL PGM(NICKLITTEN/LSTLIBSIMP) SRCFILE(QTEMP/QSOURCE) SRCMBR(LSTLIBSIMP) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('List Libraries Simply') TGTRLS(V7R4M0) INCDIR('/home/NICKLITTEN/builds/nick.litten.public/includes')
-[FAILED]  CRTBNDCL PGM(NICKLITTEN/LSTLIBSIMP) SRCFILE(QTEMP/QSOURCE) SRCMBR(LSTLIBSIMP) AUT() DBGVIEW(*ALL) OPTION(*EVENTF) TEXT('List Libraries Simply') TGTRLS(V7R4M0) INCDIR('/home/NICKLITTEN/builds/nick.litten.public/includes')
-Build not successful for NICKLITTEN/LSTLIBSIMP
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

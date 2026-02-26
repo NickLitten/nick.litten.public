@@ -1,0 +1,1 @@
+create or replace table FLATFILE (DATA varchar(140));
