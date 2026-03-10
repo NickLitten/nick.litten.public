@@ -9,6 +9,7 @@ SUBDIRS = check_subsystem_active \
           email_outq \
           hello_world \
           list_libraries \
+          mySQL_Server \
           read_directory_qshell \
           rpg_modernization \
           security \

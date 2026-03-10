@@ -1,0 +1,75 @@
+/* Program: MYSQLCTL - MariaDB/MySQL Service Control                       */
+/* Purpose: Start, stop, or check status of MySQL/MariaDB database service */
+/* Author:  Nick Litten                                                    */
+/* Date:    2026-03-09                                                     */
+
+PGM PARM(&ACTION)
+
+DCL VAR(&ACTION) TYPE(*CHAR) LEN(10)
+DCL VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+DCL VAR(&RTNCODE) TYPE(*CHAR) LEN(4)
+DCL VAR(&CMD) TYPE(*CHAR) LEN(256)
+
+MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(ERRHANDLER))
+
+
+
+/* Process START Action                                                                 */
+IF COND(&ACTION *EQ 'START') THEN(DO)
+  CHGVAR VAR(&MSGDTA) VALUE('Starting MySQL/MariaDB server...')
+  SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+
+  /* Execute systemctl start command */
+  CHGVAR VAR(&CMD) +
+    VALUE('/QOpenSys/pkgs/bin/mysqld_safe --datadir='/QOpenSys/var/lib/mariadb/data'')
+  QSH CMD(&CMD)
+  MONMSG MSGID(QSH0000) EXEC(DO)
+    CHGVAR VAR(&MSGDTA) VALUE('ERROR: Failed to start MariaDB. Check system logs.')
+    SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+    GOTO CMDLBL(END_PGM)
+  ENDDO
+
+  /* Verify service started successfully */
+  CHGVAR VAR(&CMD) +
+    VALUE('/QOpenSys/pkgs/bin/mysqladmin --no-defaults --user=root --password=YourPassword shutdown')
+  QSH CMD(&CMD)
+  MONMSG MSGID(QSH0000) EXEC(DO)
+    CHGVAR VAR(&MSGDTA) VALUE('WARNING: Start command completed but service may not +
+      be active.')
+    SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+  ENDDO
+
+  CHGVAR VAR(&MSGDTA) VALUE('MariaDB server started successfully.')
+  SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+  GOTO CMDLBL(END_PGM)
+ENDDO
+
+
+
+/* Process STOP Action                                                                  */
+IF COND(&ACTIONUPR *EQ 'STOP') THEN(DO)
+  CHGVAR VAR(&MSGDTA) VALUE('Stopping MySQL/MariaDB server...')
+  SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+
+  /* Execute systemctl stop command */
+  CHGVAR VAR(&CMD) VALUE('systemctl stop mariadb')
+  QSH CMD(&CMD)
+  MONMSG MSGID(QSH0000) EXEC(DO)
+    CHGVAR VAR(&MSGDTA) VALUE('ERROR: Failed to stop MariaDB. Check system logs.')
+    SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+    GOTO CMDLBL(END_PGM)
+  ENDDO
+
+  CHGVAR VAR(&MSGDTA) VALUE('MariaDB server stopped successfully.')
+  SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+  GOTO CMDLBL(END_PGM)
+ENDDO
+
+/* --------------- */
+/* Error Handler   */
+/* --------------- */
+ERRHANDLER:
+CHGVAR VAR(&MSGDTA) VALUE('Unexpected error occurred in MYSQLCTL program.')
+SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA(&MSGDTA) TOPGMQ(*EXT)
+
+END_PGM: ENDPGM

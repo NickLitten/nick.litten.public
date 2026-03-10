@@ -91,18 +91,15 @@ PGM
     /* Send completion message */
     SNDPGMMSG MSG('IASP update complete. Updated:' *BCAT +
                  %CHAR(&UPDCOUNT) *BCAT 'Errors:' *BCAT +
-                 %CHAR(&ERRCOUNT)) +
-              TOPGMQ(*prv) MSGTYPE(*COMP)
+                 %CHAR(&ERRCOUNT)) TOPGMQ(*prv) MSGTYPE(*COMP)
 
     RETURN
 
-    ERROR:
-    /* Error handling */
+    ERROR: /* Error handling */
     RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID) +
            MSGF(&MSGF) SNDMSGFLIB(&MSGFLIB)
 
     SNDPGMMSG MSG('Error in UPDIASP:' *BCAT &MSGID *BCAT &MSGDTA) +
               TOPGMQ(*PRV) MSGTYPE(*DIAG)
 
-    ENDPGM:
-    ENDPGM
+    ENDPGM: ENDPGM
