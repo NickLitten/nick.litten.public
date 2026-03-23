@@ -1,4 +1,4 @@
-/* Program: CHKQINACT - Check if Subsystem is Active                          */
+/* Program: CHKSBSACT2 - Check if Subsystem is Active                         */
 /* Purpose: Determines if a specified subsystem is currently active           */
 /* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
 
@@ -6,7 +6,7 @@ PGM
 
 DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
 
-COPYRIGHT  TEXT('CHKSBSACT Ver:001 Check if Subsystem is Active')
+COPYRIGHT  TEXT('CHKSBSACT2 Ver:001 Check if Subsystem is Active')
 DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
               VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
 DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)

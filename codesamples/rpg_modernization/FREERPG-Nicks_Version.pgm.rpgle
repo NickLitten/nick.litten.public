@@ -31,7 +31,7 @@ RTN = '2';
 // first time read - rtn=3 if file empty
 READ QTXTSRC;
 
-if %eof();
+if %eof(QTXTSRC);
     RTN = '3';
 else;
     dow not %eof(QTXTSRC);
@@ -49,5 +49,4 @@ else;
     enddo;
 endif;
 
-// program exit point
 *INLR = *ON;

@@ -5,12 +5,6 @@
 # Each subdirectory contains its own Rules.mk with specific object targets.
 # ==============================================================================
 
-# Subdirectories to process during build (order matters for dependencies)
-SUBDIRS = binders \
-          services \
-          tables \
-          templates \
-          codesamples
 
 # ==============================================================================
 # Global Build Settings (can be overridden in subdirectory Rules.mk files)
@@ -39,6 +33,12 @@ SUBDIRS = binders \
 # Default file settings
 %.FILE:   private OPTION := *EVENTF
 %.FILE:   private GENLVL := 10
+%.CMD:    private OPTION := *EVENTF
 
 # Default command settings
-%.CMD:    private OPTION := *EVENTF
+# Subdirectories to process during build (order matters for dependencies)
+SUBDIRS = binders \
+          services \
+          tables \
+          templates \
+          codesamples

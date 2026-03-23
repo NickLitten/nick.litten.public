@@ -1,4 +1,7 @@
-/* Code sample from https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status/ */
+/* Program: CHKSBSACT1 - Check if Subsystem is Active                         */
+/* Purpose: Determines if a specified subsystem is currently active           */
+/* NOTE: create file CHKSBSTMP before compiling                               */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
 
 PGM                                                    
         DCLF       FILE(NICKLITTEN/CHKSBSTMP) ALWVARLEN(*YES)     

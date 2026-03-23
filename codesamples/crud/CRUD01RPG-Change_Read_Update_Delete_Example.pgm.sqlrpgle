@@ -130,10 +130,10 @@ Dcl-S whereClause     varchar(500) inz('');
 Dcl-S crudFinalized   ind;
 Dcl-S currentUser     char(10) inz(*user);
 
-// ============================================================================
-// MAIN PROCEDURE
-// ============================================================================
 
+
+
+// MAIN PROCEDURE
 Dcl-Proc mainline;
   Dcl-S screenMode char(1);
   
@@ -155,9 +155,11 @@ Dcl-Proc mainline;
   endmon;
 end-proc;
 
-// ============================================================================
+
+
+
+
 // SCREEN MANAGEMENT PROCEDURES
-// ============================================================================
 // WriteScreen - Set screen titles and footer based on mode
 Dcl-Proc WriteScreen;
   Dcl-Pi *N;
@@ -194,6 +196,7 @@ Dcl-Proc WriteScreen;
   write HEADER;
   write FOOTER;
 end-proc;
+
 
 
 
@@ -250,9 +253,12 @@ Dcl-Proc ShowWindow;
   EndSl;
 end-proc;
 
-// ============================================================================
+
+
+
+
+
 // UTILITY PROCEDURES
-// ============================================================================
 // centerText - Center text within specified length
 Dcl-Proc centerText;
   Dcl-Pi *N char(80);
@@ -316,9 +322,12 @@ Dcl-Proc handleSqlError;
   Return *off;
 end-proc;
 
-// ============================================================================
+
+
+
+
+
 // SUBFILE MANAGEMENT PROCEDURES
-// ============================================================================
 // ShowSubfile - Main subfile display loop
 Dcl-Proc ShowSubfile;
   Dcl-Pi *N;
@@ -636,9 +645,12 @@ Dcl-Proc getTotalRecords;
   Return total;
 end-proc;
 
-// ============================================================================
+
+
+
+
+
 // VALIDATION PROCEDURES
-// ============================================================================
 // validateScreen - Validate input based on mode
 Dcl-Proc validateScreen;
   Dcl-Pi *N ind;
@@ -751,9 +763,13 @@ Dcl-Proc validateModify;
   Return hasErrors;
 end-proc;
 
-// ============================================================================
+
+
+
+
+
+
 // CRUD OPERATION PROCEDURES
-// ============================================================================
 // InsertScreen - Handle insert operation
 Dcl-Proc InsertScreen;
   Dcl-Pi *N;
@@ -1036,9 +1052,12 @@ Dcl-Proc ViewScreen;
   enddo;
 end-proc;
 
-// ============================================================================
+
+
+
+
+
 // DATA TRANSFER PROCEDURES
-// ============================================================================
 // loadDataToScreen - Transfer data from record to screen
 Dcl-Proc loadDataToScreen;
   clear CRUDTASK;
@@ -1050,6 +1069,9 @@ Dcl-Proc loadDataToScreen;
   ENDDATE = taskRecord.Enddate;
   STATETASK = taskRecord.State;
 end-proc;
+
+
+
 
 
 
@@ -1072,6 +1094,9 @@ end-proc;
 
 
 
+
+
+
 // confirmAction - Get user confirmation
 Dcl-Proc confirmAction;
   Dcl-Pi *N ind;
@@ -1080,6 +1105,9 @@ Dcl-Proc confirmAction;
   ShowWindow(WDW_CONFIRM);
   Return (WDWCHOICE = 'Y');
 end-proc;
+
+
+
 
 
 

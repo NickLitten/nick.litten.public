@@ -18,7 +18,7 @@
 /*       - Enhanced file qualification handling              */
 /* --------------------------------------------------------- */
 
-CMD        PROMPT('Email DB2 file as CSV attachment')
+CMD        PROMPT('Email DB2 file as CSV')
 
 /* --------------------------------------------------------- */
 /* File to export - Required parameter                       */
@@ -31,8 +31,7 @@ PARM       KWD(FILE) +
 PF_FILE:   QUAL       TYPE(*NAME) +
                       LEN(10) +
                       MIN(1) +
-                      EXPR(*YES) +
-                      PROMPT('File name')
+                      EXPR(*YES)
            QUAL       TYPE(*NAME) +
                       LEN(10) +
                       DFT(*LIBL) +

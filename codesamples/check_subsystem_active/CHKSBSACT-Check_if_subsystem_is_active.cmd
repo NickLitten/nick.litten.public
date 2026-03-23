@@ -6,7 +6,7 @@
 /* Created: 2024                                                             */
 /*****************************************************************************/
 
-             CMD        PROMPT('Check if subsystem is active')
+             CMD        PROMPT('Check Subsystem Active')
 
 /* Subsystem name parameter with validation */
              PARM KWD(SBS) TYPE(*NAME) LEN(10) PROMPT('Subsystem name')

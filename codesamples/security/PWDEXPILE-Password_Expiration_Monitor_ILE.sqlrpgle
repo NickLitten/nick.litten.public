@@ -20,13 +20,13 @@ ctl-opt
      dftactgrp(*no)
      actgrp(*caller)
      option(*nodebugio:*srcstmt:*nounref)
-     main(Main)
+     main(mainline)
      bnddir('PWDMON')
      copyright('PWDEXPMON | V.002 | Password Expiration Monitor - ILE');
 
-// ============================================================================
-// Prototypes for Service Program Procedures
-// ============================================================================
+//  -------------------------------------------
+// | Prototypes for Service Program Procedures |
+//  -------------------------------------------
 
 // User Profile Service prototypes
 dcl-pr GetExpiringUsers likeds(UserList_t);
@@ -71,10 +71,6 @@ dcl-pr ValidateEmailConfig ind;
    config likeds(EmailConfig_t) const;
 end-pr;
 
-// ============================================================================
-// Data Structures (must match service program definitions)
-// ============================================================================
-
 // User profile information structure
 dcl-ds UserProfile_t qualified template;
    userName char(10);
@@ -109,9 +105,6 @@ dcl-ds EmailResult_t qualified template;
    errorMsg char(256);
 end-ds;
 
-// ============================================================================
-// Constants
-// ============================================================================
 dcl-c DEFAULT_WARNING_DAYS 7;
 dcl-c CRLF x'0D25';
 
@@ -121,15 +114,12 @@ dcl-c EMAIL_FROM 'ibmi-security@yourcompany.com';
 dcl-c EMAIL_TO 'security-team@yourcompany.com';
 dcl-c EMAIL_SUBJECT 'IBM i Password Expiration Warning';
 
-// ============================================================================
-// Global Variables
-// ============================================================================
 dcl-s warningDays int(10);
 
 // ============================================================================
 // Main Procedure
 // ============================================================================
-dcl-proc Main;
+dcl-proc mainline;
    dcl-pi *n;
       parmWarningDays int(10) const options(*nopass);
    end-pi;

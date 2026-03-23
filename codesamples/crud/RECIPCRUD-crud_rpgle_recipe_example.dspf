@@ -81,7 +81,6 @@
       *  DETAIL RECORD - For Add/Change/Display operations
 
      A          R DETAIL                    OVERLAY
-     A                                      CA03(03 'Exit')
      A                                      CA12(12 'Cancel')
      A                                      CF04(04 'Prompt')
      A*

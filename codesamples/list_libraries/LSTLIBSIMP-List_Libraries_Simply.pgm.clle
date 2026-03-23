@@ -68,7 +68,7 @@ PGM
             CHGVAR VAR(&NUMOBJ) VALUE(%BINARY(&RECEIVER 83 4))
 
             /* Extract library size in bytes (offset 87, length 8) */
-            CHGVAR VAR(&LIBSIZ) VALUE(%BINARY(&RECEIVER 87 8))
+            CHGVAR VAR(&LIBSIZ) VALUE(%BINARY(&RECEIVER 87 4))
 
             /* Convert numeric values to character for SQL */
             CHGVAR VAR(&CHARNUM) VALUE(&NUMOBJ)

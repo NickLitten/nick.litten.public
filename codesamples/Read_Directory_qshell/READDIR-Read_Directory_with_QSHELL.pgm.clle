@@ -1,27 +1,25 @@
-
-/******************************************************************************/
-/* Program Name: READDIR - Read Directory with QSHELL                         */
-/* Description:  List and process files in an IFS directory using QSHELL      */
-/*                                                                            */
-/* Function:     - Validates IFS directory existence and access               */
-/*               - Lists files matching filter pattern using QSHELL           */
-/*               - Processes each file in the directory                       */
-/*               - Restores original directory on completion                  */
-/*                                                                            */
-/* Parameters:   &DIR    - IFS directory path (CHAR 255)                      */
-/*               &FILTER - File filter pattern (CHAR 30) e.g., *.CSV          */
-/*                                                                            */
-/* Compile:      1. CRTPF FILE(QTEMP/READ_DIRF) RCDLEN(1000)                  */
-/*               2. CRTBNDCL PGM(library/READDIR)                             */
-/*                  SRCFILE(library/QCLLESRC) SRCMBR(READDIR)                 */
-/*                                                                            */
-/* Author:       Nick Litten                                                  */
-/* Created:      [Date]                                                       */
-/* Modified:     2026-02-10 - Added comprehensive documentation               */
-/*                                                                            */
-/* Reference:    https://www.nicklitten.com/course/                           */
-/*               list-all-files-in-an-ifs-folder-with-qshell                  */
-/******************************************************************************/
+/* ------------------------------------------------------------------------------- */
+/* Program Name: READDIR - Read Directory with QSHELL                              */
+/* Description:  List and process files in an IFS directory using QSHELL           */
+/*                                                                                 */
+/* Function:     - Validates IFS directory existence and access                    */
+/*               - Lists files matching filter pattern using QSHELL                */
+/*               - Processes each file in the directory                            */
+/*               - Restores original directory on completion                       */
+/*                                                                                 */
+/* Parameters:   &DIR    - IFS directory path (CHAR 255)                           */
+/*               &FILTER - File filter pattern (CHAR 30) e.g., *.CSV               */
+/*                                                                                 */
+/* Compile:      1. CRTPF FILE(QTEMP/READ_DIRF) RCDLEN(1000)                       */
+/*               2. CRTBNDCL PGM(library/READDIR)                                  */
+/*                  SRCFILE(library/QCLLESRC) SRCMBR(READDIR)                      */
+/*                                                                                 */
+/* Author:       Nick Litten                                                       */
+/* Created:      2026-02-09                                                        */
+/* Modified:     2026-02-10 - Added comprehensive documentation                    */
+/*                                                                                 */
+/* https://www.nicklitten.com/course/list-all-files-in-an-ifs-folder-with-qshell   */
+/* ------------------------------------------------------------------------------- */
 
              PGM        PARM(&DIR &FILTER)
 

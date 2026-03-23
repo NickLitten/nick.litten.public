@@ -1,4 +1,4 @@
-/***********************************************************************************/
+/* ------------------------------------------------------------------------------- */
 /* Program Name: READDIR - Read Directory with QSHELL                              */
 /* Description:  Command definition to list IFS directory contents using           */
 /*               QSHELL utilities                                                  */
@@ -11,10 +11,10 @@
 /*   READDIR DIR('/home/bob') FILTER('*.CSV')                                      */
 /*                                                                                 */
 /* Author:       Nick Litten                                                       */
-/* Created:      [Date]                                                            */
+/* Created:      2026-02-09                                                        */
 /* Modified:     2026-02-10 - Added header documentation                           */
 /* https://www.nicklitten.com/course/list-all-files-in-an-ifs-folder-with-qshell   */
-/***********************************************************************************/
+/* ------------------------------------------------------------------------------- */
 
 CMD        PROMPT('List IFS with QSHELL')
 
