@@ -3,6 +3,7 @@ SUBDIRS = check_subsystem_active \
           cl_code_snippets \
           clear_bob_logs \
           clear_pfrdata \
+          conversion \
           crud \
           debug \
           email_csv_file \
