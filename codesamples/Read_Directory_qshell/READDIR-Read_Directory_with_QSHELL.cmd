@@ -18,15 +18,6 @@
 
 CMD        PROMPT('List IFS with QSHELL')
 
-PARM       KWD(DIR) +
-           TYPE(CHAR) +
-           LEN(255) +
-           EXPR(YES) +
-           PROMPT('IFS Folder Name ie: /home/bob')
+PARM KWD(DIR) TYPE(CHAR) LEN(255) MIN(1) PROMPT('IFS Folder Name ie: /home/user')  
 
-PARM       KWD(FILTER) +
-           TYPE(CHAR) +
-           LEN(30) +
-           DFT('.') +
-           EXPR(YES) +
-           PROMPT('Filter files (ie: *.CSV)')
+PARM KWD(FILTER) TYPE(CHAR) LEN(30) DFT('.') PROMPT('Filter files (ie: *.CSV)')

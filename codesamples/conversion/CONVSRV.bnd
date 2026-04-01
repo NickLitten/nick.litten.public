@@ -2,7 +2,6 @@ STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('CONVSRV V1.0')
 
   EXPORT SYMBOL(ConvertEbcdicToAscii)
   EXPORT SYMBOL(ConvertAsciiToEbcdic)
-  EXPORT SYMBOL(ConvertBetweenCcsid)
   EXPORT SYMBOL(ConvertFixedEbcdicToAscii)
   EXPORT SYMBOL(ConvertFixedAsciiToEbcdic)
 

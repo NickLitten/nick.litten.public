@@ -19,6 +19,13 @@
 # Object Dependencies
 # ------------------------------------------------------------
 
+# Input and output file dependencies
+FILEIN.FILE: FILEIN-Input_Files_for_CONVERT.table
+FILEOUT.FILE: FILEOUT-Ouput_Files_for_CONVERT.table
+
+# CONVERTBAS Program - Basic EBCDIC to ASCII conversion (legacy version)
+CONVERTBAS.PGM: CONVERTBAS-Convert_EBCDIC_to_ASCII_BASIC.pgm.rpgle
+
 # CONVSRV Module - Conversion service program module using CCSID
 CONVSRV.MODULE: CONVSRV-Conversion_Service.sqlrpgle
 
@@ -27,6 +34,3 @@ CONVSRV.SRVPGM: CONVSRV.bnd CONVSRV.MODULE
 
 # CONVERT Program - EBCDIC to ASCII conversion using CONVSRV service program
 CONVERT.PGM: CONVERT-Convert_EBCDIC_to_ASCII.pgm.rpgle CONVSRV.SRVPGM
-
-# CONVERTBAS Program - Basic EBCDIC to ASCII conversion (legacy version)
-CONVERTBAS.PGM: CONVERTBAS-Convert_EBCDIC_to_ASCII_BASIC_VERSION.pgm.rpgle
