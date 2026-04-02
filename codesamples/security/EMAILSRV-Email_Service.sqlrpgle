@@ -18,9 +18,9 @@ ctl-opt
      option(*nodebugio:*srcstmt:*nounref)
      copyright('EMAILSRV | V.001 | Email Service');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Constants
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-c MAX_EMAIL_BODY_SIZE 32000;
 dcl-c CRLF x'0D25';  // Carriage return + line feed
 dcl-c SQL_SUCCESS 0;
@@ -29,9 +29,9 @@ dcl-c SQL_SUCCESS 0;
 dcl-c DEFAULT_SMTP_SERVER 'smtp.yourcompany.com';
 dcl-c DEFAULT_EMAIL_FROM 'ibmi-security@yourcompany.com';
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Data Structures - Exported Types
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // Email configuration structure
 dcl-ds EmailConfig_t qualified template;
@@ -49,11 +49,11 @@ dcl-ds EmailResult_t qualified template;
    errorMsg char(256);
 end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: SendEmail
 // Purpose: Send email using QSYS2.SEND_EMAIL service
 // Returns: EmailResult_t with success status and error details
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc SendEmail export;
    dcl-pi *n likeds(EmailResult_t);
       config likeds(EmailConfig_t) const;
@@ -140,11 +140,11 @@ dcl-proc SendEmail export;
    return result;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: BuildPasswordExpiryReport
 // Purpose: Build formatted email body for password expiration report
 // Returns: Formatted email body as varchar
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc BuildPasswordExpiryReport export;
    dcl-pi *n varchar(MAX_EMAIL_BODY_SIZE);
       systemName char(8) const;
@@ -157,7 +157,7 @@ dcl-proc BuildPasswordExpiryReport export;
    
    // Build email header
    emailBody = 'IBM i Password Expiration Warning Report' + CRLF +
-               '========================================' + CRLF +
+               '----------------------------------------' + CRLF +
                CRLF +
                'Generated: ' + %char(%timestamp()) + CRLF +
                'System: ' + %trim(systemName) + CRLF +
@@ -167,15 +167,15 @@ dcl-proc BuildPasswordExpiryReport export;
                CRLF +
                'User       Description                    Status     ' +
                'Exp Date   Days Left  Last Sign On' + CRLF +
-               '========== ============================== ========== ' +
-               '========== ========== ===================' + CRLF;
+               '---------- ------------------------------ ---------- ' +
+               '---------- ---------- ---------------' + CRLF;
    
    // Add user lines
    emailBody += userLines;
    
    // Add footer
    emailBody += CRLF +
-                '========================================' + CRLF +
+                '----------------------------------------' + CRLF +
                 'Total users with expiring passwords: ' + 
                 %char(userCount) + CRLF +
                 CRLF +
@@ -190,11 +190,11 @@ dcl-proc BuildPasswordExpiryReport export;
    return emailBody;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: BuildEmailSubject
 // Purpose: Build email subject line with user count
 // Returns: Formatted subject line
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc BuildEmailSubject export;
    dcl-pi *n varchar(256);
       baseSubject char(256) const;
@@ -213,10 +213,10 @@ dcl-proc BuildEmailSubject export;
    return subject;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: LogMessage
 // Purpose: Send message to job log
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc LogMessage export;
    dcl-pi *n;
       message char(256) const;
@@ -241,11 +241,11 @@ dcl-proc LogMessage export;
    exec sql call qsys2.qcmdexc(:cmdString);
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: ValidateEmailConfig
 // Purpose: Validate email configuration parameters
 // Returns: *on if valid, *off if invalid
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc ValidateEmailConfig export;
    dcl-pi *n ind;
       config likeds(EmailConfig_t) const;
@@ -268,11 +268,11 @@ dcl-proc ValidateEmailConfig export;
    return *on;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: EscapeSqlString
 // Purpose: Escape single quotes in strings for SQL safety
 // Returns: Escaped string
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc EscapeSqlString export;
    dcl-pi *n varchar(1000);
       inputString varchar(1000) const;

@@ -1,3 +1,4 @@
+      // ------------------------------------------------------------------------------
       // author: nick litten                                       
       // submit file to remote system using cft
       // rtn=1 if partner mismatch - return partner found          
@@ -8,8 +9,9 @@
       // 10.03.14 njl converted to free format rpg    
       // 25.05.07 njl played with as part of a video rpg upgrade tour
       // https://www.nicklitten.com/course/adventures-in-automatic-rpg-upgrade-with-vscode/                                      
+      // ------------------------------------------------------------------------------
       /free
-       dcl-f qtxtsrc;
+       dcl-f qtxtsrc rename('QTXTSRC':'RECTXT');
 
        dcl-ds data;
         record char(92) pos(1);
@@ -19,6 +21,7 @@
         idfn char(8) pos(40);
        end-ds;
       /end-free
+
      c     *entry        plist
      c                   parm                    file             10
      c                   parm                    part             10

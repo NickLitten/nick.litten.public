@@ -1,5 +1,5 @@
 **free
-//==============================================================================
+// ------------------------------------------------------------------------------
 // Program Name: WEBFOOD-Sample_Webservice_for_FOODFILE.pgm.rpgle
 // Description:  RESTful webservice program providing CRUD operations for
 //               FOODFILE database. Implements GET, ADD, UPD, and DLT functions
@@ -26,12 +26,12 @@
 //
 // Modification History:
 // v.000 2025.10.19 njl - Initial creation for online example
-//==============================================================================
+// ------------------------------------------------------------------------------
 
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Control Options
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 ctl-opt
     main(mainline)                              // Entry point procedure
     optimize(*full)                             // Full optimization for performance
@@ -42,9 +42,9 @@ ctl-opt
     alwnull(*usrctl)                           // Allow null-capable fields
     copyright('WEBFOOD | V.000 | Sample CGI Webservice');
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // File Declarations
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // FOODFILE: Main ingredient database file
 // - Keyed access by INGID (ingredient ID)
 // - User-controlled open (usropn) for explicit file management
@@ -52,7 +52,7 @@ ctl-opt
 // - Supports all CRUD operations: INPUT, OUTPUT, UPDATE, DELETE
 dcl-f FOODFILE usage(*INPUT:*OUTPUT:*UPDATE:*DELETE) keyed usropn rename(FOODFILE:RECFOOD);
 
-//==============================================================================
+// ------------------------------------------------------------------------------
 // Main Procedure: mainline
 //
 // Purpose: Entry point for webservice. Processes CRUD operations on FOODFILE
@@ -64,7 +64,7 @@ dcl-f FOODFILE usage(*INPUT:*OUTPUT:*UPDATE:*DELETE) keyed usropn rename(FOODFIL
 //   data (input/output) - Data structure containing ingredient information
 //
 // Returns: Status message in rtntext parameter
-//==============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc mainline;
     dcl-pi *n;
         function char(3);           // Operation: GET/ADD/UPD/DLT
@@ -72,17 +72,17 @@ dcl-proc mainline;
         data likeds(FoodRec);       // Ingredient data structure
     end-pi;
 
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     // Data Structure: FoodRec
     // Externally defined from FOODFILE record format
     // Contains all fields from the ingredient database record
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     dcl-ds FoodRec extname('FOODFILE':*input) qualified inz;
     end-ds;
 
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     // Main Processing Logic with Error Handling
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     monitor;
 
         // Validate function parameter - must be one of four valid operations
@@ -93,14 +93,14 @@ dcl-proc mainline;
             // Open the food ingredient file for processing
             open foodfile;
 
-            //------------------------------------------------------------------
+            // ------------------------------------------------------------------------------
             // Process Request Based on Function Type
-            //------------------------------------------------------------------
+            // ------------------------------------------------------------------------------
             select;
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 // GET Operation: Retrieve ingredient record by ID
                 // Returns all ingredient details if found
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 when function = 'GET';
                     // Attempt to read record using ingredient ID as key
                     chain (data.INGID) FOODFILE;
@@ -119,10 +119,10 @@ dcl-proc mainline;
                         rtntext = '(READ FAIL) Ingredient ID does not exist: ' + %char(data.INGID);
                     endif;
 
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 // ADD Operation: Create new ingredient record
                 // Validates that ID doesn't already exist before adding
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 when function = 'ADD';
                     // Check if ingredient ID already exists
                     chain (data.INGID) FOODFILE;
@@ -145,10 +145,10 @@ dcl-proc mainline;
                         rtntext = '(ADD FAIL) Ingredient ID already exists: ' + %char(data.INGID);
                     endif;
 
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 // UPD Operation: Update existing ingredient record
                 // Validates that record exists before updating
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 when function = 'UPD';
                     // Locate record to update by ingredient ID
                     chain (data.INGID) FOODFILE;
@@ -171,10 +171,10 @@ dcl-proc mainline;
                         rtntext = '(UPDATE FAIL) Ingredient ID does not exist for UPDATE: ' + %char(data.INGID);
                     endif;
 
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 // DLT Operation: Delete ingredient record
                 // Validates that record exists before deleting
-                //--------------------------------------------------------------
+                // ------------------------------------------------------------------------------
                 when function = 'DLT';
                     // Locate record to delete by ingredient ID
                     chain (data.INGID) FOODFILE;
@@ -198,11 +198,11 @@ dcl-proc mainline;
         // Normal procedure exit
         return;
 
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     // Error Handler
     // Catches any unexpected errors during processing
     // Returns error status code to caller
-    //--------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------
     on-error;
         rtntext = '(ERROR) Main Program Error: ' + %char(%status);
     endmon;

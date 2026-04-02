@@ -1,12 +1,12 @@
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # Rules.mk - Build rules for RPG Modernization Examples
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # This file defines the build rules for RPG modernization examples showing
 # the evolution from legacy RPG/400 to modern free-format RPGLE.
 #
 # Target Release: V7R4M0
 # Activation Group: NICKLITTEN
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 # Default compilation settings for all modules and programs
 %.MODULE: private TGTRLS := V7R4M0
@@ -16,9 +16,9 @@
 %.PGM:    private OPTIMIZE := *FULL
 %.PGM:    private ACTGRP := NICKLITTEN
 
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # Object Dependencies
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 # OLDRPG Program - Old RPG/400 code example
 OLDRPG.PGM: OLDRPG-old_rpg400_code.pgm.rpgle

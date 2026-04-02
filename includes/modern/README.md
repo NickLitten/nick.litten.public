@@ -1,5 +1,5 @@
 ILE RPG Copybooks of System APIs Written by Scott Klement MODERNISED by Nick Litten
-======================================================================================
+-----------------------------------------------------------------------------------
 
 #### ILE RPG Copybooks of System APIs by Scott Klement
 

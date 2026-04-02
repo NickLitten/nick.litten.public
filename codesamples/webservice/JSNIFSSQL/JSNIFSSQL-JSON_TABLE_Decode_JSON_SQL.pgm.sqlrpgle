@@ -1,21 +1,58 @@
-**FREE
+**free
 
-/TITLE JSON_TABLE Decode JSON using SQL - Proof of Concept
-
-// PROGRAM CREATION OVERRIDES:
-// Create as a Module and bind into ILE program
-//
-// JSNIFSSQL.sqlrpgle (fully /free)
-//
-// This demonstrates reading JSON data from an IFS file and then
-// parsing that JSON using SQL JSON_TABLE functions.
-//
-// The JSON data is loaded into a data structure suitable
-// for display from a program debugger.
-//
-// MODIFICATION HISTORY:
-// 07/17/2017 nick litten V1.0 Created
-// 06/20/2021 nick litten V1.1 Removed unused variables for clarity
+/// Program: JSNIFSSQL - JSON_TABLE Decode JSON using SQL
+///
+/// Description: Demonstrates reading JSON data from an IFS file and parsing it
+///              using SQL JSON_TABLE functions. This program loads JSON data
+///              from the IFS into a CLOB variable, then uses SQL's JSON_TABLE
+///              function to parse and extract structured data into RPG data
+///              structures for further processing.
+///
+/// Purpose: Educational example demonstrating:
+///   - Reading JSON files from the IFS using C API functions
+///   - Parsing JSON data using SQL JSON_TABLE function
+///   - Extracting nested JSON arrays into RPG data structures
+///   - Handling JSON data in embedded SQL within SQLRPGLE
+///   - Processing multiple JSON records in a cursor loop
+///
+/// Features:
+///   - Reads JSON file from IFS using open/read/close C APIs
+///   - Loads JSON data into SQL CLOB variable for processing
+///   - Uses JSON_TABLE to parse nested JSON arrays
+///   - Extracts user data (userID, firstName, lastName, etc.)
+///   - Stores parsed data in array of data structures
+///   - Provides success/error result handling
+///   - Supports up to 9999 JSON records
+///
+/// Usage: CALL JSNIFSSQL
+///        (No parameters required - reads from hardcoded IFS path)
+///
+/// Parameters: None
+///
+/// SQL Usage:
+///   - JSON_TABLE function to parse JSON structure
+///   - Cursor C1 to iterate through parsed JSON records
+///   - Nested path '$.users[*]' to access JSON array elements
+///   - Individual field paths for data extraction
+///
+/// Dependencies:
+///   - IFS file: /home/nicklitten/getwebjsn.json
+///   - C API functions: open(), read(), close()
+///   - SQL JSON_TABLE function (requires IBM i 7.2 or higher)
+///   - Activation group: NICKLITTEN
+///
+/// Control Options:
+///   - dftactgrp(*no): Required for ILE procedures and SQL
+///   - actgrp('NICKLITTEN'): Named activation group for resource management
+///   - option(*nodebugio): Disables debug I/O for performance
+///   - option(*srcstmt): Includes source statements in debug view
+///   - option(*nounref): Flags unreferenced variables
+///   - datfmt(*ISO): Uses ISO date format (YYYY-MM-DD)
+///
+/// Modification History:
+/// 1.0 2017-07-17 | Nick Litten | Initial creation
+/// 1.1 2021-06-20 | Nick Litten | Removed unused variables for clarity
+/// 1.2 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
  option(*nodebugio:*srcstmt:*nounref)

@@ -1,12 +1,59 @@
-**FREE
-// Program Name: SQLREAD-Sample_SQL_RPG_Dynamic_File_read.pgm.sqlrpgle
-// Description:  Simple example of using dynamic SQL in RPG 
-// Modification History:                                                 
-// V.000 2025.09.05 NJL Created from example by ALDO SUCCI      
-/include 'header.rpgleinc'
+**free
+
+/// Program: SQLREAD - Sample SQL RPG Dynamic File Read
+///
+/// Description: Demonstrates the use of dynamic SQL in RPG to query database
+///              tables with parameterized queries. Shows how to prepare SQL
+///              statements at runtime, use cursors for result set processing,
+///              and handle parameter substitution with placeholders. This
+///              example retrieves customer names based on customer type.
+///
+/// Purpose: Educational example demonstrating:
+///   - Dynamic SQL statement preparation using PREPARE
+///   - Parameterized queries with placeholder (?) substitution
+///   - Cursor declaration and management for result sets
+///   - Runtime parameter binding with USING clause
+///   - Row-by-row data retrieval with FETCH
+///   - Proper cursor resource cleanup
+///
+/// Features:
+///   - Prepares SQL statement from character variable
+///   - Uses parameterized query for flexible filtering
+///   - Declares and manages cursor for result processing
+///   - Binds runtime parameters to SQL placeholders
+///   - Fetches query results into RPG variables
+///   - Displays retrieved data for verification
+///   - Closes cursor to release database resources
+///
+/// Usage: CALL SQLREAD
+///        (No parameters - uses hardcoded customer type 'BBB')
+///
+/// Parameters: None
+///
+/// SQL Usage:
+///   - SELECT statement with WHERE clause parameter
+///   - PREPARE to compile SQL from string variable
+///   - DECLARE CURSOR to create result set iterator
+///   - OPEN with USING to bind parameter values
+///   - FETCH to retrieve row data into host variables
+///   - CLOSE to release cursor resources
+///
+/// Dependencies:
+///   - Table: CLANA00F (customer analysis file)
+///   - Fields: CLCIB0 (customer type), CLNOM0 (customer name)
+///   - Include: header.rpgleinc
+///
+/// Control Options:
+///   - copyright: Program identification and version
+///
+/// Modification History:
+/// 1.0 2025-09-05 | Nick Litten | Created from example by Aldo Succi
+/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt
   copyright('SQLREAD | V.000 | Simple example of using dynamic SQL in RPG');
+
+/include 'header.rpgleinc'
  
 // Declare variable to hold the customer type (3 characters)
 dcl-s wCLCIB0 CHAR(3);

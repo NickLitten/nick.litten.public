@@ -1,11 +1,65 @@
-**FREE
+**free
+
+/// Program: GETENC - Get Encryption Data
+///
+/// Description: Demonstrates SQL encryption and decryption functions for
+///              protecting sensitive customer data such as Social Security
+///              Numbers and credit card information. Shows how to set encryption
+///              passwords, encrypt data during INSERT operations, and decrypt
+///              data during SELECT operations using IBM i SQL encryption.
+///
+/// Purpose: Educational example demonstrating:
+///   - SQL encryption password management with SET ENCRYPTION PASSWORD
+///   - AES encryption using ENCRYPT_AES function
+///   - Data decryption using DECRYPT_BIT function
+///   - Encryption hints for password recovery
+///   - Secure storage of sensitive customer information
+///   - Error handling for encryption operations
+///
+/// Features:
+///   - Sets session encryption password
+///   - Encrypts SSN and credit card data on insert
+///   - Stores both plain and encrypted versions for comparison
+///   - Retrieves and decrypts sensitive data
+///   - Displays decrypted values for verification
+///   - Comprehensive error handling with custom error program
+///   - Uses password hints for encryption key management
+///
+/// Usage: CALL GETENC
+///        (Demonstrates encryption/decryption with sample customer data)
+///
+/// Parameters: None
+///
+/// SQL Usage:
+///   - SET ENCRYPTION PASSWORD to establish session encryption key
+///   - ENCRYPT_AES() function for AES encryption with hints
+///   - DECRYPT_BIT() function for decrypting encrypted data
+///   - INSERT with encrypted column values
+///   - SELECT with decryption of sensitive fields
+///
+/// Dependencies:
+///   - Table: NICKLITTEN.CUSTENC (customer encryption table)
+///   - Columns: CUSTOMER_ID, CUSTOMER_NAME, SSN_PLAIN, SSN_ENCRYPTED, CREDIT_CARD_ENCRYPTED
+///   - Program: ERRORMSG (custom error handling program)
+///
+/// Security Notes:
+///   - Password should be stored securely, not hardcoded
+///   - Encryption password is session-specific
+///   - Hints should not reveal actual password
+///   - Consider key rotation policies
+///
+/// Control Options:
+///   - dftactgrp(*no): Required for ILE and SQL
+///   - actgrp('NICKLITTEN'): Named activation group
+///   - option(*nodebugio): Disables debug I/O
+///   - option(*srcstmt): Includes source statements
+///   - datfmt(*ISO): ISO date format
+///
+/// Modification History:
+/// 1.0 2026-01-23 | Nick Litten | Initial creation
+/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 /TITLE Customer Data Encryption Example
-// GETENC-Get_Encryption_Data.pgm.sqlrpgle (fully /free)
-// This SQL RPGLE program demonstrates how to use SQL encryption functions.
-//
-// MODIFICATION HISTORY:
-// 2026.01.23 Nick Litten V1.0 Created
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
  option(*nodebugio:*srcstmt:*nounref)
  datfmt(*ISO) decedit('0.')

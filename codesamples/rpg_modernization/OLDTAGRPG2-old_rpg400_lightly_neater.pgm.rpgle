@@ -1,3 +1,4 @@
+      // ------------------------------------------------------------------------------
       // AUTHOR: NICK LITTEN                                       
       // SOME OLD SAMPLE CODE WRITTEN IN THE 1990S FOR RPG400 STYLE
       // WITH GOTO STATEMENTS AND SUBROUTINES. THIS CODE HAS BEEN
@@ -6,6 +7,8 @@
       // MODIFICATION HISTORY:
       // 2025.10.06 NJL PLAYED WITH AS PART OF A VIDEO RPG UPGRADE
       // https://www.nicklitten.com/course/old-rpg-with-goto-tag-and-subroutines-to-modern-rpgle-with-sub_procedures                                     
+      // ------------------------------------------------------------------------------
+
      FQTXTSRC   IF   E           K DISK    RENAME(QTXTSRC:RECTXT)   
                                                             
      DDATA             DS                                    

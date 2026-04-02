@@ -1,12 +1,12 @@
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # Rules.mk - Build rules for Subfile Examples
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # This file defines the build rules for various subfile examples showing
 # different styles and techniques.
 #
 # Target Release: V7R4M0
 # Activation Group: NICKLITTEN
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 # Default compilation settings for all modules and programs
 %.MODULE: private TGTRLS := V7R4M0
@@ -16,9 +16,9 @@
 %.PGM:    private OPTIMIZE := *FULL
 %.PGM:    private ACTGRP := NICKLITTEN
 
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # Object Dependencies
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 # NOOBDSPF Display File - Full load subfile with incrementing value
 NOOBDSPF.FILE: NOOBDSPF-Full_load_sfl_with_incrementing_value.dspf

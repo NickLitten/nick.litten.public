@@ -18,16 +18,16 @@ ctl-opt
      option(*nodebugio:*srcstmt:*nounref)
      copyright('USRPROFSRV | V.001 | User Profile Service');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Constants
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-c SQL_SUCCESS 0;
 dcl-c SQL_NO_DATA 100;
 dcl-c MAX_USERS 9999;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Data Structures - Exported Types
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // User profile information structure
 dcl-ds UserProfile_t qualified template;
@@ -47,11 +47,11 @@ dcl-ds UserList_t qualified template;
    users likeds(UserProfile_t) dim(MAX_USERS);
 end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: GetExpiringUsers
 // Purpose: Query database for users with expiring passwords
 // Returns: UserList_t structure with matching users
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc GetExpiringUsers export;
    dcl-pi *n likeds(UserList_t);
       warningDays int(10) const;
@@ -124,11 +124,11 @@ dcl-proc GetExpiringUsers export;
    return userList;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: FormatUserInfo
 // Purpose: Format user profile information for display/email
 // Returns: Formatted string with user details
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc FormatUserInfo export;
    dcl-pi *n varchar(200);
       user likeds(UserProfile_t) const;
@@ -176,11 +176,11 @@ dcl-proc FormatUserInfo export;
    return line;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: GetSystemName
 // Purpose: Retrieve the current system name
 // Returns: System name as character string
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc GetSystemName export;
    dcl-pi *n char(8);
    end-pi;
@@ -198,11 +198,11 @@ dcl-proc GetSystemName export;
    return systemName;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: ValidateWarningDays
 // Purpose: Validate the warning days parameter
 // Returns: *on if valid, *off if invalid
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc ValidateWarningDays export;
    dcl-pi *n ind;
       days int(10) const;

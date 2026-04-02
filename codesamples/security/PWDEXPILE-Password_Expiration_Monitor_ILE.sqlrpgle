@@ -24,9 +24,9 @@ ctl-opt
      bnddir('PWDMON')
      copyright('PWDEXPMON | V.002 | Password Expiration Monitor - ILE');
 
-//  -------------------------------------------
+// ------------------------------------------------------------------------------
 // | Prototypes for Service Program Procedures |
-//  -------------------------------------------
+// ------------------------------------------------------------------------------
 
 // User Profile Service prototypes
 dcl-pr GetExpiringUsers likeds(UserList_t);
@@ -116,9 +116,9 @@ dcl-c EMAIL_SUBJECT 'IBM i Password Expiration Warning';
 
 dcl-s warningDays int(10);
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Main Procedure
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc mainline;
    dcl-pi *n;
       parmWarningDays int(10) const options(*nopass);

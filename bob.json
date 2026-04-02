@@ -1,0 +1,373 @@
+{
+    "$schema": "https://raw.githubusercontent.com/RooVetGit/Roo-Code/main/schema/bob-config.schema.json",
+    "version": "1.0.0",
+    "description": "Bob configuration for IBM i code documentation and review standards",
+    "scan": {
+        "members": {
+            "include": [
+                "**/*.rpgle",
+                "**/*.sqlrpgle",
+                "**/*.clle",
+                "**/*.pgm.rpgle",
+                "**/*.pgm.sqlrpgle",
+                "**/*.pgm.clle",
+                "**/*.cmd",
+                "**/*.bnd",
+                "**/*.dspf",
+                "**/*.pf",
+                "**/*.table"
+            ],
+            "exclude": [
+                "**/node_modules/**",
+                "**/.git/**",
+                "**/.vscode/**",
+                "**/temp/**",
+                "**/*.log"
+            ],
+            "maxFileSize": "5MB",
+            "followSymlinks": false
+        },
+        "directories": {
+            "priority": [
+                "codesamples/",
+                "services/",
+                "binders/",
+                "includes/"
+            ],
+            "recursive": true
+        }
+    },
+    "templates": {
+        "apply": {
+            "rpgle": {
+                "style": "triple-slash",
+                "format": "///",
+                "position": "top",
+                "replaceExisting": true,
+                "sections": [
+                    "program_header",
+                    "description",
+                    "purpose",
+                    "features",
+                    "usage",
+                    "parameters",
+                    "dependencies",
+                    "control_options",
+                    "modification_history"
+                ],
+                "template": {
+                    "program_header": "/// Program: [PROGRAM_NAME] - [Brief Title]",
+                    "separator": "///",
+                    "description": "/// Description: [Detailed description of what the program does, its purpose,\n///              and how it fits into the larger system. Use multiple lines\n///              for clarity and readability.]",
+                    "purpose": "/// Purpose: Educational/Production example demonstrating:\n///   - [Key concept or feature 1]\n///   - [Key concept or feature 2]\n///   - [Key concept or feature 3]\n///   - [Additional concepts as needed]",
+                    "features": "/// Features:\n///   - [Feature 1 with brief explanation]\n///   - [Feature 2 with brief explanation]\n///   - [Feature 3 with brief explanation]\n///   - [Additional features as needed]",
+                    "usage": "/// Usage: [How to call/use the program]\n///        [Example: CALL PROGRAM PARM('value')]",
+                    "parameters": "/// Parameters: (if applicable)\n///   - param1: [Type] - [Description]\n///   - param2: [Type] - [Description]",
+                    "dependencies": "/// Dependencies: (if applicable)\n///   - [File/table/service program dependencies]\n///   - [External resources required]",
+                    "control_options": "/// Control Options: (if notable)\n///   - [option]: [Explanation of why this option is used]",
+                    "modification_history": "/// Modification History:\n/// [Version] [Date] | [Author] | [Description of changes]\n/// 2026-04-02 | Bob AI | Added comprehensive documentation"
+                }
+            },
+            "sqlrpgle": {
+                "style": "triple-slash",
+                "format": "///",
+                "position": "top",
+                "replaceExisting": true,
+                "sections": [
+                    "program_header",
+                    "description",
+                    "purpose",
+                    "features",
+                    "usage",
+                    "parameters",
+                    "sql_usage",
+                    "dependencies",
+                    "control_options",
+                    "modification_history"
+                ],
+                "template": {
+                    "program_header": "/// Program: [PROGRAM_NAME] - [Brief Title]",
+                    "separator": "///",
+                    "description": "/// Description: [Detailed description of what the program does, its purpose,\n///              and how it fits into the larger system. Use multiple lines\n///              for clarity and readability.]",
+                    "purpose": "/// Purpose: Educational/Production example demonstrating:\n///   - [Key concept or feature 1]\n///   - [Key concept or feature 2]\n///   - [Key concept or feature 3]\n///   - [Additional concepts as needed]",
+                    "features": "/// Features:\n///   - [Feature 1 with brief explanation]\n///   - [Feature 2 with brief explanation]\n///   - [Feature 3 with brief explanation]\n///   - [Additional features as needed]",
+                    "usage": "/// Usage: [How to call/use the program]\n///        [Example: CALL PROGRAM PARM('value')]",
+                    "parameters": "/// Parameters: (if applicable)\n///   - param1: [Type] - [Description]\n///   - param2: [Type] - [Description]",
+                    "sql_usage": "/// SQL Usage:\n///   - [Description of SQL operations performed]\n///   - [Tables/views accessed]",
+                    "dependencies": "/// Dependencies: (if applicable)\n///   - [File/table/service program dependencies]\n///   - [External resources required]",
+                    "control_options": "/// Control Options: (if notable)\n///   - [option]: [Explanation of why this option is used]",
+                    "modification_history": "/// Modification History:\n/// [Version] [Date] | [Author] | [Description of changes]\n/// 2026-04-02 | Bob AI | Added comprehensive documentation"
+                }
+            },
+            "clle": {
+                "style": "triple-slash",
+                "format": "///",
+                "position": "top",
+                "replaceExisting": true,
+                "sections": [
+                    "program_header",
+                    "description",
+                    "purpose",
+                    "features",
+                    "usage",
+                    "parameters",
+                    "dependencies",
+                    "modification_history"
+                ],
+                "template": {
+                    "program_header": "/// Program: [PROGRAM_NAME] - [Brief Title]",
+                    "separator": "///",
+                    "description": "/// Description: [Detailed description of what the program does, its purpose,\n///              and how it fits into the larger system. Use multiple lines\n///              for clarity and readability.]",
+                    "purpose": "/// Purpose: Educational/Production example demonstrating:\n///   - [Key concept or feature 1]\n///   - [Key concept or feature 2]\n///   - [Key concept or feature 3]\n///   - [Additional concepts as needed]",
+                    "features": "/// Features:\n///   - [Feature 1 with brief explanation]\n///   - [Feature 2 with brief explanation]\n///   - [Feature 3 with brief explanation]\n///   - [Additional features as needed]",
+                    "usage": "/// Usage: [How to call/use the program]\n///        [Example: CALL PROGRAM PARM('value')]",
+                    "parameters": "/// Parameters: (if applicable)\n///   - param1: [Type] - [Description]\n///   - param2: [Type] - [Description]",
+                    "dependencies": "/// Dependencies: (if applicable)\n///   - [File/table/service program dependencies]\n///   - [External resources required]",
+                    "modification_history": "/// Modification History:\n/// [Version] [Date] | [Author] | [Description of changes]\n/// 2026-04-02 | Bob AI | Added comprehensive documentation"
+                }
+            },
+            "procedures": {
+                "style": "triple-slash",
+                "format": "///",
+                "position": "before_declaration",
+                "sections": [
+                    "procedure_header",
+                    "purpose",
+                    "parameters",
+                    "returns",
+                    "example"
+                ],
+                "template": {
+                    "procedure_header": "/// Procedure: [PROCEDURE_NAME]",
+                    "separator": "///",
+                    "purpose": "/// Purpose: [Brief description of what this procedure does]",
+                    "parameters": "/// Parameters:\n///   - [param]: [Type] - [Description]",
+                    "returns": "/// Returns: [Type] - [Description of return value]",
+                    "example": "/// Example: [Usage example]"
+                }
+            }
+        },
+        "customTemplates": {
+            "service_program": {
+                "sections": [
+                    "header",
+                    "purpose",
+                    "exports",
+                    "dependencies",
+                    "usage",
+                    "history"
+                ]
+            },
+            "trigger_program": {
+                "sections": [
+                    "header",
+                    "purpose",
+                    "trigger_event",
+                    "affected_tables",
+                    "logic",
+                    "history"
+                ]
+            }
+        }
+    },
+    "comments": {
+        "missing": {
+            "action": "warn",
+            "autoInsert": true,
+            "template": "triple-slash",
+            "severity": "medium",
+            "requireApproval": true,
+            "generateFromCode": true,
+            "analyzeLogic": true
+        },
+        "outdated": {
+            "action": "flag",
+            "autoCorrect": false,
+            "detectCriteria": [
+                "code_signature_mismatch",
+                "parameter_count_mismatch",
+                "return_type_mismatch",
+                "stale_date"
+            ],
+            "severity": "high",
+            "requireReview": true
+        },
+        "incomplete": {
+            "action": "complete",
+            "autoInsert": true,
+            "missingSections": [
+                "description",
+                "purpose",
+                "features",
+                "parameters",
+                "usage"
+            ],
+            "severity": "low",
+            "requireApproval": false,
+            "generateFromCode": true
+        },
+        "quality": {
+            "minLength": 20,
+            "requireExamples": true,
+            "checkSpelling": false,
+            "enforceStyle": true,
+            "style": {
+                "format": "triple-slash",
+                "prefix": "///",
+                "separator": "-",
+                "lineLength": 80,
+                "indentation": "none",
+                "bulletCharacter": "-"
+            }
+        },
+        "replacement": {
+            "replaceExisting": true,
+            "preserveHistory": true,
+            "backupOriginal": false,
+            "matchPatterns": [
+                "^\\*{2,}.*",
+                "^//.*",
+                "^/\\*.*\\*/",
+                "^\\s*\\*.*"
+            ]
+        }
+    },
+    "autoInsert": {
+        "enabled": true,
+        "mode": "interactive",
+        "triggers": [
+            "file_save",
+            "manual_request",
+            "code_review"
+        ],
+        "rules": {
+            "newFiles": {
+                "autoInsert": true,
+                "template": "triple-slash-full",
+                "requireApproval": false,
+                "generateFromCode": true
+            },
+            "existingFiles": {
+                "autoInsert": true,
+                "template": "triple-slash-full",
+                "requireApproval": true,
+                "replaceExisting": true,
+                "generateFromCode": true,
+                "analyzeLogic": true
+            },
+            "procedures": {
+                "autoInsert": true,
+                "template": "triple-slash-procedure",
+                "requireApproval": false,
+                "generateFromCode": true
+            },
+            "subroutines": {
+                "autoInsert": true,
+                "template": "triple-slash-minimal",
+                "requireApproval": false,
+                "generateFromCode": true
+            }
+        },
+        "placement": {
+            "fileHeader": "line_1",
+            "procedureHeader": "before_declaration",
+            "inlineComments": "above_code",
+            "preserveExisting": false,
+            "replaceOldComments": true
+        },
+        "generation": {
+            "analyzeCodeLogic": true,
+            "extractPurpose": true,
+            "identifyFeatures": true,
+            "detectDependencies": true,
+            "inferParameters": true,
+            "generateExamples": true
+        }
+    },
+    "autoCorrect": {
+        "enabled": false,
+        "mode": "suggest",
+        "requireApproval": true,
+        "corrections": {
+            "formatting": {
+                "enabled": true,
+                "autoApply": false,
+                "fixes": [
+                    "indentation",
+                    "line_length",
+                    "spacing"
+                ]
+            },
+            "content": {
+                "enabled": true,
+                "autoApply": false,
+                "fixes": [
+                    "parameter_sync",
+                    "return_type_sync",
+                    "date_update"
+                ]
+            },
+            "style": {
+                "enabled": true,
+                "autoApply": false,
+                "fixes": [
+                    "capitalization",
+                    "punctuation",
+                    "consistency"
+                ]
+            }
+        },
+        "validation": {
+            "requireReview": true,
+            "showDiff": true,
+            "allowRollback": true
+        }
+    },
+    "standards": {
+        "reference": "codesamples/DOCUMENTATION_STANDARD.md",
+        "enforce": true,
+        "severity": "medium",
+        "required": {
+            "fileHeader": true,
+            "procedureComments": true,
+            "complexLogicComments": true,
+            "parameterDocumentation": true,
+            "returnValueDocumentation": true
+        },
+        "optional": {
+            "inlineComments": false,
+            "exampleCode": true,
+            "changeHistory": true,
+            "authorInfo": true
+        }
+    },
+    "review": {
+        "autoReview": true,
+        "checkComments": true,
+        "checkCompliance": true,
+        "criteria": {
+            "commentQuality": true,
+            "documentationCompleteness": true,
+            "standardsCompliance": true,
+            "codeClarity": true
+        },
+        "reporting": {
+            "format": "markdown",
+            "includeMetrics": true,
+            "generateSummary": true
+        }
+    },
+    "notifications": {
+        "missingComments": true,
+        "outdatedComments": true,
+        "standardsViolations": true,
+        "autoInsertions": true,
+        "autoCorrections": true
+    },
+    "metadata": {
+        "project": "IBM i Code Samples",
+        "maintainer": "Nick Litten",
+        "lastUpdated": "2026-04-02",
+        "documentationVersion": "1.0.0"
+    }
+}

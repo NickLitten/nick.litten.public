@@ -1,4 +1,4 @@
-**FREE
+**free
 
 // Program: SIMPLESFL3
 // Description: Demonstrates full-load subfile processing in modern RPGLE

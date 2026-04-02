@@ -33,4 +33,9 @@ CONVSRV.MODULE: CONVSRV-Conversion_Service.sqlrpgle
 CONVSRV.SRVPGM: CONVSRV.bnd CONVSRV.MODULE
 
 # CONVERT Program - EBCDIC to ASCII conversion using CONVSRV service program
-CONVERT.PGM: CONVERT-Convert_EBCDIC_to_ASCII.pgm.rpgle CONVSRV.SRVPGM
+CONVERT.PGM: CONVERT-Convert_EBCDIC_to_ASCII_with_SRVPGM.pgm.rpgle CONVSRV.SRVPGM
+
+# CONVERSION Programs - Various conversion examples
+C_ORIG.PGM:   CONVERSION-Original.pgm.rpg
+C_MODERN.PGM: CONVERSION-Modernized.pgm.rpgle
+C_IMPROV.PGM: CONVERSION-Modernized_Improved.pgm.rpgle

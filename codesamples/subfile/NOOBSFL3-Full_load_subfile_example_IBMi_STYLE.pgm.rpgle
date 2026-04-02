@@ -1,4 +1,4 @@
-**FREE
+**free
 // - Simple RPG Subfile Example using a full load of 9999 records
 // - This program is a simple example of how to load a subfile with
 //   9999 records. The subfile is loaded with a counter value that

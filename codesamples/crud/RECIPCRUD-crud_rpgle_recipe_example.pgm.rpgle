@@ -1,13 +1,62 @@
-**FREE
+**free
 
-// !!!!!!!!!!!!!!!!!!!!!!!!
-// !!! WORK IN PROGRESS !!!
-// !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-// SIMPCRUD - Simple CRUD Program for RECIPIE Management
-// Page-at-a-time subfile implementation with PageUp/PageDown support
-// Demonstrates proper subfile paging with 10 rows per page
+/// Program: RECIPCRUD - Recipe CRUD Example (WORK IN PROGRESS)
+///
+/// Description: Simple CRUD (Create, Read, Update, Delete) program for recipe
+///              management demonstrating page-at-a-time subfile implementation
+///              with proper PageUp/PageDown support. Loads and displays 10
+///              recipes per page with efficient database access and user-
+///              friendly navigation controls.
+///
+/// Purpose: Educational example demonstrating:
+///   - Page-at-a-time subfile loading technique
+///   - Efficient database pagination with SQL
+///   - PageUp/PageDown navigation handling
+///   - Record count tracking for paging logic
+///   - Subfile indicator management
+///   - Function key processing (F3, F5, F6, F12)
+///   - Option-based record selection
+///
+/// Features:
+///   - Displays 10 recipes per page in subfile
+///   - PageDown to view next page of recipes
+///   - PageUp to view previous page of recipes
+///   - F5=Refresh to reload current page
+///   - F6=Add New to create new recipe
+///   - Option 2=Change, 4=Delete, 5=Display
+///   - Tracks total record count for navigation
+///   - Maintains current page position
+///   - Automatic subfile clearing and reloading
+///
+/// Usage: CALL RECIPCRUD
+///        (Interactive - displays recipe management subfile)
+///
+/// Parameters: None
+///
+/// SQL Usage:
+///   - SELECT COUNT(*) for total record count
+///   - SELECT with OFFSET/FETCH for page-at-a-time loading
+///   - INSERT for new recipe creation
+///   - UPDATE for recipe modifications
+///   - DELETE for recipe removal
+///
+/// Dependencies:
+///   - Display file: SIMPCRUD (subfile display)
+///   - Table: RECIPIES (recipe data storage)
+///   - Record format: SFLREC (subfile record)
+///
+/// Control Options:
+///   - dftactgrp(*no): Required for modern RPG features
+///   - actgrp(*new): Creates new activation group per call
+///   - option(*nodebugio): Disables debug I/O
+///   - option(*srcstmt): Includes source statements in debug
+///
+/// Note: This program is currently under development. Some features may be
+///       incomplete or subject to change.
+///
+/// Modification History:
+/// 1.0 20xx-xx-xx | Nick Litten | Initial creation
+/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);
 

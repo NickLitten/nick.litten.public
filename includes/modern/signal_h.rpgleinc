@@ -97,7 +97,7 @@
 
           // --------------------------------------------------------
           //   sigset_t: signal set data structure
-          //   ===================================
+          //   -----------------------------------
           //   Note: There's not much point in trying to copy the
           //         way this is done in the ILE C header files,
           //         since RPG doesn't support integers that are

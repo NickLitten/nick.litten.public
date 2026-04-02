@@ -22,9 +22,9 @@ ctl-opt
 dcl-f SORTSFLPF disk usage(*input) keyed;
 dcl-f SORTSFL workstn SFILE(SFL01:RRN) indds(indicators);
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Indicator Data Structure for better readability
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-ds indicators;
    exit ind pos(3);
    columnClick ind pos(5);
@@ -34,9 +34,9 @@ dcl-ds indicators;
    sflEnd ind pos(33);
 end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Constants for maintainability
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-c MAX_SUBFILE_SIZE 9999;
 dcl-c SUBFILE_PAGE_SIZE 15;
 dcl-c SQL_SUCCESS 0;
@@ -62,39 +62,39 @@ dcl-c HEADER_ROW 2;
 dcl-c SQLSTATE_SUCCESS '00000';
 dcl-c SQLSTATE_NO_DATA '02000';
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Subfile control variables
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-s rrn zoned(4:0);
 dcl-s SortField char(10) inz(DEFAULT_SORT_FIELD);
 dcl-s SortOrder char(4) inz(SORT_ASCENDING);
 dcl-s LastSortField char(10) inz('');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // SQL statement building
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-s WhereClause varchar(1000) inz('');
 dcl-s SqlStmt varchar(2000) inz('');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Search criteria fields (initialized to prevent garbage values)
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-s srchdate zoned(8:0) inz(0);
 dcl-s srchtime zoned(6:0) inz(0);
 dcl-s srchuser char(10) inz('');
 dcl-s srchcmd char(10) inz('');
 dcl-s srchstat char(3) inz('');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Error handling and diagnostics
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-s ErrorOccurred ind inz(*off);
 dcl-s SqlState char(5);
 dcl-s ErrorMessage char(256) inz('');
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Main Program Logic
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // Initialize and display the subfile interface
 DisplaySubfile();
@@ -103,10 +103,10 @@ DisplaySubfile();
 *inlr = *on;
 return;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: ClearSubfile
 // Purpose: Clear all records from the subfile
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc ClearSubfile;
    sflClr = *on;
    write CTL01;
@@ -114,12 +114,12 @@ dcl-proc ClearSubfile;
    rrn = 0;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: BuildWhereClause
 // Purpose: Construct SQL WHERE clause based on search criteria
 // Returns: WhereClause variable populated with conditions
 // Notes: Uses parameterized approach to prevent SQL injection
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc BuildWhereClause;
    dcl-s conditions varchar(1000) inz('');
    dcl-s hasConditions ind inz(*off);
@@ -164,12 +164,12 @@ dcl-proc BuildWhereClause;
    endif;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: LoadSubfile
 // Purpose: Execute SQL query and populate subfile with results
 // Returns: Sets ErrorOccurred flag if SQL errors occur
 // Notes: Uses cursor for efficient data retrieval
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc LoadSubfile;
    dcl-s fetchCount int(10) inz(0);
    dcl-s sqlCode int(10);
@@ -250,11 +250,11 @@ dcl-proc LoadSubfile;
    endif;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: DisplaySubfile
 // Purpose: Main display loop - handles user interaction
 // Notes: Centralized control flow for better maintainability
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc DisplaySubfile;
    dcl-s firstDisplay ind inz(*on);
    
@@ -287,11 +287,11 @@ dcl-proc DisplaySubfile;
    enddo;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: HandleColumnClick
 // Purpose: Process column header clicks to change sort order
 // Notes: Uses cursor position to determine which column was clicked
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc HandleColumnClick;
    dcl-s newSortField char(10) inz('');
    
@@ -329,11 +329,11 @@ dcl-proc HandleColumnClick;
    endif;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: ToggleSortOrder
 // Purpose: Toggle between ascending and descending sort order
 // Notes: Maintains sort direction when clicking same column repeatedly
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc ToggleSortOrder;
    // If same field clicked, toggle sort direction
    if SortField = LastSortField;
@@ -350,12 +350,12 @@ dcl-proc ToggleSortOrder;
    LastSortField = SortField;
 end-proc;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // Procedure: LogError
 // Purpose: Centralized error logging for diagnostics
 // Parameters: errMsg - Error message to log
 // Notes: Can be enhanced to write to job log or error file
-// ============================================================================
+// ------------------------------------------------------------------------------
 dcl-proc LogError;
    dcl-pi *n;
       errMsg char(256) const;

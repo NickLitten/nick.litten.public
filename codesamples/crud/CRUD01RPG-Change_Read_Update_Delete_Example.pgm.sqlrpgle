@@ -1,21 +1,64 @@
 **free
 
-// !!!!!!!!!!!!!!!!!!!!!!!!
-// !!! WORK IN PROGRESS !!!
-// !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
-
-//
-// CRUD01RPG - Task Administrator with Subfile
-// This program demonstrates CRUD operations using modern RPGLE practices
-//
-// MODIFICATION HISTORY:
-// 2019.06.25 Nick Litten V1.0 Created
-// 2026.02.03 IBM Bob     V2.0 Modernized and improved
-//
+/// Program: CRUD01RPG - Task Administrator with Subfile (WORK IN PROGRESS)
+///
+/// Description: Comprehensive task management application demonstrating CRUD
+///              (Create, Read, Update, Delete) operations using modern RPGLE
+///              practices with subfile display. Provides a full-featured
+///              interface for managing tasks with validation, error handling,
+///              and user-friendly interaction patterns.
+///
+/// Purpose: Educational example demonstrating:
+///   - Complete CRUD operation implementation
+///   - Subfile programming with page-at-a-time loading
+///   - SQL embedded in RPGLE for database operations
+///   - Named constants for improved code readability
+///   - Indicator data structures for clean display file control
+///   - Input validation and error handling
+///   - Modal window patterns (confirm, message, delete, error)
+///
+/// Features:
+///   - Task list display in subfile format
+///   - Add new tasks with validation
+///   - Modify existing task details
+///   - Delete tasks with confirmation
+///   - View task details in read-only mode
+///   - Date range validation
+///   - Duplicate task ID detection
+///   - Page-at-a-time subfile loading (10 records per page)
+///   - Function key support (F3=Exit, F5=Refresh, F6=Add, F12=Cancel)
+///
+/// Usage: CALL CRUD01RPG
+///        (Interactive - displays task management subfile)
+///
+/// Parameters: None
+///
+/// SQL Usage:
+///   - SELECT for task retrieval and subfile population
+///   - INSERT for new task creation
+///   - UPDATE for task modifications
+///   - DELETE for task removal
+///   - Transaction control with commit/rollback
+///
+/// Dependencies:
+///   - Display file: CRUD01PNL (subfile and detail screens)
+///   - Table: CRUD01TBL (task data storage)
+///   - Include: information_data_structures.rpgleinc
+///
+/// Control Options:
+///   - main(mainline): Specifies main procedure entry point
+///   - dftactgrp(*no): Required for procedures and SQL
+///   - actgrp(*new): Creates new activation group per call
+///   - option(*nodebugio): Disables debug I/O
+///   - option(*srcstmt): Includes source statements in debug
+///
+/// Note: This program is currently under development. Some features may be
+///       incomplete or subject to change.
+///
+/// Modification History:
+/// 1.0 2019-06-25 | Nick Litten | Initial creation
+/// 2.0 2026-02-03 | IBM Bob | Modernized and improved
+/// 2.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt main(mainline) 
         copyright('| CRUD01RPG V2.0 - Improved') 
@@ -27,9 +70,9 @@ dcl-f CRUD01PNL workstn sfile(SFLTASK:subfileRRN) usropn infds(infds);
 
 /include 'information_data_structures.rpgleinc'
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // NAMED CONSTANTS - Replace magic values for better readability
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // Screen operation modes
 Dcl-C MODE_INSERT    'I';
@@ -58,9 +101,9 @@ Dcl-C NODATA_ON_SQL  '02';
 Dcl-C PERPAGE        10;
 Dcl-C MAX_RRN        9999;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // DISPLAY FILE INDICATORS - Using based data structure for clarity
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 Dcl-S ptrDisplayIndicators Pointer Inz(%Addr(*In));
 Dcl-Ds DisplayIndicators Based(ptrDisplayIndicators);
@@ -82,18 +125,18 @@ Dcl-Ds DisplayIndicators Based(ptrDisplayIndicators);
   IndErrors char(20) Pos(31);
 end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // SQL ERROR HANDLING - Improved access to SQLSTATE
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 Dcl-S pSqlstate Pointer Inz(%Addr(SQLState));
 Dcl-Ds Ds_SqlState based(pSqlstate);
   xSqlstate char(2);
 end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // DATA STRUCTURES
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // Task data for subfile population
 Dcl-Ds t_taskData qualified template;
@@ -109,9 +152,9 @@ end-ds;
 // Main task record - externally described
 Dcl-Ds taskRecord extname('CRUD01TBL') qualified end-ds;
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // GLOBAL VARIABLES
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 // Subfile management
 Dcl-S subfileRRN      int(5);
@@ -132,8 +175,10 @@ Dcl-S currentUser     char(10) inz(*user);
 
 
 
-
+// ------------------------------------------------------------------------------
 // MAIN PROCEDURE
+// ------------------------------------------------------------------------------
+
 Dcl-Proc mainline;
   Dcl-S screenMode char(1);
   

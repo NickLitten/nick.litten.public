@@ -1,4 +1,4 @@
-**FREE
+**free
 // Program: CONVERT
 // Description: Convert EBCDIC data to ASCII data using CCSID service program
 // Author: Nick Litten
@@ -38,9 +38,9 @@ enddo;
 return;
 
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Convert single record from EBCDIC to ASCII and write to output
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 dcl-proc convertAndWriteRecord;
   
   dcl-ds fileInRec extname('FILEIN') qualified end-ds;

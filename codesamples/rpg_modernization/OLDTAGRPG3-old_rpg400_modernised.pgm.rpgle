@@ -1,4 +1,5 @@
 **free
+// ------------------------------------------------------------------------------
 // author: nick litten               
 // some old sample code written in the 1990s for rpg400 style
 // with goto statements and subroutines. this code has been
@@ -7,6 +8,8 @@
 // modification history:
 // 2025.10.06 njl played with as part of a video rpg upgrade
 // https://www.nicklitten.com/course/old-rpg-with-goto-tag-and-subroutines-to-modern-rpgle-with-sub_procedures               
+// ------------------------------------------------------------------------------
+
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN') option(*srcstmt:*nodebugio);
 
 dcl-f qtxtsrc disk usage(*input) rename(qtxtsrc:rectxt);

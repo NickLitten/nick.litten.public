@@ -1,7 +1,9 @@
 **free
+// ------------------------------------------------------------------------------
 //  CH5TEXT: Example of creating/reading a text file in the IFS
 //   (From Chap 5)
 //  Modernized to Free-Form RPG by Nick Litten
+// ------------------------------------------------------------------------------
 
 ctl-opt DFTACTGRP(*NO) ACTGRP(*NEW) BNDDIR('QC2LE') BNDDIR('IFSTEXT');
 

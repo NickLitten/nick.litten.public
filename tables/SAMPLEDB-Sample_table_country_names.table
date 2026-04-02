@@ -1,9 +1,9 @@
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Table: SAMPLEDB
 -- Description: Sample table containing European country information
 -- Author: Nick Litten
 -- Created: 2026-02-06
--- ============================================================================
+-- ---------------------------------------------------------------------------
 DROP INDEX IDX_SAMPLEDB_NAME;
 DROP INDEX IDX_SAMPLEDB_REGION;
 DROP INDEX IDX_SAMPLEDB_EU;
@@ -46,9 +46,9 @@ CREATE OR REPLACE TABLE
     ) RCDFMT SAMPLEDBR;
 
 
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Indexes for performance optimization
--- ============================================================================
+-- ---------------------------------------------------------------------------
 CREATE INDEX IDX_SAMPLEDB_NAME ON SAMPLEDB (COUNTRY_NAME);
 
 CREATE INDEX IDX_SAMPLEDB_REGION ON SAMPLEDB (REGION);
@@ -56,9 +56,9 @@ CREATE INDEX IDX_SAMPLEDB_REGION ON SAMPLEDB (REGION);
 CREATE INDEX IDX_SAMPLEDB_EU ON SAMPLEDB (EU_MEMBER);
 
 
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Comments for documentation
--- ============================================================================
+-- ---------------------------------------------------------------------------
 COMMENT ON TABLE SAMPLEDB IS 'European countries reference table with geographic and demographic data';
 
 
@@ -80,9 +80,9 @@ COMMENT ON COLUMN SAMPLEDB.REGION IS 'European region (e.g., Western Europe, Eas
 COMMENT ON COLUMN SAMPLEDB.EU_MEMBER IS 'European Union membership flag: Y=Yes, N=No';
 
 
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Data Population: All European Countries
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Western Europe
 INSERT INTO
     SAMPLEDB (
@@ -1468,9 +1468,9 @@ VALUES
     );
 
 
--- ============================================================================
+-- ---------------------------------------------------------------------------
 -- Summary Statistics View
--- ============================================================================
+-- ---------------------------------------------------------------------------
 CREATE OR REPLACE VIEW
     V_SAMPLEDB_SUMMARY AS
 SELECT

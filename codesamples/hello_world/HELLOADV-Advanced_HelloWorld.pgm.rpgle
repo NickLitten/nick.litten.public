@@ -1,22 +1,48 @@
 **free
-// Advanced Helloworld with some different code concepts
-//
-// This program is a simple 'Hello World' style RPG program which has
-// been fleshed out to match my preferred standard RPG style.
-//
-// The control options define runtime setup for this program including
-// some notable options:
-// * main(mainline) - tell RPG not to add all the usual RPG Cycle info
-//                    but to execute the procedure called MAINLINE by
-//                    default.
-// * pgminfo(*pcml:*module) - this embeds the parameter information in
-//                    the compiled object so that processes like the 
-//                    integrated webserver can see the expected parms
-// * copyright - store version information against the program to make
-//                    version information available using DSPPGM
-//
-// Modification History:                                                 
-// V.000 2020.03.14 NJL Created                                                
+
+///
+/// Program: HELLOADV - Advanced Hello World
+///
+/// Description: Advanced Hello World demonstrating modern RPG best practices
+///              including main procedure pattern, interactive user input, and
+///              professional program structure. This example builds upon the
+///              basic Hello World to show real-world programming patterns.
+///
+/// Purpose: Educational example demonstrating:
+///   - Main procedure pattern (no RPG cycle overhead)
+///   - Interactive user prompts with validation
+///   - Local variable scoping within procedures
+///   - Professional code organization and structure
+///   - Copybook includes for standardization
+///
+/// Features:
+///   - Modern main(mainline) control option
+///   - Interactive DSPLY with user response validation
+///   - DO-UNTIL loop for input validation
+///   - Case-insensitive input handling with %UPPER
+///   - PCML embedding for web service integration
+///   - Version tracking via copyright option
+///
+/// Control Options:
+///   - main(mainline): Eliminates RPG cycle, uses main procedure
+///   - pgminfo(*pcml:*module): Embeds parameter metadata
+///   - copyright: Version info accessible via DSPPGM
+///
+/// Usage: CALL HELLOADV
+///
+/// User Interaction:
+///   1. Displays "Hello World!" message
+///   2. Prompts user to press Y to continue
+///   3. Validates input and repeats until Y is entered
+///
+/// Copybooks Required:
+///   - header.rpgleinc: Standard control options
+///
+/// Modification History:
+///   V.000 2020.03.14 | Nick Litten | Initial creation
+///   2026-04-02 | Bob AI | Added comprehensive documentation
+///
+
 /include 'header.rpgleinc'
 
 ctl-opt

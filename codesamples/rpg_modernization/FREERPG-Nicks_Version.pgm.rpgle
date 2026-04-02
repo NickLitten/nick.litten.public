@@ -1,4 +1,5 @@
 **free
+// ------------------------------------------------------------------------------
 // Submit file to remote system using CFT
 // rtn=1 if partner mismatch - return partner found
 // rtn=2 if record not found
@@ -8,7 +9,9 @@
 // 2007.10.03 njl converted to free format RPG    
 // 2018.05.25 njl played with as part of a Video RPG Upgrade Tour
 // https://www.nicklitten.com/course/forget-the-vscode-extensions-lets-upgrade-old-rpg-code-to-rpgle-manually/
-dcl-f QTXTSRC;
+// ------------------------------------------------------------------------------
+
+dcl-f QTXTSRC rename('QTXTSRC':'RECTXT');
 
 dcl-pi *n;
     file char(10);

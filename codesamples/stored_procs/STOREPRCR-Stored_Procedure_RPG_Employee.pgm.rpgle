@@ -1,12 +1,57 @@
 **free
-//
-// program name: storeprcr-stored_procedure_rpg_employee.pgm.sqlrpgle
-// description:  simple example of an rpg stored procedure to retrieve
-//               employee details based on employee id. 
-//
-// modification history:                                                 
-// v.000 2025.10.14 njl created for online example     
-//
+
+/// Program: STOREPRCR - Stored Procedure RPG Employee
+///
+/// Description: Simple RPG stored procedure that retrieves employee details
+///              based on employee ID using native record-level I/O. Designed
+///              to be called from SQL as a stored procedure, demonstrating
+///              traditional RPG file processing techniques within a modern
+///              stored procedure framework.
+///
+/// Purpose: Educational example demonstrating:
+///   - RPG stored procedure implementation using MAIN procedure
+///   - Native record-level I/O for database access
+///   - Sequential file reading with %EOF checking
+///   - Parameter passing (input employee ID, output name and city)
+///   - File opening and closing within procedure scope
+///   - Conditional logic for record matching
+///
+/// Features:
+///   - Uses MAIN procedure for stored procedure entry point
+///   - Accepts employee ID as input parameter
+///   - Returns employee name and city as output parameters
+///   - Reads EMPLO00001 file sequentially
+///   - Searches for matching employee ID
+///   - Returns 'no employee found' if ID not found
+///   - Properly opens and closes file resources
+///   - Uses PCML for external program interface
+///
+/// Usage: CALL STOREPRCR PARM(employee_id, employee_name, city)
+///        Or via SQL: CALL library.STOREPRCR(123, ?, ?)
+///
+/// Parameters:
+///   - emp_id_in: int(10) const - Employee ID to search for
+///   - emp_name_out: char(50) - Employee name (output)
+///   - city_out: char(30) - Employee city (output)
+///
+/// Dependencies:
+///   - File: NICKLITTEN/EMPLO00001 (employee master file)
+///   - Record format: EMPLREC
+///   - Fields: emp_id, emp_name, city
+///
+/// Control Options:
+///   - main(mainline): Specifies main procedure entry point
+///   - optimize(*full): Full optimization for performance
+///   - option(*nodebugio): Disables debug I/O
+///   - option(*srcstmt): Includes source statements in debug
+///   - option(*nounref): Flags unreferenced variables
+///   - pgminfo(*pcml:*module): Generates PCML for external calls
+///   - actgrp(*new): Creates new activation group per call
+///   - alwnull(*usrctl): Allows null-capable fields with user control
+///
+/// Modification History:
+/// 1.0 2025-10-14 | Nick Litten | Created for online example
+/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt
   main(mainline)

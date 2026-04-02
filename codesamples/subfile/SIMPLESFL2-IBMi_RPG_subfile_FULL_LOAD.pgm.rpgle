@@ -1,4 +1,4 @@
-**FREE
+**free
 //
 // Simple RPGLE program to demonstrate the use of subfile processing
 // in RPGLE.  This program will read a file and display the records in a su

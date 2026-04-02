@@ -1,4 +1,4 @@
-**FREE
+**free
 
 // Program: NOOBSFL4 - Full Load Subfile Example (IBM i BOB Style)
 // Purpose: Demonstrates modern RPG subfile handling with full load

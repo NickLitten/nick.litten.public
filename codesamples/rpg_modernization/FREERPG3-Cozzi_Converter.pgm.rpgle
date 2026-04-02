@@ -1,3 +1,4 @@
+      // ------------------------------------------------------------------------------
       // author: nick litten                                       
       // Submit file to remote system using CFT
       // rtn=1 if partner mismatch - return partner found          
@@ -8,8 +9,10 @@
       // 10.03.14 njl converted to free format RPG    
       // 25.05.07 njl played with as part of a Video RPG Upgrade Tour
       // https://www.nicklitten.com/course/visual-studio-code-extension-cozzi-rpg-iv-to-free/
+      // ------------------------------------------------------------------------------
+
       /free
-       dcl-f QTXTSRC;
+       dcl-f QTXTSRC rename('QTXTSRC':'RECTXT');
 
           // Calc Spec work field
           dcl-s FILE char(10);

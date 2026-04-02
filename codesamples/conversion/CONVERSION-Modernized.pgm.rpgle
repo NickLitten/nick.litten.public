@@ -1,8 +1,10 @@
-**FREE
+**free
+// ------------------------------------------------------------------------------
 // Program: CONVERSION
 // Description: Convert EBCDIC data to ASCII data (80-byte records)
 // Author: Nick Litten
 // Created: 2026-03-25
+// ------------------------------------------------------------------------------
 
 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);
 
@@ -26,7 +28,10 @@ dcl-pr Translate extpgm('QDCXLATE');
   table char(10) const;
 end-pr;
 
+// ------------------------------------------------------------------------------
 // Main Processing Logic
+// ------------------------------------------------------------------------------
+
 // Read and process each record until end of file
 read filein;
 dow not %eof(filein);
@@ -40,9 +45,9 @@ enddo;
 return;
 
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Convert single record from EBCDIC to ASCII and write to output
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 dcl-proc convertAndWriteRecord;
   
   dcl-ds fileInRec extname('FILEIN') qualified end-ds;
