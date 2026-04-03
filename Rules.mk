@@ -38,6 +38,9 @@
 # Default command settings
 # Subdirectories to process during build (order matters for dependencies)
 SUBDIRS = binders \
+          database \
+          programs \
+          modules \
           services \
           tables \
           templates \

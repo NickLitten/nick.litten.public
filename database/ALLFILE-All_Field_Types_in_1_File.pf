@@ -1,0 +1,95 @@
+      *=====================================================================
+      * Physical File: ALLFILE
+      * Description: Comprehensive example of all DDS field data types
+      * Author: Nick Litten
+      * Date: 2026-04-03
+      *=====================================================================
+     A          R ALLREC                    TEXT('All Field Types Record')
+      *
+      *---------------------------------------------------------------------
+      * CHARACTER FIELDS
+      *---------------------------------------------------------------------
+     A            CHARFLD        10A         TEXT('Character field 10 bytes')
+     A            CHARVAR        50A         VARLEN TEXT('Variable length char')
+     A            CHARFIX         1A         TEXT('Single character field')
+      *
+      *---------------------------------------------------------------------
+      * NUMERIC FIELDS - PACKED DECIMAL
+      *---------------------------------------------------------------------
+     A            PACKFLD         7P 2       TEXT('Packed decimal 7,2')
+     A            PACKINT         9P 0       TEXT('Packed integer 9,0')
+     A            PACKSMALL       3P 0       TEXT('Small packed 3,0')
+     A            PACKLARGE      15P 5       TEXT('Large packed 15,5')
+      *
+      *---------------------------------------------------------------------
+      * NUMERIC FIELDS - ZONED DECIMAL
+      *---------------------------------------------------------------------
+     A            ZONEDFLD        7S 2       TEXT('Zoned decimal 7,2')
+     A            ZONEDINT        5S 0       TEXT('Zoned integer 5,0')
+     A            ZONEDLRG       11S 3       TEXT('Large zoned 11,3')
+      *
+      *---------------------------------------------------------------------
+      * NUMERIC FIELDS - BINARY
+      *---------------------------------------------------------------------
+     A            BINFLD2         4B 0       TEXT('2-byte binary integer')
+     A            BINFLD4         9B 0       TEXT('4-byte binary integer')
+     A            BINFLD8        18B 0       TEXT('8-byte binary integer')
+      *
+      *---------------------------------------------------------------------
+      * NUMERIC FIELDS - FLOATING POINT
+      *---------------------------------------------------------------------
+     A            FLOATSGL        4F         TEXT('Single precision float')
+     A            FLOATDBL        8F         TEXT('Double precision float')
+      *
+      *---------------------------------------------------------------------
+      * DATE/TIME/TIMESTAMP FIELDS
+      *---------------------------------------------------------------------
+     A            DATEFLD         L         DATFMT(*ISO) TEXT('Date field ISO')
+     A            DATEUSA         L         DATFMT(*USA) TEXT('Date field USA')
+     A            DATEEUR         L         DATFMT(*EUR) TEXT('Date field EUR')
+     A            DATEJIS         L         DATFMT(*JIS) TEXT('Date field JIS')
+     A            DATEYMD         L         DATFMT(*YMD) TEXT('Date field YMD')
+     A            DATEMDY         L         DATFMT(*MDY) TEXT('Date field MDY')
+     A            DATEDMY         L         DATFMT(*DMY) TEXT('Date field DMY')
+     A            DATEJUL         L         DATFMT(*JUL) TEXT('Date field JUL')
+      *
+     A            TIMEFLD         T         TIMFMT(*ISO) TEXT('Time field ISO')
+     A            TIMEHMS         T         TIMFMT(*HMS) TEXT('Time field HMS')
+     A            TIMEUSA         T         TIMFMT(*USA) TEXT('Time field USA')
+     A            TIMEEUR         T         TIMFMT(*EUR) TEXT('Time field EUR')
+     A            TIMEJIS         T         TIMFMT(*JIS) TEXT('Time field JIS')
+      *
+     A            TSTAMPFLD       Z         TEXT('Timestamp field')
+      *
+      *---------------------------------------------------------------------
+      * HEXADECIMAL FIELD
+      *---------------------------------------------------------------------
+     A            HEXFLD         20A         TEXT('Hex field 20 bytes')
+      *
+      *---------------------------------------------------------------------
+      * GRAPHIC FIELDS (DBCS - Double Byte Character Set)
+      *---------------------------------------------------------------------
+     A            GRPHFLD        10G         TEXT('Graphic field 10 chars')
+     A            GRPHVAR        25G         VARLEN TEXT('Variable graphic')
+      *
+      *---------------------------------------------------------------------
+      * LARGE OBJECT FIELDS
+      *---------------------------------------------------------------------
+     A            BLOBFLD             BLOB(1048576) TEXT('Binary large object')
+     A            CLBFLD              CLOB(524288) TEXT('Character large obj')
+     A            DBLBFLD             DBCLOB(262144) TEXT('DBCS large object')
+      *
+      *---------------------------------------------------------------------
+      * DATALINK FIELD
+      *---------------------------------------------------------------------
+     A            DLINKFLD            DATALINK(200) TEXT('DataLink field')
+      *
+      *---------------------------------------------------------------------
+      * ROWID FIELD
+      *---------------------------------------------------------------------
+     A            ROWIDFLD            ROWID TEXT('Row ID field')
+      *
+      *---------------------------------------------------------------------
+      * KEY FIELDS
+      *---------------------------------------------------------------------
+     A          K CHARFLD

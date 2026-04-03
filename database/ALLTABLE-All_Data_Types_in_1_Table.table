@@ -1,0 +1,181 @@
+-- =====================================================================
+-- SQL Table: ALLTABLE
+-- Description: Comprehensive example of all IBM i SQL data types
+-- Author: Nick Litten
+-- Date: 2026-04-03
+-- =====================================================================
+
+CREATE OR REPLACE TABLE ALLTABLE (
+    -- -----------------------------------------------------------------
+    -- CHARACTER STRING TYPES
+    -- -----------------------------------------------------------------
+    CHAR_FLD        CHAR(10)            NOT NULL WITH DEFAULT,
+    VARCHAR_FLD     VARCHAR(100)        NOT NULL WITH DEFAULT,
+    CHAR_CCSID      CHAR(10) CCSID 37   NOT NULL WITH DEFAULT,
+    VARCHAR_CCSID   VARCHAR(100) CCSID 37 NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- GRAPHIC STRING TYPES (DBCS)
+    -- -----------------------------------------------------------------
+    GRAPHIC_FLD     GRAPHIC(10)         NOT NULL WITH DEFAULT,
+    VARGRAPHIC_FLD  VARGRAPHIC(50)      NOT NULL WITH DEFAULT,
+    GRAPHIC_CCSID   GRAPHIC(10) CCSID 13488 NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- BINARY STRING TYPES
+    -- -----------------------------------------------------------------
+    BINARY_FLD      BINARY(20)          NOT NULL WITH DEFAULT,
+    VARBINARY_FLD   VARBINARY(100)      NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- NUMERIC TYPES - EXACT
+    -- -----------------------------------------------------------------
+    SMALLINT_FLD    SMALLINT            NOT NULL WITH DEFAULT,
+    INTEGER_FLD     INTEGER             NOT NULL WITH DEFAULT,
+    INT_FLD         INT                 NOT NULL WITH DEFAULT,
+    BIGINT_FLD      BIGINT              NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- NUMERIC TYPES - DECIMAL
+    -- -----------------------------------------------------------------
+    DECIMAL_FLD     DECIMAL(15,5)       NOT NULL WITH DEFAULT,
+    DEC_FLD         DEC(9,2)            NOT NULL WITH DEFAULT,
+    NUMERIC_FLD     NUMERIC(11,3)       NOT NULL WITH DEFAULT,
+    NUM_FLD         NUM(7,2)            NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- NUMERIC TYPES - FLOATING POINT
+    -- -----------------------------------------------------------------
+    REAL_FLD        REAL                NOT NULL WITH DEFAULT,
+    FLOAT_FLD       FLOAT               NOT NULL WITH DEFAULT,
+    DOUBLE_FLD      DOUBLE              NOT NULL WITH DEFAULT,
+    DOUBLE_PREC     DOUBLE PRECISION    NOT NULL WITH DEFAULT,
+    DECFLOAT16_FLD  DECFLOAT(16)        NOT NULL WITH DEFAULT,
+    DECFLOAT34_FLD  DECFLOAT(34)        NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- DATE/TIME TYPES
+    -- -----------------------------------------------------------------
+    DATE_FLD        DATE                NOT NULL WITH DEFAULT,
+    TIME_FLD        TIME                NOT NULL WITH DEFAULT,
+    TIMESTAMP_FLD   TIMESTAMP           NOT NULL WITH DEFAULT,
+    TIMESTAMP_0     TIMESTAMP(0)        NOT NULL WITH DEFAULT,
+    TIMESTAMP_6     TIMESTAMP(6)        NOT NULL WITH DEFAULT,
+    TIMESTAMP_12    TIMESTAMP(12)       NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- LARGE OBJECT TYPES
+    -- -----------------------------------------------------------------
+    CLOB_FLD        CLOB(1M)            NOT NULL WITH DEFAULT,
+    CLOB_CCSID      CLOB(512K) CCSID 37 NOT NULL WITH DEFAULT,
+    BLOB_FLD        BLOB(1M)            NOT NULL WITH DEFAULT,
+    DBCLOB_FLD      DBCLOB(512K)        NOT NULL WITH DEFAULT,
+    DBCLOB_CCSID    DBCLOB(256K) CCSID 13488 NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- XML TYPE
+    -- -----------------------------------------------------------------
+    XML_FLD         XML                 NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- DATALINK TYPE
+    -- -----------------------------------------------------------------
+    DATALINK_FLD    DATALINK(200)       NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- ROWID TYPE
+    -- -----------------------------------------------------------------
+    ROWID_FLD       ROWID               NOT NULL GENERATED ALWAYS,
+    
+    -- -----------------------------------------------------------------
+    -- BOOLEAN TYPE (DB2 for i 7.3+)
+    -- -----------------------------------------------------------------
+    BOOLEAN_FLD     BOOLEAN             NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- IDENTITY COLUMN
+    -- -----------------------------------------------------------------
+    ID_FLD          INTEGER             NOT NULL 
+                                        GENERATED ALWAYS AS IDENTITY
+                                        (START WITH 1 INCREMENT BY 1),
+    
+    -- -----------------------------------------------------------------
+    -- GENERATED COLUMNS
+    -- -----------------------------------------------------------------
+    GENERATED_FLD   INTEGER             GENERATED ALWAYS AS 
+                                        (SMALLINT_FLD + INTEGER_FLD),
+    
+    -- -----------------------------------------------------------------
+    -- ARRAY TYPE (DB2 for i 7.1+)
+    -- -----------------------------------------------------------------
+    ARRAY_FLD       INTEGER ARRAY[10]   NOT NULL WITH DEFAULT,
+    
+    -- -----------------------------------------------------------------
+    -- PRIMARY KEY
+    -- -----------------------------------------------------------------
+    PRIMARY KEY (ID_FLD)
+);
+
+-- =====================================================================
+-- Add column comments for documentation
+-- =====================================================================
+LABEL ON COLUMN ALLTABLE (
+    CHAR_FLD        IS 'Fixed-length character field',
+    VARCHAR_FLD     IS 'Variable-length character field',
+    CHAR_CCSID      IS 'Character with CCSID',
+    VARCHAR_CCSID   IS 'Variable char with CCSID',
+    GRAPHIC_FLD     IS 'Fixed-length graphic (DBCS)',
+    VARGRAPHIC_FLD  IS 'Variable-length graphic',
+    GRAPHIC_CCSID   IS 'Graphic with CCSID',
+    BINARY_FLD      IS 'Fixed-length binary',
+    VARBINARY_FLD   IS 'Variable-length binary',
+    SMALLINT_FLD    IS '2-byte integer (-32768 to 32767)',
+    INTEGER_FLD     IS '4-byte integer',
+    INT_FLD         IS '4-byte integer (alias)',
+    BIGINT_FLD      IS '8-byte integer',
+    DECIMAL_FLD     IS 'Decimal 15 digits, 5 decimal',
+    DEC_FLD         IS 'Decimal 9 digits, 2 decimal',
+    NUMERIC_FLD     IS 'Numeric 11 digits, 3 decimal',
+    NUM_FLD         IS 'Numeric 7 digits, 2 decimal',
+    REAL_FLD        IS 'Single precision float',
+    FLOAT_FLD       IS 'Double precision float',
+    DOUBLE_FLD      IS 'Double precision float',
+    DOUBLE_PREC     IS 'Double precision float',
+    DECFLOAT16_FLD  IS 'Decimal float 16 digits',
+    DECFLOAT34_FLD  IS 'Decimal float 34 digits',
+    DATE_FLD        IS 'Date field',
+    TIME_FLD        IS 'Time field',
+    TIMESTAMP_FLD   IS 'Timestamp default precision',
+    TIMESTAMP_0     IS 'Timestamp 0 fractional seconds',
+    TIMESTAMP_6     IS 'Timestamp 6 fractional seconds',
+    TIMESTAMP_12    IS 'Timestamp 12 fractional seconds',
+    CLOB_FLD        IS 'Character large object 1MB',
+    CLOB_CCSID      IS 'CLOB with CCSID 512KB',
+    BLOB_FLD        IS 'Binary large object 1MB',
+    DBCLOB_FLD      IS 'DBCS large object 512KB',
+    DBCLOB_CCSID    IS 'DBCLOB with CCSID 256KB',
+    XML_FLD         IS 'XML document field',
+    DATALINK_FLD    IS 'External file reference',
+    ROWID_FLD       IS 'Unique row identifier',
+    BOOLEAN_FLD     IS 'Boolean true/false',
+    ID_FLD          IS 'Auto-increment identity',
+    GENERATED_FLD   IS 'Computed column',
+    ARRAY_FLD       IS 'Integer array 10 elements'
+);
+
+-- =====================================================================
+-- Add table comment
+-- =====================================================================
+LABEL ON TABLE ALLTABLE IS 'Comprehensive IBM i SQL data types';
+
+-- =====================================================================
+-- Create indexes for performance
+-- =====================================================================
+CREATE INDEX ALLTABLE_IDX1 ON ALLTABLE (CHAR_FLD);
+CREATE INDEX ALLTABLE_IDX2 ON ALLTABLE (DATE_FLD);
+CREATE INDEX ALLTABLE_IDX3 ON ALLTABLE (INTEGER_FLD);
+
+-- =====================================================================
+-- Grant permissions (adjust as needed)
+-- =====================================================================
+GRANT ALL ON ALLTABLE TO PUBLIC;
