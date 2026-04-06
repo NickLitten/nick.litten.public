@@ -1,27 +1,37 @@
-/**************************************************************/
-/**************************************************************/
-/* WIP WIP WORK IN PROGRESS WIP WIP WIP                       */
-/**************************************************************/
-/**************************************************************/
-
-
-
-
-/* Program: LISTLIBSIMP - Simple Library Inventory            */
-/* Purpose: List all libraries, call QLIRLIBD for each, and   */
-/*          export results to CSV file in IFS                 */
-/* Author:  Nick Litten                                       */
-/* Date:    2026-02-19                                        */
-/*                                                            */
-/* Description:                                               */
-/*   This program demonstrates a streamlined approach to:     */
-/*   1. Query all libraries using QSYS2.SYSSCHEMAS            */
-/*   2. Call QLIRLIBD API for each library to get statistics  */
-/*   3. Store results in a temporary table                    */
-/*   4. Export to CSV file using CPYTOIMPF                    */
-/*                                                            */
-/* Output: /home/libinventory.csv                             */
-/*   Columns: Library Name, Number of Objects, Library Size   */
+/* ------------------------------------------------------------ */
+/* LSTLIBSIMP - List Libraries Simply                           */
+/* ------------------------------------------------------------ */
+/* Program.......... LSTLIBSIMP                                 */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Simple library inventory program that      */
+/*                   lists all libraries, calls QLIRLIBD API   */
+/*                   for each to get statistics, and exports   */
+/*                   results to CSV file in IFS.               */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/LSTLIBSIMP)           */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(LSTLIBSIMP)                         */
+/* -------------------------------------------------------------*/
+/* Description:                                                 */
+/*   This program demonstrates a streamlined approach to:       */
+/*   1. Query all libraries using QSYS2.SYSSCHEMAS              */
+/*   2. Call QLIRLIBD API for each library to get statistics    */
+/*   3. Store results in a temporary table                      */
+/*   4. Export to CSV file using CPYTOIMPF                      */
+/* -------------------------------------------------------------*/
+/* Output: /home/libinventory.csv                               */
+/*   Columns: Library Name, Number of Objects, Library Size     */
+/* -------------------------------------------------------------*/
+/* STATUS: WORK IN PROGRESS                                     */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2026.02.19 V01 Initial creation (WIP)             */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
  
 PGM
 

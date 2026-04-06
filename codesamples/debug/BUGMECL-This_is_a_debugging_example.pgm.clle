@@ -1,15 +1,29 @@
-/* --------------------------------------------------------- */
-/* SIMPLE CLLE MODULE CALLING AN ILE PROGRAM FOR DEBUG       */
-/* --------------------------------------------------------- */
-/* THIS RECEIVES A 10 CHARACTER INPUT PARAMETER, WHICH IS    */
-/* DEFINED IN THE 'INCLUDE.CLLEINC' COPYBOOK. THIS COPYBOOK  */
-/* LOCATION IS DEFINED IN THE "INCLUDE PATHS" SECTION OF     */
-/* VS CODE FOR IBM I - PROJECT EXPLORER                      */
-/* THIS WILL THEN APPEND THE TEXT '(CLMODULE)' AND RETURN IT */
-/* --------------------------------------------------------- */
-/* AUTHOR: NICK@NICKLITTEN.COM                               */
-/* DATE:   NOVEMBER 25TH 2024                                */
-/* --------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* BUGMECL - Debugging Example CL Program                       */
+/* ------------------------------------------------------------ */
+/* Program.......... BUGMECL                                    */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. BUGME                                      */
+/* Function......... Simple CLLE program for debugging          */
+/*                   demonstration. Receives a 100 character    */
+/*                   input parameter, modifies it, and calls    */
+/*                   BUGMERPG ILE program to demonstrate        */
+/*                   debugging across CL and RPG programs.      */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/BUGMECL)              */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(BUGMECL)                            */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &DEBUGPARM - 100 character debug parameter                 */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2024.11.25 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM PARM(&DEBUGPARM)
 

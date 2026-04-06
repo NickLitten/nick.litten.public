@@ -1,24 +1,36 @@
-/******************************************************************************/
-/* Program: EMLOUTQ - Email Output Queue Spooled Files                       */
-/* Description: Generates a list of all spool files in an output queue and   */
-/*              emails them as PDF or TXT attachments                         */
-/*                                                                            */
-/* Note: WRKOUTQ does not have an OUTPUT(*OUTFILE) option, so this program   */
-/*       uses APIs to process all spooled files from a specific OUTQ         */
-/*                                                                            */
-/* Parameters:                                                                */
-/*   &OUTQPARM  - Output queue name and library (20 chars)                   */
-/*   &IFS_FLR   - IFS folder for temporary PDF storage                       */
-/*   &EMAIL     - Email recipient address                                    */
-/*   &SUBJECT   - Email subject line                                         */
-/*   &TYPE      - Attachment format (*PDF or *TXT)                           */
-/*   &IGNOREHLD - Ignore held spooled files (*YES/*NO)                       */
-/*   &DELETE    - Delete spooled files after emailing (*YES/*NO)             */
-/*                                                                            */
-/* Author: Nick Litten                                                        */
-/* Created: October 4th 2017                                                  */
-/* Modified: May 7th 2021 - Fix 20 char fields to ensure blanks not truncated*/
-/******************************************************************************/
+/* ------------------------------------------------------------ */
+/* EMLOUTQ - Email Output Queue Spooled Files                   */
+/* ------------------------------------------------------------ */
+/* Program.......... EMLOUTQ                                    */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. EMLOUTQ                                    */
+/* Function......... Generates a list of all spool files in an  */
+/*                   output queue and emails them as PDF or TXT */
+/*                   attachments. Uses APIs to process all      */
+/*                   spooled files from a specific OUTQ since   */
+/*                   WRKOUTQ does not have OUTPUT(*OUTFILE).    */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/EMLOUTQ)              */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(EMLOUTQ)                            */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &OUTQPARM  - Output queue name and library (20 chars)      */
+/*   &IFS_FLR   - IFS folder for temporary PDF storage          */
+/*   &EMAIL     - Email recipient address                       */
+/*   &SUBJECT   - Email subject line                            */
+/*   &TYPE      - Attachment format (*PDF or *TXT)              */
+/*   &IGNOREHLD - Ignore held spooled files (*YES/*NO)          */
+/*   &DELETE    - Delete spooled files after emailing (*YES/*NO)*/
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2017.10.04 V01 Initial creation                   */
+/* NickLitten 2021.05.07 V02 Fix 20 char field truncation      */
+/* NickLitten 2026.04.04 V03 Standardized header block          */
+/* ------------------------------------------------------------ */
 
              PGM        PARM(&OUTQPARM &IFS_FLR &EMAIL &SUBJECT &TYPE +
                           &IGNOREHLD &DELETE)

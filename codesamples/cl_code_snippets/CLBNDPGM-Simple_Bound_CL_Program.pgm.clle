@@ -1,14 +1,27 @@
-/* --------------------------------------------------------- */
-/* Simple CLLE Bound Program                                 */
-/* --------------------------------------------------------- */
-/* This receives a 20 character input parameter, which is    */
-/* defined in the 'include.clleinc' copybook. This copybook  */
-/* location is defined in the "include paths" section of     */
-/* VS Code for IBM i - Project Explorer                      */
-/* --------------------------------------------------------- */
-/* Author: nick@nicklitten.com                               */
-/* Date:   November 25th 2024                                */
-/* --------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* CLBNDPGM - Simple Bound CL Program                           */
+/* ------------------------------------------------------------ */
+/* Program.......... CLBNDPGM                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Simple CLLE bound program that receives a  */
+/*                   20 character input parameter defined in    */
+/*                   'header.clleinc' copybook and sends it as  */
+/*                   a completion message.                      */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/CLBNDPGM)             */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(CLBNDPGM)                           */
+/* Note: Copybook location defined in "Include Paths" section   */
+/*       of VS Code for IBM i - Project Explorer                */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2024.11.25 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM PARM(&MSG)
 

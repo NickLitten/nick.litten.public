@@ -1,10 +1,35 @@
-/* --------------------------------------------------------- */
-/* Simple CLLE Bound Program to ask/answer a question        */
-/* --------------------------------------------------------- */
-/* Author: nick@nicklitten.com                               */
-/* Date:   February 25th 2025                                */
-/* Updated: February 5th 2026 - Enhanced with error handling */
-/* --------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* IASPLOOP - DOU Question and Answer CL Example                */
+/* ------------------------------------------------------------ */
+/* Program.......... IASPLOOP                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Interactive CL program using DOUNTIL loop  */
+/*                   to prompt user for IASP selection with     */
+/*                   enhanced error handling and retry logic.   */
+/*                   Demonstrates robust user interaction with  */
+/*                   SNDUSRMSG, input validation, and ASP group */
+/*                   management with SETASPGRP command.         */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/IASPLOOP)             */
+/*                   SRCFILE(library/QCLLESRC) SRCMBR(IASPLOOP) */
+/* -------------------------------------------------------------*/
+/* Purpose: Educational example demonstrating:                  */
+/*   - DOUNTIL loop for user interaction                        */
+/*   - Retry counter to prevent infinite loops                  */
+/*   - Enhanced error handling with MONMSG                      */
+/*   - Case-insensitive input with %UPPER function              */
+/*   - ASP group switching with SETASPGRP                       */
+/*   - Comprehensive error messages                             */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2025.02.25 V01 Initial creation                   */
+/* NickLitten 2026.02.05 V02 Enhanced with error handling       */
+/* NickLitten 2026.04.04 V03 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM
 

@@ -1,3 +1,27 @@
+/* ------------------------------------------------------------ */
+/* SIMPIMPF - Simple Import File Example                        */
+/* ------------------------------------------------------------ */
+/* Program.......... SIMPIMPF                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Simple example demonstrating how to import */
+/*                   flat files and CSV files from IFS into     */
+/*                   database tables using CPYFRMIMPF command.  */
+/*                   Creates tables if they don't exist and     */
+/*                   imports data with proper formatting.       */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/SIMPIMPF)             */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(SIMPIMPF)                           */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2025.02.26 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
+
 PGM
 
 clrpfm nicklitten/flatfile

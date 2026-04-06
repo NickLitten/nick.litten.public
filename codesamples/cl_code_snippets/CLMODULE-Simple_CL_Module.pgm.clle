@@ -1,15 +1,28 @@
-/* --------------------------------------------------------- */
-/* SIMPLE CLLE MODULE TO BE USED IN ILE PROGRAM              */
-/* --------------------------------------------------------- */
-/* THIS RECEIVES A 100 CHARACTER INPUT PARAMETER, WHICH IS   */
-/* DEFINED IN THE 'INCLUDE.CLLEINC' COPYBOOK. THIS COPYBOOK  */
-/* LOCATION IS DEFINED IN THE "INCLUDE PATHS" SECTION OF     */
-/* VS CODE FOR IBM I - PROJECT EXPLORER                      */
-/* THIS WILL THEN APPEND THE TEXT '(CLMODULE)' AND RETURN IT */
-/* --------------------------------------------------------- */
-/* AUTHOR: NICK@NICKLITTEN.COM                               */
-/* DATE:   NOVEMBER 25TH 2024                                */
-/* --------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* CLMODULE - Simple CL Module                                  */
+/* ------------------------------------------------------------ */
+/* Program.......... CLMODULE                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. ILE programs                               */
+/* Calling Command.. *NONE                                      */
+/* Function......... Simple CLLE module to be used in ILE       */
+/*                   programs. Receives a 100 character input   */
+/*                   parameter defined in 'header.clleinc'      */
+/*                   copybook and appends text to demonstrate   */
+/*                   ILE module functionality.                  */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTCLMOD MODULE(library/CLMODULE)          */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(CLMODULE)                           */
+/* Note: Copybook location defined in "Include Paths" section   */
+/*       of VS Code for IBM i - Project Explorer                */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2024.11.25 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM &MSG
 

@@ -1,7 +1,29 @@
-/* Program: MYSQLCTL - MariaDB/MySQL Service Control                       */
-/* Purpose: Start, stop, or check status of MySQL/MariaDB database service */
-/* Author:  Nick Litten                                                    */
-/* Date:    2026-03-09                                                     */
+/* ------------------------------------------------------------ */
+/* MYSQLCTL - MariaDB/MySQL Service Control                     */
+/* ------------------------------------------------------------ */
+/* Program.......... MYSQLCTL                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. MYSQLCTL                                   */
+/* Function......... Start, stop, or check status of           */
+/*                   MySQL/MariaDB database service using       */
+/*                   systemctl commands via QSH. Provides       */
+/*                   comprehensive error handling and status    */
+/*                   verification.                              */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/MYSQLCTL)             */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(MYSQLCTL)                           */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &ACTION - Action to perform (START/STOP)                   */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2026.03.09 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM PARM(&ACTION)
 

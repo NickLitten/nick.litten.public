@@ -1,17 +1,28 @@
-/* ----------------------------------------------------------- */
-/* SIMPIMPFV2 - Simple Import File Example - CLLE version      */
-/* ----------------------------------------------------------- */
-/* Program.......... SIMPIMPFV2                                */
-/* Author........... nick@nicklitten.com                       */
-/* Calling Program.. *NONE                                     */
-/* Calling Command.. *NONE                                     */
-/* Function......... Enhanced version of SIMPIMPF, tidied to   */
-/*                  my preferred CL template style             */
-/* ----------------------------------------------------------- */
-/* Modification History:                                       */
-/* Author      Date       Description                          */
-/* NickLitten  2025.02.26 V01 Created                          */
-/* ----------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* SIMPIMPFV2 - Simple Import File Example Enhanced             */
+/* ------------------------------------------------------------ */
+/* Program.......... SIMPIMPFV2                                 */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Enhanced version of SIMPIMPF using         */
+/*                   preferred CL template style with proper    */
+/*                   error handling, subroutines, and crash     */
+/*                   recovery. Demonstrates importing flat      */
+/*                   files and CSV files from IFS into database */
+/*                   tables using CPYFRMIMPF command.           */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/SIMPIMPFV2)           */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(SIMPIMPFV2)                         */
+/*                   DFTACTGRP(*NO) ACTGRP(*CALLER)             */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2025.02.26 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 PGM
 
 DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)

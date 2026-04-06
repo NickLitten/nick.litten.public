@@ -1,43 +1,60 @@
-/// Program: UPDIASP - Update IASP Job Descriptions
-///
-/// Description: Scans all job descriptions in user libraries (excluding system
-///              libraries starting with Q or #) and updates the INLASPGRP
-///              parameter from *NONE to ASP1. Uses SQL to query job descriptions
-///              and CL commands to perform updates with comprehensive error
-///              handling and statistics tracking.
-///
-/// Purpose: Production utility demonstrating:
-///   - SQL-based object querying using QSYS2.OBJECT_STATISTICS
-///   - Dynamic job description updates via CHGJOBD command
-///   - Comprehensive error handling with MONMSG
-///   - Statistics tracking (updated count, error count)
-///   - System library filtering logic
-///
-/// Features:
-///   - Creates temporary work file for job description list
-///   - Filters out system libraries (Q* and #*)
-///   - Updates INLASPGRP parameter to ASP1
-///   - Tracks successful updates and errors
-///   - Sends informational and completion messages
-///   - Handles SQL and CL command errors gracefully
-///
-/// Usage: CALL UPDIASP
-///        (No parameters required)
-///
-/// Parameters: None
-///
-/// Dependencies:
-///   - Library NICKLITTEN for temporary work file JOBDLIST
-///   - QSYS2.OBJECT_STATISTICS table function
-///   - Authority to change job descriptions
-///   - Authority to create/drop tables in NICKLITTEN library
-///
-/// WARNING: This program will update ALL job descriptions in user libraries
-///          where INLASPGRP is currently *NONE. Review carefully before use.
-///
-/// Modification History:
-/// 1.0 2026-02-23 | Nick Litten | Initial creation
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/* ------------------------------------------------------------ */
+/* UPDIASP - Update IASP Job Descriptions                       */
+/* ------------------------------------------------------------ */
+/* Program.......... UPDIASP                                    */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Scans all job descriptions in user         */
+/*                   libraries (excluding system libraries      */
+/*                   starting with Q or #) and updates the      */
+/*                   INLASPGRP parameter from *NONE to ASP1.    */
+/*                   Uses SQL to query job descriptions and CL  */
+/*                   commands to perform updates with           */
+/*                   comprehensive error handling and           */
+/*                   statistics tracking.                       */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/UPDIASP)              */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(UPDIASP)                            */
+/* -------------------------------------------------------------*/
+/* Purpose: Production utility demonstrating:                   */
+/*   - SQL-based object querying using QSYS2.OBJECT_STATISTICS  */
+/*   - Dynamic job description updates via CHGJOBD command      */
+/*   - Comprehensive error handling with MONMSG                 */
+/*   - Statistics tracking (updated count, error count)         */
+/*   - System library filtering logic                           */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - Creates temporary work file for job description list     */
+/*   - Filters out system libraries (Q* and #*)                 */
+/*   - Updates INLASPGRP parameter to ASP1                      */
+/*   - Tracks successful updates and errors                     */
+/*   - Sends informational and completion messages              */
+/*   - Handles SQL and CL command errors gracefully             */
+/* -------------------------------------------------------------*/
+/* Usage: CALL UPDIASP                                          */
+/*        (No parameters required)                              */
+/* -------------------------------------------------------------*/
+/* Parameters: None                                             */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - Library NICKLITTEN for temporary work file JOBDLIST      */
+/*   - QSYS2.OBJECT_STATISTICS table function                   */
+/*   - Authority to change job descriptions                     */
+/*   - Authority to create/drop tables in NICKLITTEN library    */
+/* -------------------------------------------------------------*/
+/* WARNING: This program will update ALL job descriptions in    */
+/*          user libraries where INLASPGRP is currently *NONE.  */
+/*          Review carefully before use.                        */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2026.02.23 V01 Initial creation                   */
+/* Bob AI     2026.04.02 V02 Added comprehensive documentation  */
+/* NickLitten 2026.04.04 V03 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM
 

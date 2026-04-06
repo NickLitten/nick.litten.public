@@ -42,6 +42,5 @@ SUBDIRS = binders \
           programs \
           modules \
           services \
-          tables \
           templates \
           codesamples

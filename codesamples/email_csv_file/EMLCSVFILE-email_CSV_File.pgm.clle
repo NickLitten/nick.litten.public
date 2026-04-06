@@ -1,20 +1,33 @@
-/* --------------------------------------------------------- */
-/*                                                           */
-/* EMLCSVFILE *CLLE - called by EMLCSVFILE *CMD              */
-/*                                                           */
-/* This is a very simple example Control Language Program    */
-/* that will recieve a file, email address, subject and body */
-/* and attach the file (as a CSV spreasdheet) and email it   */
-/*                                                           */
-/* NOTE: Minimal error handling to show simple code example  */
-/*                                                           */
-/* CRTBNDCL PGM(EMLCSVFILE) SRCFILE(LITTENN/QCLLESRC)        */
-/* SRCMBR(EMLCSVFILE)                                        */
-/*                                                           */
-/* --------------------------------------------------------- */
-/* Modification History                                      */
-/* NJL01 Nick Litten 04/01/2022 Created                      */
-/* --------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* EMLCSVFILE - Email CSV File                                  */
+/* ------------------------------------------------------------ */
+/* Program.......... EMLCSVFILE                                 */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. EMLCSVFILE                                 */
+/* Function......... Simple example Control Language Program    */
+/*                   that receives a file, email address,       */
+/*                   subject and body, then attaches the file   */
+/*                   as a CSV spreadsheet and emails it.        */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/EMLCSVFILE)           */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(EMLCSVFILE)                         */
+/* -------------------------------------------------------------*/
+/* Note: Minimal error handling to show simple code example     */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &DATAPARM - File name and library (20 chars)               */
+/*   &EML      - Email recipient address (255 chars)            */
+/*   &SUBJECT  - Email subject line (100 chars)                 */
+/*   &BODY     - Email body text (400 chars)                    */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2022.04.01 V01 Initial creation                   */
+/* NickLitten 2026.04.04 V02 Standardized header block          */
+/* ------------------------------------------------------------ */
 
 PGM PARM(&DATAPARM &EML &SUBJECT &BODY)
 

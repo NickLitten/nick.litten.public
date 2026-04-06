@@ -1,25 +1,36 @@
-/* ------------------------------------------------------------------------------- */
-/* Program Name: READDIR - Read Directory with QSHELL                              */
-/* Description:  List and process files in an IFS directory using QSHELL           */
-/*                                                                                 */
-/* Function:     - Validates IFS directory existence and access                    */
-/*               - Lists files matching filter pattern using QSHELL                */
-/*               - Processes each file in the directory                            */
-/*               - Restores original directory on completion                       */
-/*                                                                                 */
-/* Parameters:   &DIR    - IFS directory path (CHAR 255)                           */
-/*               &FILTER - File filter pattern (CHAR 30) e.g., *.CSV               */
-/*                                                                                 */
-/* Compile:      1. CRTPF FILE(QTEMP/READ_DIRF) RCDLEN(1000)                       */
-/*               2. CRTBNDCL PGM(library/READDIR)                                  */
-/*                  SRCFILE(library/QCLLESRC) SRCMBR(READDIR)                      */
-/*                                                                                 */
-/* Author:       Nick Litten                                                       */
-/* Created:      2026-02-09                                                        */
-/* Modified:     2026-02-10 - Added comprehensive documentation                    */
-/*                                                                                 */
-/* https://www.nicklitten.com/course/list-all-files-in-an-ifs-folder-with-qshell   */
-/* ------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+/* READDIR - Read Directory with QSHELL                         */
+/* ------------------------------------------------------------ */
+/* Program.......... READDIR                                    */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. READDIR                                    */
+/* Function......... List and process files in an IFS directory */
+/*                   using QSHELL. Validates IFS directory      */
+/*                   existence and access, lists files matching */
+/*                   filter pattern, processes each file, and   */
+/*                   restores original directory on completion. */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. 1. CRTPF FILE(QTEMP/READ_DIRF) RCDLEN(1000)*/
+/*                   2. CRTBNDCL PGM(library/READDIR)           */
+/*                      SRCFILE(library/QCLLESRC)               */
+/*                      SRCMBR(READDIR)                         */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &DIR    - IFS directory path (CHAR 255)                    */
+/*   &FILTER - File filter pattern (CHAR 30) e.g., *.CSV        */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/* https://www.nicklitten.com/course/                           */
+/*   list-all-files-in-an-ifs-folder-with-qshell                */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2026.02.09 V01 Initial creation                   */
+/* NickLitten 2026.02.10 V02 Added comprehensive documentation  */
+/* NickLitten 2026.04.04 V03 Standardized header block          */
+/* ------------------------------------------------------------ */
 
              PGM        PARM(&DIR &FILTER)
 
