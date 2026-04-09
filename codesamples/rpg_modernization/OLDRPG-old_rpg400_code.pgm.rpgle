@@ -6,8 +6,8 @@
       // rtn=3 if file empty                                       
       // written  : may 1994                                          
       // modified :
-      // 10.03.14 njl converted to free format rpg    
       // 25.05.07 njl played with as part of a video rpg upgrade tour
+      // 10.03.14 njl converted to free format rpg    
       // https://www.nicklitten.com/course/adventures-in-automatic-rpg-upgrade-with-vscode/                                      
       // ------------------------------------------------------------------------------
       /free

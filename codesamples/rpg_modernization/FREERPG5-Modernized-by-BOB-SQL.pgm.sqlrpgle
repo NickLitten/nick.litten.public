@@ -1,3 +1,5 @@
+**free
+
 // ------------------------------------------------------------------------------
 // Program: FREERPG5 - Submit file to remote system using CFT (SQL Version)
 // Author: Nick Litten

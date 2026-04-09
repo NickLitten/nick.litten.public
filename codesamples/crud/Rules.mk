@@ -23,7 +23,7 @@
 RECIPCRUD.FILE: RECIPCRUD-crud_rpgle_recipe_example.dspf
 
 # RECIPCRUD Program - Recipe CRUD example program
-RECIPCRUD.PGM: RECIPCRUD-crud_rpgle_recipe_example.pgm.rpgle RECIPES.FILE RECIPCRUD.FILE
+RECIPCRUD.PGM: RECIPCRUD-crud_rpgle_recipe_example.pgm.rpgle RECIPIES.FILE RECIPCRUD.FILE
 
 # CRUD01PNL Display File - Change/Read/Update/Delete example display file
 CRUD01PNL.FILE: CRUD01PNL-Change_Read_Update_Delete_Example.dspf

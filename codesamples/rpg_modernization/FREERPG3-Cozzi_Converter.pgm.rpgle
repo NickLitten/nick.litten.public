@@ -6,8 +6,8 @@
       // rtn=3 if file empty                                       
       // written  : may 1994                                          
       // modified :
-      // 10.03.14 njl converted to free format RPG    
       // 25.05.07 njl played with as part of a Video RPG Upgrade Tour
+      // 10.03.14 njl converted to free format RPG    
       // https://www.nicklitten.com/course/visual-studio-code-extension-cozzi-rpg-iv-to-free/
       // ------------------------------------------------------------------------------
 

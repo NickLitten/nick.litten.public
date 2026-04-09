@@ -1,3 +1,5 @@
+**free
+
 // ------------------------------------------------------------------------------
 // Program: FREERPG4 - Submit file to remote system using CFT
 // Author: Nick Litten

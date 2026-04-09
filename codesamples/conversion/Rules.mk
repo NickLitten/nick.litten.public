@@ -21,7 +21,7 @@
 
 # Input and output file dependencies
 FILEIN.FILE: FILEIN-Input_Files_for_CONVERT.table
-FILEOUT.FILE: FILEOUT-Ouput_Files_for_CONVERT.table
+FILEOUT.FILE: FILEOUT-Output_Files_for_CONVERT.table
 
 # CONVERTBAS Program - Basic EBCDIC to ASCII conversion (legacy version)
 CONVERTBAS.PGM: CONVERTBAS-Convert_EBCDIC_to_ASCII_BASIC.pgm.rpgle

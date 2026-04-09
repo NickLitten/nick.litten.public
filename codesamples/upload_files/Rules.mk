@@ -21,7 +21,7 @@
 # Object Dependencies
 # ------------------------------------------------------------------------------
 
-FLATFILE.FILE: CSVFILE-This_is_an_example_CSV_file.table
+FLATFILE.FILE: FLATFILE-flat_file_format.table
 CSVFILE.FILE: CSVFILE-This_is_an_example_CSV_file.table
 
 SIMPIMPF.PGM: SIMPIMPF-Simple_Import_File_Example.pgm.clle
