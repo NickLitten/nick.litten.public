@@ -34,6 +34,7 @@ enddo;
 dsply %char('Rtn=' + rtn);
 
 *inlr = *on;
+
 // this is a subprocedure that replaces a goto tag subroutine
 dcl-proc no_match_found;
   dcl-pi *n ind;

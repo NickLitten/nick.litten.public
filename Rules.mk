@@ -5,7 +5,6 @@
 # Each subdirectory contains its own Rules.mk with specific object targets.
 # ------------------------------------------------------------------------------
 
-
 # ------------------------------------------------------------------------------
 # Global Build Settings (can be overridden in subdirectory Rules.mk files)
 # ------------------------------------------------------------------------------
@@ -38,9 +37,10 @@
 # Default command settings
 # Subdirectories to process during build (order matters for dependencies)
 SUBDIRS = binders \
+          codesamples \
           database \
-          programs \
           modules \
+          programs \
           services \
-          templates \
-          codesamples
+          templates
+          
