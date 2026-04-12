@@ -4,7 +4,7 @@
 // Description: Provides basic system information procedures
 //
 // Exports:
-//   - getsystemname() - Returns the current IBM i system name
+//   - RtnSystemName() - Returns the current IBM i system name
 //
 // Modification History:
 // v.001 2026.04.02 - Nick Litten - Created simple service program example
@@ -16,23 +16,54 @@ ctl-opt
      copyright('SIMPLEMOD | V.001 | Simple Service Program');
 
 // ------------------------------------------------------------------------------
-// Procedure: getsystemname
-// Description: Retrieves the current IBM i system name using SQL CURRENT SERVER
+// Procedure: RtnSystemName
+// Description: Returns the current IBM i system name using SQL CURRENT SERVER
+//              special register. The system name is left-justified and padded
+//              with blanks to 8 characters.
+//
 // Parameters:
-//   systemname - Output: System name (8 chars, blank-filled on error)
-// Returns: System name via output parameter
-// Example:
+//   systemname - Output parameter (char 8)
+//                Returns the current system name, blank-padded to 8 characters.
+//                On SQL error, returns blanks.
+//
+// Returns: None (void procedure)
+//
+// SQL Behavior:
+//   - Uses CURRENT SERVER special register
+//   - No SQL error handling implemented (relies on default *EVENTF behavior)
+//   - SQLCODE/SQLSTATE available in calling program if needed
+//
+// Example Usage:
 //   dcl-s mySystem char(8);
-//   getsystemname(mySystem);
+//   RtnSystemName(mySystem);
+//   // mySystem now contains system name like 'MYSYSTEM'
+//
+// Notes:
+//   - System name is typically 8 characters or less
+//   - Consider adding error handling for production use
+//   - Thread-safe (no static variables)
 // ------------------------------------------------------------------------------
-dcl-proc getsystemname export;
-  dcl-pi getsystemname;
-    systemname char(8);
+dcl-proc RtnSystemName export;
+  dcl-pi char(8);
   end-pi;
+  
+  // Local variables
+  dcl-s systemname char(8) inz;
+  dcl-s sqlCode int(10);
+  dcl-s sqlState char(5);
     
+  // Retrieve system name using SQL special register
   exec sql
-      VALUES CURRENT SERVER INTO :systemname ;
-
-  return;
+    VALUES CURRENT SERVER INTO :systemname;
+  
+  // Capture SQL diagnostics for potential logging/debugging
+  exec sql
+    GET DIAGNOSTICS :sqlCode = ROW_COUNT,
+                    :sqlState = RETURNED_SQLSTATE;
+  
+  // Note: Error handling could be added here if needed
+  // For now, relies on default SQL error handling (*EVENTF)
+  
+  return systemname;
 
 end-proc;

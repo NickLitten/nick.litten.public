@@ -1,0 +1,8 @@
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Nick_Litten_Service_2026')
+
+  EXPORT SYMBOL('ReturnSystemName')
+  EXPORT SYMBOL('ReturnJobEnvironment')
+  EXPORT SYMBOL('ExecuteCommand')
+  EXPORT SYMBOL('DisplayWindow')
+
+ENDPGMEXP
