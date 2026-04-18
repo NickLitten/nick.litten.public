@@ -43,27 +43,19 @@ ctl-opt
 //   - Consider adding error handling for production use
 //   - Thread-safe (no static variables)
 // ------------------------------------------------------------------------------
-dcl-proc RtnSystemName export;
-  dcl-pi char(8);
-  end-pi;
+Dcl-Proc RtnSystemName export;
+   Dcl-Pi *n char(8);
+   end-pi;
   
-  // Local variables
-  dcl-s systemname char(8) inz;
-  dcl-s sqlCode int(10);
-  dcl-s sqlState char(5);
+   // Local variables
+   Dcl-S systemname char(8) inz;
+   Dcl-S sqlCode int(10);
+   Dcl-S sqlState char(5);
     
-  // Retrieve system name using SQL special register
-  exec sql
+   // Retrieve system name using SQL special register
+   exec sql
     VALUES CURRENT SERVER INTO :systemname;
   
-  // Capture SQL diagnostics for potential logging/debugging
-  exec sql
-    GET DIAGNOSTICS :sqlCode = ROW_COUNT,
-                    :sqlState = RETURNED_SQLSTATE;
-  
-  // Note: Error handling could be added here if needed
-  // For now, relies on default SQL error handling (*EVENTF)
-  
-  return systemname;
+   Return systemname;
 
 end-proc;

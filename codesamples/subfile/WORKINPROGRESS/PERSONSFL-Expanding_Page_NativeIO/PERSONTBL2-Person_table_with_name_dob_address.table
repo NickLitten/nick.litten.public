@@ -1,0 +1,27 @@
+-- ------------------------------------------------------------------------------
+-- Table: PERSONTBL
+-- Description: Person table with Name, Date of Birth, and Address
+-- ------------------------------------------------------------------------------
+-- This SQL table definition provides the same structure as the DDS physical file
+-- but uses modern SQL DDL syntax for table creation.
+-- ------------------------------------------------------------------------------
+CREATE OR REPLACE TABLE
+    PERSONTBL (
+        PNAME VARCHAR(50) NOT NULL,
+        PDOB DATE,
+        PADDRESS VARCHAR(100),
+        PRIMARY KEY (PNAME)
+    ) RCDFMT PERSONR;
+
+
+LABEL ON TABLE PERSONTBL IS 'Person Table';
+
+
+LABEL ON COLUMN PERSONTBL (
+    PNAME IS 'Name',
+    PDOB IS 'Date of Birth',
+    PADDRESS IS 'Address'
+);
+
+
+COMMENT ON TABLE PERSONTBL IS 'Person table with Name, Date of Birth, and Address';

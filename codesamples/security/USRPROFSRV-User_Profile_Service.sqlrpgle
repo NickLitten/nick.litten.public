@@ -1,36 +1,77 @@
 **free
-//
-// Service Program: USRPROFSRV - User Profile Query Service
-// Description: Provides reusable procedures for querying user profile information
-//              including password expiration data
-//
-// Exports:
-//   - GetExpiringUsers() - Returns list of users with expiring passwords
-//   - GetUserCount() - Returns total count of users checked
-//   - FormatUserInfo() - Formats user information for display
-//
-// Modification History:
-// v.001 2026.02.03 - Nick Litten - Created modular service program
-//
+
+///
+/// Service Program: USRPROFSRV - User Profile Query Service
+///
+/// Description: Production-quality service program providing reusable procedures
+///              for querying IBM i user profile information, specifically focused
+///              on password expiration data. Uses QSYS2.USER_INFO catalog view
+///              for comprehensive user profile analysis.
+///
+/// Purpose: Production utility demonstrating:
+///   - Service program with SQL-based user profile queries
+///   - QSYS2.USER_INFO catalog view usage
+///   - Cursor-based data retrieval
+///   - Formatted output generation
+///   - Data structure templates for type safety
+///   - System information retrieval
+///
+/// Features:
+///   - Query users with expiring passwords
+///   - Format user information for display/email
+///   - Retrieve system name
+///   - Validate warning days parameter
+///   - Support for up to 9999 users
+///   - Sorted results by urgency
+///
+/// Exported Procedures:
+///   - GetExpiringUsers: Returns list of users with expiring passwords
+///   - FormatUserInfo: Formats user information for display
+///   - GetSystemName: Retrieves current system name
+///   - ValidateWarningDays: Validates warning days parameter
+///
+/// Data Structures:
+///   - UserProfile_t: User profile information template
+///   - UserList_t: Collection of user profiles
+///
+/// Usage Example:
+///   dcl-ds userList likeds(UserList_t);
+///   dcl-s warningDays int(10) inz(7);
+///   userList = GetExpiringUsers(warningDays);
+///   // Process userList.users(1) through userList.users(userList.count)
+///
+/// Binding:
+///   Create with binder source USRPROFSRV.bnd
+///   Used by PWDEXPILE password monitoring program
+///
+/// Reference:
+/// https://www.nicklitten.com/blog/ibmi-user-profile-queries/
+///
+/// Modification History:
+///   V.000 2026-02-03 | Nick Litten | Initial creation - modular service program
+///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///
 
 ctl-opt
-     nomain
-     option(*nodebugio:*srcstmt:*nounref)
-     copyright('USRPROFSRV | V.001 | User Profile Service');
+  nomain
+  thread(*serialize)
+  option(*nodebugio:*srcstmt:*nounref)
+  copyright('USRPROFSRV | V.001 | User Profile Query Service')
+  ;
 
 // ------------------------------------------------------------------------------
-// Constants
+// Named Constants
 // ------------------------------------------------------------------------------
-dcl-c SQL_SUCCESS 0;
-dcl-c SQL_NO_DATA 100;
-dcl-c MAX_USERS 9999;
+Dcl-C SQL_SUCCESS 0;
+Dcl-C SQL_NO_DATA 100;
+Dcl-C MAX_USERS 9999;
 
 // ------------------------------------------------------------------------------
 // Data Structures - Exported Types
 // ------------------------------------------------------------------------------
 
 // User profile information structure
-dcl-ds UserProfile_t qualified template;
+Dcl-Ds UserProfile_t qualified template;
    userName char(10);
    userText char(50);
    status char(10);
@@ -42,24 +83,26 @@ dcl-ds UserProfile_t qualified template;
 end-ds;
 
 // User list structure
-dcl-ds UserList_t qualified template;
+Dcl-Ds UserList_t qualified template;
    count int(10);
    users likeds(UserProfile_t) dim(MAX_USERS);
 end-ds;
 
 // ------------------------------------------------------------------------------
 // Procedure: GetExpiringUsers
-// Purpose: Query database for users with expiring passwords
+// Description: Query database for users with expiring passwords
+// Parameters:
+//   - warningDays: int(10) - Number of days to look ahead
 // Returns: UserList_t structure with matching users
 // ------------------------------------------------------------------------------
-dcl-proc GetExpiringUsers export;
-   dcl-pi *n likeds(UserList_t);
+Dcl-Proc GetExpiringUsers export;
+   Dcl-Pi *n likeds(UserList_t);
       warningDays int(10) const;
    end-pi;
    
-   dcl-ds userList likeds(UserList_t);
-   dcl-ds currentUser likeds(UserProfile_t);
-   dcl-s idx int(10) inz(0);
+   Dcl-Ds userList likeds(UserList_t);
+   Dcl-Ds currentUser likeds(UserProfile_t);
+   Dcl-S idx int(10) inz(0);
    
    // Initialize return structure
    userList.count = 0;
@@ -85,9 +128,9 @@ dcl-proc GetExpiringUsers export;
    // Open cursor
    exec sql open userCursor;
    
-   if sqlcode <> SQL_SUCCESS;
-      return userList;
-   endif;
+   If (sqlcode <> SQL_SUCCESS);
+      Return userList;
+   EndIf;
    
    // Fetch first record
    exec sql fetch next from userCursor into
@@ -101,7 +144,7 @@ dcl-proc GetExpiringUsers export;
       :currentUser.prevSignOn;
    
    // Loop through results
-   dow sqlcode = SQL_SUCCESS and idx < MAX_USERS;
+   dow (sqlcode = SQL_SUCCESS and idx < MAX_USERS);
       idx += 1;
       userList.users(idx) = currentUser;
       userList.count = idx;
@@ -121,46 +164,48 @@ dcl-proc GetExpiringUsers export;
    // Close cursor
    exec sql close userCursor;
    
-   return userList;
+   Return userList;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: FormatUserInfo
-// Purpose: Format user profile information for display/email
+// Description: Format user profile information for display/email
+// Parameters:
+//   - user: UserProfile_t - User profile to format
 // Returns: Formatted string with user details
 // ------------------------------------------------------------------------------
-dcl-proc FormatUserInfo export;
-   dcl-pi *n varchar(200);
+Dcl-Proc FormatUserInfo export;
+   Dcl-Pi *n varchar(200);
       user likeds(UserProfile_t) const;
    end-pi;
    
-   dcl-s line varchar(200);
-   dcl-s lastSignOnStr char(19);
-   dcl-s expDateStr char(10);
-   dcl-s daysStr char(15);
+   Dcl-S line varchar(200);
+   Dcl-S lastSignOnStr char(19);
+   Dcl-S expDateStr char(10);
+   Dcl-S daysStr char(15);
    
    // Format expiration date
-   if user.pwdExpDate <> *loval;
+   If (user.pwdExpDate <> *loval);
       expDateStr = %char(user.pwdExpDate);
-   else;
+   Else;
       expDateStr = '*NONE';
-   endif;
+   EndIf;
    
    // Format days until expiry with urgency indicator
-   if user.daysUntilExpiry = 0;
+   If (user.daysUntilExpiry = 0);
       daysStr = '**TODAY**';
-   elseif user.daysUntilExpiry = 1;
+   elseif (user.daysUntilExpiry = 1);
       daysStr = '1 day';
-   else;
+   Else;
       daysStr = %char(user.daysUntilExpiry) + ' days';
-   endif;
+   EndIf;
    
    // Format last sign on
-   if user.lastSignOn <> *loval;
+   If (user.lastSignOn <> *loval);
       lastSignOnStr = %char(%date(user.lastSignOn));
-   else;
+   Else;
       lastSignOnStr = 'Never';
-   endif;
+   EndIf;
    
    // Build formatted line with proper spacing
    line = %trim(user.userName) + 
@@ -173,40 +218,42 @@ dcl-proc FormatUserInfo export;
           %subst(' ' : 1 : 11 - %len(%trim(daysStr))) +
           lastSignOnStr;
    
-   return line;
+   Return line;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: GetSystemName
-// Purpose: Retrieve the current system name
+// Description: Retrieve the current IBM i system name
 // Returns: System name as character string
 // ------------------------------------------------------------------------------
-dcl-proc GetSystemName export;
-   dcl-pi *n char(8);
+Dcl-Proc GetSystemName export;
+   Dcl-Pi *n char(8);
    end-pi;
    
-   dcl-s systemName char(8);
+   Dcl-S systemName char(8);
    
    exec sql
       select system_name into :systemName
       from sysibmadm.env_sys_info;
    
-   if sqlcode <> SQL_SUCCESS;
+   If (sqlcode <> SQL_SUCCESS);
       systemName = '*UNKNOWN';
-   endif;
+   EndIf;
    
-   return systemName;
+   Return systemName;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: ValidateWarningDays
-// Purpose: Validate the warning days parameter
-// Returns: *on if valid, *off if invalid
+// Description: Validate the warning days parameter
+// Parameters:
+//   - days: int(10) - Number of days to validate
+// Returns: *on if valid (1-365), *off if invalid
 // ------------------------------------------------------------------------------
-dcl-proc ValidateWarningDays export;
-   dcl-pi *n ind;
+Dcl-Proc ValidateWarningDays export;
+   Dcl-Pi *n ind;
       days int(10) const;
    end-pi;
    
-   return (days >= 1 and days <= 365);
+   Return (days >= 1 and days <= 365);
 end-proc;

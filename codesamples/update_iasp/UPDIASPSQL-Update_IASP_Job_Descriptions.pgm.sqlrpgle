@@ -19,7 +19,8 @@
 ///   2026-04-02 | Bob AI      | Enhanced with best practices
 ///
 
-ctl-opt dftactgrp(*no) actgrp(*new) 
+ctl-opt dftactgrp(*no)
+        actgrp(*new) 
         option(*nodebugio:*srcstmt:*nounref)
         main(Main);
 

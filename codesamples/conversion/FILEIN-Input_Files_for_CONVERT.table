@@ -5,7 +5,7 @@
 
 -- Create FILEIN table with single 80-character fixed-length field
 CREATE OR REPLACE TABLE
-    FILEIN (RECORD CHAR(80) NOT NULL DEFAULT '')
+    FILEIN (IN CHAR(80) NOT NULL DEFAULT '')
     RCDFMT RFILEIN;
 
 LABEL ON TABLE FILEIN IS 'EBCDIC Input File - 80 byte records';

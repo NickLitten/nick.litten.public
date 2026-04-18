@@ -1,16 +1,48 @@
-/* Program: CHKSBSACT2 - Check if Subsystem is Active                         */
-/* Purpose: Determines if a specified subsystem is currently active           */
-/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
+/* Program: CHKSBSACT2 - Check if Subsystem is Active (API Example)    */
+/*                                                                          */
+/* Description: Example demonstrating how to check if a subsystem is       */
+/*              currently active using the QWDRSBSD API. This approach     */
+/*              uses the Retrieve Subsystem Description API instead of SQL.*/
+/*                                                                          */
+/* Purpose: Educational example demonstrating:                              */
+/*   - QWDRSBSD API usage for subsystem information                        */
+/*   - API parameter handling and data extraction                          */
+/*   - Qualified name construction                                         */
+/*   - Error handling with MONMSG                                          */
+/*   - String manipulation with %SST                                       */
+/*                                                                          */
+/* Features:                                                                */
+/*   - Checks QINTER subsystem status using API                            */
+/*   - Extracts status from API return structure                           */
+/*   - Sends program message with subsystem status                         */
+/*   - Simple error handling                                               */
+/*                                                                          */
+/* Usage: CALL CHKSBSACT2                                                   */
+/*                                                                          */
+/* API Used:                                                                */
+/*   - QWDRSBSD: Retrieve Subsystem Description                            */
+/*   - Format: SBSI0100                                                    */
+/*   - Status at positions 29-38 in return structure                       */
+/*                                                                          */
+/* Reference:                                                               */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status*/
+/*                                                                          */
+/* Modification History:                                                    */
+/* V.000 2025-xx-xx | Nick Litten | Initial creation from blog example     */
+/* V.001 2026-04-18 | Bob AI | Applied coding standards                    */
 
 PGM
 
 DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
 
-COPYRIGHT  TEXT('CHKSBSACT2 Ver:001 Check if Subsystem is Active')
+COPYRIGHT  TEXT('CHKSBSACT2 Ver:001 Check Subsystem Status - API Example')
 DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
               VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
 DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
 
+/* ------------------------------------------------------------------------------
+   Variable Declarations
+   ------------------------------------------------------------------------------ */
 DCL        VAR(&SBSNAME) TYPE(*CHAR) LEN(10) VALUE(QINTER)
 DCL        VAR(&SBSLIB) TYPE(*CHAR) LEN(10) VALUE(QSYS)
 DCL        VAR(&QUALNAME) TYPE(*CHAR) LEN(20)
@@ -20,19 +52,30 @@ DCL        VAR(&FORMAT) TYPE(*CHAR) LEN(8) VALUE('SBSI0100')
 DCL        VAR(&ERRCODE) TYPE(*CHAR) LEN(16) VALUE(X'00000000')
 DCL        VAR(&STATUS) TYPE(*CHAR) LEN(10)
 
+/* ------------------------------------------------------------------------------
+   Main Program Logic
+   ------------------------------------------------------------------------------ */
+
+/* Build qualified subsystem name */
 CHGVAR     VAR(&QUALNAME) VALUE(&SBSNAME *CAT &SBSLIB)
 
+/* Call API to retrieve subsystem description */
 CALL       PGM(QWDRSBSD) PARM((&RCVVAR) (&RCVLEN) +
                               (&FORMAT) (&QUALNAME) (&ERRCODE))
 MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(FAIL))
 
-/* Extract subsystem status (positions 29-38 in SBSI0100) */
+/* Extract subsystem status from API return structure */
+/* Status is at positions 29-38 in SBSI0100 format */
 CHGVAR     VAR(&STATUS) VALUE(%SST(&RCVVAR 29 10))
 
+/* Send message with subsystem status */
 SNDPGMMSG  MSG('Subsystem QINTER is' *BCAT &STATUS)
 
 RETURN
 
+/* ------------------------------------------------------------------------------
+   Error Handling
+   ------------------------------------------------------------------------------ */
 FAIL:
 SNDPGMMSG  MSG('* Unable to retrieve subsystem status!')
 

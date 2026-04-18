@@ -1,26 +1,74 @@
-/* Program: CHKSBSACT1 - Check if Subsystem is Active                         */
-/* Purpose: Determines if a specified subsystem is currently active           */
-/* NOTE: create file CHKSBSTMP before compiling                               */
-/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status   */
+/* Program: CHKSBSACT1 - Check if Subsystem is Active (Simple Example)*/
+/*                                                                          */
+/* Description: Simple example demonstrating how to check if a subsystem   */
+/*              is currently active using SQL and QSYS2.SUBSYSTEM_INFO.    */
+/*              This is a basic implementation from the blog post.          */
+/*                                                                          */
+/* Purpose: Educational example demonstrating:                              */
+/*   - SQL service usage (QSYS2.SUBSYSTEM_INFO)                            */
+/*   - Temporary file creation for SQL results                             */
+/*   - Basic error handling with MONMSG                                    */
+/*   - Simple subsystem status checking                                    */
+/*                                                                          */
+/* Features:                                                                */
+/*   - Checks QINTER subsystem status                                      */
+/*   - Creates temporary work file for results                             */
+/*   - Simple error handling                                               */
+/*   - Sends program message with status                                   */
+/*                                                                          */
+/* Usage: CALL CHKSBSACT1                                                   */
+/*                                                                          */
+/* NOTE: Create file CHKSBSTMP before compiling this program               */
+/*                                                                          */
+/* Reference:                                                               */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status*/
+/*                                                                          */
+/* Modification History:                                                    */
+/* V.000 2025-xx-xx | Nick Litten | Initial creation from blog example     */
+/* V.001 2026-04-18 | Bob AI | Applied coding standards                    */
 
-PGM                                                    
-        DCLF       FILE(NICKLITTEN/CHKSBSTMP) ALWVARLEN(*YES)     
-                                                                  
-        DLTF       FILE(NICKLITTEN/CHKSBSTMP)                     
-        MONMSG     MSGID(CPF0000)                                            
-                                                                          
-        RUNSQL     SQL('CREATE TABLE NICKLITTEN/CHKSBSTMP AS (SELECT +    
-                        STATUS FROM QSYS2/SUBSYSTEM_INFO WHERE +        
-                        SUBSYSTEM_DESCRIPTION = ''QINTER'' AND +        
-                        SUBSYSTEM_DESCRIPTION_LIBRARY = ''QSYS'') +     
-                        WITH DATA') COMMIT(*NONE) NAMING(*SYS)          
-                                                                          
-        RCVF       RCDFMT(*FILE)                                       
-        MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(FAIL))              
-                                                                          
-        SNDPGMMSG  MSG('Subsystem QINTER is Active')                                                   
-                                                                      
-        RETURN                                                       
+PGM
 
-FAIL:   SNDPGMMSG MSG('* Unable to retrieve subsystem status!') 
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('CHKSBSACT1 Ver:001 Check Subsystem Status - Simple Example')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+/* ------------------------------------------------------------------------------
+   File Declaration
+   ------------------------------------------------------------------------------ */
+DCLF       FILE(NICKLITTEN/CHKSBSTMP) ALWVARLEN(*YES)
+
+/* ------------------------------------------------------------------------------
+   Main Program Logic
+   ------------------------------------------------------------------------------ */
+
+/* Delete any existing temporary file */
+DLTF       FILE(NICKLITTEN/CHKSBSTMP)
+MONMSG     MSGID(CPF0000)
+
+/* Create temporary file with subsystem status */
+RUNSQL     SQL('CREATE TABLE NICKLITTEN/CHKSBSTMP AS (SELECT +
+                STATUS FROM QSYS2/SUBSYSTEM_INFO WHERE +
+                SUBSYSTEM_DESCRIPTION = ''QINTER'' AND +
+                SUBSYSTEM_DESCRIPTION_LIBRARY = ''QSYS'') +
+                WITH DATA') COMMIT(*NONE) NAMING(*SYS)
+
+/* Read the status from temp file */
+RCVF       RCDFMT(*FILE)
+MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(FAIL))
+
+/* Send success message */
+SNDPGMMSG  MSG('Subsystem QINTER is Active')
+
+RETURN
+
+/* ------------------------------------------------------------------------------
+   Error Handling
+   ------------------------------------------------------------------------------ */
+FAIL:
+SNDPGMMSG  MSG('* Unable to retrieve subsystem status!')
+
 ENDPGM

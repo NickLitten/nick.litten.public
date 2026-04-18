@@ -1,0 +1,109 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      INDARA
+     A                                      ERRSFL
+     A          R HEADER
+     A                                  1  3SYSNAME
+     A            TITLE1        50A  O  1 16COLOR(WHT)
+     A                                  1 69DATE
+     A                                      EDTCDE(Y)
+     A                                  2  3USER
+     A            TITLE2        50A  O  2 16COLOR(WHT)
+     A                                  2 69TIME
+     A            TITLE3        50A  O  3 16COLOR(WHT)
+     A                                  4  1' '
+     A                                  4  3'                                  -
+     A                                                                         -
+     A                                             '
+     A                                      DSPATR(UL)
+     A          R FOOTER
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A                                 21  3'                                  -
+     A                                                                         -
+     A                                             '
+     A                                      DSPATR(UL)
+     A            FOOTTEXT      50A  O 22  3
+     A          R SFLTASK                   SFL
+     A            OPCTASK        1A  B 10  7
+     A            SFLTASKID     10S 0O 10 12
+     A            SFLTASKNAM    10A  O 10 23
+     A            SFLSTRDATE     8Y 0O 10 34EDTWRD('    /  /  ')
+     A            SFLENDDATE     8Y 0O 10 45EDTWRD('    /  /  ')
+     A            SFLSTATE       2S 0O 10 57
+     A          R SFLTASKCTL                SFLCTL(SFLTASK)
+     A                                      SFLSIZ(0013)
+     A                                      SFLPAG(0010)
+     A                                      CF05(05 'Refresh')
+     A                                      CF06(06 'Create')
+     A                                      CA03(03 'Exit')
+     A                                      PAGEDOWN(80)
+     A                                      PAGEUP(81)
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A  99                                  SFLDSP
+     A  98                                  SFLDSPCTL
+     A  97                                  SFLCLR
+     A  96                                  SFLEND(*MORE)
+     A                                  6  5'Options'
+     A                                      COLOR(WHT)
+     A                                  6 15'2=Modify 4=Delete 5=View          -
+     A                                            '
+     A                                      COLOR(BLU)
+     A                                  8  6'Opc'
+     A                                  8 12'Task id'
+     A                                  8 24'Name'
+     A                                  8 34'Start date'
+     A                                  8 45'Finish date'
+     A                                  8 57'State'
+     A          R CRUDTASK
+     A                                      CA03(03 'Exit')
+     A                                      CF10(10 'Confirm')
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A                                  7  5'Task id.....:'
+     A            CRUDTASKID    10Y 0B  7 19CHECK(MF)
+     A                                      EDTCDE(Z)
+     A  31                                  ERRMSG('Task id is already in datab-
+     A                                      ase')
+     A  35                                  DSPATR(PR)
+     A                                  8  5'Name of task:'
+     A            NAMETASK      10A  B  8 19
+     A  35                                  DSPATR(PR)
+     A                                  9  5'Description.:'
+     A            DESCRP       150A  B 10  5CNTFLD(050)
+     A  35                                  DSPATR(PR)
+     A                                 13  5'Solution....:'
+     A            SOLUTION     150A  B 14  5CNTFLD(050)
+     A  36                                  DSPATR(PR)
+     A                                 17  5'Start date..:'
+     A            STARTDATE      8Y 0B 17 19
+     A  35                                  DSPATR(PR)
+     A  32                                  ERRMSG('Invalid Date')
+     A  34                                  ERRMSG('Start date is greater than -
+     A                                      end date')
+     A                                 17 32'YYYYMMDD'
+     A                                      COLOR(WHT)
+     A                                 18  5'End date....:'
+     A            ENDDATE        8Y 0B 18 19
+     A  33                                  ERRMSG('Invalid Date')
+     A  36                                  DSPATR(PR)
+     A                                 18 32'YYYYMMDD'
+     A                                      COLOR(WHT)
+     A                                 19  5'State.......:'
+     A            STATETASK      1S 0B 19 19
+     A  36                                  DSPATR(PR)
+     A                                 19 23'+'
+     A                                      COLOR(WHT)
+     A          R EMPTY
+     A                                      OVERLAY
+     A                                      PUTRETAIN
+     A                                 14 13'(Database is EMPTY!)'
+     A          R WDWCONFIRM
+     A                                      WINDOW(9 18 5 40)
+     A            WDWTEXT1      40   O  2  1
+     A            WDWTEXT2      40   O  3  1
+     A            WDWCHOICE      1   B  4 21COLOR(WHT)
+     A          R WDWMESSAGE
+     A                                      WINDOW(9 18 5 40)
+     A            WDWMSG1       40A  O  2  1
+     A            WDWMSG2       40A  O  3  1

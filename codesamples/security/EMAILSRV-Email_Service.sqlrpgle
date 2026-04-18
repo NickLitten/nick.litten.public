@@ -1,40 +1,91 @@
 **free
-//
-// Service Program: EMAILSRV - Email Service
-// Description: Provides reusable procedures for sending email notifications
-//              via IBM i QSYS2.SEND_EMAIL service
-//
-// Exports:
-//   - SendEmail() - Send email with subject and body
-//   - BuildPasswordExpiryReport() - Build formatted email report
-//   - LogMessage() - Send message to job log
-//
-// Modification History:
-// v.001 2026.02.03 - Nick Litten - Created modular email service
-//
+
+///
+/// Service Program: EMAILSRV - Email Notification Service
+///
+/// Description: Production-quality service program providing reusable email
+///              notification procedures using IBM i QSYS2.SEND_EMAIL service.
+///              Includes email validation, formatting, and comprehensive error
+///              handling for password expiration monitoring and other notifications.
+///
+/// Purpose: Production utility demonstrating:
+///   - Service program architecture with multiple exported procedures
+///   - IBM i QSYS2.SEND_EMAIL integration
+///   - Email configuration and validation
+///   - Formatted report generation
+///   - Comprehensive error handling and diagnostics
+///   - Job log integration for monitoring
+///
+/// Features:
+///   - Send email with subject and body
+///   - Build formatted password expiration reports
+///   - Email configuration validation
+///   - SQL string escaping for safety
+///   - Detailed error diagnostics with SQLCODE/SQLSTATE
+///   - Job log message integration
+///   - Template data structures for type safety
+///
+/// Exported Procedures:
+///   - SendEmail: Send email using QSYS2.SEND_EMAIL
+///   - BuildPasswordExpiryReport: Format password expiration report
+///   - BuildEmailSubject: Build subject line with user count
+///   - LogMessage: Send message to job log
+///   - ValidateEmailConfig: Validate email configuration
+///   - EscapeSqlString: Escape single quotes for SQL safety
+///
+/// Data Structures:
+///   - EmailConfig_t: Email configuration template
+///   - EmailResult_t: Email result with success/error details
+///
+/// Prerequisites:
+///   - SMTP server configured via CHGSMTPA command
+///   - User registered via ADDUSRSMTP command
+///   - TCP/IP and SMTP server (*SMTPSVR) subsystem active
+///
+/// Usage Example:
+///   dcl-ds config likeds(EmailConfig_t);
+///   dcl-ds result likeds(EmailResult_t);
+///   config.toAddress = 'admin@company.com';
+///   config.subject = 'Test Email';
+///   config.fromAddress = 'ibmi@company.com';
+///   result = SendEmail(config: 'Email body text');
+///
+/// Binding:
+///   Create with binder source EMAILSRV.bnd
+///   Used by PWDEXPILE password monitoring program
+///
+/// Reference:
+/// https://www.nicklitten.com/blog/ibmi-email-notifications/
+///
+/// Modification History:
+///   V.000 2026-02-03 | Nick Litten | Initial creation - modular email service
+///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///
 
 ctl-opt
-     nomain
-     option(*nodebugio:*srcstmt:*nounref)
-     copyright('EMAILSRV | V.001 | Email Service');
+  nomain
+  thread(*serialize)
+  option(*nodebugio:*srcstmt:*nounref)
+  copyright('EMAILSRV | V.001 | Email Notification Service')
+  ;
 
 // ------------------------------------------------------------------------------
-// Constants
+// Named Constants
 // ------------------------------------------------------------------------------
-dcl-c MAX_EMAIL_BODY_SIZE 32000;
-dcl-c CRLF x'0D25';  // Carriage return + line feed
-dcl-c SQL_SUCCESS 0;
+Dcl-C MAX_EMAIL_BODY_SIZE 32000;
+Dcl-C CRLF x'0D25';  // Carriage return + line feed
+Dcl-C SQL_SUCCESS 0;
 
 // Email configuration - These should be set via configuration or parameters
-dcl-c DEFAULT_SMTP_SERVER 'smtp.yourcompany.com';
-dcl-c DEFAULT_EMAIL_FROM 'ibmi-security@yourcompany.com';
+Dcl-C DEFAULT_SMTP_SERVER 'smtp.yourcompany.com';
+Dcl-C DEFAULT_EMAIL_FROM 'ibmi-security@yourcompany.com';
 
 // ------------------------------------------------------------------------------
 // Data Structures - Exported Types
 // ------------------------------------------------------------------------------
 
 // Email configuration structure
-dcl-ds EmailConfig_t qualified template;
+Dcl-Ds EmailConfig_t qualified template;
    smtpServer char(256);
    fromAddress char(256);
    toAddress char(256);
@@ -42,7 +93,7 @@ dcl-ds EmailConfig_t qualified template;
 end-ds;
 
 // Email result structure
-dcl-ds EmailResult_t qualified template;
+Dcl-Ds EmailResult_t qualified template;
    success ind;
    sqlCode int(10);
    sqlState char(5);
@@ -51,22 +102,25 @@ end-ds;
 
 // ------------------------------------------------------------------------------
 // Procedure: SendEmail
-// Purpose: Send email using QSYS2.SEND_EMAIL service
+// Description: Send email using QSYS2.SEND_EMAIL service
+// Parameters:
+//   - config: EmailConfig_t - Email configuration
+//   - messageBody: varchar(32000) - Email body content
 // Returns: EmailResult_t with success status and error details
 // ------------------------------------------------------------------------------
-dcl-proc SendEmail export;
-   dcl-pi *n likeds(EmailResult_t);
+Dcl-Proc SendEmail export;
+   Dcl-Pi *n likeds(EmailResult_t);
       config likeds(EmailConfig_t) const;
       messageBody varchar(MAX_EMAIL_BODY_SIZE) const;
    end-pi;
    
-   dcl-ds result likeds(EmailResult_t);
+   Dcl-Ds result likeds(EmailResult_t);
    
    // Local variables for SQL call (cannot use const parameters directly)
-   dcl-s toAddr varchar(256);
-   dcl-s subject varchar(256);
-   dcl-s fromAddr varchar(256);
-   dcl-s body varchar(MAX_EMAIL_BODY_SIZE);
+   Dcl-S toAddr varchar(256);
+   Dcl-S subject varchar(256);
+   Dcl-S fromAddr varchar(256);
+   Dcl-S body varchar(MAX_EMAIL_BODY_SIZE);
    
    // Initialize result
    result.success = *off;
@@ -75,17 +129,17 @@ dcl-proc SendEmail export;
    result.errorMsg = '';
    
    // Validate configuration before attempting to send
-   if not ValidateEmailConfig(config);
+   If (not ValidateEmailConfig(config));
       result.errorMsg = 'Invalid email configuration: ' +
                         'Missing or invalid required fields';
-      return result;
-   endif;
+      Return result;
+   EndIf;
    
    // Validate message body is not empty
-   if %len(%trim(messageBody)) = 0;
+   If (%len(%trim(messageBody)) = 0);
       result.errorMsg = 'Email body cannot be empty';
-      return result;
-   endif;
+      Return result;
+   EndIf;
    
    // Copy const parameters to local variables for SQL call
    toAddr = %trim(config.toAddress);
@@ -113,47 +167,52 @@ dcl-proc SendEmail export;
    result.sqlState = sqlstate;
    
    // Evaluate result and provide detailed error information
-   if sqlcode = SQL_SUCCESS;
+   If (sqlcode = SQL_SUCCESS);
       result.success = *on;
       LogMessage('Email sent successfully to: ' + %trim(config.toAddress));
-   else;
+   Else;
       // Build comprehensive error message with diagnostic details
       result.errorMsg = 'Email send failed: SQLCODE=' +
                         %char(sqlcode) + ' SQLSTATE=' + sqlstate;
       
       // Add specific error context based on common SQLCODE values
-      select;
-         when sqlcode = -443;  // Trigger program or external routine error
+      Select;
+         When (sqlcode = -443);  // Trigger program or external routine error
             result.errorMsg = %trim(result.errorMsg) + ' - SMTP server configuration issue';
-         when sqlcode = -204;  // Object not found
+         When (sqlcode = -204);  // Object not found
             result.errorMsg = %trim(result.errorMsg) + ' - QSYS2.SEND_EMAIL function not available';
-         when sqlcode = -901;  // System error
+         When (sqlcode = -901);  // System error
             result.errorMsg = %trim(result.errorMsg) + ' - System resource issue';
-         other;
+         Other;
             result.errorMsg = %trim(result.errorMsg) + ' - Check SMTP configuration and user setup';
-      endsl;
+      EndSl;
       
       // Log error to job log for system monitoring
       LogMessage(result.errorMsg: '*ESCAPE');
-   endif;
+   EndIf;
    
-   return result;
+   Return result;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: BuildPasswordExpiryReport
-// Purpose: Build formatted email body for password expiration report
+// Description: Build formatted email body for password expiration report
+// Parameters:
+//   - systemName: char(8) - IBM i system name
+//   - warningDays: int(10) - Warning period in days
+//   - userCount: int(10) - Number of affected users
+//   - userLines: varchar(32000) - Formatted user detail lines
 // Returns: Formatted email body as varchar
 // ------------------------------------------------------------------------------
-dcl-proc BuildPasswordExpiryReport export;
-   dcl-pi *n varchar(MAX_EMAIL_BODY_SIZE);
+Dcl-Proc BuildPasswordExpiryReport export;
+   Dcl-Pi *n varchar(MAX_EMAIL_BODY_SIZE);
       systemName char(8) const;
       warningDays int(10) const;
       userCount int(10) const;
       userLines varchar(MAX_EMAIL_BODY_SIZE) const;
    end-pi;
    
-   dcl-s emailBody varchar(MAX_EMAIL_BODY_SIZE);
+   Dcl-S emailBody varchar(MAX_EMAIL_BODY_SIZE);
    
    // Build email header
    emailBody = 'IBM i Password Expiration Warning Report' + CRLF +
@@ -187,51 +246,57 @@ dcl-proc BuildPasswordExpiryReport export;
                 'This is an automated message from the IBM i ' +
                 'Password Expiration Monitor.' + CRLF;
    
-   return emailBody;
+   Return emailBody;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: BuildEmailSubject
-// Purpose: Build email subject line with user count
+// Description: Build email subject line with user count
+// Parameters:
+//   - baseSubject: char(256) - Base subject text
+//   - userCount: int(10) - Number of affected users
 // Returns: Formatted subject line
 // ------------------------------------------------------------------------------
-dcl-proc BuildEmailSubject export;
-   dcl-pi *n varchar(256);
+Dcl-Proc BuildEmailSubject export;
+   Dcl-Pi *n varchar(256);
       baseSubject char(256) const;
       userCount int(10) const;
    end-pi;
    
-   dcl-s subject varchar(256);
+   Dcl-S subject varchar(256);
    
-   if userCount = 1;
+   If (userCount = 1);
       subject = %trim(baseSubject) + ' - 1 User Affected';
-   else;
+   Else;
       subject = %trim(baseSubject) + ' - ' + 
                 %char(userCount) + ' Users Affected';
-   endif;
+   EndIf;
    
-   return subject;
+   Return subject;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: LogMessage
-// Purpose: Send message to job log
+// Description: Send message to job log
+// Parameters:
+//   - message: char(256) - Message text
+//   - messageType: char(10) - Message type (*COMP, *DIAG, *ESCAPE, etc.)
 // ------------------------------------------------------------------------------
-dcl-proc LogMessage export;
-   dcl-pi *n;
+Dcl-Proc LogMessage export;
+   Dcl-Pi *n;
       message char(256) const;
       messageType char(10) const options(*nopass);
    end-pi;
    
-   dcl-s cmdString varchar(512);
-   dcl-s msgType char(10);
+   Dcl-S cmdString varchar(512);
+   Dcl-S msgType char(10);
    
    // Default to completion message if not specified
-   if %parms() >= 2;
+   If (%Parms() >= 2);
       msgType = messageType;
-   else;
+   Else;
       msgType = '*COMP';
-   endif;
+   EndIf;
    
    // Build and execute SNDPGMMSG command
    cmdString = 'SNDPGMMSG MSG(''' + 
@@ -243,40 +308,44 @@ end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: ValidateEmailConfig
-// Purpose: Validate email configuration parameters
+// Description: Validate email configuration parameters
+// Parameters:
+//   - config: EmailConfig_t - Email configuration to validate
 // Returns: *on if valid, *off if invalid
 // ------------------------------------------------------------------------------
-dcl-proc ValidateEmailConfig export;
-   dcl-pi *n ind;
+Dcl-Proc ValidateEmailConfig export;
+   Dcl-Pi *n ind;
       config likeds(EmailConfig_t) const;
    end-pi;
    
    // Check required fields are not blank
-   if %trim(config.toAddress) = '';
-      return *off;
-   endif;
+   If (%trim(config.toAddress) = '');
+      Return *off;
+   EndIf;
    
-   if %trim(config.subject) = '';
-      return *off;
-   endif;
+   If (%trim(config.subject) = '');
+      Return *off;
+   EndIf;
    
    // Basic email format validation (contains @)
-   if %scan('@' : %trim(config.toAddress)) = 0;
-      return *off;
-   endif;
+   If (%scan('@' : %trim(config.toAddress)) = 0);
+      Return *off;
+   EndIf;
    
-   return *on;
+   Return *on;
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Procedure: EscapeSqlString
-// Purpose: Escape single quotes in strings for SQL safety
-// Returns: Escaped string
+// Description: Escape single quotes in strings for SQL safety
+// Parameters:
+//   - inputString: varchar(1000) - String to escape
+// Returns: Escaped string with doubled single quotes
 // ------------------------------------------------------------------------------
-dcl-proc EscapeSqlString export;
-   dcl-pi *n varchar(1000);
+Dcl-Proc EscapeSqlString export;
+   Dcl-Pi *n varchar(1000);
       inputString varchar(1000) const;
    end-pi;
    
-   return %scanrpl('''':'''''':inputString);
+   Return %scanrpl('''':'''''':inputString);
 end-proc;

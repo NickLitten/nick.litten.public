@@ -107,22 +107,22 @@ Dcl-C MAX_RRN        9999;
 
 Dcl-S ptrDisplayIndicators Pointer Inz(%Addr(*In));
 Dcl-Ds DisplayIndicators Based(ptrDisplayIndicators);
-  // Subfile control indicators
-  SflDsp          Ind Pos(99);
-  SflDspCtl       Ind Pos(98);
-  SflClr          Ind Pos(97);
-  SflEnd          Ind Pos(96);
+   // Subfile control indicators
+   SflDsp          Ind Pos(99);
+   SflDspCtl       Ind Pos(98);
+   SflClr          Ind Pos(97);
+   SflEnd          Ind Pos(96);
   
-  // Validation error indicators
-  TaskIdExistsError    Ind Pos(31);
-  StartDateError       Ind Pos(32);
-  EndDateError         Ind Pos(33);
-  DateRangeError       Ind Pos(34);
-  ProtectFields_35     Ind Pos(35);
-  ProtectFields_36     Ind Pos(36);
+   // Validation error indicators
+   TaskIdExistsError    Ind Pos(31);
+   StartDateError       Ind Pos(32);
+   EndDateError         Ind Pos(33);
+   DateRangeError       Ind Pos(34);
+   ProtectFields_35     Ind Pos(35);
+   ProtectFields_36     Ind Pos(36);
   
-  // Error indicator overlay for bulk operations
-  IndErrors char(20) Pos(31);
+   // Error indicator overlay for bulk operations
+   IndErrors char(20) Pos(31);
 end-ds;
 
 // ------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ end-ds;
 
 Dcl-S pSqlstate Pointer Inz(%Addr(SQLState));
 Dcl-Ds Ds_SqlState based(pSqlstate);
-  xSqlstate char(2);
+   xSqlstate char(2);
 end-ds;
 
 // ------------------------------------------------------------------------------
@@ -140,11 +140,11 @@ end-ds;
 
 // Task data for subfile population
 Dcl-Ds t_taskData qualified template;
-  taskId     int(10);
-  name       char(20);
-  startDate  date;
-  endDate    date;
-  state      int(3);
+   taskId     int(10);
+   name       char(20);
+   startDate  date;
+   endDate    date;
+   state      int(3);
 end-ds;
 
 
@@ -180,24 +180,24 @@ Dcl-S currentUser     char(10) inz(*user);
 // ------------------------------------------------------------------------------
 
 Dcl-Proc mainline;
-  Dcl-S screenMode char(1);
+   Dcl-S screenMode char(1);
   
-  monitor;
-    open CRUD01PNL;
+   monitor;
+      open CRUD01PNL;
     
-    screenMode = MODE_SUBFILE;
-    ShowScreen(screenMode);
+      screenMode = MODE_SUBFILE;
+      ShowScreen(screenMode);
     
-    close CRUD01PNL;
-    *Inlr = *On;
-    
-  on-error;
-    // Handle any unexpected errors
-    If %open(CRUD01PNL);
       close CRUD01PNL;
-    EndIf;
-    *Inlr = *On;
-  endmon;
+      *Inlr = *On;
+    
+   on-error;
+      // Handle any unexpected errors
+      If (%open(CRUD01PNL));
+         close CRUD01PNL;
+      EndIf;
+      *Inlr = *On;
+   endmon;
 end-proc;
 
 
@@ -207,39 +207,39 @@ end-proc;
 // SCREEN MANAGEMENT PROCEDURES
 // WriteScreen - Set screen titles and footer based on mode
 Dcl-Proc WriteScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  // Set secondary titles
-  TITLE2 = centerText('Task Management System' : %len(TITLE2));
-  TITLE3 = centerText('Version 2.0' : %len(TITLE3));
+   // Set secondary titles
+   TITLE2 = centerText('Task Management System' : %len(TITLE2));
+   TITLE3 = centerText('Version 2.0' : %len(TITLE3));
   
-  // Set primary title based on mode
-  Select;
-    When mode = MODE_INSERT;
-      TITLE1 = centerText('TASKS ADMINISTRATOR - INSERT' : %len(TITLE1));
-      FOOTTEXT = 'F3=Exit  F10=Confirm';
+   // Set primary title based on mode
+   Select;
+      When (mode = MODE_INSERT);
+         TITLE1 = centerText('TASKS ADMINISTRATOR - INSERT' : %len(TITLE1));
+         FOOTTEXT = 'F3=Exit  F10=Confirm';
       
-    When mode = MODE_MODIFY;
-      TITLE1 = centerText('TASKS ADMINISTRATOR - MODIFY' : %len(TITLE1));
-      FOOTTEXT = 'F3=Exit  F10=Confirm';
+      When (mode = MODE_MODIFY);
+         TITLE1 = centerText('TASKS ADMINISTRATOR - MODIFY' : %len(TITLE1));
+         FOOTTEXT = 'F3=Exit  F10=Confirm';
       
-    When mode = MODE_DELETE;
-      TITLE1 = centerText('TASKS ADMINISTRATOR - DELETE' : %len(TITLE1));
-      FOOTTEXT = 'F3=Exit  F10=Confirm';
+      When (mode = MODE_DELETE);
+         TITLE1 = centerText('TASKS ADMINISTRATOR - DELETE' : %len(TITLE1));
+         FOOTTEXT = 'F3=Exit  F10=Confirm';
       
-    When mode = MODE_VIEW;
-      TITLE1 = centerText('TASKS ADMINISTRATOR - VIEW' : %len(TITLE1));
-      FOOTTEXT = 'F3=Exit';
+      When (mode = MODE_VIEW);
+         TITLE1 = centerText('TASKS ADMINISTRATOR - VIEW' : %len(TITLE1));
+         FOOTTEXT = 'F3=Exit';
       
-    When mode = MODE_SUBFILE;
-      TITLE1 = centerText('TASKS ADMINISTRATOR - MAIN MENU' : %len(TITLE1));
-      FOOTTEXT = 'F3=Exit  F5=Refresh  F6=Create';
-  EndSl;
+      When (mode = MODE_SUBFILE);
+         TITLE1 = centerText('TASKS ADMINISTRATOR - MAIN MENU' : %len(TITLE1));
+         FOOTTEXT = 'F3=Exit  F5=Refresh  F6=Create';
+   EndSl;
   
-  write HEADER;
-  write FOOTER;
+   write HEADER;
+   write FOOTER;
 end-proc;
 
 
@@ -249,22 +249,22 @@ end-proc;
 
 // ShowScreen - Route to appropriate screen based on mode
 Dcl-Proc ShowScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Select;
-    When mode = MODE_INSERT;
-      InsertScreen(mode);
-    When mode = MODE_SUBFILE;
-      ShowSubfile(mode);
-    When mode = MODE_MODIFY;
-      ModifyScreen(mode);
-    When mode = MODE_DELETE;
-      DeleteScreen(mode);
-    When mode = MODE_VIEW;
-      ViewScreen(mode);
-  EndSl;
+   Select;
+      When (mode = MODE_INSERT);
+         InsertScreen(mode);
+      When (mode = MODE_SUBFILE);
+         ShowSubfile(mode);
+      When (mode = MODE_MODIFY);
+         ModifyScreen(mode);
+      When (mode = MODE_DELETE);
+         DeleteScreen(mode);
+      When (mode = MODE_VIEW);
+         ViewScreen(mode);
+   EndSl;
 end-proc;
 
 
@@ -273,29 +273,29 @@ end-proc;
 
 // ShowWindow - Display confirmation or message windows
 Dcl-Proc ShowWindow;
-  Dcl-Pi *N;
-    windowType char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      windowType char(1) const;
+   end-pi;
   
-  Select;
-    When windowType = WDW_CONFIRM;
-      WDWTEXT1 = 'Are you sure you want to proceed?';
-      WDWTEXT2 = 'Please type Y/N';
-      write WDWCONFIRM;
-      exfmt WDWCONFIRM;
+   Select;
+      When (windowType = WDW_CONFIRM);
+         WDWTEXT1 = 'Are you sure you want to proceed?';
+         WDWTEXT2 = 'Please type Y/N';
+         write WDWCONFIRM;
+         exfmt WDWCONFIRM;
       
-    When windowType = WDW_MESSAGE;
-      WDWMSG1 = 'Record saved successfully';
-      exfmt WDWMESSAGE;
+      When (windowType = WDW_MESSAGE);
+         WDWMSG1 = 'Record saved successfully';
+         exfmt WDWMESSAGE;
       
-    When windowType = WDW_DELETE;
-      WDWMSG1 = 'Record deleted successfully';
-      exfmt WDWMESSAGE;
+      When (windowType = WDW_DELETE);
+         WDWMSG1 = 'Record deleted successfully';
+         exfmt WDWMESSAGE;
       
-    When windowType = WDW_ERROR;
-      WDWMSG1 = 'Error executing operation';
-      exfmt WDWMESSAGE;
-  EndSl;
+      When (windowType = WDW_ERROR);
+         WDWMSG1 = 'Error executing operation';
+         exfmt WDWMESSAGE;
+   EndSl;
 end-proc;
 
 
@@ -306,33 +306,33 @@ end-proc;
 // UTILITY PROCEDURES
 // centerText - Center text within specified length
 Dcl-Proc centerText;
-  Dcl-Pi *N char(80);
-    text char(80) const;
-    length int(5) const;
-  end-pi;
+   Dcl-Pi *N char(80);
+      text char(80) const;
+      length int(5) const;
+   end-pi;
   
-  Dcl-S blanksNeeded int(5);
-  Dcl-S startPos int(5);
-  Dcl-S centered char(80) inz(*blanks);
-  Dcl-S textLen int(5);
+   Dcl-S blanksNeeded int(5);
+   Dcl-S startPos int(5);
+   Dcl-S centered char(80) inz(*blanks);
+   Dcl-S textLen int(5);
   
-  textLen = %len(%trim(text));
+   textLen = %len(%trim(text));
   
-  // Ensure we don't exceed the target length
-  If textLen >= length;
-    Return %subst(text : 1 : length);
-  EndIf;
+   // Ensure we don't exceed the target length
+   If (textLen >= length);
+      Return %subst(text : 1 : length);
+   EndIf;
   
-  blanksNeeded = length - textLen;
-  startPos = (blanksNeeded / 2) + 1;
+   blanksNeeded = length - textLen;
+   startPos = (blanksNeeded / 2) + 1;
   
-  If startPos > 0;
-    %subst(centered : startPos) = %trim(text);
-  Else;
-    centered = text;
-  EndIf;
+   If (startPos > 0);
+      %subst(centered : startPos) = %trim(text);
+   Else;
+      centered = text;
+   EndIf;
   
-  Return centered;
+   Return centered;
 end-proc;
 
 
@@ -341,10 +341,10 @@ end-proc;
 
 // resetErrors - Clear all validation error indicators
 Dcl-Proc resetErrors;
-  TaskIdExistsError = *off;
-  StartDateError = *off;
-  EndDateError = *off;
-  DateRangeError = *off;
+   TaskIdExistsError = *off;
+   StartDateError = *off;
+   EndDateError = *off;
+   DateRangeError = *off;
 end-proc;
 
 
@@ -353,18 +353,18 @@ end-proc;
 
 // handleSqlError - Centralized SQL error handling
 Dcl-Proc handleSqlError;
-  Dcl-Pi *N ind;
-    operation varchar(50) const;
-  end-pi;
+   Dcl-Pi *N ind;
+      operation varchar(50) const;
+   end-pi;
   
-  If xSqlstate <> SUCCESS_ON_SQL;
-    WDWMSG1 = 'SQL Error: ' + %trim(operation);
-    WDWMSG2 = 'SQLSTATE: ' + SQLSTATE + ' Code: ' + %char(SQLCODE);
-    exfmt WDWMESSAGE;
-    Return *on;
-  EndIf;
+   If (xSqlstate <> SUCCESS_ON_SQL);
+      WDWMSG1 = 'SQL Error: ' + %trim(operation);
+      WDWMSG2 = 'SQLSTATE: ' + SQLSTATE + ' Code: ' + %char(SQLCODE);
+      exfmt WDWMESSAGE;
+      Return *on;
+   EndIf;
   
-  Return *off;
+   Return *off;
 end-proc;
 
 
@@ -375,53 +375,53 @@ end-proc;
 // SUBFILE MANAGEMENT PROCEDURES
 // ShowSubfile - Main subfile display loop
 Dcl-Proc ShowSubfile;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S nextMode char(1);
+   Dcl-S nextMode char(1);
   
-  dow not pfkey(03);
-    WriteScreen(mode);
-    ActivateSubfile();
-    exfmt SFLTASKCTL;
+   dow (not pfkey(03));
+      WriteScreen(mode);
+      ActivateSubfile();
+      exfmt SFLTASKCTL;
     
-    Select;
-      When pfkey(03);
-        pfkey(03) = *off;
-        initialPos = 0;
-        finalPos = PERPAGE;
-        leave;
+      Select;
+         When (pfkey(03));
+            pfkey(03) = *off;
+            initialPos = 0;
+            finalPos = PERPAGE;
+            leave;
         
-      When infds.funcKey = PAGEUP;
-        handlePageUp(mode);
+         When (infds.funcKey = PAGEUP);
+            handlePageUp(mode);
         
-      When infds.funcKey = PAGEDOWN;
-        handlePageDown(mode);
+         When (infds.funcKey = PAGEDOWN);
+            handlePageDown(mode);
         
-      When pfkey(05);
-        initialPos = 0;
-        finalPos = PERPAGE;
-        iter;
+         When (pfkey(05));
+            initialPos = 0;
+            finalPos = PERPAGE;
+            iter;
         
-      When pfkey(06);
-        nextMode = MODE_INSERT;
-        ShowScreen(nextMode);
-        leave;
+         When (pfkey(06));
+            nextMode = MODE_INSERT;
+            ShowScreen(nextMode);
+            leave;
         
-      Other;
-        processSubfileOptions(nextMode);
-        If nextMode <> *blanks;
-          ShowScreen(nextMode);
-          leave;
-        EndIf;
-    EndSl;
+         Other;
+            processSubfileOptions(nextMode);
+            If (nextMode <> *blanks);
+               ShowScreen(nextMode);
+               leave;
+            EndIf;
+      EndSl;
     
-    If crudFinalized;
-      crudFinalized = *off;
-      leave;
-    EndIf;
-  enddo;
+      If (crudFinalized);
+         crudFinalized = *off;
+         leave;
+      EndIf;
+   enddo;
 end-proc;
 
 
@@ -430,20 +430,20 @@ end-proc;
 
 // handlePageUp - Process page up request
 Dcl-Proc handlePageUp;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  If initialPos = 0 and finalPos = PERPAGE;
-    // Already at first page
-    Return;
-  EndIf;
+   If (initialPos = 0 and finalPos = PERPAGE);
+      // Already at first page
+      Return;
+   EndIf;
   
-  If initialPos > 1;
-    initialPos -= (PERPAGE + 1);
-    finalPos -= PERPAGE;
-    ShowScreen(mode);
-  EndIf;
+   If (initialPos > 1);
+      initialPos -= (PERPAGE + 1);
+      finalPos -= PERPAGE;
+      ShowScreen(mode);
+   EndIf;
 end-proc;
 
 
@@ -452,24 +452,24 @@ end-proc;
 
 // handlePageDown - Process page down request
 Dcl-Proc handlePageDown;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S recordExists ind;
+   Dcl-S recordExists ind;
   
-  If initialPos > 0 and finalPos > PERPAGE;
-    recordExists = checkRecordsExist(initialPos : finalPos);
+   If (initialPos > 0 and finalPos > PERPAGE);
+      recordExists = checkRecordsExist(initialPos : finalPos);
     
-    If not recordExists;
-      initialPos -= (PERPAGE + 1);
-      finalPos -= PERPAGE;
-    EndIf;
+      If (not recordExists);
+         initialPos -= (PERPAGE + 1);
+         finalPos -= PERPAGE;
+      EndIf;
     
-    ShowScreen(mode);
-  Else;
-    ShowScreen(mode);
-  EndIf;
+      ShowScreen(mode);
+   Else;
+      ShowScreen(mode);
+   EndIf;
 end-proc;
 
 
@@ -478,19 +478,19 @@ end-proc;
 
 // checkRecordsExist - Verify records exist in range
 Dcl-Proc checkRecordsExist;
-  Dcl-Pi *N ind;
-    startPos int(10) const;
-    endPos int(10) const;
-  end-pi;
+   Dcl-Pi *N ind;
+      startPos int(10) const;
+      endPos int(10) const;
+   end-pi;
   
-  Dcl-S recordCount int(10);
+   Dcl-S recordCount int(10);
   
-  exec sql
+   exec sql
     SELECT COUNT(*) INTO :recordCount
     FROM CRUD01TBL;
   
-  // Check if the requested range is within available records
-  Return (recordCount >= startPos);
+   // Check if the requested range is within available records
+   Return (recordCount >= startPos);
 end-proc;
 
 
@@ -499,50 +499,50 @@ end-proc;
 
 // processSubfileOptions - Handle user selections in subfile
 Dcl-Proc processSubfileOptions;
-  Dcl-Pi *N;
-    nextMode char(1);
-  end-pi;
+   Dcl-Pi *N;
+      nextMode char(1);
+   end-pi;
   
-  Dcl-S rrn int(5);
+   Dcl-S rrn int(5);
   
-  nextMode = *blanks;
+   nextMode = *blanks;
   
-  If subfileRRN = 0;
-    Return;
-  EndIf;
+   If (subfileRRN = 0);
+      Return;
+   EndIf;
   
-  For rrn = 1 to PERPAGE;
-    chain rrn SFLTASK;
+   For rrn = 1 to PERPAGE;
+      chain rrn SFLTASK;
     
-    If not %found();
-      leave;
-    EndIf;
+      If (not %found());
+         leave;
+      EndIf;
     
-    If OPCTASK = *blanks;
-      iter;
-    EndIf;
+      If (OPCTASK = *blanks);
+         iter;
+      EndIf;
     
-    // Load task data
-    If not loadTaskById(SFLTASKID);
+      // Load task data
+      If (not loadTaskById(SFLTASKID));
+         OPCTASK = *blanks;
+         update SFLTASK;
+         iter;
+      EndIf;
+    
+      // Determine next screen based on option
+      Select;
+         When (OPCTASK = OPT_MODIFY);
+            nextMode = MODE_MODIFY;
+         When (OPCTASK = OPT_DELETE);
+            nextMode = MODE_DELETE;
+         When (OPCTASK = OPT_VIEW);
+            nextMode = MODE_VIEW;
+      EndSl;
+    
       OPCTASK = *blanks;
       update SFLTASK;
-      iter;
-    EndIf;
-    
-    // Determine next screen based on option
-    Select;
-      When OPCTASK = OPT_MODIFY;
-        nextMode = MODE_MODIFY;
-      When OPCTASK = OPT_DELETE;
-        nextMode = MODE_DELETE;
-      When OPCTASK = OPT_VIEW;
-        nextMode = MODE_VIEW;
-    EndSl;
-    
-    OPCTASK = *blanks;
-    update SFLTASK;
-    leave;
-  EndFor;
+      leave;
+   EndFor;
 end-proc;
 
 
@@ -551,18 +551,18 @@ end-proc;
 
 // loadTaskById - Load task record by ID
 Dcl-Proc loadTaskById;
-  Dcl-Pi *N ind;
-    taskId int(10) const;
-  end-pi;
+   Dcl-Pi *N ind;
+      taskId int(10) const;
+   end-pi;
   
-  clear taskRecord;
+   clear taskRecord;
   
-  exec sql
+   exec sql
     SELECT * INTO :taskRecord
     FROM CRUD01TBL
     WHERE TASK_ID = :taskId;
   
-  Return (xSqlstate = SUCCESS_ON_SQL);
+   Return (xSqlstate = SUCCESS_ON_SQL);
 end-proc;
 
 
@@ -571,13 +571,13 @@ end-proc;
 
 // SflInitial - Initialize subfile for loading
 Dcl-Proc SflInitial;
-  SflEnd = *off;
-  SflClr = *on;
-  write SFLTASKCTL;
-  SflClr = *off;
-  subfileRRN = 0;
-  SflDsp = *off;
-  SflDspCtl = *off;
+   SflEnd = *off;
+   SflClr = *on;
+   write SFLTASKCTL;
+   SflClr = *off;
+   subfileRRN = 0;
+   SflDsp = *off;
+   SflDspCtl = *off;
 end-proc;
 
 
@@ -586,22 +586,22 @@ end-proc;
 
 // ActivateSubfile - Prepare and display subfile
 Dcl-Proc ActivateSubfile;
-  Dcl-S totalRecords int(10);
+   Dcl-S totalRecords int(10);
   
-  SflInitial();
-  FillSubfile();
+   SflInitial();
+   FillSubfile();
   
-  totalRecords = getTotalRecords();
-  // Set end indicator based on whether we've loaded all records
-  SflEnd = (initialPos + subfileRRN >= totalRecords);
+   totalRecords = getTotalRecords();
+   // Set end indicator based on whether we've loaded all records
+   SflEnd = (initialPos + subfileRRN >= totalRecords);
   
-  If subfileRRN > 0;
-    SflDsp = *on;
-  Else;
-    write EMPTY;
-  EndIf;
+   If (subfileRRN > 0);
+      SflDsp = *on;
+   Else;
+      write EMPTY;
+   EndIf;
   
-  SflDspCtl = *on;
+   SflDspCtl = *on;
 end-proc;
 
 
@@ -610,14 +610,14 @@ end-proc;
 
 // FillSubfile - Load subfile with data using cursor
 Dcl-Proc FillSubfile;
-  Dcl-S count int(5) inz(0);
+   Dcl-S count int(5) inz(0);
   
-  prevInitialPos = initialPos;
-  prevFinalPos = finalPos;
+   prevInitialPos = initialPos;
+   prevFinalPos = finalPos;
   
-  clear taskData;
+   clear taskData;
   
-  exec sql
+   exec sql
     DECLARE TASK_CURSOR CURSOR FOR
     SELECT TASK_ID, NAME, STARTDATE, ENDDATE, STATE
     FROM CRUD01TBL
@@ -625,31 +625,31 @@ Dcl-Proc FillSubfile;
     OFFSET :initialPos ROWS
     FETCH FIRST :PERPAGE ROWS ONLY;
   
-  exec sql OPEN TASK_CURSOR;
+   exec sql OPEN TASK_CURSOR;
   
-  If xSqlstate <> SUCCESS_ON_SQL;
-    Return;
-  EndIf;
+   If (xSqlstate <> SUCCESS_ON_SQL);
+      Return;
+   EndIf;
   
-  exec sql FETCH TASK_CURSOR INTO :taskData.taskId, :taskData.name,
+   exec sql FETCH TASK_CURSOR INTO :taskData.taskId, :taskData.name,
                                    :taskData.startDate, :taskData.endDate,
                                    :taskData.state;
   
-  dow (xSqlstate = SUCCESS_ON_SQL) and (count < PERPAGE);
-    count += 1;
-    addToSubfile();
-    exec sql FETCH TASK_CURSOR INTO :taskData.taskId, :taskData.name,
+   dow (xSqlstate = SUCCESS_ON_SQL) and (count < PERPAGE);
+      count += 1;
+      addToSubfile();
+      exec sql FETCH TASK_CURSOR INTO :taskData.taskId, :taskData.name,
                                      :taskData.startDate, :taskData.endDate,
                                      :taskData.state;
-  enddo;
+   enddo;
   
-  exec sql CLOSE TASK_CURSOR;
+   exec sql CLOSE TASK_CURSOR;
   
-  // Update position for next page
-  If count = PERPAGE;
-    initialPos += count + 1;
-    finalPos += count;
-  EndIf;
+   // Update position for next page
+   If (count = PERPAGE);
+      initialPos += count + 1;
+      finalPos += count;
+   EndIf;
 end-proc;
 
 
@@ -658,14 +658,14 @@ end-proc;
 
 // addToSubfile - Add current record to subfile
 Dcl-Proc addToSubfile;
-  subfileRRN += 1;
-  SFLTASKID = taskData.taskId;
-  SFLTASKNAM = taskData.name;
-  SFLSTRDATE = %dec(taskData.startDate);
-  SFLENDDATE = %dec(taskData.endDate);
-  SFLSTATE = taskData.state;
-  write SFLTASK;
-  clear SFLTASK;
+   subfileRRN += 1;
+   SFLTASKID = taskData.taskId;
+   SFLTASKNAM = taskData.name;
+   SFLSTRDATE = %dec(taskData.startDate);
+   SFLENDDATE = %dec(taskData.endDate);
+   SFLSTATE = taskData.state;
+   write SFLTASK;
+   clear SFLTASK;
 end-proc;
 
 
@@ -674,20 +674,20 @@ end-proc;
 
 // getTotalRecords - Get count of all records
 Dcl-Proc getTotalRecords;
-  Dcl-Pi *N int(10);
-  end-pi;
+   Dcl-Pi *N int(10);
+   end-pi;
   
-  Dcl-S total int(10);
+   Dcl-S total int(10);
   
-  exec sql
+   exec sql
     SELECT COUNT(*) INTO :total
     FROM CRUD01TBL;
   
-  If xSqlstate <> SUCCESS_ON_SQL;
-    total = 0;
-  EndIf;
+   If (xSqlstate <> SUCCESS_ON_SQL);
+      total = 0;
+   EndIf;
   
-  Return total;
+   Return total;
 end-proc;
 
 
@@ -698,26 +698,26 @@ end-proc;
 // VALIDATION PROCEDURES
 // validateScreen - Validate input based on mode
 Dcl-Proc validateScreen;
-  Dcl-Pi *N ind;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N ind;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S hasErrors ind inz(*off);
+   Dcl-S hasErrors ind inz(*off);
   
-  IndErrors = *zeros;
-  resetErrors();
+   IndErrors = *zeros;
+   resetErrors();
   
-  Select;
-    When mode = MODE_INSERT;
-      hasErrors = validateInsert();
-    When mode = MODE_MODIFY;
-      hasErrors = validateModify();
-    Other;
-      // No validation needed for DELETE or VIEW modes
-      hasErrors = *off;
-  EndSl;
+   Select;
+      When (mode = MODE_INSERT);
+         hasErrors = validateInsert();
+      When (mode = MODE_MODIFY);
+         hasErrors = validateModify();
+      Other;
+         // No validation needed for DELETE or VIEW modes
+         hasErrors = *off;
+   EndSl;
   
-  Return hasErrors;
+   Return hasErrors;
 end-proc;
 
 
@@ -726,49 +726,49 @@ end-proc;
 
 // validateInsert - Validation specific to insert operation
 Dcl-Proc validateInsert;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  Dcl-S exists char(1);
-  Dcl-S hasErrors ind inz(*off);
+   Dcl-S exists char(1);
+   Dcl-S hasErrors ind inz(*off);
   
-  // Check if task ID already exists
-  clear exists;
-  exec sql
+   // Check if task ID already exists
+   clear exists;
+   exec sql
     SELECT '1' INTO :exists
     FROM CRUD01TBL
     WHERE TASK_ID = :CRUDTASKID
     FETCH FIRST ROW ONLY;
   
-  If xSqlstate = SUCCESS_ON_SQL and exists = '1';
-    TaskIdExistsError = *on;
-    hasErrors = *on;
-  EndIf;
-  
-  // Validate start date
-  test(de) *iso STARTDATE;
-  If %error;
-    StartDateError = *on;
-    hasErrors = *on;
-  EndIf;
-  
-  // Validate end date
-  test(de) *iso ENDDATE;
-  If %error;
-    EndDateError = *on;
-    hasErrors = *on;
-  EndIf;
-  
-  // Validate date range
-  If STARTDATE <> 0 and ENDDATE <> 0 
-     and not StartDateError and not EndDateError;
-    If STARTDATE > ENDDATE;
-      DateRangeError = *on;
+   If (xSqlstate = SUCCESS_ON_SQL and exists = '1');
+      TaskIdExistsError = *on;
       hasErrors = *on;
-    EndIf;
-  EndIf;
+   EndIf;
   
-  Return hasErrors;
+   // Validate start date
+   test(de) *iso STARTDATE;
+   If (%error);
+      StartDateError = *on;
+      hasErrors = *on;
+   EndIf;
+  
+   // Validate end date
+   test(de) *iso ENDDATE;
+   If (%error);
+      EndDateError = *on;
+      hasErrors = *on;
+   EndIf;
+  
+   // Validate date range
+   If (STARTDATE <> 0 and ENDDATE <> 0 
+     and not StartDateError and not EndDateError);
+      If (STARTDATE > ENDDATE);
+         DateRangeError = *on;
+         hasErrors = *on;
+      EndIf;
+   EndIf;
+  
+   Return hasErrors;
 end-proc;
 
 
@@ -777,35 +777,35 @@ end-proc;
 
 // validateModify - Validation specific to modify operation
 Dcl-Proc validateModify;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  Dcl-S hasErrors ind inz(*off);
+   Dcl-S hasErrors ind inz(*off);
   
-  // Validate start date
-  test(de) *iso STARTDATE;
-  If %error;
-    StartDateError = *on;
-    hasErrors = *on;
-  EndIf;
-  
-  // Validate end date
-  test(de) *iso ENDDATE;
-  If %error;
-    EndDateError = *on;
-    hasErrors = *on;
-  EndIf;
-  
-  // Validate date range
-  If STARTDATE <> 0 and ENDDATE <> 0
-     and not StartDateError and not EndDateError;
-    If STARTDATE > ENDDATE;
-      DateRangeError = *on;
+   // Validate start date
+   test(de) *iso STARTDATE;
+   If (%error);
+      StartDateError = *on;
       hasErrors = *on;
-    EndIf;
-  EndIf;
+   EndIf;
   
-  Return hasErrors;
+   // Validate end date
+   test(de) *iso ENDDATE;
+   If (%error);
+      EndDateError = *on;
+      hasErrors = *on;
+   EndIf;
+  
+   // Validate date range
+   If (STARTDATE <> 0 and ENDDATE <> 0
+     and not StartDateError and not EndDateError);
+      If (STARTDATE > ENDDATE);
+         DateRangeError = *on;
+         hasErrors = *on;
+      EndIf;
+   EndIf;
+  
+   Return hasErrors;
 end-proc;
 
 
@@ -817,47 +817,47 @@ end-proc;
 // CRUD OPERATION PROCEDURES
 // InsertScreen - Handle insert operation
 Dcl-Proc InsertScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S nextMode char(1);
+   Dcl-S nextMode char(1);
   
-  WriteScreen(mode);
+   WriteScreen(mode);
   
-  dow not pfkey(03);
-    ProtectFields_35 = *off;
-    ProtectFields_36 = *off;
-    exfmt CRUDTASK;
+   dow (not pfkey(03));
+      ProtectFields_35 = *off;
+      ProtectFields_36 = *off;
+      exfmt CRUDTASK;
     
-    Select;
-      When pfkey(03);
-        cleanupAndReturn(nextMode);
-        ShowScreen(nextMode);
-        leave;
+      Select;
+         When (pfkey(03));
+            cleanupAndReturn(nextMode);
+            ShowScreen(nextMode);
+            leave;
         
-      When pfkey(10);
-        If not validateScreen(mode);
-          If confirmAction();
-            If performInsert();
-              ShowWindow(WDW_MESSAGE);
-              cleanupAndReturn(nextMode);
-              ShowScreen(nextMode);
-              leave;
-            Else;
-              ShowWindow(WDW_ERROR);
+         When (pfkey(10));
+            If (not validateScreen(mode));
+               If (confirmAction());
+                  If (performInsert());
+                     ShowWindow(WDW_MESSAGE);
+                     cleanupAndReturn(nextMode);
+                     ShowScreen(nextMode);
+                     leave;
+                  Else;
+                     ShowWindow(WDW_ERROR);
+                  EndIf;
+               Else;
+                  clear CRUDTASK;
+               EndIf;
             EndIf;
-          Else;
-            clear CRUDTASK;
-          EndIf;
-        EndIf;
         
-      Other;
-        If validateScreen(mode);
-          iter;
-        EndIf;
-    EndSl;
-  enddo;
+         Other;
+            If (validateScreen(mode));
+               iter;
+            EndIf;
+      EndSl;
+   enddo;
 end-proc;
 
 
@@ -866,13 +866,13 @@ end-proc;
 
 // performInsert - Execute insert with transaction control
 Dcl-Proc performInsert;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  loadDataToRecord();
+   loadDataToRecord();
   
-  monitor;
-    exec sql
+   monitor;
+      exec sql
       INSERT INTO CRUD01TBL (
         TASK_ID, NAME, DESCR, ENDDES,
         STARTDATE, ENDDATE, STATE, OWNER
@@ -887,18 +887,18 @@ Dcl-Proc performInsert;
         :taskRecord.Owner
       );
     
-    If xSqlstate = SUCCESS_ON_SQL;
-      exec sql COMMIT;
-      Return *on;
-    Else;
+      If (xSqlstate = SUCCESS_ON_SQL);
+         exec sql COMMIT;
+         Return *on;
+      Else;
+         exec sql ROLLBACK;
+         Return *off;
+      EndIf;
+    
+   on-error;
       exec sql ROLLBACK;
       Return *off;
-    EndIf;
-    
-  on-error;
-    exec sql ROLLBACK;
-    Return *off;
-  endmon;
+   endmon;
 end-proc;
 
 
@@ -907,50 +907,50 @@ end-proc;
 
 // ModifyScreen - Handle modify operation
 Dcl-Proc ModifyScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S nextMode char(1);
+   Dcl-S nextMode char(1);
   
-  loadDataToScreen();
-  WriteScreen(mode);
+   loadDataToScreen();
+   WriteScreen(mode);
   
-  dow not pfkey(03);
-    ProtectFields_35 = *on;
-    exfmt CRUDTASK;
+   dow (not pfkey(03));
+      ProtectFields_35 = *on;
+      exfmt CRUDTASK;
     
-    Select;
-      When pfkey(03);
-        ProtectFields_35 = *off;
-        cleanupAndReturn(nextMode);
-        crudFinalized = *on;
-        ShowScreen(nextMode);
-        leave;
+      Select;
+         When (pfkey(03));
+            ProtectFields_35 = *off;
+            cleanupAndReturn(nextMode);
+            crudFinalized = *on;
+            ShowScreen(nextMode);
+            leave;
         
-      When pfkey(10);
-        If not validateScreen(mode);
-          If confirmAction();
-            If performUpdate();
-              ShowWindow(WDW_MESSAGE);
-              cleanupAndReturn(nextMode);
-              crudFinalized = *on;
-              ShowScreen(nextMode);
-              leave;
-            Else;
-              ShowWindow(WDW_ERROR);
+         When (pfkey(10));
+            If (not validateScreen(mode));
+               If (confirmAction());
+                  If (performUpdate());
+                     ShowWindow(WDW_MESSAGE);
+                     cleanupAndReturn(nextMode);
+                     crudFinalized = *on;
+                     ShowScreen(nextMode);
+                     leave;
+                  Else;
+                     ShowWindow(WDW_ERROR);
+                  EndIf;
+               Else;
+                  clear CRUDTASK;
+               EndIf;
             EndIf;
-          Else;
-            clear CRUDTASK;
-          EndIf;
-        EndIf;
         
-      Other;
-        If validateScreen(mode);
-          iter;
-        EndIf;
-    EndSl;
-  enddo;
+         Other;
+            If (validateScreen(mode));
+               iter;
+            EndIf;
+      EndSl;
+   enddo;
 end-proc;
 
 
@@ -959,11 +959,11 @@ end-proc;
 
 // performUpdate - Execute update operation
 Dcl-Proc performUpdate;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  monitor;
-    exec sql
+   monitor;
+      exec sql
       UPDATE CRUD01TBL
       SET NAME = :NAMETASK,
           DESCR = :DESCRP,
@@ -974,18 +974,18 @@ Dcl-Proc performUpdate;
           OWNER = :currentUser
       WHERE TASK_ID = :CRUDTASKID;
     
-    If xSqlstate = SUCCESS_ON_SQL;
-      exec sql COMMIT;
-      Return *on;
-    Else;
+      If (xSqlstate = SUCCESS_ON_SQL);
+         exec sql COMMIT;
+         Return *on;
+      Else;
+         exec sql ROLLBACK;
+         Return *off;
+      EndIf;
+    
+   on-error;
       exec sql ROLLBACK;
       Return *off;
-    EndIf;
-    
-  on-error;
-    exec sql ROLLBACK;
-    Return *off;
-  endmon;
+   endmon;
 end-proc;
 
 
@@ -994,48 +994,48 @@ end-proc;
 
 // DeleteScreen - Handle delete operation
 Dcl-Proc DeleteScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S nextMode char(1);
+   Dcl-S nextMode char(1);
   
-  loadDataToScreen();
-  WriteScreen(mode);
+   loadDataToScreen();
+   WriteScreen(mode);
   
-  dow not pfkey(03);
-    ProtectFields_35 = *on;
-    ProtectFields_36 = *on;
-    exfmt CRUDTASK;
+   dow (not pfkey(03));
+      ProtectFields_35 = *on;
+      ProtectFields_36 = *on;
+      exfmt CRUDTASK;
     
-    Select;
-      When pfkey(03);
-        ProtectFields_35 = *off;
-        ProtectFields_36 = *off;
-        cleanupAndReturn(nextMode);
-        crudFinalized = *on;
-        ShowScreen(nextMode);
-        leave;
-        
-      When pfkey(10);
-        If confirmAction();
-          If performDelete();
-            ShowWindow(WDW_DELETE);
+      Select;
+         When (pfkey(03));
+            ProtectFields_35 = *off;
+            ProtectFields_36 = *off;
             cleanupAndReturn(nextMode);
             crudFinalized = *on;
             ShowScreen(nextMode);
             leave;
-          Else;
-            ShowWindow(WDW_ERROR);
-          EndIf;
-        Else;
-          clear CRUDTASK;
-        EndIf;
         
-      Other;
-        iter;
-    EndSl;
-  enddo;
+         When (pfkey(10));
+            If (confirmAction());
+               If (performDelete());
+                  ShowWindow(WDW_DELETE);
+                  cleanupAndReturn(nextMode);
+                  crudFinalized = *on;
+                  ShowScreen(nextMode);
+                  leave;
+               Else;
+                  ShowWindow(WDW_ERROR);
+               EndIf;
+            Else;
+               clear CRUDTASK;
+            EndIf;
+        
+         Other;
+            iter;
+      EndSl;
+   enddo;
 end-proc;
 
 
@@ -1044,26 +1044,26 @@ end-proc;
 
 // performDelete - Execute delete operation
 Dcl-Proc performDelete;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  monitor;
-    exec sql
+   monitor;
+      exec sql
       DELETE FROM CRUD01TBL
       WHERE TASK_ID = :CRUDTASKID;
     
-    If xSqlstate = SUCCESS_ON_SQL;
-      exec sql COMMIT;
-      Return *on;
-    Else;
+      If (xSqlstate = SUCCESS_ON_SQL);
+         exec sql COMMIT;
+         Return *on;
+      Else;
+         exec sql ROLLBACK;
+         Return *off;
+      EndIf;
+    
+   on-error;
       exec sql ROLLBACK;
       Return *off;
-    EndIf;
-    
-  on-error;
-    exec sql ROLLBACK;
-    Return *off;
-  endmon;
+   endmon;
 end-proc;
 
 
@@ -1072,29 +1072,29 @@ end-proc;
 
 // ViewScreen - Display record in read-only mode
 Dcl-Proc ViewScreen;
-  Dcl-Pi *N;
-    mode char(1) const;
-  end-pi;
+   Dcl-Pi *N;
+      mode char(1) const;
+   end-pi;
   
-  Dcl-S nextMode char(1);
+   Dcl-S nextMode char(1);
   
-  loadDataToScreen();
-  WriteScreen(mode);
+   loadDataToScreen();
+   WriteScreen(mode);
   
-  dow not pfkey(03);
-    ProtectFields_35 = *on;
-    ProtectFields_36 = *on;
-    exfmt CRUDTASK;
+   dow (not pfkey(03));
+      ProtectFields_35 = *on;
+      ProtectFields_36 = *on;
+      exfmt CRUDTASK;
     
-    If pfkey(03);
-      ProtectFields_35 = *off;
-      ProtectFields_36 = *off;
-      cleanupAndReturn(nextMode);
-      crudFinalized = *on;
-      ShowScreen(nextMode);
-      leave;
-    EndIf;
-  enddo;
+      If (pfkey(03));
+         ProtectFields_35 = *off;
+         ProtectFields_36 = *off;
+         cleanupAndReturn(nextMode);
+         crudFinalized = *on;
+         ShowScreen(nextMode);
+         leave;
+      EndIf;
+   enddo;
 end-proc;
 
 
@@ -1105,14 +1105,14 @@ end-proc;
 // DATA TRANSFER PROCEDURES
 // loadDataToScreen - Transfer data from record to screen
 Dcl-Proc loadDataToScreen;
-  clear CRUDTASK;
-  CRUDTASKID = taskRecord.Task_id;
-  NAMETASK = taskRecord.Name;
-  DESCRP = taskRecord.Descr;
-  SOLUTION = taskRecord.Enddes;
-  STARTDATE = taskRecord.Startdate;
-  ENDDATE = taskRecord.Enddate;
-  STATETASK = taskRecord.State;
+   clear CRUDTASK;
+   CRUDTASKID = taskRecord.Task_id;
+   NAMETASK = taskRecord.Name;
+   DESCRP = taskRecord.Descr;
+   SOLUTION = taskRecord.Enddes;
+   STARTDATE = taskRecord.Startdate;
+   ENDDATE = taskRecord.Enddate;
+   STATETASK = taskRecord.State;
 end-proc;
 
 
@@ -1124,15 +1124,15 @@ end-proc;
 
 // loadDataToRecord - Transfer data from screen to record
 Dcl-Proc loadDataToRecord;
-  clear taskRecord;
-  taskRecord.Task_id = CRUDTASKID;
-  taskRecord.Name = %trim(NAMETASK);
-  taskRecord.Descr = %trim(DESCRP);
-  taskRecord.Enddes = %trim(SOLUTION);
-  taskRecord.Startdate = STARTDATE;
-  taskRecord.Enddate = ENDDATE;
-  taskRecord.State = STATETASK;
-  taskRecord.Owner = currentUser;
+   clear taskRecord;
+   taskRecord.Task_id = CRUDTASKID;
+   taskRecord.Name = %trim(NAMETASK);
+   taskRecord.Descr = %trim(DESCRP);
+   taskRecord.Enddes = %trim(SOLUTION);
+   taskRecord.Startdate = STARTDATE;
+   taskRecord.Enddate = ENDDATE;
+   taskRecord.State = STATETASK;
+   taskRecord.Owner = currentUser;
 end-proc;
 
 
@@ -1144,11 +1144,11 @@ end-proc;
 
 // confirmAction - Get user confirmation
 Dcl-Proc confirmAction;
-  Dcl-Pi *N ind;
-  end-pi;
+   Dcl-Pi *N ind;
+   end-pi;
   
-  ShowWindow(WDW_CONFIRM);
-  Return (WDWCHOICE = 'Y');
+   ShowWindow(WDW_CONFIRM);
+   Return (WDWCHOICE = 'Y');
 end-proc;
 
 
@@ -1160,14 +1160,14 @@ end-proc;
 
 // cleanupAndReturn - Clean up and prepare to return to subfile
 Dcl-Proc cleanupAndReturn;
-  Dcl-Pi *N;
-    nextMode char(1);
-  end-pi;
+   Dcl-Pi *N;
+      nextMode char(1);
+   end-pi;
   
-  clear CRUDTASK;
-  clear OPCTASK;
-  pfkey(03) = *off;
-  initialPos = 0;
-  finalPos = PERPAGE;
-  nextMode = MODE_SUBFILE;
+   clear CRUDTASK;
+   clear OPCTASK;
+   pfkey(03) = *off;
+   initialPos = 0;
+   finalPos = PERPAGE;
+   nextMode = MODE_SUBFILE;
 end-proc;

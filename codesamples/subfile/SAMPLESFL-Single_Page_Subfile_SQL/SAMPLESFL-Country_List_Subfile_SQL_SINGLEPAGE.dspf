@@ -1,0 +1,127 @@
+      * ------------------------------------------------------------====
+      * Display File: SAMPLESFL
+      * Description: Single page subfile for SAMPLEDB country table
+      * Author: Bob
+      * Created: 2026-04-17
+      * ------------------------------------------------------------====
+     A                                      DSPSIZ(27 132 *DS3)
+     A                                      PRINT
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA12(12 'Cancel')
+     A                                      ROLLUP(25 'Page Down')
+     A                                      ROLLDOWN(26 'Page Up')
+      *
+      * ------------------------------------------------------------====
+      * Subfile Record Format
+      * ------------------------------------------------------------====
+     A          R SFLREC                    SFL
+     A                                      SFLNXTCHG
+     A            SFLSEL         1A  B  4  3VALUES(' ' '5')
+     A            CCODE          2A  O  4  7COLOR(WHT)
+     A            CNAME         40A  O  4 11COLOR(WHT)
+     A            CREGION       20A  O  4 53COLOR(WHT)
+     A            CEUMEM         1A  O  4 75COLOR(WHT)
+     A            CCURR          3A  O  4 79COLOR(WHT)
+     A            CCURNAME      25A  O  4 84COLOR(WHT)
+      *
+      * ------------------------------------------------------------====
+      * Subfile Control Record Format
+      * ------------------------------------------------------------====
+     A          R SFLCTL                    SFLCTL(SFLREC)
+     A                                      SFLSIZ(0020)
+     A                                      SFLPAG(0020)
+     A                                      OVERLAY
+     A  91                                  SFLDSP
+     A  92                                  SFLDSPCTL
+     A  93                                  SFLCLR
+     A  94                                  SFLEND(*MORE)
+     A            SFLRCDNBR      4S 0H      SFLRCDNBR(CURSOR)
+     A            SFLPGM         4S 0H      TEXT('Current Page Number')
+      *
+      * ------------------------------------------------------------====
+      * Screen Header
+      * ------------------------------------------------------------====
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 50'European Country Information'
+     A                                      DSPATR(HI)
+     A                                  1122TIME
+     A                                  2  2'Program:'
+     A            PGMNAME       10A  O  2 11COLOR(WHT)
+     A                                  2 50'Country Database'
+     A                                      DSPATR(HI)
+     A                                  2112'User:'
+     A            USERNAME      10A  O  2118COLOR(WHT)
+      *
+      * ------------------------------------------------------------====
+      * Column Headers
+      * ------------------------------------------------------------====
+     A                                  3  3'Sel'
+     A                                      DSPATR(HI)
+     A                                  3  7'Cd'
+     A                                      DSPATR(HI)
+     A                                  3 11'Country Name'
+     A                                      DSPATR(HI)
+     A                                  3 53'Region'
+     A                                      DSPATR(HI)
+     A                                  3 75'EU'
+     A                                      DSPATR(HI)
+     A                                  3 79'Cur'
+     A                                      DSPATR(HI)
+     A                                  3 84'Currency Name'
+     A                                      DSPATR(HI)
+      *
+      * ------------------------------------------------------------====
+      * Footer
+      * ------------------------------------------------------------====
+     A          R FOOTREC
+     A                                 25  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 25 12'F5=Refresh'
+     A                                      COLOR(BLU)
+     A                                 25 25'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 25 40'PageUp/PageDown'
+     A                                      COLOR(BLU)
+     A            RECCOUNT       4S 0O 25 90
+     A                                 25 95'records displayed'
+     A                                      COLOR(BLU)
+     A N70                             26  2'Selection: 5=Display Details'
+     A N70                                  COLOR(BLU)
+     A  70                             26  2'* No records to display.'
+     A  70                                  COLOR(RED)
+      *
+      * ------------------------------------------------------------====
+      * Detail Display Record Format
+      * ------------------------------------------------------------====
+     A          R DETAILREC
+     A                                      OVERLAY
+     A                                  5  2'Country Details'
+     A                                      DSPATR(HI)
+     A                                      COLOR(WHT)
+     A                                  7  5'Country Code:'
+     A            DCODE          2A  O  7 25COLOR(WHT)
+     A                                  8  5'Country Name:'
+     A            DNAME         50A  O  8 25COLOR(WHT)
+     A                                  9  5'Local Name:'
+     A            DLOCAL        50A  O  9 25COLOR(WHT)
+     A                                 10  5'Capital City:'
+     A            DCAPITAL      50A  O 10 25COLOR(WHT)
+     A                                 11  5'Region:'
+     A            DREGION       25A  O 11 25COLOR(WHT)
+     A                                 12  5'Population:'
+     A            DPOP          12S 0O 12 25
+     A                                 13  5'Area (km²):'
+     A            DAREA         12S 2O 13 25
+     A                                 14  5'EU Member:'
+     A            DEUMEM         1A  O 14 25COLOR(WHT)
+     A                                 15  5'EU Join Date:'
+     A            JOINDATE      10A  O 15 25COLOR(WHT)
+     A                                 16  5'Currency Code:'
+     A            DCURCODE       3A  O 16 25COLOR(WHT)
+     A                                 17  5'Currency Name:'
+     A            DCURNAME      30A  O 17 25COLOR(WHT)
+     A                                 26  2'F12=Return to List'
+     A                                      COLOR(BLU)

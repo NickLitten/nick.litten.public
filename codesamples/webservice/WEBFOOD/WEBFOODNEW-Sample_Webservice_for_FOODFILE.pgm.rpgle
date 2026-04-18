@@ -65,146 +65,146 @@ dcl-f FOODFILE usage(*INPUT:*OUTPUT:*UPDATE:*DELETE) keyed usropn rename(FOODFIL
 //
 // Returns: Status message in rtntext parameter
 // ------------------------------------------------------------------------------
-dcl-proc mainline;
-    dcl-pi *n;
-        function char(3);           // Operation: GET/ADD/UPD/DLT
-        rtntext char(100);          // Return status message
-        data likeds(FoodRec);       // Ingredient data structure
-    end-pi;
+Dcl-Proc mainline;
+   Dcl-Pi *n;
+      function char(3);           // Operation: GET/ADD/UPD/DLT
+      rtntext char(100);          // Return status message
+      data likeds(FoodRec);       // Ingredient data structure
+   end-pi;
 
-    // ------------------------------------------------------------------------------
-    // Data Structure: FoodRec
-    // Externally defined from FOODFILE record format
-    // Contains all fields from the ingredient database record
-    // ------------------------------------------------------------------------------
-    dcl-ds FoodRec extname('FOODFILE':*input) qualified inz;
-    end-ds;
+   // ------------------------------------------------------------------------------
+   // Data Structure: FoodRec
+   // Externally defined from FOODFILE record format
+   // Contains all fields from the ingredient database record
+   // ------------------------------------------------------------------------------
+   Dcl-Ds FoodRec extname('FOODFILE':*input) qualified inz;
+   end-ds;
 
-    // ------------------------------------------------------------------------------
-    // Main Processing Logic with Error Handling
-    // ------------------------------------------------------------------------------
-    monitor;
+   // ------------------------------------------------------------------------------
+   // Main Processing Logic with Error Handling
+   // ------------------------------------------------------------------------------
+   monitor;
 
-        // Validate function parameter - must be one of four valid operations
-        if function <> 'GET' and function <> 'ADD' and function <> 'UPD' and function <> 'DLT';
-            rtntext = '(INVALID) Function must be GET/ADD/UPD/DLT: ' + %trim(function);
-        else;
+      // Validate function parameter - must be one of four valid operations
+      If (function <> 'GET' and function <> 'ADD' and function <> 'UPD' and function <> 'DLT');
+         rtntext = '(INVALID) Function must be GET/ADD/UPD/DLT: ' + %trim(function);
+      Else;
 
-            // Open the food ingredient file for processing
-            open foodfile;
+         // Open the food ingredient file for processing
+         open foodfile;
 
-            // ------------------------------------------------------------------------------
-            // Process Request Based on Function Type
-            // ------------------------------------------------------------------------------
-            select;
-                // ------------------------------------------------------------------------------
-                // GET Operation: Retrieve ingredient record by ID
-                // Returns all ingredient details if found
-                // ------------------------------------------------------------------------------
-                when function = 'GET';
-                    // Attempt to read record using ingredient ID as key
-                    chain (data.INGID) FOODFILE;
+         // ------------------------------------------------------------------------------
+         // Process Request Based on Function Type
+         // ------------------------------------------------------------------------------
+         Select;
+               // ------------------------------------------------------------------------------
+               // GET Operation: Retrieve ingredient record by ID
+               // Returns all ingredient details if found
+               // ------------------------------------------------------------------------------
+            When (function = 'GET');
+               // Attempt to read record using ingredient ID as key
+               chain (data.INGID) FOODFILE;
                     
-                    if %found(FOODFILE);
-                        // Record found - populate return data structure
-                        data.INGNAME = INGNAME;
-                        data.CATEGORY = CATEGORY;
-                        data.MEASURE = MEASURE;
-                        data.QUANTITY = QUANTITY;
-                        data.EXPDATE = EXPDATE;
-                        data.ORGANIC = ORGANIC;
-                        rtntext = 'Row ' + %char(data.INGID) + ' Successfully Read';
-                    else;
-                        // Record not found - return error message
-                        rtntext = '(READ FAIL) Ingredient ID does not exist: ' + %char(data.INGID);
-                    endif;
+               If (%found(FOODFILE));
+                  // Record found - populate return data structure
+                  data.INGNAME = INGNAME;
+                  data.CATEGORY = CATEGORY;
+                  data.MEASURE = MEASURE;
+                  data.QUANTITY = QUANTITY;
+                  data.EXPDATE = EXPDATE;
+                  data.ORGANIC = ORGANIC;
+                  rtntext = 'Row ' + %char(data.INGID) + ' Successfully Read';
+               Else;
+                  // Record not found - return error message
+                  rtntext = '(READ FAIL) Ingredient ID does not exist: ' + %char(data.INGID);
+               EndIf;
 
-                // ------------------------------------------------------------------------------
-                // ADD Operation: Create new ingredient record
-                // Validates that ID doesn't already exist before adding
-                // ------------------------------------------------------------------------------
-                when function = 'ADD';
-                    // Check if ingredient ID already exists
-                    chain (data.INGID) FOODFILE;
+               // ------------------------------------------------------------------------------
+               // ADD Operation: Create new ingredient record
+               // Validates that ID doesn't already exist before adding
+               // ------------------------------------------------------------------------------
+            When (function = 'ADD');
+               // Check if ingredient ID already exists
+               chain (data.INGID) FOODFILE;
                     
-                    if not %found(FOODFILE);
-                        // ID is unique - safe to add new record
-                        // Trim trailing spaces from character fields
-                        INGNAME = %trimr(data.INGNAME);
-                        CATEGORY = %trimr(data.CATEGORY);
-                        MEASURE = %trimr(data.MEASURE);
-                        QUANTITY = data.QUANTITY;
-                        EXPDATE = data.EXPDATE;
-                        ORGANIC = data.ORGANIC;
+               If (not %found(FOODFILE));
+                  // ID is unique - safe to add new record
+                  // Trim trailing spaces from character fields
+                  INGNAME = %trimr(data.INGNAME);
+                  CATEGORY = %trimr(data.CATEGORY);
+                  MEASURE = %trimr(data.MEASURE);
+                  QUANTITY = data.QUANTITY;
+                  EXPDATE = data.EXPDATE;
+                  ORGANIC = data.ORGANIC;
                         
-                        // Write new record to database
-                        write RECFOOD;
-                        rtntext = 'Row ' + %char(data.INGID) + ' Successfully Added';
-                    else;
-                        // Duplicate ID - cannot add
-                        rtntext = '(ADD FAIL) Ingredient ID already exists: ' + %char(data.INGID);
-                    endif;
+                  // Write new record to database
+                  write RECFOOD;
+                  rtntext = 'Row ' + %char(data.INGID) + ' Successfully Added';
+               Else;
+                  // Duplicate ID - cannot add
+                  rtntext = '(ADD FAIL) Ingredient ID already exists: ' + %char(data.INGID);
+               EndIf;
 
-                // ------------------------------------------------------------------------------
-                // UPD Operation: Update existing ingredient record
-                // Validates that record exists before updating
-                // ------------------------------------------------------------------------------
-                when function = 'UPD';
-                    // Locate record to update by ingredient ID
-                    chain (data.INGID) FOODFILE;
+               // ------------------------------------------------------------------------------
+               // UPD Operation: Update existing ingredient record
+               // Validates that record exists before updating
+               // ------------------------------------------------------------------------------
+            When (function = 'UPD');
+               // Locate record to update by ingredient ID
+               chain (data.INGID) FOODFILE;
                     
-                    if %found(FOODFILE);
-                        // Record found - update all fields
-                        // Trim trailing spaces from character fields
-                        INGNAME = %trimr(data.INGNAME);
-                        CATEGORY = %trimr(data.CATEGORY);
-                        MEASURE = %trimr(data.MEASURE);
-                        QUANTITY = data.QUANTITY;
-                        EXPDATE = data.EXPDATE;
-                        ORGANIC = data.ORGANIC;
+               If (%found(FOODFILE));
+                  // Record found - update all fields
+                  // Trim trailing spaces from character fields
+                  INGNAME = %trimr(data.INGNAME);
+                  CATEGORY = %trimr(data.CATEGORY);
+                  MEASURE = %trimr(data.MEASURE);
+                  QUANTITY = data.QUANTITY;
+                  EXPDATE = data.EXPDATE;
+                  ORGANIC = data.ORGANIC;
                         
-                        // Commit changes to database
-                        update RECFOOD;
-                        rtntext = 'Data Successfully Updated';
-                    else;
-                        // Record not found - cannot update
-                        rtntext = '(UPDATE FAIL) Ingredient ID does not exist for UPDATE: ' + %char(data.INGID);
-                    endif;
+                  // Commit changes to database
+                  update RECFOOD;
+                  rtntext = 'Data Successfully Updated';
+               Else;
+                  // Record not found - cannot update
+                  rtntext = '(UPDATE FAIL) Ingredient ID does not exist for UPDATE: ' + %char(data.INGID);
+               EndIf;
 
-                // ------------------------------------------------------------------------------
-                // DLT Operation: Delete ingredient record
-                // Validates that record exists before deleting
-                // ------------------------------------------------------------------------------
-                when function = 'DLT';
-                    // Locate record to delete by ingredient ID
-                    chain (data.INGID) FOODFILE;
+               // ------------------------------------------------------------------------------
+               // DLT Operation: Delete ingredient record
+               // Validates that record exists before deleting
+               // ------------------------------------------------------------------------------
+            When (function = 'DLT');
+               // Locate record to delete by ingredient ID
+               chain (data.INGID) FOODFILE;
                     
-                    if %found(FOODFILE);
-                        // Record found - proceed with deletion
-                        delete RECFOOD;
-                        rtntext = 'Row ' + %char(data.INGID) + ' Successfully Deleted';
-                    else;
-                        // Record not found - cannot delete
-                        rtntext = '(DELETE FAIL) Ingredient ID does not exist for DELETE: ' + %char(data.INGID);
-                    endif;
+               If (%found(FOODFILE));
+                  // Record found - proceed with deletion
+                  delete RECFOOD;
+                  rtntext = 'Row ' + %char(data.INGID) + ' Successfully Deleted';
+               Else;
+                  // Record not found - cannot delete
+                  rtntext = '(DELETE FAIL) Ingredient ID does not exist for DELETE: ' + %char(data.INGID);
+               EndIf;
 
-            endsl;
+         EndSl;
 
-            // Close file after processing - ensures proper cleanup
-            close foodfile;
+         // Close file after processing - ensures proper cleanup
+         close foodfile;
 
-        endif;
+      EndIf;
 
-        // Normal procedure exit
-        return;
+      // Normal procedure exit
+      Return;
 
-    // ------------------------------------------------------------------------------
-    // Error Handler
-    // Catches any unexpected errors during processing
-    // Returns error status code to caller
-    // ------------------------------------------------------------------------------
-    on-error;
-        rtntext = '(ERROR) Main Program Error: ' + %char(%status);
-    endmon;
+      // ------------------------------------------------------------------------------
+      // Error Handler
+      // Catches any unexpected errors during processing
+      // Returns error status code to caller
+      // ------------------------------------------------------------------------------
+   on-error;
+      rtntext = '(ERROR) Main Program Error: ' + %char(%status);
+   endmon;
 
 end-proc;

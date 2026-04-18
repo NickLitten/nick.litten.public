@@ -1,0 +1,205 @@
+{
+    "project": {
+        "name": "NICKLITTEN",
+        "description": "Nick Litten Public GitHub Code Samples",
+        "language": "IBM i (RPG, CL, SQL, DDS)",
+        "author": "Nick Litten",
+        "website": "https://www.nicklitten.com"
+    },
+    "coding_standards": {
+        "enabled": true,
+        "standards_file": ".bob/coding-standards.md",
+        "auto_apply": true,
+        "strict_mode": false
+    },
+    "documentation": {
+        "format": {
+            "rpgle": "triple_slash",
+            "sqlrpgle": "triple_slash",
+            "clle": "block_comment",
+            "dds": "asterisk",
+            "sql": "double_dash"
+        },
+        "line_separator": "-",
+        "line_separator_forbidden": "=",
+        "author_name": "Nick Litten",
+        "require_header": true,
+        "require_modification_history": true,
+        "require_purpose_section": true,
+        "require_features_section": true,
+        "require_usage_section": true
+    },
+    "version_control": {
+        "auto_calculate_version": true,
+        "version_format": "V.XXX",
+        "initial_version": "V.000",
+        "count_from_history": true
+    },
+    "copyright": {
+        "auto_insert": true,
+        "author": "Nick Litten",
+        "year": "auto",
+        "website": "https://www.nicklitten.com",
+        "format": {
+            "rpgle": "ctl-opt copyright('{program} | {version} | {description}');",
+            "sqlrpgle": "ctl-opt copyright('{program} | {version} | {description}');",
+            "clle": "COPYRIGHT TEXT('{program} Ver:{version} {description}')"
+        }
+    },
+    "templates": {
+        "directory": "templates",
+        "files": {
+            "rpgle": "template.rpgle",
+            "sqlrpgle": "template.sqlrpgle",
+            "clle": "template.clle",
+            "dspf": "template.dspf",
+            "pf": "template.pf",
+            "table": "template.table"
+        }
+    },
+    "code_review": {
+        "auto_scan": true,
+        "rules": {
+            "documentation": {
+                "missing_header": "error",
+                "missing_modification_history": "warning",
+                "missing_purpose": "warning",
+                "missing_features": "info",
+                "incomplete_description": "warning"
+            },
+            "code_quality": {
+                "magic_numbers": "warning",
+                "hardcoded_values": "warning",
+                "missing_error_handling": "error",
+                "inconsistent_naming": "warning",
+                "missing_comments": "info"
+            },
+            "best_practices": {
+                "fixed_format_rpg": "error",
+                "no_main_procedure": "warning",
+                "unqualified_data_structures": "warning",
+                "missing_sql_options": "warning",
+                "no_activation_group": "warning"
+            }
+        }
+    },
+    "auto_corrections": {
+        "enabled": true,
+        "rules": {
+            "insert_missing_header": true,
+            "update_copyright_version": true,
+            "fix_indentation": true,
+            "add_section_separators": true,
+            "convert_to_free_format": false,
+            "add_procedure_documentation": true,
+            "standardize_naming": false
+        }
+    },
+    "file_patterns": {
+        "rpgle": [
+            "**/*.rpgle",
+            "**/*.pgm.rpgle",
+            "**/*.mod.rpgle",
+            "**/*.srvpgm.rpgle"
+        ],
+        "sqlrpgle": [
+            "**/*.sqlrpgle",
+            "**/*.pgm.sqlrpgle",
+            "**/*.mod.sqlrpgle",
+            "**/*.srvpgm.sqlrpgle"
+        ],
+        "clle": [
+            "**/*.clle",
+            "**/*.pgm.clle",
+            "**/*.cmd.clle"
+        ],
+        "dspf": [
+            "**/*.dspf"
+        ],
+        "pf": [
+            "**/*.pf"
+        ],
+        "table": [
+            "**/*.table"
+        ],
+        "sql": [
+            "**/*.sql"
+        ]
+    },
+    "exclusions": {
+        "directories": [
+            ".vscode",
+            ".git",
+            "node_modules",
+            ".bob"
+        ],
+        "files": [
+            "**/*NOCOMPILE*",
+            "**/legacy/**"
+        ]
+    },
+    "naming_conventions": {
+        "programs": "UPPERCASE",
+        "procedures": "PascalCase",
+        "variables": "camelCase",
+        "constants": "UPPER_SNAKE_CASE",
+        "data_structures": "PascalCase",
+        "file_fields": "UPPERCASE"
+    },
+    "formatting": {
+        "rpgle": {
+            "indent": "| ",
+            "section_separator": "// --------------------------------------------------------------------------",
+            "procedure_separator": "// --------------------------------------------------------------------------",
+            "max_line_length": 100,
+            "line_separator_char": "-",
+            "forbidden_separator_char": "="
+        },
+        "clle": {
+            "section_separator": "/* --------------------------------------------------------------------------",
+            "max_line_length": 80,
+            "line_separator_char": "-",
+            "forbidden_separator_char": "="
+        },
+        "dds": {
+            "header_separator": "      * --------------------------------------------------------------------------",
+            "line_separator_char": "-",
+            "forbidden_separator_char": "="
+        },
+        "sql": {
+            "section_separator": "-- --------------------------------------------------------------------------",
+            "indent": "    ",
+            "line_separator_char": "-",
+            "forbidden_separator_char": "="
+        }
+    },
+    "integration": {
+        "vscode": {
+            "enable_snippets": true,
+            "enable_linting": true,
+            "enable_formatting": true
+        },
+        "git": {
+            "auto_update_version_on_commit": true,
+            "require_modification_history_entry": false
+        }
+    },
+    "ai_assistant": {
+        "name": "BOB",
+        "role": "IBM i Development Assistant",
+        "capabilities": [
+            "code_review",
+            "documentation_generation",
+            "modernization_suggestions",
+            "best_practices_enforcement",
+            "template_application",
+            "version_management"
+        ],
+        "preferences": {
+            "verbose_explanations": true,
+            "suggest_improvements": true,
+            "auto_apply_standards": true,
+            "educational_mode": true
+        }
+    }
+}

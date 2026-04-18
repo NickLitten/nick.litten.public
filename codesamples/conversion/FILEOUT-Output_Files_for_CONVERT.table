@@ -5,7 +5,7 @@
 
 -- Create FILEOUT table with single 80-character fixed-length field
 CREATE OR REPLACE TABLE
-    FILEOUT (RECORD CHAR(80) NOT NULL DEFAULT '')
+    FILEOUT (OUT CHAR(80) NOT NULL DEFAULT '')
     RCDFMT RFILEOUT;
 
 LABEL ON TABLE FILEOUT IS 'ASCII Output File - 80 byte records';

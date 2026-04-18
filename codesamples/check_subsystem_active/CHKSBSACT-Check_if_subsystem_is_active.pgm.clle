@@ -1,47 +1,48 @@
-/// Program: CHKSBSACT - Check if Subsystem is Active
-///
-/// Description: Determines if a specified subsystem is currently active by
-///              querying the QSYS2.SUBSYSTEM_INFO service and returning a
-///              simple YES/NO/ERR status. Uses SQL to create a temporary
-///              work file for result processing with comprehensive error
-///              handling for various failure scenarios.
-///
-/// Purpose: Production utility demonstrating:
-///   - SQL service usage (QSYS2.SUBSYSTEM_INFO)
-///   - Dynamic SQL statement construction with parameters
-///   - Temporary file creation and management in QTEMP
-///   - Parameter-based program interface
-///   - Comprehensive error handling with labeled sections
-///   - Return value pattern for status reporting
-///
-/// Features:
-///   - Queries subsystem status via SQL service
-///   - Returns simple YES/NO/ERR status code
-///   - Creates temporary work file for SQL results
-///   - Handles missing subsystems gracefully
-///   - Cleans up temporary resources automatically
-///   - Provides diagnostic messages on errors
-///   - Case-insensitive subsystem name handling
-///
-/// Usage: CALL CHKSBSACT PARM('QBATCH' 'QSYS' result_var)
-///        Where result_var receives 'YES', 'NO', or 'ERR'
-///
-/// Parameters:
-///   - &SBS: char(10) - Subsystem name to check
-///   - &LIB: char(10) - Library containing subsystem description
-///   - &RESULT: char(3) - Return value ('YES'/'NO'/'ERR')
-///
-/// Dependencies:
-///   - QSYS2.SUBSYSTEM_INFO SQL service
-///   - QTEMP library for temporary file
-///   - Authority to query subsystem information
-///
-/// Reference:
-/// https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status
-///
-/// Modification History:
-/// 1.0 2025-xx-xx | Nick Litten | Initial creation
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/* Program: CHKSBSACT - Check if Subsystem is Active                       */
+/*                                                                          */
+/* Description: Determines if a specified subsystem is currently active by */
+/*              querying the QSYS2.SUBSYSTEM_INFO service and returning a  */
+/*              simple YES/NO/ERR status. Uses SQL to create a temporary   */
+/*              work file for result processing with comprehensive error   */
+/*              handling for various failure scenarios.                    */
+/*                                                                          */
+/* Purpose: Production utility demonstrating:                              */
+/*   - SQL service usage (QSYS2.SUBSYSTEM_INFO)                            */
+/*   - Dynamic SQL statement construction with parameters                  */
+/*   - Temporary file creation and management in QTEMP                     */
+/*   - Parameter-based program interface                                   */
+/*   - Comprehensive error handling with labeled sections                  */
+/*   - Return value pattern for status reporting                           */
+/*                                                                          */
+/* Features:                                                                */
+/*   - Queries subsystem status via SQL service                            */
+/*   - Returns simple YES/NO/ERR status code                               */
+/*   - Creates temporary work file for SQL results                         */
+/*   - Handles missing subsystems gracefully                               */
+/*   - Cleans up temporary resources automatically                         */
+/*   - Provides diagnostic messages on errors                              */
+/*   - Case-insensitive subsystem name handling                            */
+/*                                                                          */
+/* Usage: CALL CHKSBSACT PARM('QBATCH' 'QSYS' result_var)                  */
+/*        Where result_var receives 'YES', 'NO', or 'ERR'                  */
+/*                                                                          */
+/* Parameters:                                                              */
+/*   - &SBS: char(10) - Subsystem name to check                            */
+/*   - &LIB: char(10) - Library containing subsystem description           */
+/*   - &RESULT: char(3) - Return value ('YES'/'NO'/'ERR')                  */
+/*                                                                          */
+/* Dependencies:                                                            */
+/*   - QSYS2.SUBSYSTEM_INFO SQL service                                    */
+/*   - QTEMP library for temporary file                                    */
+/*   - Authority to query subsystem information                            */
+/*                                                                          */
+/* Reference:                                                               */
+/* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status*/
+/*                                                                          */
+/* Modification History:                                                    */
+/* V.000 2025-xx-xx | Nick Litten | Initial creation                       */
+/* V.001 2026-04-02 | Bob AI | Added comprehensive documentation           */
+/* V.002 2026-04-18 | Bob AI | Applied proper CLLE block comment format    */
 
 PGM        PARM(&SBS &LIB &RESULT)
 

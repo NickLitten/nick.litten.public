@@ -54,57 +54,57 @@ ctl-opt main(mainline)
 dcl-f filein disk(*ext) usage(*input) usropn keyed;
 dcl-f fileout disk(*ext) usage(*output) usropn;
 
-dcl-c RECORD_LENGTH 80;
-dcl-c EBCDIC_CCSID 37;    // EBCDIC US/Canada
-dcl-c ASCII_CCSID 819;    // ISO 8859-1 (Latin-1)
+Dcl-C RECORD_LENGTH 80;
+Dcl-C EBCDIC_CCSID 37;    // EBCDIC US/Canada
+Dcl-C ASCII_CCSID 819;    // ISO 8859-1 (Latin-1)
 
 // Global Variables
-dcl-s recordsProcessed packed(9:0) inz(0);
+Dcl-S recordsProcessed packed(9:0) inz(0);
 
 // Data structures with CCSID specifications
-dcl-ds fileInRec extname('FILEIN') qualified end-ds;
-dcl-ds fileOutRec extname('FILEOUT') qualified end-ds;
+Dcl-Ds fileInRec extname('FILEIN') qualified end-ds;
+Dcl-Ds fileOutRec extname('FILEOUT') qualified end-ds;
 
-dcl-s ebcdicData char(RECORD_LENGTH) ccsid(EBCDIC_CCSID);
-dcl-s asciiData char(RECORD_LENGTH) ccsid(ASCII_CCSID);
+Dcl-S ebcdicData char(RECORD_LENGTH) ccsid(EBCDIC_CCSID);
+Dcl-S asciiData char(RECORD_LENGTH) ccsid(ASCII_CCSID);
 
 // ------------------------------------------------------------------------------
 // Main Processing Logic
 // ------------------------------------------------------------------------------
 Dcl-Proc mainline;
 
-open filein;
-open fileout;
+   open filein;
+   open fileout;
 
-// Read and process each record until end of file
-read filein;
-dow not %eof(filein);
-  convertAndWriteRecord();
-  recordsProcessed += 1;
-  read filein;
-enddo;
+   // Read and process each record until end of file
+   read filein;
+   dow (not %eof(filein));
+      convertAndWriteRecord();
+      recordsProcessed += 1;
+      read filein;
+   enddo;
 
-// Normal termination
-close filein;
-close fileout;
+   // Normal termination
+   close filein;
+   close fileout;
 
-return;
+   Return;
 
 end-proc;
 
 // ------------------------------------------------------------------------------
 // Convert single record from EBCDIC to ASCII and write to output
 // ------------------------------------------------------------------------------
-dcl-proc convertAndWriteRecord;
+Dcl-Proc convertAndWriteRecord;
   
-  // Get input record data (EBCDIC)
-  ebcdicData = fileInRec.record;
+   // Get input record data (EBCDIC)
+   ebcdicData = fileInRec.record;
   
-  // Automatic conversion happens via CCSID assignment
-  asciiData = ebcdicData;
+   // Automatic conversion happens via CCSID assignment
+   asciiData = ebcdicData;
   
-  // Prepare and write output record
-  fileOutRec.out = asciiData;
-  write fileout fileOutRec;
+   // Prepare and write output record
+   fileOutRec.out = asciiData;
+   write fileout fileOutRec;
   
 end-proc;

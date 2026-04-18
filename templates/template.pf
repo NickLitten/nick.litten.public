@@ -1,0 +1,37 @@
+      *
+      * Physical File: FILENAME - Brief Description
+      *
+      * Description: Comprehensive explanation of the file's purpose and the
+      *              data it contains. Use multiple lines as needed.
+      *
+      * Key Fields:
+      *   - FIELD1: Primary key - Description
+      *   - FIELD2: Secondary key - Description
+      *
+      * Features:
+      *   - Unique key constraint on primary key
+      *   - Text descriptions for all fields
+      *   - Appropriate field types and lengths
+      *
+      * Usage:
+      *   This file is used by programs: PROG1, PROG2, PROG3
+      *
+      * Modification History:
+      * V.000 YYYY-MM-DD | Author Name | Initial creation
+      *
+     A                                      UNIQUE
+     A          R RECORDFMT
+     A            FIELD1        10A         TEXT('Field 1 Description')
+     A            FIELD2        30A         TEXT('Field 2 Description')
+     A            FIELD3         7P 2       TEXT('Field 3 Description')
+     A            FIELD4         8S 0       TEXT('Field 4 Description')
+     A            FIELD5         1A         TEXT('Field 5 Description')
+     A            FIELD6        10A         TEXT('Field 6 Description')
+     A            DATECRT        8S 0       TEXT('Date Created YYYYMMDD')
+     A            TIMECRT        6S 0       TEXT('Time Created HHMMSS')
+     A            USERCRT       10A         TEXT('User Created')
+     A            DATEUPD        8S 0       TEXT('Date Updated YYYYMMDD')
+     A            TIMEUPD        6S 0       TEXT('Time Updated HHMMSS')
+     A            USERUPD       10A         TEXT('User Updated')
+     A          K FIELD1
+     A          K FIELD2

@@ -31,7 +31,7 @@
      A            PGMNAME       10A  O  2 11
      A                                  2 63'User:'
      A            USERNAME      10A  O  2 69
-     A*
+      *
       *  COLUMN HEADERS
 
      A                                  5  2'Op'
@@ -77,13 +77,13 @@
      A                                      COLOR(BLU)
      A                                 22 38'PageUp/PageDown'
      A                                      COLOR(BLU)
-     A*
+      *
       *  DETAIL RECORD - For Add/Change/Display operations
 
      A          R DETAIL                    OVERLAY
      A                                      CA12(12 'Cancel')
      A                                      CF04(04 'Prompt')
-     A*
+      *
      A                                  1  2DATE
      A                                      EDTCDE(Y)
      A                                  1 70TIME
@@ -93,10 +93,10 @@
      A            USERNAME      10A  O  2 66
      A                                  4 25'RECIPE DETAIL'
      A                                      DSPATR(HI)
-     A*
+      *
      A                                  6  5'Recipe ID . . . . :'
      A            RECID          5S 0O  6 27EDTCDE(4)
-     A*
+      *
      A                                  8  5'Recipe Name . . . :'
      A            RECNAME       50A  B  8 27 
      A            NAMEATTR       1A  H
@@ -105,23 +105,23 @@
      A            CATATTR        1A  H
      A                                 10 50'(Cookies/Bread/Pies/Cakes)'
      A                                      COLOR(BLU)
-     A*
+      *
      A                                 12  5'Prep Time (min) . :'
      A            DPREPTIME      5S 0B 12 27EDTCDE(4)  
      A            TIMEATTR       1A  H
-     A*
+      *
      A                                 14  5'Servings  . . . . :'
      A            DSERVINGS      5S 0B 14 27EDTCDE(4)  
      A            SERVATTR       1A  H
-     A*
+      *
      A                                 16  5'Difficulty  . . . :'
      A            DDIFFICULTY   10A  B 16 27 
      A            DIFFATTR       1A  H
      A                                 16 50'(Easy/Medium/Hard)'
      A                                      COLOR(BLU)
-     A*
+      *
      A            ERRMSG        78A  O 22  2COLOR(RED)
-     A*
+      *
      A                                 23  2'F3=Exit'
      A                                      COLOR(BLU)
      A                                 23 12'F4=Prompt'

@@ -1,25 +1,36 @@
-/* ------------------------------------------------------------ */
-/* TEMPLATE - Code Snippet IBMi Control Language                */
-/* ------------------------------------------------------------ */
-/* Program.......... TEMPLATE                                   */
-/* Author........... nick@nicklitten.com                        */
-/* Calling Program.. *NONE                                      */
-/* Calling Command.. *NONE                                      */
-/* Function......... This is a template for a simple CL program */
-/*                    - edit & use as you please                */
-/* User Profile..... *USER                                      */
-/* Object Owner..... QPGMR                                      */
-/* Compiler Options. This is a CLLE *MODULE bound into *PGM     */
-/* CRTCLMOD: CRTCLMOD MODULE('library'/TEMPLATE)                */
-/* CRTPGM:   CRTPGM PGM('library'/TEMPLATE) MODULE(TEMPLATE*)   */
-/* -------------------------------------------------------------*/
-/* Modification History:                                        */
-/* Author     Date       Description                            */
-/* NickLitten 2017.10.17 V01 Created                            */
-/* NickLitten 2025.04.11 V02 Refreshed and imported to GITHUB   */
-/* NickLitten 2025.09.21 V03 Check for QTEMP/IDONTEXIST         */
-/* NickLitten 2025.09.28 V04 Minor Layout Tweaks                */
-/* ------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------ */
+/* Program: TEMPLATE - CL Program Starter Template                                */
+/* ------------------------------------------------------------------------------ */
+/* Description: Template for creating new CL programs with proper structure       */
+/*              and error handling. Copy and modify as needed for your programs.  */
+/*                                                                                */
+/* Purpose: Educational template demonstrating:                                   */
+/*   - Proper CL program structure                                                */
+/*   - Error handling with MONMSG                                                 */
+/*   - Subroutine organization                                                    */
+/*   - Program name retrieval technique                                           */
+/*   - Copyright statement usage                                                  */
+/*                                                                                */
+/* Features:                                                                      */
+/*   - Global error monitoring                                                    */
+/*   - Initialization subroutine                                                  */
+/*   - Mainline subroutine pattern                                                */
+/*   - Comprehensive crash handler                                                */
+/*   - Program name auto-detection                                                */
+/*                                                                                */
+/* Usage: CALL TEMPLATE                                                           */
+/*                                                                                */
+/* Compiler Options:                                                              */
+/*   CRTCLMOD MODULE(library/TEMPLATE) SRCFILE(QCLLESRC)                          */
+/*   CRTPGM PGM(library/TEMPLATE) MODULE(TEMPLATE)                                */
+/*                                                                                */
+/* Modification History:                                                          */
+/*   V.000 2017-10-17 | Nick Litten | Initial creation                            */
+/*   V.001 2025-04-11 | Nick Litten | Refreshed and imported to GitHub            */
+/*   V.002 2025-09-21 | Nick Litten | Added QTEMP/IDONTEXIST check example        */
+/*   V.003 2025-09-28 | Nick Litten | Minor layout tweaks                         */
+/*   V.004 2026-04-18 | Bob AI | Applied Nick Litten comment standards            */
+/* ------------------------------------------------------------------------------ */
 PGM
 
 DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
@@ -34,27 +45,27 @@ DCL VAR(&MSGKEY) TYPE(*CHAR) LEN(4)
 DCL VAR(&RTNTYPE) TYPE(*CHAR) LEN(2)
 DCL VAR(&SENDER) TYPE(*CHAR) LEN(80)
 
-/* NOTE: the COPYRIGHT statement will display when you do a DSPPGM */
-COPYRIGHT TEXT('TEMPLATE Ver:004 Simple CL template.  Add any comments you like here')
+/* NOTE: The COPYRIGHT statement will display when you do a DSPPGM            */
+COPYRIGHT TEXT('TEMPLATE Ver:004 Simple CL template')
 
-/* we can go an extra step and include more text with a variable so that it */
-/* displays in DUMP outputs (not that my code ever dumps of course ;) */
+/* We can include additional copyright text in a variable so it displays     */
+/* in DUMP outputs (not that my code ever dumps of course ;)                 */
 DCL VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
  VALUE('YOUR COMPANY © 2025 | IBM i V7.5 https://www.nicklitten.com')
-DCL VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT) /* &VARIABLES are not +
- shown in DUMPS unless theyre used but we can *fool* IBM i into using it - how +
- about something like a little pointer? */
+DCL VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT) /* &VARIABLES are not  +
+ shown in DUMPS unless they're used but we can *fool* IBM i into using it - how  +
+ about something like a little pointer?                                          */
 
-MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH)) /* Global monitor for any error messages */
+MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(CRASH)) /* Global monitor for any errors        */
 
 
-/* ---------------- */
-/* MAINLINE SECTION */
-/* ---------------- */
+/* ------------------------------------------------------------------------------ */
+/* MAINLINE SECTION                                                               */
+/* ------------------------------------------------------------------------------ */
 
-CALLSUBR SUBR(INZSR) /* a little initialization subroutine to do pre-run gubbins */
+CALLSUBR SUBR(INZSR) /* Initialization subroutine for pre-run setup               */
 
-/* begin regular program logic here */
+/* Begin regular program logic here                                              */
 CALLSUBR SUBR(MAINLINE)
 
 SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) +
@@ -65,62 +76,66 @@ RETURN
 CRASH: CALLSUBR SUBR(CRASH)
 
 
-/* ------------------ */
-/* SUBROUTINE SECTION */
-/* ---------------------------------------------------------------------------------------------- */
-/* Initialization Routine - could contains anything but lets use it to get the pgm name */
-/* ---------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------ */
+/* SUBROUTINE SECTION                                                             */
+/* ------------------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------------------ */
+/* Initialization Routine - Get program name and perform setup                    */
+/* ------------------------------------------------------------------------------ */
 SUBR SUBR(INZSR)
   SNDPGMMSG MSG('What is this program name?') TOPGMQ(*SAME) MSGTYPE(*INFO) KEYVAR(&MSGKEY)
   RCVMSG PGMQ(*SAME) MSGTYPE(*INFO) WAIT(0) RMV(*YES) SENDER(&SENDER) SENDERFMT(*SHORT)
   CHGVAR VAR(&PGMNAME) VALUE(%SST(&SENDER 56 10))
 ENDSUBR
 
-/* ---------------------------------------------------------------------------------------------- */
-/* MAINLINE - If you prefer you could use this for your mainline */
-/* ---------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------ */
+/* MAINLINE - Main program logic subroutine                                       */
+/* ------------------------------------------------------------------------------ */
 SUBR SUBR(MAINLINE)
 
-/* This is where all your main code will go */
+/* This is where all your main code will go                                      */
 
-/* if any error occurs the global MONMSG will pick it up and spit us into the error handling subroutine */ 
-CHKOBJ OBJ(QTEMP/IDONTEXIST) OBJTYPE(*PGM) /* Here is an example command that will deliberately crash, forcing a program ABEND so you can see the error message in use. Obviously you should replace this with the actual logic you are writing... */
+/* If any error occurs, the global MONMSG will catch it and branch to CRASH      */
+CHKOBJ OBJ(QTEMP/IDONTEXIST) OBJTYPE(*PGM) /* Example command that will crash   +
+ to demonstrate error handling. Replace with your actual program logic.          */
  
-/*  The RTNSUBR can be used (like LEAVESR in RPGLE) and will exit the subroutine immediately  */
+/* The RTNSUBR can be used (like LEAVESR in RPGLE) to exit subroutine immediately */
 RTNSUBR
 
 ENDSUBR
 
-/* ---------------------------------------------------------------------------------------------- */
-/* CRASH : Routine to handle unexpected errors */
-/* ---------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------ */
+/* CRASH - Error handling routine for unexpected errors                           */
+/* ------------------------------------------------------------------------------ */
 SUBR SUBR(CRASH)
   IF COND(&CRASHED) THEN(RETURN)
   CHGVAR VAR(&CRASHED) VALUE('1')
 
-/* This subroutine will read back through this programs joblog */
-/* and pump out messages to your joblog based on the status */
-/* codes returned from RCVMSG. RTNTYPE values include: */
-/* - 01 Completion */
-/* - 02 Diagnostic */
-/* - 04 Information */
-/* - 05 Inquiry */
-/* - 06 Copy */
-/* - 08 Request */
-/* - 10 Request with prompting */
-/* - 14 Notify (exception already handled at time of RCVMSG) */
-/* - 15 Escape (exception already handled at time of RCVMSG) */
-/* - 16 Notify (exception not handled at time of RCVMSG) */
-/* - 17 Escape (exception not handled at time of RCVMSG) */
-/* - 21 Reply, not checked for validity */
-/* - 22 Reply, already checked for validity */
-/* - 23 Reply, message default used */
-/* - 24 Reply, system default used */
-/* - 25 Reply, from System Reply List */
-/* - 26 Reply, from exit program */
+/* This subroutine reads back through the program's joblog and sends messages    */
+/* to the joblog based on the status codes returned from RCVMSG.                 */
+/*                                                                                */
+/* RTNTYPE values include:                                                        */
+/*   01 - Completion                                                              */
+/*   02 - Diagnostic                                                              */
+/*   04 - Information                                                             */
+/*   05 - Inquiry                                                                 */
+/*   06 - Copy                                                                    */
+/*   08 - Request                                                                 */
+/*   10 - Request with prompting                                                  */
+/*   14 - Notify (exception already handled at time of RCVMSG)                    */
+/*   15 - Escape (exception already handled at time of RCVMSG)                    */
+/*   16 - Notify (exception not handled at time of RCVMSG)                        */
+/*   17 - Escape (exception not handled at time of RCVMSG)                        */
+/*   21 - Reply, not checked for validity                                         */
+/*   22 - Reply, already checked for validity                                     */
+/*   23 - Reply, message default used                                             */
+/*   24 - Reply, system default used                                              */
+/*   25 - Reply, from System Reply List                                           */
+/*   26 - Reply, from exit program                                                */
    RCVMSG MSGTYPE(*LAST) MSGDTA(&MSGDTA) MSGID(&MSGID) RTNTYPE(&RTNTYPE) MSGF(&MSGFIL) +
      SNDMSGFLIB(&MSGFLIB)
-   IF COND(&RTNTYPE *EQ '15' *OR &RTNTYPE *EQ '17') THEN(DO) /* *escape */
+   IF COND(&RTNTYPE *EQ '15' *OR &RTNTYPE *EQ '17') THEN(DO) /* Escape message   */
      SNDPGMMSG MSGID(&MSGID) MSGF(&MSGFIL) MSGDTA(&MSGDTA) MSGTYPE(*DIAG)
    ENDDO
    SNDPGMMSG MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('* Program' *BCAT &PGMNAME *BCAT 'ended abnormally') MSGTYPE(*ESCAPE)

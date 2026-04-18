@@ -1,0 +1,118 @@
+      *
+      * Display File: FILENAME - Brief Description
+      *
+      * Description: Comprehensive explanation of the display file's purpose
+      *              and functionality. Use multiple lines as needed.
+      *
+      * Features:
+      *   - Subfile with XX records per page
+      *   - Function key support (F3=Exit, F5=Refresh, etc.)
+      *   - Input validation
+      *   - Color and display attributes
+      *
+      * Record Formats:
+      *   - SFLCTL: Subfile control record
+      *   - SFLREC: Subfile detail record
+      *   - FOOTREC: Footer record with function keys
+      *   - DETAILREC: Detail display record (if applicable)
+      *
+      * Function Keys:
+      *   - F3: Exit program
+      *   - F5: Refresh display
+      *   - F12: Cancel/Return
+      *   - PageUp/PageDown: Navigate subfile pages
+      *
+      * Indicators:
+      *   - 03: Exit (F3)
+      *   - 05: Refresh (F5)
+      *   - 12: Cancel (F12)
+      *   - 25: PageDown
+      *   - 26: PageUp
+      *   - 70: No data to display
+      *   - 91: Subfile display
+      *   - 92: Subfile display control
+      *   - 93: Subfile clear
+      *   - 94: Subfile end
+      *
+      * Modification History:
+      * V.000 YYYY-MM-DD | Author Name | Initial creation
+      *
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA12(12 'Cancel')
+     A                                      PRINT
+     A          R SFLREC                    SFL
+      *         Subfile record format
+     A            SFLSEL         1A  B  4  3VALUES(' ' '5')
+     A  91                                  DSPATR(RI)
+     A                                      TEXT('Selection')
+     A            FIELD1        10A  O  4  6TEXT('Field 1 Description')
+     A            FIELD2        30A  O  4 18TEXT('Field 2 Description')
+     A            FIELD3        10A  O  4 50TEXT('Field 3 Description')
+      *
+     A          R SFLCTL                    SFLCTL(SFLREC)
+      *         Subfile control record
+     A                                      SFLSIZ(0020)
+     A                                      SFLPAG(0019)
+     A  93                                  SFLDSP
+     A  92                                  SFLDSPCTL
+     A  93                                  SFLCLR
+     A  94                                  SFLEND(*MORE)
+     A                                      OVERLAY
+     A                                      ROLLUP(25)
+     A                                      ROLLDOWN(26)
+     A            SFLRCDNBR      4S 0H      SFLRCDNBR(CURSOR)
+      *         Screen title
+     A                                  1  2'Program:'
+     A            PGMNAME       10A  O  1 11TEXT('Program name')
+     A                                  1 30'Screen Title'
+     A                                      DSPATR(HI)
+     A                                  1 70'User:'
+     A            USERNAME      10A  O  1 76TEXT('Current user')
+      *         Column headings
+     A                                  3  3'Sel'
+     A                                      DSPATR(HI) UNDERLINE
+     A                                  3  6'Field 1'
+     A                                      DSPATR(HI) UNDERLINE
+     A                                  3 18'Field 2'
+     A                                      DSPATR(HI) UNDERLINE
+     A                                  3 50'Field 3'
+     A                                      DSPATR(HI) UNDERLINE
+      *         Status line
+     A  70                              22  3'No records to display'
+     A  70                                  DSPATR(HI)
+     A N70                              22  3'Records:'
+     A N70        RECCOUNT       4S 0O 22 13EDTCDE(4)
+     A N70                                  TEXT('Record count')
+     A N70                              22 20'Page:'
+     A N70        SFLPGM         4S 0O 22 26EDTCDE(4)
+     A N70                                  TEXT('Current page')
+      *
+     A          R FOOTREC
+      *         Footer record with function keys
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 12'F5=Refresh'
+     A                                      COLOR(BLU)
+     A                                 23 25'F12=Cancel'
+     A                                      COLOR(BLU)
+      *
+     A          R DETAILREC
+      *         Detail display record (optional)
+     A                                      CA12(12 'Cancel')
+     A                                  1  2'Program:'
+     A            PGMNAME       10A  O  1 11TEXT('Program name')
+     A                                  1 30'Detail Display'
+     A                                      DSPATR(HI)
+      *         Detail fields
+     A                                  5  5'Field 1:'
+     A            DFIELD1       10A  O  5 15TEXT('Detail field 1')
+     A                                  7  5'Field 2:'
+     A            DFIELD2       30A  O  7 15TEXT('Detail field 2')
+     A                                  9  5'Field 3:'
+     A            DFIELD3       10A  O  9 15TEXT('Detail field 3')
+      *         Footer
+     A                                 23  2'F12=Return'
+     A                                      COLOR(BLU)

@@ -39,6 +39,5 @@
 SUBDIRS = database \
           binders \
           services \
-          codesamples \
-          templates
+          codesamples
           

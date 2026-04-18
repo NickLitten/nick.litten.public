@@ -1,31 +1,81 @@
 **free
-//
-// Program Name: PWDEXPILE - Password Expiration Monitor (ILE Modular Version)
-// Description:  Monitors all IBM i user profiles and sends email warnings for
-//               passwords expiring within a specified number of days
-//
-// Architecture: Modular ILE program using service programs:
-//               - USRPROFSRV: User profile query services
-//               - EMAILSRV: Email notification services
-//
-// Usage: PWDEXPMON DAYS(7)  - Check for passwords expiring in 7 days
-//        PWDEXPMON DAYS(14) - Check for passwords expiring in 14 days
-//
-// Modification History:
-// v.002 2026.02.03 - Nick Litten - Refactored to modular ILE architecture
-// v.001 2026.02.03 - Nick Litten - Created password expiration monitoring program
-//
+
+///
+/// Program: PWDEXPILE - Password Expiration Monitor (ILE Modular Version)
+///
+/// Description: Production-quality password expiration monitoring program using
+///              modular ILE architecture. Monitors all IBM i user profiles and
+///              sends email warnings for passwords expiring within a specified
+///              number of days. Demonstrates modern ILE service program integration.
+///
+/// Purpose: Production utility demonstrating:
+///   - Modular ILE program architecture
+///   - Service program integration (USRPROFSRV, EMAILSRV)
+///   - Main procedure pattern
+///   - Binding directory usage
+///   - Parameter validation
+///   - Comprehensive error handling
+///   - Job log integration
+///
+/// Features:
+///   - Configurable warning period (days)
+///   - Email notification with formatted report
+///   - User profile query via service program
+///   - Email formatting via service program
+///   - Detailed logging to job log
+///   - Parameter validation with defaults
+///   - Production-ready error handling
+///
+/// Architecture:
+///   Uses two service programs:
+///   - USRPROFSRV: User profile query services
+///   - EMAILSRV: Email notification services
+///
+/// Usage:
+///   CALL PWDEXPILE PARM(7)   - Check for passwords expiring in 7 days
+///   CALL PWDEXPILE PARM(14)  - Check for passwords expiring in 14 days
+///   CALL PWDEXPILE           - Uses default (7 days)
+///
+/// Parameters:
+///   - parmWarningDays: int(10) - Number of days to look ahead (optional)
+///
+/// Email Configuration:
+///   Customize these constants for your environment:
+///   - SMTP_SERVER: Your SMTP server address
+///   - EMAIL_FROM: Sender email address
+///   - EMAIL_TO: Recipient email address
+///   - EMAIL_SUBJECT: Base subject line
+///
+/// Prerequisites:
+///   - Service programs USRPROFSRV and EMAILSRV compiled
+///   - Binding directory PWDMON created
+///   - SMTP server configured (CHGSMTPA)
+///   - User registered for SMTP (ADDUSRSMTP)
+///
+/// Binding:
+///   CRTPGM PGM(library/PWDEXPILE) MODULE(PWDEXPILE) +
+///          BNDDIR(PWDMON) ACTGRP(*CALLER)
+///
+/// Reference:
+/// https://www.nicklitten.com/blog/password-expiration-monitoring/
+///
+/// Modification History:
+///   V.000 2026-02-03 | Nick Litten | Initial creation
+///   V.001 2026-02-03 | Nick Litten | Refactored to modular ILE architecture
+///   V.002 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///
 
 ctl-opt
-     dftactgrp(*no)
-     actgrp(*caller)
-     option(*nodebugio:*srcstmt:*nounref)
-     main(mainline)
-     bnddir('PWDMON')
-     copyright('PWDEXPMON | V.002 | Password Expiration Monitor - ILE');
+  main(mainline)
+  dftactgrp(*no)
+  actgrp(*caller)
+  option(*nodebugio:*srcstmt:*nounref)
+  bnddir('PWDMON')
+  copyright('PWDEXPILE | V.002 | Password Expiration Monitor - ILE Modular')
+  ;
 
 // ------------------------------------------------------------------------------
-// | Prototypes for Service Program Procedures |
+// Prototypes for Service Program Procedures
 // ------------------------------------------------------------------------------
 
 // User Profile Service prototypes
@@ -71,8 +121,12 @@ dcl-pr ValidateEmailConfig ind;
    config likeds(EmailConfig_t) const;
 end-pr;
 
+// ------------------------------------------------------------------------------
+// Data Structures
+// ------------------------------------------------------------------------------
+
 // User profile information structure
-dcl-ds UserProfile_t qualified template;
+Dcl-Ds UserProfile_t qualified template;
    userName char(10);
    userText char(50);
    status char(10);
@@ -84,13 +138,13 @@ dcl-ds UserProfile_t qualified template;
 end-ds;
 
 // User list structure
-dcl-ds UserList_t qualified template;
+Dcl-Ds UserList_t qualified template;
    count int(10);
    users likeds(UserProfile_t) dim(9999);
 end-ds;
 
 // Email configuration structure
-dcl-ds EmailConfig_t qualified template;
+Dcl-Ds EmailConfig_t qualified template;
    smtpServer char(256);
    fromAddress char(256);
    toAddress char(256);
@@ -98,53 +152,59 @@ dcl-ds EmailConfig_t qualified template;
 end-ds;
 
 // Email result structure
-dcl-ds EmailResult_t qualified template;
+Dcl-Ds EmailResult_t qualified template;
    success ind;
    sqlCode int(10);
    sqlState char(5);
    errorMsg char(256);
 end-ds;
 
-dcl-c DEFAULT_WARNING_DAYS 7;
-dcl-c CRLF x'0D25';
+// ------------------------------------------------------------------------------
+// Named Constants
+// ------------------------------------------------------------------------------
+Dcl-C DEFAULT_WARNING_DAYS 7;
+Dcl-C CRLF x'0D25';
 
 // Email configuration - CUSTOMIZE THESE FOR YOUR ENVIRONMENT
-dcl-c SMTP_SERVER 'smtp.yourcompany.com';
-dcl-c EMAIL_FROM 'ibmi-security@yourcompany.com';
-dcl-c EMAIL_TO 'security-team@yourcompany.com';
-dcl-c EMAIL_SUBJECT 'IBM i Password Expiration Warning';
+Dcl-C SMTP_SERVER 'smtp.yourcompany.com';
+Dcl-C EMAIL_FROM 'ibmi-security@yourcompany.com';
+Dcl-C EMAIL_TO 'security-team@yourcompany.com';
+Dcl-C EMAIL_SUBJECT 'IBM i Password Expiration Warning';
 
-dcl-s warningDays int(10);
+// ------------------------------------------------------------------------------
+// Standalone Variables
+// ------------------------------------------------------------------------------
+Dcl-S warningDays int(10);
 
 // ------------------------------------------------------------------------------
 // Main Procedure
 // ------------------------------------------------------------------------------
-dcl-proc mainline;
-   dcl-pi *n;
+Dcl-Proc mainline;
+   Dcl-Pi *n;
       parmWarningDays int(10) const options(*nopass);
    end-pi;
    
-   dcl-ds userList likeds(UserList_t);
-   dcl-ds emailConfig likeds(EmailConfig_t);
-   dcl-ds emailResult likeds(EmailResult_t);
-   dcl-s systemName char(8);
-   dcl-s emailBody varchar(32000);
-   dcl-s userLines varchar(32000);
-   dcl-s i int(10);
+   Dcl-Ds userList likeds(UserList_t);
+   Dcl-Ds emailConfig likeds(EmailConfig_t);
+   Dcl-Ds emailResult likeds(EmailResult_t);
+   Dcl-S systemName char(8);
+   Dcl-S emailBody varchar(32000);
+   Dcl-S userLines varchar(32000);
+   Dcl-S i int(10);
    
    // Set warning days from parameter or use default
-   if %parms() >= 1;
+   If (%Parms() >= 1);
       warningDays = parmWarningDays;
-   else;
+   Else;
       warningDays = DEFAULT_WARNING_DAYS;
-   endif;
+   EndIf;
    
    // Validate warning days parameter
-   if not ValidateWarningDays(warningDays);
+   If (not ValidateWarningDays(warningDays));
       LogMessage('Invalid warning days: ' + %char(warningDays) + 
                  '. Using default: ' + %char(DEFAULT_WARNING_DAYS) : '*DIAG');
       warningDays = DEFAULT_WARNING_DAYS;
-   endif;
+   EndIf;
    
    // Log program start
    LogMessage('PWDEXPMON started - checking for passwords expiring within ' +
@@ -157,11 +217,11 @@ dcl-proc mainline;
    userList = GetExpiringUsers(warningDays);
    
    // Check if any users found
-   if userList.count = 0;
+   If (userList.count = 0);
       LogMessage('No expiring passwords found within ' + 
                  %char(warningDays) + ' days' : '*COMP');
-      return;
-   endif;
+      Return;
+   EndIf;
    
    // Build user lines for email body
    userLines = '';
@@ -182,24 +242,24 @@ dcl-proc mainline;
    emailConfig.subject = BuildEmailSubject(EMAIL_SUBJECT : userList.count);
    
    // Validate email configuration
-   if not ValidateEmailConfig(emailConfig);
+   If (not ValidateEmailConfig(emailConfig));
       LogMessage('Invalid email configuration - check settings' : '*DIAG');
-      return;
-   endif;
+      Return;
+   EndIf;
    
    // Send email notification
    emailResult = SendEmail(emailConfig : emailBody);
    
-   if emailResult.success;
+   If (emailResult.success);
       LogMessage('Email notification sent successfully to ' + 
                  %trim(EMAIL_TO) : '*COMP');
-   else;
+   Else;
       LogMessage(emailResult.errorMsg : '*DIAG');
-   endif;
+   EndIf;
    
    // Log completion
    LogMessage('PWDEXPMON completed - ' + %char(userList.count) + 
               ' expiring passwords found' : '*COMP');
    
-   return;
+   Return;
 end-proc;

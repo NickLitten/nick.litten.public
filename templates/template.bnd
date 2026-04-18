@@ -1,0 +1,33 @@
+/*==============================================================================*/
+/* Binder Source: SRVPGMNAME - Brief Description                               */
+/*==============================================================================*/
+/* Description: Binder source for service program SRVPGMNAME                   */
+/*              Defines exported procedures and their signatures                */
+/*                                                                              */
+/* Service Program: SRVPGMNAME                                                 */
+/*                                                                              */
+/* Exported Procedures:                                                         */
+/*   - ProcedureName1: Description of procedure 1                              */
+/*   - ProcedureName2: Description of procedure 2                              */
+/*                                                                              */
+/* Usage:                                                                       */
+/*   CRTSRVPGM SRVPGM(LIBRARY/SRVPGMNAME) +                                    */
+/*             MODULE(LIBRARY/MODULE1 LIBRARY/MODULE2) +                       */
+/*             SRCFILE(LIBRARY/QSRVSRC) +                                      */
+/*             SRCMBR(SRVPGMNAME)                                              */
+/*                                                                              */
+/* Modification History:                                                        */
+/* V.000 YYYY-MM-DD | Author Name | Initial creation                           */
+/*==============================================================================*/
+
+STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('SRVPGMNAME V.000')
+
+/*------------------------------------------------------------------------------*/
+/* Exported Procedures                                                          */
+/*------------------------------------------------------------------------------*/
+
+  EXPORT     SYMBOL('ProcedureName1')
+  EXPORT     SYMBOL('ProcedureName2')
+  EXPORT     SYMBOL('ProcedureName3')
+
+ENDPGMEXP

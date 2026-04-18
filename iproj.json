@@ -5,5 +5,8 @@
   ],
   "preUsrlibl": [
     "NICKLITTEN"
-  ]
+  ],
+  "buildCommand": "makei build",
+  "compileCommand": "makei compile -f {filename}",
+  "curlib": "&CURLIB"
 }

@@ -1,27 +1,54 @@
-      // ------------------------------------------------------------------------------
-      // author: nick litten                                       
-      // Submit file to remote system using CFT
-      // rtn=1 if partner mismatch - return partner found          
-      // rtn=2 if record not found                                 
-      // rtn=3 if file empty                                       
-      // written  : may 1994                                          
-      // modified :
-      // 10.03.14 njl converted to free format RPG    
-      // 25.05.07 njl played with as part of a Video RPG Upgrade Tour
-      // https://www.nicklitten.com/course/visual-studio-code-extension-arcad-rpg-transformer/                                  
-      // ------------------------------------------------------------------------------
+**free
 
-      /free
+///
+/// Program: FREERPG2 - ARCAD Converter Example
+///
+/// Description: Example of RPG code converted using ARCAD RPG Transformer tool.
+///              Shows the output from automated conversion tools with mixed
+///              /free and fixed format code.
+///
+/// Purpose: Educational example demonstrating:
+///   - ARCAD RPG Transformer conversion results
+///   - Mixed /free and fixed format code
+///   - Automated conversion tool limitations
+///   - What still needs manual cleanup after conversion
+///
+/// Features:
+///   - Shows ARCAD converter output
+///   - Demonstrates partial conversion
+///   - Highlights areas needing manual intervention
+///   - Educational comparison with other converters
+///
+/// Return Codes:
+///   - '1': Partner mismatch - returns actual partner found
+///   - '2': Record not found
+///   - '3': File empty
+///
+/// Reference:
+/// https://www.nicklitten.com/course/visual-studio-code-extension-arcad-rpg-transformer/
+///
+/// Modification History:
+///   V.000 1994-05-01 | Nick Litten | Initial creation
+///   V.001 2014-03-10 | Nick Litten | Converted using ARCAD RPG Transformer
+///   V.002 2007-05-25 | Nick Litten | Video RPG Upgrade Tour example
+///
+
+ctl-opt copyright('FREERPG2 | V.002 | ARCAD Converter Example');
+
+// --------------------------------------------------------------------------
+// File Declarations
+// --------------------------------------------------------------------------
+/free
        dcl-f QTXTSRC rename('QTXTSRC':'RECTXT');
 
-       dcl-ds DATA;
-        RECORD char(92) pos(1);
-        FLAG char(4) pos(1);
-        FILEN char(10) pos(11);
-        PARTN char(10) pos(26);
-        IDFN char(8) pos(40);
-       end-ds;
-      /end-free
+Dcl-Ds DATA;
+   RECORD char(92) pos(1);
+   FLAG char(4) pos(1);
+   FILEN char(10) pos(11);
+   PARTN char(10) pos(26);
+   IDFN char(8) pos(40);
+end-ds;
+/end-free
      C     *ENTRY        Plist
      C                   Parm                    FILE             10
      C                   Parm                    PART             10

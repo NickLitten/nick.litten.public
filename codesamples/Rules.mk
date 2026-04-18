@@ -18,7 +18,6 @@ SUBDIRS = check_subsystem_active \
           sqlrpgle_dynamic \
           stored_procs \
           subfile \
-          triggers \
           upload_files \
           update_iasp \
           webservice

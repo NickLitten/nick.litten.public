@@ -1,25 +1,62 @@
-       // ------------------------------------------------------------------------------
-       // author: nick litten
-       // Submit file to remote system using CFT
-       // rtn=1 if partner mismatch - return partner found
-       // rtn=2 if record not found
-       // rtn=3 if file empty
-      // written  : may 1994                                          
-      // modified :
-      // 10.03.14 njl converted to free format RPG    
-      // 25.05.07 njl played with as part of a Video RPG Upgrade Tour
-      // https://www.nicklitten.com/course/visual-studio-code-extension-rpgle-free/
-      // ------------------------------------------------------------------------------
+**free
 
-       dcl-f QTXTSRC rename('QTXTSRC':'RECTXT');
+///
+/// Program: FREERPG1 - Submit File to Remote System using CFT (Partially Converted)
+///
+/// Description: Searches QTXTSRC source file for matching file and partner
+///              records. This version shows a partial conversion from fixed
+///              format to free format RPG, demonstrating the transition process.
+///
+/// Purpose: Educational example demonstrating:
+///   - Partial RPG modernization (mixed fixed/free format)
+///   - Legacy PLIST and PARM usage
+///   - Indicator-based logic (*IN50)
+///   - GOTO statements (legacy pattern)
+///   - File processing with EOF handling
+///
+/// Features:
+///   - Shows intermediate conversion stage
+///   - Mixes free format declarations with fixed format logic
+///   - Uses legacy C-specs for some operations
+///   - Demonstrates what NOT to do in modern RPG
+///
+/// Return Codes:
+///   - '1': Partner mismatch - returns actual partner found
+///   - '2': Record not found
+///   - '3': File empty
+///
+/// Usage: CALL FREERPG1 PARM(file partner idf rtn)
+///
+/// Parameters:
+///   - FILE: char(10) - File name to search for
+///   - PART: char(10) - Partner name to match
+///   - IDF: char(8) - Identifier
+///   - RTN: char(1) - Return code (output)
+///
+/// Reference:
+/// https://www.nicklitten.com/course/visual-studio-code-extension-rpgle-free/
+///
+/// Modification History:
+///   V.000 1994-05-01 | Nick Litten | Initial creation
+///   V.001 2014-03-10 | Nick Litten | Partial conversion to free format RPG
+///   V.002 2007-05-25 | Nick Litten | Video RPG Upgrade Tour example
+///
 
-       dcl-ds DATA;
-        RECORD char(92) pos(1);
-        FLAG char(4) pos(1);
-        FILEN char(10) pos(11);
-        PARTN char(10) pos(26);
-        IDFN char(8) pos(40);
-       end-ds;
+ctl-opt copyright('FREERPG1 | V.002 | Partial Free Format Conversion Example');
+
+// --------------------------------------------------------------------------
+// File Declarations
+// --------------------------------------------------------------------------
+
+dcl-f QTXTSRC rename('QTXTSRC':'RECTXT');
+
+Dcl-Ds DATA;
+   RECORD char(92) pos(1);
+   FLAG char(4) pos(1);
+   FILEN char(10) pos(11);
+   PARTN char(10) pos(26);
+   IDFN char(8) pos(40);
+end-ds;
 
      C     *ENTRY        Plist
      C                   Parm                    FILE             10
@@ -32,31 +69,31 @@
 
        // first time read - rtn=4 if file empty
        READ QTXTSRC ;
-       *in50 = %eof();
-       IF *IN50        = '1';
-     C                   Movel     '3'           RTN
+*in50 = %eof();
+If *IN50        = '1';
+   C                   Movel     '3'           RTN
      C                   Goto      ENDPGM
        ENDIF;
 
-       Dow *IN50 = *OFF;
+   Dow (*IN50 = *OFF);
      C                   Movel     SRCDTA        RECORD
 
          // rtn=1 if partner mismatch - return partner found
          IF FLAG = '/*@@';
-           IF FILE = FILEN;
-             IF PART <> PARTN;
-     C                   Movel     PARTN         PART
+      If FILE = FILEN;
+         If PART <> PARTN;
+            C                   Movel     PARTN         PART
      C                   MOVEL     '1'           RTN
      C                   Goto      ENDPGM
              ENDIF;
-           ENDIF;
-         ENDIF;
+         EndIf;
+      EndIf;
 
-         // read ahead
-         READ QTXTSRC ;
-       *in50 = %eof();
-       ENDDO;
+      // read ahead
+      READ QTXTSRC ;
+      *in50 = %eof();
+   ENDDO;
 
-       // program exit point
-     C     ENDPGM        Tag
+   // program exit point
+   C     ENDPGM        Tag
        *INLR = *ON;
