@@ -57,7 +57,6 @@
 ///
 /// Modification History:
 /// 1.0 2019-06-25 | Nick Litten | Initial creation
-/// 2.0 2026-02-03 | IBM Bob | Modernized and improved
 /// 2.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt main(mainline) 

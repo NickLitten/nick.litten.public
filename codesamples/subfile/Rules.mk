@@ -9,11 +9,7 @@
 # ------------------------------------------------------------------------------
 
 # Subdirectories to process during build
-SUBDIRS = NOOB-Full_Load_Subfile_Modernization \
-          PERSONSFL-Expanding_Page_NativeIO \
-          SAMPLESFL-Single_Page_Subfile_SQL \
-          SIMPLE-Full_Load_Subfile \
-          WORKINPROGRESS
+SUBDIRS = NOOB_Full_Load_Subfile_Modernization SAMPLESFL_Single_Page_Subfile_SQL SIMPLE_Full_Load_Subfile
 
 # Default compilation settings for all modules and programs
 %.MODULE: private TGTRLS := V7R4M0

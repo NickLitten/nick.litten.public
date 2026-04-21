@@ -1,7 +1,8 @@
 # ------------------------------------------------------------------------------
-# Rules.mk - Build rules for CRUD Examples
+# Rules.mk - Build rules for Single Page Subfile SQL Example
 # ------------------------------------------------------------------------------
-# This file defines the build rules for Create, Read, Update, Delete examples.
+# This directory contains a single page subfile example using SQL to display
+# European country information from the SAMPLEDB table.
 #
 # Target Release: V7R4M0
 # Activation Group: NICKLITTEN
@@ -19,14 +20,9 @@
 # Object Dependencies
 # ------------------------------------------------------------------------------
 
-# RECIPCRUD Display File - Recipe CRUD example display file
-RECIPCRUD.FILE: RECIPCRUD-crud_rpgle_recipe_example.dspf
+# SAMPLESFL Display File - Country list subfile display file
+SAMPLESFL.FILE: SAMPLESFL-Country_List_Subfile_SQL_SINGLEPAGE.dspf
 
-# RECIPCRUD Program - Recipe CRUD example program
-RECIPCRUD.PGM: RECIPCRUD-crud_rpgle_recipe_example.pgm.rpgle RECIPIES.FILE RECIPCRUD.FILE
-
-# CRUD01PNL Display File - Change/Read/Update/Delete example display file
-CRUD01PNL.FILE: CRUD01PNL-Change_Read_Update_Delete_Example.dspf
-
-# CRUD01RPG Program - Change/Read/Update/Delete example program
-CRUD01RPG.PGM: CRUD01RPG-Change_Read_Update_Delete_Example.pgm.sqlrpgle CRUD01PNL.FILE
+# SAMPLESFL Program - Country list subfile SQL program
+# Note: Depends on SAMPLEDB table from database directory
+SAMPLESFL.PGM: SAMPLESFL-Country_List_Subfile_SQL_SINGLEPAGE.pgm.sqlrpgle SAMPLESFL.FILE

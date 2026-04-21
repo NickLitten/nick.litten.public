@@ -18,20 +18,20 @@
       * ------------------------------------------------------------====
      A          R SFLREC                    SFL
      A                                      SFLNXTCHG
-     A            SFLSEL         1A  B  4  3VALUES(' ' '5')
-     A            CCODE          2A  O  4  7COLOR(WHT)
-     A            CNAME         40A  O  4 11COLOR(WHT)
-     A            CREGION       20A  O  4 53COLOR(WHT)
-     A            CEUMEM         1A  O  4 75COLOR(WHT)
-     A            CCURR          3A  O  4 79COLOR(WHT)
-     A            CCURNAME      25A  O  4 84COLOR(WHT)
+     A            SFLSEL         1A  B  5  3VALUES(' ' '5')
+     A            CCODE          2A  O  5  7COLOR(WHT)
+     A            CNAME         40A  O  5 11COLOR(WHT)
+     A            CREGION       20A  O  5 53COLOR(WHT)
+     A            CEUMEM         1A  O  5 75COLOR(WHT)
+     A            CCURR          3A  O  5 79COLOR(WHT)
+     A            CCURNAME      25A  O  5 84COLOR(WHT)
       *
       * ------------------------------------------------------------====
       * Subfile Control Record Format
       * ------------------------------------------------------------====
      A          R SFLCTL                    SFLCTL(SFLREC)
-     A                                      SFLSIZ(0020)
-     A                                      SFLPAG(0020)
+     A                                      SFLSIZ(0018)
+     A                                      SFLPAG(0018)
      A                                      OVERLAY
      A  91                                  SFLDSP
      A  92                                  SFLDSPCTL
@@ -43,13 +43,13 @@
       * ------------------------------------------------------------====
       * Screen Header
       * ------------------------------------------------------------====
-     A                                  1  2DATE
-     A                                      EDTCDE(Y)
+     A                                  1  2'Program:'
+     A            PGMNAME       10A  O  1 11COLOR(WHT)
      A                                  1 50'European Country Information'
      A                                      DSPATR(HI)
+     A                                  1110DATE
+     A                                      EDTCDE(Y)
      A                                  1122TIME
-     A                                  2  2'Program:'
-     A            PGMNAME       10A  O  2 11COLOR(WHT)
      A                                  2 50'Country Database'
      A                                      DSPATR(HI)
      A                                  2112'User:'
@@ -58,20 +58,20 @@
       * ------------------------------------------------------------====
       * Column Headers
       * ------------------------------------------------------------====
-     A                                  3  3'Sel'
-     A                                      DSPATR(HI)
-     A                                  3  7'Cd'
-     A                                      DSPATR(HI)
-     A                                  3 11'Country Name'
-     A                                      DSPATR(HI)
-     A                                  3 53'Region'
-     A                                      DSPATR(HI)
-     A                                  3 75'EU'
-     A                                      DSPATR(HI)
-     A                                  3 79'Cur'
-     A                                      DSPATR(HI)
-     A                                  3 84'Currency Name'
-     A                                      DSPATR(HI)
+     A                                  4  3'Sel'
+     A                                      COLOR(BLU)
+     A                                  4  7'Cd'
+     A                                      COLOR(BLU)
+     A                                  4 11'Country Name'
+     A                                      COLOR(BLU)
+     A                                  4 53'Region'
+     A                                      COLOR(BLU)
+     A                                  4 75'EU'
+     A                                      COLOR(BLU)
+     A                                  4 79'Cur'
+     A                                      COLOR(BLU)
+     A                                  4 84'Currency Name'
+     A                                      COLOR(BLU)
       *
       * ------------------------------------------------------------====
       * Footer

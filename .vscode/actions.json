@@ -1,7 +1,7 @@
 [
   {
     "name": "Create RPGLE Program",
-    "command": "CRTBNDRPG PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)  OUTPUT(*PRINT)",
+    "command": "CRTBNDRPG PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)",
     "deployFirst": true,
     "environment": "ile",
     "extensions": [
@@ -10,7 +10,7 @@
   },
   {
     "name": "Create RPGLE Module",
-    "command": "CRTRPGMOD MODULE(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)  OUTPUT(*PRINT)",
+    "command": "CRTRPGMOD MODULE(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)",
     "deployFirst": true,
     "environment": "ile",
     "extensions": [
@@ -19,7 +19,7 @@
   },
   {
     "name": "Create SQLRPGLE Program",
-    "command": "CRTSQLRPGI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) COMPILEOPT('TGTCCSID(*JOB)') DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) COMPILEOPT('TGTCCSID(*JOB)') RPGPPOPT(*LVL2)  OUTPUT(*PRINT)",
+    "command": "CRTSQLRPGI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) COMPILEOPT('TGTCCSID(*JOB)') RPGPPOPT(*LVL2)",
     "deployFirst": true,
     "environment": "ile",
     "extensions": [
@@ -28,7 +28,7 @@
   },
   {
     "name": "Create SQLRPGLE Module",
-    "command": "CRTSQLRPGI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OBJTYPE(*MODULE) COMPILEOPT('TGTCCSID(*JOB)') OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) COMPILEOPT('TGTCCSID(*JOB)') RPGPPOPT(*LVL2) OUTPUT(*PRINT) OUTPUT(*PRINT)",
+    "command": "CRTSQLRPGI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OBJTYPE(*MODULE) OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) COMPILEOPT('TGTCCSID(*JOB)') RPGPPOPT(*LVL2)",
     "deployFirst": true,
     "environment": "ile",
     "extensions": [
@@ -37,7 +37,7 @@
   },
   {
     "name": "Create COBOL Program (SQL)",
-    "command": "CRTSQLCBLI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) TOSRCFILE(&CURLIB/QSQLTEMP) OUTPUT(*PRINT)",
+    "command": "CRTSQLCBLI OBJ(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) CLOSQLCSR(*ENDMOD) CVTCCSID(*JOB) TOSRCFILE(&CURLIB/QSQLTEMP)",
     "deployFirst": true,
     "environment": "ile",
     "extensions": [
@@ -107,7 +107,7 @@
       "CLLE"
     ],
     "name": "Create Bound CL Program",
-    "command": "CRTBNDCL PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) OUTPUT(*PRINT)",
+    "command": "CRTBNDCL PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE)",
     "deployFirst": true,
     "environment": "ile"
   },
@@ -116,7 +116,7 @@
       "cmd"
     ],
     "name": "Create Command",
-    "command": "CRTCMD CMD(&CURLIB/&NAME) PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) OUTPUT(*PRINT)",
+    "command": "CRTCMD CMD(&CURLIB/&NAME) PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF)",
     "deployFirst": true,
     "environment": "ile"
   },
@@ -133,13 +133,13 @@
       "SQLSEQ"
     ],
     "name": "Run SQL Statements (RUNSQLSTM)",
-    "command": "RUNSQLSTM SRCSTMF('&FULLPATH') COMMIT(*NONE) NAMING(*SQL) OUTPUT(*PRINT)",
+    "command": "RUNSQLSTM SRCSTMF('&FULLPATH') COMMIT(*NONE) NAMING(*SQL)",
     "deployFirst": true,
     "environment": "ile"
   },
   {
     "name": "Create DSPF",
-    "command": "CRTDSPF FILE(&CURLIB/&NAME) SRCFILE(&SRCFILE) RSTDSP(*NO) OPTION(*EVENTF) OUTPUT(*PRINT)",
+    "command": "CRTDSPF FILE(&CURLIB/&NAME) SRCFILE(&SRCFILE) RSTDSP(*NO) OPTION(*EVENTF)",
     "environment": "ile",
     "deployFirst": true,
     "extensions": [
@@ -151,7 +151,7 @@
       "GLOBAL"
     ],
     "name": "Create Service Program (CRTSRVPGM EXPORT(*ALL))",
-    "command": "CRTSRVPGM SRVPGM(&CURLIB/&NAME) EXPORT(*ALL) BNDSRVPGM(*NONE) BNDDIR(*NONE) ACTGRP(*CALLER) OUTPUT(*PRINT)",
+    "command": "CRTSRVPGM SRVPGM(&CURLIB/&NAME) EXPORT(*ALL) BNDSRVPGM(*NONE) BNDDIR(*NONE) ACTGRP(*CALLER)",
     "environment": "ile"
   },
   {
@@ -161,14 +161,14 @@
     ],
     "deployFirst": true,
     "name": "Create Service Program (CRTSRVPGM with source)",
-    "command": "CRTSRVPGM SRVPGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') BNDSRVPGM(*NONE) BNDDIR(*NONE) ACTGRP(*CALLER) OUTPUT(*PRINT)",
+    "command": "CRTSRVPGM SRVPGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') BNDSRVPGM(*NONE) BNDDIR(*NONE) ACTGRP(*CALLER)",
     "environment": "ile"
   },
   {
     "extensions": [
       "GLOBAL"
     ],
-    "name": "Build all with gmake",
+    "name": "Build all",
     "command": "/QOpenSys/pkgs/bin/gmake BUILDLIB=&CURLIB ERR=*EVENTF",
     "environment": "pase",
     "deployFirst": true
@@ -177,7 +177,7 @@
     "extensions": [
       "GLOBAL"
     ],
-    "name": "Build current with gmake",
+    "name": "Build current",
     "command": "/QOpenSys/pkgs/bin/gmake &BASENAME BUILDLIB=&CURLIB ERR=*EVENTF",
     "environment": "pase",
     "deployFirst": true
@@ -186,7 +186,7 @@
     "extensions": [
       "GLOBAL"
     ],
-    "name": "Build all with TOBi",
+    "name": "Build all",
     "command": "OPT=*EVENTF BUILDLIB=&CURLIB /QOpenSys/pkgs/bin/makei build",
     "environment": "pase",
     "deployFirst": true,
@@ -199,7 +199,7 @@
     "extensions": [
       "GLOBAL"
     ],
-    "name": "Build current with TOBi",
+    "name": "Build current",
     "command": "OPT=*EVENTF BUILDLIB=&CURLIB /QOpenSys/pkgs/bin/makei compile -f &BASENAME",
     "environment": "pase",
     "deployFirst": true,

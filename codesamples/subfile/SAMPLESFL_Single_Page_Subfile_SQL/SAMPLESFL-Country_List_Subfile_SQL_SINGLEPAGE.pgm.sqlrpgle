@@ -86,7 +86,7 @@ dcl-f SAMPLESFL workstn sfile(SFLREC:RRN) indds(Indicators) usropn;
 // --------------------------------------------------------------------------
 // Named Constants
 // --------------------------------------------------------------------------
-Dcl-C PAGE_SIZE 20;
+Dcl-C PAGE_SIZE 20; // must match the value of SFLPAG in DSPF
 Dcl-C SQL_SUCCESS '00000';
 Dcl-C SQL_NOT_FOUND '02000';
 Dcl-C SELECTION_DISPLAY '5';
