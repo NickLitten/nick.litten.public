@@ -1,369 +1,235 @@
-# BOB AI Assistant - IBM i Coding Standards System
+# BOB Configuration for Nick Litten IBM i Project
 
-## Overview
-
-This directory contains the complete coding standards system for the NICKLITTEN IBM i development project. BOB (your AI assistant) uses these standards to ensure consistent, high-quality code across all IBM i languages.
+This directory contains IBM BOB (AI Assistant) configuration files and coding standards for the Nick Litten IBM i project.
 
 ---
 
-## Directory Structure
+## Contents
 
+### Coding Standards
+- **coding-standards-rpgle.md** - RPG/RPGLE coding standards and best practices
+- **coding-standards-clle.md** - CL/CLLE coding standards and best practices
+- **coding-standards-dds.md** - DDS coding standards and best practices
+- **coding-standards-sql.md** - SQL coding standards and best practices
+
+### Configuration
+- **bob-profile.json** - BOB AI assistant configuration and rules
+- **README.md** - This file
+
+### Templates (to be created)
+- **templates/template.rpgle** - RPGLE program template
+- **templates/template.sqlrpgle** - SQLRPGLE program template
+- **templates/template-srvpgm.rpgle** - Service program template
+- **templates/template.clle** - CLLE program template
+- **templates/template.dds** - DDS file template
+- **templates/template.sql** - SQL script template
+
+---
+
+## Key Principles
+
+### 1. Comment Separators
+**ALWAYS use dash (-) characters for separators, NEVER equals (=)**
+
+✅ Correct:
 ```
-.bob/
-├── README.md                    # This file - system documentation
-├── CRITICAL-RULES.md            # ⚠️ MANDATORY rules - READ FIRST
-├── coding-standards.md          # Complete coding standards reference
-├── bob-profile.md               # BOB AI assistant profile and behavior
-├── config.json                  # BOB configuration and rules
-├── scripts/                     # Helper scripts
-│   ├── calculate-version.js    # Calculate version from modification history
-│   └── update-copyright.js     # Update copyright statements
-└── templates/                   # (Reference only - actual templates in /templates)
+// ------------------------------------------------------------------------------
+A*-------------------------------------------------------------------------
+/*---------------------------------------------------------------------------*/
+-------------------------------------------------------------------------------
 ```
 
----
+❌ Incorrect:
+```
+// ==============================================================================
+A*=========================================================================
+/*===========================================================================*/
+===============================================================================
+```
 
-## Quick Start
+### 2. Comment Styles by Language
 
-### For Developers
+#### RPGLE/SQLRPGLE
+- **File headers**: Triple-slash (`///`)
+- **Procedure headers**: Double-slash (`//`)
+- **Inline comments**: Double-slash (`//`)
+- **Section separators**: Dash lines with `//`
 
-1. **Review Critical Rules**: Read [`CRITICAL-RULES.md`](CRITICAL-RULES.md) first - these are mandatory
-2. **Review the Standards**: Read [`coding-standards.md`](coding-standards.md) for complete guidelines
-3. **Use Templates**: Copy from `/templates` directory when creating new files
-4. **Let BOB Help**: BOB automatically applies standards when you ask for code reviews or modifications
+#### CLLE
+- **All comments**: Block style (`/* */`)
+- **Section separators**: Dash lines within `/* */`
 
-### For BOB AI Assistant
+#### DDS
+- **All comments**: Asterisk in position 7 (`A*`)
+- **Section separators**: Dash lines with `A*`
 
-⚠️ **CRITICAL**: Before ANY task, review [`CRITICAL-RULES.md`](CRITICAL-RULES.md)
+#### SQL
+- **All comments**: Double-dash (`--`)
+- **Section separators**: Dash lines with `--`
 
-When working with code in this project:
+### 3. Author Field
+**Always use**: `Nick Litten`
 
-1. **ALWAYS reference** [`CRITICAL-RULES.md`](CRITICAL-RULES.md) - these rules are MANDATORY
-2. **Always reference** [`config.json`](config.json) for project-specific rules
-3. **Apply standards** from [`coding-standards.md`](coding-standards.md)
-4. **Follow profile** in [`bob-profile.md`](bob-profile.md)
-5. **Use templates** from `/templates` directory for new files
-6. **Calculate versions** using modification history count
-7. **Update copyright** statements with correct version and description
-8. **Use "Nick Litten"** as author name in ALL files
-9. **Use `-` (hyphen)** for line separators, NEVER `=` (equals)
+### 4. Copyright Statement
 
----
-
-## Key Features
-
-### 1. Automatic Standards Enforcement
-
-BOB automatically checks and enforces:
-- ✅ Proper documentation headers (/// for RPGLE/SQLRPGLE, /* */ for CLLE)
-- ✅ Line separators use `-` (hyphen), NEVER `=` (equals)
-- ✅ Author name is "Nick Litten" in all files
-- ✅ Copyright statements with version numbers
-- ✅ Modification history tracking
-- ✅ Proper code structure and formatting
-- ✅ Naming conventions
-- ✅ Best practices for each language
-
-### 2. Version Management
-
-Version numbers are **automatically calculated** from modification history:
-- Count entries in "Modification History" section
-- Format as `V.XXX` (e.g., V.000, V.001, V.042)
-- Initial version is always `V.000`
-- Each modification entry increments the version
-
-**Example:**
+#### RPGLE/SQLRPGLE
 ```rpgle
-/// Modification History:
-///   V.000 2020-03-14 | Nick Litten | Initial creation
-///   V.001 2021-05-20 | Nick Litten | Added error handling
-///   V.002 2026-04-18 | Bob AI | Enhanced documentation
-```
-Current version: **V.002** (3 entries = version 2)
-
-### 3. Copyright Statements
-
-**RPGLE/SQLRPGLE Format:**
-```rpgle
-ctl-opt
-  copyright('PROGNAME | V.XXX | Brief description')
-  ;
+ctl-opt copyright('v.002 - Brief Description');
 ```
 
-**CLLE Format:**
-```clle
-COPYRIGHT TEXT('PROGNAME Ver:XXX Brief description')
+#### CLLE
+```cl
+COPYRIGHT TEXT('v.002 - Brief Description')
 ```
 
-### 4. Documentation Standards
+Version number is calculated from modification history count.
 
-All files MUST include:
-- **Program/File Name**: Clear identifier
-- **Description**: Comprehensive explanation
-- **Purpose**: Bullet list of key concepts
-- **Features**: Specific capabilities
-- **Usage**: How to use the program
-- **Modification History**: All changes with dates
-
----
-
-## Templates
-
-Templates are located in the `/templates` directory:
-
-| Template | Description | Use For |
-|----------|-------------|---------|
-| [`template.rpgle`](../templates/template.rpgle) | Free-format RPG | New RPG programs |
-| [`template.sqlrpgle`](../templates/template.sqlrpgle) | SQL RPG | Programs using embedded SQL |
-| [`template.clle`](../templates/template.clle) | CL programs | Control language programs |
-| [`template.dspf`](../templates/template.dspf) | Display files | Screen definitions |
-| [`template.pf`](../templates/template.pf) | Physical files | DDS database files |
-| [`template.table`](../templates/template.table) | SQL tables | DDL table definitions |
-| [`template.cmd`](../templates/template.cmd) | Commands | Command definitions |
-| [`template.bnd`](../templates/template.bnd) | Binder source | Service program exports |
-
----
-
-## Helper Scripts
-
-### Calculate Version
-
-Calculate version number from modification history:
-
-```bash
-node .bob/scripts/calculate-version.js path/to/file.rpgle
+### 5. Modification History Format
 ```
-
-**Output:**
-```json
-{
-  "filepath": "path/to/file.rpgle",
-  "fileType": "rpgle",
-  "modificationCount": 3,
-  "version": "V.002"
-}
-```
-
-### Update Copyright
-
-Update copyright statement with version and description:
-
-```bash
-node .bob/scripts/update-copyright.js path/to/file.rpgle V.042 "Program Description"
-```
-
-**Output:**
-```json
-{
-  "success": true,
-  "filepath": "path/to/file.rpgle",
-  "programName": "PROGNAME",
-  "version": "V.042",
-  "description": "Program Description",
-  "fileType": "rpgle"
-}
+v.001 YYYY.MM.DD - Nick Litten - Initial creation
+v.002 YYYY.MM.DD - Nick Litten - Description of change
+v.003 YYYY.MM.DD - Nick Litten - Another change
 ```
 
 ---
 
 ## BOB Configuration
 
-The [`config.json`](config.json) file controls BOB's behavior:
+The `bob-profile.json` file configures BOB's behavior for this project:
 
-### Key Settings
+### Code Scanning
+- Automatically scans code for standards violations
+- Checks separator characters (- vs =)
+- Validates comment styles
+- Ensures copyright statements exist
+- Verifies author fields
+- Tracks modification history
 
-```json
-{
-  "coding_standards": {
-    "enabled": true,
-    "auto_apply": true,
-    "strict_mode": false
-  },
-  "version_control": {
-    "auto_calculate_version": true,
-    "version_format": "V.XXX",
-    "initial_version": "V.000"
-  },
-  "auto_corrections": {
-    "enabled": true,
-    "insert_missing_header": true,
-    "update_copyright_version": true,
-    "fix_indentation": true
-  }
-}
-```
+### Auto-Correction
+- Replaces equals (=) with dashes (-) in separators
+- Formats comment blocks
+- Aligns indentation
+- Removes trailing whitespace
 
----
+### Template Insertion
+- Auto-inserts file headers on new files
+- Auto-inserts procedure documentation
+- Uses placeholders for dynamic content
 
-## Code Review Rules
+### Version Control
+- Tracks modifications automatically
+- Auto-increments version numbers
+- Updates copyright statements
+- Adds history entries
 
-BOB automatically checks for:
-
-### Documentation Issues
-- ❌ Missing header documentation
-- ❌ Missing modification history
-- ❌ Incomplete descriptions
-- ⚠️ Missing purpose or features sections
-
-### Code Quality Issues
-- ❌ Magic numbers (use named constants)
-- ❌ Hardcoded values
-- ❌ Missing error handling
-- ⚠️ Inconsistent naming conventions
-- ℹ️ Missing comments for complex logic
-
-### Best Practices
-- ❌ Fixed-format RPG (must use free format)
-- ⚠️ No main procedure pattern
-- ⚠️ Unqualified data structures
-- ⚠️ Missing SQL options
-- ⚠️ No activation group specified
+### Best Practices Enforcement
+- Enforces modern RPG syntax
+- Requires error handling
+- Validates parameter checking
+- Promotes qualified data structures
+- Encourages meaningful naming
 
 ---
 
-## Naming Conventions
+## Usage
 
-| Element | Convention | Example |
-|---------|-----------|---------|
-| Programs | UPPERCASE | `HELLOADV`, `SAMPLESFL` |
-| Procedures | PascalCase | `LoadSubfilePage`, `ProcessSelections` |
-| Variables | camelCase | `currentPage`, `totalRecords` |
-| Constants | UPPER_SNAKE_CASE | `PAGE_SIZE`, `SQL_SUCCESS` |
-| Data Structures | PascalCase + qualified | `Indicators qualified` |
-| File Fields | UPPERCASE | `SFLSEL`, `CCODE` |
+### For BOB AI Assistant
 
----
+When BOB processes files in this project, it will:
 
-## Line Separator Character
+1. **Read** the appropriate coding standard file
+2. **Apply** the rules from bob-profile.json
+3. **Check** code against standards
+4. **Suggest** or **auto-correct** violations
+5. **Insert** proper documentation headers
+6. **Update** version and modification history
 
-**Always use `-` (hyphen/dash)** as the line separator:
+### For Developers
 
-```rpgle
-// ------------------------------------------------------------------------------
-// Section Title
-// ------------------------------------------------------------------------------
-```
-
-```clle
-/* ------------------------------------------------------------------------------
-   Section Title
-   ------------------------------------------------------------------------------ */
-```
-
-```
-      * ----------------------------------------------------------------------------
-      * Section Title
-      * ----------------------------------------------------------------------------
-```
+1. **Review** the coding standards for your language
+2. **Use** the templates when creating new files
+3. **Follow** the naming conventions
+4. **Include** all required documentation sections
+5. **Update** modification history when making changes
 
 ---
 
-## Usage Examples
+## Standards Summary
 
-### Creating a New Program
+### Required in All Files
+- [ ] Proper file header with description
+- [ ] Author: Nick Litten
+- [ ] Modification history
+- [ ] Copyright statement (RPGLE/CLLE)
+- [ ] Dash (-) separators only
+- [ ] Appropriate comment style for language
 
-1. Copy appropriate template from `/templates`
-2. Replace placeholders (PROGNAME, descriptions, etc.)
-3. Add your code
-4. BOB will automatically validate and suggest improvements
+### RPGLE/SQLRPGLE Specific
+- [ ] Triple-slash (///) file headers
+- [ ] `ctl-opt copyright('v.XXX - Description')`
+- [ ] Modern syntax (dcl-s, dcl-ds, dcl-pi, etc.)
+- [ ] Qualified data structures
+- [ ] Procedure documentation with examples
+- [ ] Error handling (monitor/on-error)
 
-### Updating Existing Code
+### CLLE Specific
+- [ ] Block comments (/* */)
+- [ ] `COPYRIGHT TEXT('v.XXX - Description')`
+- [ ] Descriptive variable names
+- [ ] Error handling (MONMSG)
+- [ ] Proper indentation
 
-1. Ask BOB to review the code
-2. BOB will identify standards violations
-3. BOB will suggest or apply corrections
-4. Version number updates automatically
+### DDS Specific
+- [ ] Asterisk (A*) comments
+- [ ] TEXT keywords for fields and records
+- [ ] COLHDG for all fields
+- [ ] Proper key specifications
+- [ ] Audit fields where appropriate
 
-### Adding Modification History
-
-When you modify a file, add an entry:
-
-```rpgle
-/// Modification History:
-///   V.000 2020-03-14 | Nick Litten | Initial creation
-///   V.001 2026-04-18 | Your Name | Description of changes
-```
-
-BOB will calculate the new version (V.001) and update the copyright statement.
+### SQL Specific
+- [ ] Double-dash (--) comments
+- [ ] Explicit column lists
+- [ ] Transaction control
+- [ ] Error handling in procedures
+- [ ] Proper constraints and indexes
 
 ---
 
-## Integration with Development Tools
+## Examples
 
-### VS Code
-
-- Templates available via snippets
-- BOB provides real-time suggestions
-- Automatic formatting on save (if configured)
-
-### Git
-
-- Version numbers track with commits
-- Modification history provides change log
-- Standards ensure consistent code reviews
+See the coding standards files for comprehensive examples of:
+- File headers
+- Procedure documentation
+- Error handling patterns
+- Naming conventions
+- Best practices
 
 ---
 
 ## Maintenance
 
-### Updating Standards
+### Adding New Standards
+1. Update the appropriate `coding-standards-*.md` file
+2. Update `bob-profile.json` if new rules are needed
+3. Create or update templates as needed
+4. Document changes in this README
 
-1. Edit [`coding-standards.md`](coding-standards.md)
-2. Update [`config.json`](config.json) if rules change
-3. Notify team of changes
-4. BOB will apply new standards going forward
-
-### Adding New Templates
-
-1. Create template in `/templates` directory
-2. Add entry to [`config.json`](config.json) under `templates.files`
-3. Document in this README
-4. Update [`coding-standards.md`](coding-standards.md) if needed
-
----
-
-## Troubleshooting
-
-### BOB Not Applying Standards
-
-1. Check [`config.json`](config.json) - ensure `enabled: true`
-2. Verify file patterns match your files
-3. Check exclusions - file might be excluded
-
-### Version Calculation Issues
-
-1. Ensure modification history uses correct format
-2. Run `calculate-version.js` script manually to test
-3. Check for proper date format: `YYYY-MM-DD`
-
-### Copyright Not Updating
-
-1. Verify copyright statement exists in file
-2. Check file type detection
-3. Run `update-copyright.js` script manually
+### Updating BOB Configuration
+1. Edit `bob-profile.json`
+2. Test with sample files
+3. Document changes in this README
 
 ---
 
 ## Support
 
-For questions or issues:
-
-1. Review [`coding-standards.md`](coding-standards.md)
-2. Check this README
-3. Ask BOB for help
-4. Visit [Nick Litten's Blog](https://www.nicklitten.com)
+For questions or issues with these standards:
+1. Review the coding standards documentation
+2. Check the examples in the standards files
+3. Consult with the project lead (Nick Litten)
 
 ---
 
-## References
+## Version History
 
-- [IBM i Documentation](https://www.ibm.com/docs/en/i)
-- [RPG Cafe](https://www.rpgpgm.com)
-- [Nick Litten's Blog](https://www.nicklitten.com)
-- [Modern RPG Best Practices](https://www.nicklitten.com/category/rpg/)
-
----
-
-**Last Updated:** 2026-04-18  
-**Version:** 1.0  
-**Maintained By:** Nick Litten / BOB AI Assistant
+- v.001 2026.05.06 - Initial creation of BOB configuration and standards

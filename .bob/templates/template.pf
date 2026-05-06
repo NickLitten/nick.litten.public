@@ -1,0 +1,69 @@
+     A*-------------------------------------------------------------------------
+     A* File: {FILE_NAME} - {BRIEF_DESCRIPTION}
+     A* Description: {DETAILED_DESCRIPTION}
+     A*
+     A* Purpose:
+     A*   - {PURPOSE_1}
+     A*   - {PURPOSE_2}
+     A*   - {PURPOSE_3}
+     A*
+     A* Features:
+     A*   - {FEATURE_1}
+     A*   - {FEATURE_2}
+     A*   - {FEATURE_3}
+     A*
+     A* Key Fields:
+     A*   - {KEY_FIELD_1} (Primary Key)
+     A*   - {KEY_FIELD_2} (Secondary Key)
+     A*
+     A* Indexes:
+     A*   - {INDEX_1} - {INDEX_DESCRIPTION}
+     A*
+     A* Compilation:
+     A*   CRTPF FILE(LIB/{FILE_NAME}) SRCFILE(LIB/QDDSSRC)
+     A*
+     A* Author: Nick Litten
+     A*
+     A* Modification History:
+     A* v.001 {CURRENT_DATE} - Nick Litten - Initial creation
+     A*-------------------------------------------------------------------------
+     A                                      UNIQUE
+     A          R {RECORD_FORMAT}           TEXT('{RECORD_DESCRIPTION}')
+     A*
+     A*-------------------------------------------------------------------------
+     A* Key Fields
+     A*-------------------------------------------------------------------------
+     A            {KEY_FIELD}   10A         COLHDG('{COLUMN_HEADING}')
+     A                                      TEXT('{FIELD_DESCRIPTION}')
+     A*
+     A*-------------------------------------------------------------------------
+     A* Data Fields
+     A*-------------------------------------------------------------------------
+     A            {FIELD_1}     50A         COLHDG('{COLUMN_HEADING}')
+     A                                      TEXT('{FIELD_DESCRIPTION}')
+     A            {FIELD_2}     10A         COLHDG('{COLUMN_HEADING}')
+     A                                      TEXT('{FIELD_DESCRIPTION}')
+     A            {STATUS_FIELD} 1A         COLHDG('Status')
+     A                                      TEXT('Status Code')
+     A                                      VALUES('A' 'I' 'H')
+     A*
+     A*-------------------------------------------------------------------------
+     A* Audit Fields
+     A*-------------------------------------------------------------------------
+     A            CREATEDATE     L         COLHDG('Created' 'Date')
+     A                                      TEXT('Creation Date')
+     A            CREATETIME     T         COLHDG('Created' 'Time')
+     A                                      TEXT('Creation Time')
+     A            CREATEUSER    10A         COLHDG('Created' 'By')
+     A                                      TEXT('Creating User')
+     A            CHANGEDATE     L         COLHDG('Changed' 'Date')
+     A                                      TEXT('Last Change Date')
+     A            CHANGETIME     T         COLHDG('Changed' 'Time')
+     A                                      TEXT('Last Change Time')
+     A            CHANGEUSER    10A         COLHDG('Changed' 'By')
+     A                                      TEXT('Last Change User')
+     A*
+     A*-------------------------------------------------------------------------
+     A* Key Specification
+     A*-------------------------------------------------------------------------
+     A          K {KEY_FIELD}

@@ -37,7 +37,8 @@
       * Modification History:
       * V.000 YYYY-MM-DD | Author Name | Initial creation
       *
-     A                                      DSPSIZ(24 80 *DS3)
+     A                                      DSPSIZ(27 132 *DS4                 -
+     A                                             24 80 *DS3)
      A                                      INDARA
      A                                      CA03(03 'Exit')
      A                                      CA05(05 'Refresh')
@@ -91,13 +92,12 @@
      A N70                                  TEXT('Current page')
       *
      A          R FOOTREC
-      *         Footer record with function keys
-     A                                 23  2'F3=Exit'
-     A                                      COLOR(BLU)
-     A                                 23 12'F5=Refresh'
-     A                                      COLOR(BLU)
-     A                                 23 25'F12=Cancel'
-     A                                      COLOR(BLU)
+     A            MOUSECLICK     2Y 0B 23  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 >Exit' CA03)
+     A                                      PSHBTNCHC(5 'F5 >Refresh' CA05)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)
+
       *
      A          R DETAILREC
       *         Detail display record (optional)

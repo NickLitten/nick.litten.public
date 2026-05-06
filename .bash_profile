@@ -1,3 +1,3 @@
-# Add Binaries and NodeJS to end of path
-PATH=$PATH:/QOpenSys/pkgs/bin:/QOpenSys/pkgs/lib/nodejs22/bin
+# Add Main Binaries (which will find things like nodejs)
+PATH=$PATH:/QOpenSys/pkgs/bin
 export PATH PASE_PATH
