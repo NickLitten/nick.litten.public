@@ -20,22 +20,22 @@
 # ------------------------------------------------------------
 
 # Input and output file dependencies
-FILEIN.FILE: FILEIN-Input_Files_for_CONVERT.table
-FILEOUT.FILE: FILEOUT-Output_Files_for_CONVERT.table
-
-# CONVERTBAS Program - Basic EBCDIC to ASCII conversion (legacy version)
-CONVERTBAS.PGM: CONVERTBAS-Convert_EBCDIC_to_ASCII_BASIC.pgm.rpgle
+FILEIN.FILE: filein.table
+FILEOUT.FILE: fileout.table
 
 # CONVSRV Module - Conversion service program module using CCSID
 CONVSRV.MODULE: CONVSRV-Conversion_Service.sqlrpgle
 
+# CONVSRV Binding Directory - Binding directory for conversion services
+CONVSRV.BNDDIR: CONVSRV.bnddir
+
 # CONVSRV Service Program - Character conversion service using CCSID
 CONVSRV.SRVPGM: CONVSRV.bnd CONVSRV.MODULE
 
-# CONVERT Program - EBCDIC to ASCII conversion using CONVSRV service program
-CONVERT.PGM: CONVERT-Convert_EBCDIC_to_ASCII_with_SRVPGM.pgm.rpgle CONVSRV.SRVPGM
+# CONVERT Programs - Various conversion examples
+CONVERT1.PGM: CONVERT1-Original.pgm.rpgle
+CONVERT2.PGM: CONVERT2-Modernized.pgm.rpgle
+CONVERT3.PGM: CONVERT3-Modernized_Improved.pgm.rpgle
 
-# CONVERSION Programs - Various conversion examples
-C_ORIG.PGM:   CONVERSION-Original.pgm.rpg
-C_MODERN.PGM: CONVERSION-Modernized.pgm.rpgle
-C_IMPROV.PGM: CONVERSION-Modernized_Improved.pgm.rpgle
+# CONVERT4 Program - EBCDIC to ASCII conversion using CONVSRV service program
+CONVERT4.PGM: CONVERT4-Convert_EBCDIC_to_ASCII_with_SRVPGM.pgm.rpgle CONVSRV.SRVPGM

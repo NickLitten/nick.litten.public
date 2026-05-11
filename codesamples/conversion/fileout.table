@@ -1,13 +1,23 @@
--- Create Input File for EBCDIC to ASCII Conversion Program
--- File: FILEOUT (Fixed-length 80 character table)
+-- ---------------------------------------------------------------------------
+-- Table: FILEOUT - ASCII Output File for Conversion
+-- Purpose: Output file containing 80-byte ASCII records after conversion
+-- Usage: Used by CONVERSION programs to write ASCII data after EBCDIC conversion
 -- Author: Nick Litten
--- Created: 2026-03-25
+-- Date: 2026-03-25
+-- ---------------------------------------------------------------------------
+set schema NICKLITTEN;
 
--- Create FILEOUT table with single 80-character fixed-length field
-CREATE OR REPLACE TABLE
-    FILEOUT (OUT CHAR(80) NOT NULL DEFAULT '')
-    RCDFMT RFILEOUT;
+drop table FILEOUT;
+
+CREATE TABLE
+    FILEOUT (
+        OUTDATA CHAR(80) NOT NULL
+        WITH
+            DEFAULT
+    ) RCDFMT RFILEOUT;
+
 
 LABEL ON TABLE FILEOUT IS 'ASCII Output File - 80 byte records';
 
-LABEL ON COLUMN FILEOUT.RECORD IS '80 character fixed length record';
+
+LABEL ON COLUMN FILEOUT.OUTDATA IS '80 character fixed length ASCII record';

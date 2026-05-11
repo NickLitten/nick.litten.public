@@ -1,0 +1,112 @@
+-- ------------------------------------------------------------------------------
+-- Table: TABLENAME - Brief Description
+-- ------------------------------------------------------------------------------
+-- Description: Comprehensive explanation of the table's purpose and the
+--              data it contains. Use multiple lines as needed.
+--
+-- Features:
+--   - Primary key on FIELD1
+--   - Foreign key relationships (if applicable)
+--   - Indexes for performance optimization
+--   - Appropriate constraints and defaults
+--
+-- Key Fields:
+--   - FIELD1: Primary key - Description
+--   - FIELD2: Indexed field - Description
+--
+-- Usage:
+--   This table is used by programs: PROG1, PROG2, PROG3
+--   Related tables: TABLE1, TABLE2
+--
+-- Modification History:
+-- V.000 YYYY-MM-DD | Author Name | Initial creation
+-- ------------------------------------------------------------------------------
+CREATE OR REPLACE TABLE
+    LIBRARY.TABLENAME (
+        -- Primary key field
+        FIELD1 CHAR(10) NOT NULL,
+        -- Data fields
+        FIELD2 VARCHAR(100) NOT NULL,
+        FIELD3 DECIMAL(15, 2) DEFAULT 0,
+        FIELD4 INTEGER DEFAULT 0,
+        FIELD5 CHAR(1) DEFAULT 'N',
+        FIELD6 VARCHAR(50),
+        -- Date/time tracking fields
+        DATE_CREATED DATE DEFAULT CURRENT_DATE,
+        TIME_CREATED TIME DEFAULT CURRENT_TIME,
+        USER_CREATED CHAR(10) DEFAULT USER,
+        DATE_UPDATED DATE,
+        TIME_UPDATED TIME,
+        USER_UPDATED CHAR(10),
+        -- Constraints
+        PRIMARY KEY (FIELD1),
+        -- Check constraints
+        CONSTRAINT CHK_FIELD5 CHECK (FIELD5 IN ('Y', 'N'))
+    );
+
+
+-- ------------------------------------------------------------------------------
+-- Table and Column Labels
+-- ------------------------------------------------------------------------------
+LABEL ON TABLE LIBRARY.TABLENAME IS 'Brief Description';
+
+
+LABEL ON COLUMN LIBRARY.TABLENAME (
+    FIELD1 TEXT IS 'Field 1 Description',
+    FIELD2 TEXT IS 'Field 2 Description',
+    FIELD3 TEXT IS 'Field 3 Description',
+    FIELD4 TEXT IS 'Field 4 Description',
+    FIELD5 TEXT IS 'Field 5 Description (Y/N)',
+    FIELD6 TEXT IS 'Field 6 Description',
+    DATE_CREATED TEXT IS 'Date Record Created',
+    TIME_CREATED TEXT IS 'Time Record Created',
+    USER_CREATED TEXT IS 'User Who Created Record',
+    DATE_UPDATED TEXT IS 'Date Record Last Updated',
+    TIME_UPDATED TEXT IS 'Time Record Last Updated',
+    USER_UPDATED TEXT IS 'User Who Last Updated Record'
+);
+
+
+-- ------------------------------------------------------------------------------
+-- Indexes
+-- ------------------------------------------------------------------------------
+-- Index on frequently queried field
+CREATE INDEX LIBRARY.TABLENAME_IDX1 ON LIBRARY.TABLENAME (FIELD2);
+
+
+-- Composite index for common query patterns
+CREATE INDEX LIBRARY.TABLENAME_IDX2 ON LIBRARY.TABLENAME (FIELD5, DATE_CREATED);
+
+
+-- ------------------------------------------------------------------------------
+-- Foreign Key Constraints (if applicable)
+-- ------------------------------------------------------------------------------
+-- ALTER TABLE LIBRARY.TABLENAME 
+--     ADD CONSTRAINT FK_TABLENAME_FIELD1 
+--     FOREIGN KEY (FIELD1) 
+--     REFERENCES LIBRARY.OTHERTABLE (KEY_FIELD)
+--     ON DELETE RESTRICT
+--     ON UPDATE RESTRICT;
+-- ------------------------------------------------------------------------------
+-- Triggers (if applicable)
+-- ------------------------------------------------------------------------------
+-- CREATE OR REPLACE TRIGGER LIBRARY.TABLENAME_BU
+--     BEFORE UPDATE ON LIBRARY.TABLENAME
+--     REFERENCING NEW AS N OLD AS O
+--     FOR EACH ROW
+--     BEGIN
+--         SET N.DATE_UPDATED = CURRENT_DATE;
+--         SET N.TIME_UPDATED = CURRENT_TIME;
+--         SET N.USER_UPDATED = USER;
+--     END;
+-- ------------------------------------------------------------------------------
+-- Grant Permissions (if applicable)
+-- ------------------------------------------------------------------------------
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON LIBRARY.TABLENAME TO PUBLIC;
+-- ------------------------------------------------------------------------------
+-- Comments
+-- ------------------------------------------------------------------------------
+COMMENT ON TABLE LIBRARY.TABLENAME IS 'Detailed description of the table purpose and usage';
+
+
+COMMENT ON COLUMN LIBRARY.TABLENAME.FIELD1 IS 'Detailed description of FIELD1';

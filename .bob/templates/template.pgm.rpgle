@@ -1,6 +1,6 @@
 **free
 
-///
+/// ------------------------------------------------------------------------------
 /// Program: PROGNAME - Brief Program Title
 ///
 /// Description: Comprehensive explanation of the program's purpose and
@@ -48,6 +48,7 @@
 /// Modification History:
 ///   V.000 YYYY-MM-DD | Nick Litten | Initial creation
 ///
+/// ------------------------------------------------------------------------------
 
 /include 'header.rpgleinc'
 

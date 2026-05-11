@@ -58,6 +58,7 @@
 /include 'header.rpgleinc'
 
 ctl-opt
+  main(mainline)
   copyright('PROGNAME | V.000 | Brief description')
   ;
 
@@ -119,20 +120,45 @@ Dcl-Proc ProcedureName;
       pParameter2 packed(7:2);
    end-pi;
   
-   // Procedure logic with SQL
-   exec sql
-    select FIELD1, FIELD2
-    into :variableName, :sqlVariable
-    from TABLE_NAME
-    where KEY_FIELD = :pParameter1;
+   // Local variables
+   Dcl-S errorMsg varchar(256);
   
-   // Check SQL state
-   If (SQLSTATE = SQL_SUCCESS);
-      // Process successful query
-   ElseIf (SQLSTATE = SQL_NOT_FOUND);
-      // Handle not found
-   Else;
-      // Handle other SQL errors
-   EndIf;
+   // Procedure logic with SQL and error handling
+   Monitor;
+      
+      exec sql
+       select FIELD1, FIELD2
+       into :variableName, :sqlVariable
+       from TABLE_NAME
+       where KEY_FIELD = :pParameter1;
+     
+      // Check SQL state
+      If (SQLSTATE = SQL_SUCCESS);
+         // Process successful query
+      ElseIf (SQLSTATE = SQL_NOT_FOUND);
+         // Handle not found
+      Else;
+         // Handle other SQL errors
+         errorMsg = 'SQL Error: SQLSTATE=' + SQLSTATE +
+                    ' SQLCODE=' + %char(SQLCODE);
+         // Log or handle SQL error
+      EndIf;
+      
+   On-Error;
+      // Log error details
+      errorMsg = 'Error in ProcedureName: ' + %trim(%char(%error)) +
+                 ' SQLSTATE=' + SQLSTATE;
+      // Handle error appropriately
+      // - Log to job log
+      // - Return error indicator
+      // - Throw exception to caller
+      
+      On-Exit;
+         // Cleanup operations that run regardless of success or error
+         // - Close SQL cursors
+         // - Release locks
+         // - Free allocated resources
+         // - Log procedure exit
+      EndMon;
   
 end-proc;

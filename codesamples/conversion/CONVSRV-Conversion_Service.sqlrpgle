@@ -33,7 +33,7 @@
 ///
 /// Usage Example:
 ///   dcl-pr ConvertEbcdicToAscii varchar(32766) extproc(*dclcase);
-///     inputData varchar(32766) const;
+///     p_Data varchar(32766) const;
 ///   end-pr;
 ///   
 ///   dcl-s ebcdicText varchar(100);
@@ -64,19 +64,19 @@ ctl-opt
 // Procedure: ConvertEbcdicToAscii
 // Description: Converts variable-length EBCDIC string to ASCII
 // Parameters:
-//   - inputData: varchar(32766) const - EBCDIC input string
+//   - p_Data: varchar(32766) const - EBCDIC input string
 // Returns: varchar(32766) - ASCII output string
 // ------------------------------------------------------------------------------
 Dcl-Proc ConvertEbcdicToAscii export;
    Dcl-Pi *n varchar(32766);
-      inputData varchar(32766) const;
+      p_Data varchar(32766) const;
    end-pi;
   
    Dcl-S outputData varchar(32766) ccsid(819); // ASCII CCSID
    Dcl-S ebcdicData varchar(32766) ccsid(37);  // EBCDIC CCSID
   
    // Assign input to EBCDIC variable
-   ebcdicData = inputData;
+   ebcdicData = p_Data;
   
    // Automatic conversion happens when assigning between different CCSIDs
    outputData = ebcdicData;
@@ -88,19 +88,19 @@ end-proc;
 // Procedure: ConvertAsciiToEbcdic
 // Description: Converts variable-length ASCII string to EBCDIC
 // Parameters:
-//   - inputData: varchar(32766) const - ASCII input string
+//   - p_Data: varchar(32766) const - ASCII input string
 // Returns: varchar(32766) - EBCDIC output string
 // ------------------------------------------------------------------------------
 Dcl-Proc ConvertAsciiToEbcdic export;
    Dcl-Pi *n varchar(32766);
-      inputData varchar(32766) const;
+      p_Data varchar(32766) const;
    end-pi;
   
    Dcl-S outputData varchar(32766) ccsid(37);  // EBCDIC CCSID
    Dcl-S asciiData varchar(32766) ccsid(819);  // ASCII CCSID
   
    // Assign input to ASCII variable
-   asciiData = inputData;
+   asciiData = p_Data;
   
    // Automatic conversion happens when assigning between different CCSIDs
    outputData = asciiData;
@@ -112,13 +112,13 @@ end-proc;
 // Procedure: ConvertFixedEbcdicToAscii
 // Description: Converts fixed-length EBCDIC string to ASCII
 // Parameters:
-//   - inputData: char(32766) const - EBCDIC input string
+//   - p_Data: char(32766) const - EBCDIC input string
 //   - dataLength: int(10) const - Length of data to convert
 // Returns: char(32766) - ASCII output string
 // ------------------------------------------------------------------------------
 Dcl-Proc ConvertFixedEbcdicToAscii export;
    Dcl-Pi *n char(32766);
-      inputData char(32766) const;
+      p_Data char(32766) const;
       dataLength int(10) const;
    end-pi;
   
@@ -132,7 +132,7 @@ Dcl-Proc ConvertFixedEbcdicToAscii export;
    outputData = *blank;
   
    // Copy input to EBCDIC variable
-   %subst(ebcdicData:1:dataLength) = %subst(inputData:1:dataLength);
+   %subst(ebcdicData:1:dataLength) = %subst(p_Data:1:dataLength);
   
    // Automatic conversion
    asciiData = ebcdicData;
@@ -147,13 +147,13 @@ end-proc;
 // Procedure: ConvertFixedAsciiToEbcdic
 // Description: Converts fixed-length ASCII string to EBCDIC
 // Parameters:
-//   - inputData: char(32766) const - ASCII input string
+//   - p_Data: char(32766) const - ASCII input string
 //   - dataLength: int(10) const - Length of data to convert
 // Returns: char(32766) - EBCDIC output string
 // ------------------------------------------------------------------------------
 Dcl-Proc ConvertFixedAsciiToEbcdic export;
    Dcl-Pi *n char(32766);
-      inputData char(32766) const;
+      p_Data char(32766) const;
       dataLength int(10) const;
    end-pi;
   
@@ -167,7 +167,7 @@ Dcl-Proc ConvertFixedAsciiToEbcdic export;
    outputData = *blank;
   
    // Copy input to ASCII variable
-   %subst(asciiData:1:dataLength) = %subst(inputData:1:dataLength);
+   %subst(asciiData:1:dataLength) = %subst(p_Data:1:dataLength);
   
    // Automatic conversion
    ebcdicData = asciiData;

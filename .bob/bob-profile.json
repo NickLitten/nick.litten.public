@@ -262,5 +262,90 @@
             "enabled": true,
             "auto_commit_message": "BOB: {action} - {description}"
         }
+    },
+    "skills": {
+        "rpg_focused_development": {
+            "name": "RPG Focused Development",
+            "description": "Specialized skill for RPG programming with SQLRPGLE preference and strict template adherence",
+            "enabled": true,
+            "priority": "high",
+            "rules": {
+                "prefer_sqlrpgle": {
+                    "enabled": true,
+                    "severity": "warning",
+                    "message": "Consider using SQLRPGLE instead of native file I/O for better performance and maintainability",
+                    "applies_to": [
+                        "rpgle",
+                        "sqlrpgle"
+                    ],
+                    "check_patterns": [
+                        "chain",
+                        "read",
+                        "reade",
+                        "readp",
+                        "readpe",
+                        "write",
+                        "update",
+                        "delete",
+                        "setll",
+                        "setgt"
+                    ],
+                    "auto_suggest_conversion": true
+                },
+                "enforce_templates": {
+                    "enabled": true,
+                    "severity": "error",
+                    "message": "All new files must follow templates in .bob/templates/",
+                    "template_directory": ".bob/templates",
+                    "required_sections": [
+                        "file_header",
+                        "modification_history",
+                        "copyright_statement",
+                        "author_field"
+                    ],
+                    "auto_apply_on_new_file": true
+                },
+                "enforce_coding_standards": {
+                    "enabled": true,
+                    "severity": "error",
+                    "message": "Code must follow Nick Litten coding standards",
+                    "standards_files": [
+                        ".bob/coding-standards-rpgle.md",
+                        ".bob/coding-standards-sql.md"
+                    ],
+                    "auto_apply": true,
+                    "check_on_save": true
+                }
+            },
+            "suggestions": {
+                "native_io_to_sql": {
+                    "enabled": true,
+                    "auto_suggest": true,
+                    "patterns": {
+                        "chain": "exec sql SELECT * INTO :dataStructure FROM {file} WHERE {key} = :keyValue;",
+                        "read": "exec sql DECLARE c1 CURSOR FOR SELECT * FROM {file} ORDER BY {key}; exec sql OPEN c1; exec sql FETCH c1 INTO :dataStructure;",
+                        "reade": "exec sql SELECT * INTO :dataStructure FROM {file} WHERE {key} = :keyValue ORDER BY {key};",
+                        "write": "exec sql INSERT INTO {file} VALUES (:dataStructure);",
+                        "update": "exec sql UPDATE {file} SET field1 = :value1, field2 = :value2 WHERE {key} = :keyValue;",
+                        "delete": "exec sql DELETE FROM {file} WHERE {key} = :keyValue;",
+                        "setll": "exec sql DECLARE cursor FOR SELECT * FROM {file} WHERE {key} >= :keyValue ORDER BY {key};",
+                        "setgt": "exec sql DECLARE cursor FOR SELECT * FROM {file} WHERE {key} > :keyValue ORDER BY {key};"
+                    }
+                }
+            },
+            "instructions": [
+                "ALWAYS prefer SQLRPGLE over native file I/O operations",
+                "When generating RPG code, use SQL embedded statements for all database access",
+                "ALL new files must follow the templates in .bob/templates/ directory",
+                "ALL code must adhere to coding standards in .bob/coding-standards-*.md files",
+                "Use modern RPG syntax: dcl-s, dcl-ds, dcl-pi, dcl-proc",
+                "Include comprehensive error handling with SQLSTATE checking",
+                "Follow Nick Litten's naming conventions and documentation standards",
+                "Auto-insert proper file headers from templates",
+                "Maintain modification history in v.XXX format",
+                "Use qualified data structures",
+                "Include SQL error handling in all database operations"
+            ]
+        }
     }
 }

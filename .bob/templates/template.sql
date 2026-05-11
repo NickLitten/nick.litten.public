@@ -77,5 +77,3 @@ GRANT SELECT, INSERT, UPDATE, DELETE
     TO PUBLIC;
 
 COMMIT;
-
--- Made with Bob

@@ -1,5 +1,5 @@
 **free
-
+/// ------------------------------------------------------------------------------
 ///
 /// Program: PROGNAME - Brief Program Title
 ///
@@ -8,17 +8,17 @@
 ///              indentation for readability.
 ///
 /// Purpose: Educational/Production utility demonstrating:
+///   - SQL embedded in RPG for data access
 ///   - Key concept or pattern #1
 ///   - Key concept or pattern #2
-///   - Key concept or pattern #3
 ///   - Additional concepts as needed
 ///
 /// Features:
+///   - SQL cursor operations for efficient data retrieval
 ///   - Specific capability #1
 ///   - Specific capability #2
 ///   - Design pattern or best practice demonstrated
 ///   - Performance considerations
-///   - Integration points
 ///
 /// Control Options:
 ///   - main(mainline): Eliminates RPG cycle overhead
@@ -27,6 +27,11 @@
 ///   - pgminfo(*pcml:*module): Embeds parameter metadata
 ///   - actgrp(*new/*caller): Activation group strategy
 ///   - indent('| '): Code indentation character
+///   - alwnull(*usrctl): Allow null-capable fields
+///
+/// SQL Options:
+///   - commit(*none): No commitment control
+///   - closqlcsr(*endmod): Close cursors at module end
 ///
 /// Usage: CALL PROGNAME or detailed usage instructions
 ///
@@ -35,6 +40,7 @@
 ///   - parm2: type - Description of parameter
 ///
 /// Dependencies:
+///   - Database tables or views accessed
 ///   - Required files, service programs, or APIs
 ///   - External resources needed
 ///
@@ -48,10 +54,12 @@
 /// Modification History:
 ///   V.000 YYYY-MM-DD | Nick Litten | Initial creation
 ///
+/// ------------------------------------------------------------------------------
 
 /include 'header.rpgleinc'
 
 ctl-opt
+  mqain(mainline)
   copyright('PROGNAME | V.000 | Brief description')
   ;
 
@@ -62,6 +70,8 @@ ctl-opt
 // --------------------------------------------------------------------------
 // Named Constants
 // --------------------------------------------------------------------------
+Dcl-C SQL_SUCCESS '00000';
+Dcl-C SQL_NOT_FOUND '02000';
 Dcl-C CONSTANT_NAME 'value';
 
 // --------------------------------------------------------------------------
@@ -78,14 +88,37 @@ end-ds;
 Dcl-S variableName char(10);
 
 // --------------------------------------------------------------------------
+// SQL Variables
+// --------------------------------------------------------------------------
+Dcl-S sqlVariable varchar(100);
+
+// --------------------------------------------------------------------------
 // Main Program Logic
 // --------------------------------------------------------------------------
 Dcl-Proc mainline;
+   // Local variables
+   Dcl-S mySuccess ind inz(*off);
+  
+   // Set SQL options
+   exec sql set option commit = *none, closqlcsr = *endmod;
   
    // Program logic here
   
    *inlr = *on;
    Return;
+
+   On-Exit mySuccess;
+  
+      // Cleanup operations that run regardless of success or error
+      // - Close SQL cursors
+      // - Release locks
+      // - Free allocated resources
+      // - Log procedure exit
+      If (mySuccess);
+         // do *normal* program closure items - close files, etc
+      Else;
+         // handle abnormal end
+      EndIf;
   
 end-proc;
 
@@ -104,27 +137,54 @@ Dcl-Proc ProcedureName;
    end-pi;
   
    // Local variables
-   Dcl-S errorMsg varchar(256);
+   Dcl-S myErrorMsg varchar(256);
+   Dcl-S mySuccess ind inz(*off);
   
-   // Procedure logic with error handling
+   // Procedure logic with SQL and error handling
    Monitor;
       
-      // Main procedure logic here
-      
+      exec sql
+       select FIELD1, FIELD2
+       into :variableName, :sqlVariable
+       from TABLE_NAME
+       where KEY_FIELD = :pParameter1;
+     
+      // Check SQL state
+      If (SQLSTATE = SQL_SUCCESS);
+         // Process successful query
+      ElseIf (SQLSTATE = SQL_NOT_FOUND);
+         // Handle not found
+      Else;
+         // Handle other SQL errors
+         myErrorMsg = 'SQL Error: SQLSTATE=' + SQLSTATE +
+                    ' SQLCODE=' + %char(SQLCODE);
+         // Log or handle SQL error
+      EndIf;
+
+      mySuccess = *on;
+   
    On-Error;
       // Log error details
-      errorMsg = 'Error in ProcedureName: ' + %trim(%char(%error));
+      myErrorMsg = 'Error in ProcedureName: ' + %trim(%char(%error)) +
+                 ' SQLSTATE=' + SQLSTATE;
       // Handle error appropriately
       // - Log to job log
       // - Return error indicator
       // - Throw exception to caller
       
-      On-Exit;
-         // Cleanup operations that run regardless of success or error
-         // - Close files
-         // - Release locks
-         // - Free allocated resources
-         // - Log procedure exit
-      EndMon;
+   EndMon;
+
+   On-Exit mySuccess;
+  
+      // Cleanup operations that run regardless of success or error
+      // - Close SQL cursors
+      // - Release locks
+      // - Free allocated resources
+      // - Log procedure exit
+      If (mySuccess);
+         // do *normal* program closure items - close files, etc
+      Else;
+         // handle abnormal end
+      EndIf;
   
 end-proc;

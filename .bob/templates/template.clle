@@ -1,47 +1,49 @@
-             PGM        PARM(&PARM1 &PARM2)
+/* --------------------------------------------------------------------------- */
+/*                                                                             */
+/* Program: {PROGRAM_NAME} - {BRIEF_DESCRIPTION}                               */
+/* Description: {DETAILED_DESCRIPTION}                                         */
+/*                                                                             */
+/* Purpose:                                                                    */
+/*   - {PURPOSE_1}                                                             */
+/*   - {PURPOSE_2}                                                             */
+/*   - {PURPOSE_3}                                                             */
+/*                                                                             */
+/* Features:                                                                   */
+/*   - {FEATURE_1}                                                             */
+/*   - {FEATURE_2}                                                             */
+/*   - {FEATURE_3}                                                             */
+/*                                                                             */
+/* Usage:                                                                      */
+/*   CALL {PROGRAM_NAME} PARM({PARM1} {PARM2})                                 */
+/*                                                                             */
+/* Parameters:                                                                 */
+/*   &PARM1 - {TYPE} - {DESCRIPTION}                                           */
+/*   &PARM2 - {TYPE} - {DESCRIPTION}                                           */
+/*                                                                             */
+/* Returns:                                                                    */
+/*   {RETURN_DESCRIPTION}                                                      */
+/*                                                                             */
+/* Dependencies:                                                               */
+/*   - {DEPENDENCY_1}                                                          */
+/*   - {DEPENDENCY_2}                                                          */
+/*                                                                             */
+/* Compilation:                                                                */
+/*   CRTCLPGM PGM(LIB/{PROGRAM_NAME}) SRCFILE(LIB/QCLSRC)                      */
+/*                                                                             */
+/* Author: Nick Litten                                                         */
+/*                                                                             */
+/* Modification History:                                                       */
+/* v.001 {CURRENT_DATE} - Nick Litten - Initial creation                       */
+/*                                                                             */
+/* --------------------------------------------------------------------------- */
 
-/*---------------------------------------------------------------------------*/
-/* Program: {PROGRAM_NAME} - {BRIEF_DESCRIPTION}                             */
-/* Description: {DETAILED_DESCRIPTION}                                       */
-/*                                                                            */
-/* Purpose:                                                                   */
-/*   - {PURPOSE_1}                                                            */
-/*   - {PURPOSE_2}                                                            */
-/*   - {PURPOSE_3}                                                            */
-/*                                                                            */
-/* Features:                                                                  */
-/*   - {FEATURE_1}                                                            */
-/*   - {FEATURE_2}                                                            */
-/*   - {FEATURE_3}                                                            */
-/*                                                                            */
-/* Usage:                                                                     */
-/*   CALL {PROGRAM_NAME} PARM({PARM1} {PARM2})                               */
-/*                                                                            */
-/* Parameters:                                                                */
-/*   &PARM1 - {TYPE} - {DESCRIPTION}                                         */
-/*   &PARM2 - {TYPE} - {DESCRIPTION}                                         */
-/*                                                                            */
-/* Returns:                                                                   */
-/*   {RETURN_DESCRIPTION}                                                     */
-/*                                                                            */
-/* Dependencies:                                                              */
-/*   - {DEPENDENCY_1}                                                         */
-/*   - {DEPENDENCY_2}                                                         */
-/*                                                                            */
-/* Compilation:                                                               */
-/*   CRTCLPGM PGM(LIB/{PROGRAM_NAME}) SRCFILE(LIB/QCLSRC)                    */
-/*                                                                            */
-/* Author: Nick Litten                                                        */
-/*                                                                            */
-/* Modification History:                                                      */
-/* v.001 {CURRENT_DATE} - Nick Litten - Initial creation                     */
-/*---------------------------------------------------------------------------*/
+             PGM        PARM(&PARM1 &PARM2)
 
              COPYRIGHT  TEXT('v.001 - {BRIEF_DESCRIPTION}')
 
-/*---------------------------------------------------------------------------*/
-/* Variable Declarations                                                     */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------*/
+/* Variable Declarations            */
+/*----------------------------------*/
 
 /* Input Parameters */
              DCL        VAR(&PARM1) TYPE(*CHAR) LEN(10)
@@ -55,18 +57,14 @@
              DCL        VAR(&TRUE) TYPE(*LGL) VALUE('1')
              DCL        VAR(&FALSE) TYPE(*LGL) VALUE('0')
 
-/*---------------------------------------------------------------------------*/
 /* Validate Input Parameters                                                 */
-/*---------------------------------------------------------------------------*/
 
              IF         COND(&PARM1 *EQ ' ') THEN(DO)
                 CHGVAR     VAR(&ERRMSG) VALUE('Parameter 1 required')
                 GOTO       CMDLBL(ERROR)
              ENDDO
 
-/*---------------------------------------------------------------------------*/
 /* Main Processing                                                           */
-/*---------------------------------------------------------------------------*/
 
              /* Your code here */
 

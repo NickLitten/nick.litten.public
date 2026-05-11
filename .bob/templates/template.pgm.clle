@@ -1,0 +1,92 @@
+/*                                                                         */
+/* Program: PROGNAME - Brief Program Title                                 */
+/*                                                                         */
+/* Description: Comprehensive explanation of the program's purpose and     */
+/*              functionality. Use multiple lines as needed with proper    */
+/*              indentation for readability.                               */
+/*                                                                         */
+/* Purpose: Production utility demonstrating:                              */
+/*   - Key concept or pattern #1                                           */
+/*   - Key concept or pattern #2                                           */
+/*   - Key concept or pattern #3                                           */
+/*                                                                         */
+/* Features:                                                               */
+/*   - Specific capability #1                                              */
+/*   - Specific capability #2                                              */
+/*   - Error handling approach                                             */
+/*   - Resource management                                                 */
+/*                                                                         */
+/* Usage: CALL PROGNAME PARM(parm1 parm2 parm3)                            */
+/*        Where parameters are described below                             */
+/*                                                                         */
+/* Parameters:                                                             */
+/*   - &PARM1: char(10) - Description of parameter                         */
+/*   - &PARM2: char(10) - Description of parameter                         */
+/*   - &RESULT: char(3) - Return value description                         */
+/*                                                                         */
+/* Dependencies:                                                           */
+/*   - Required commands or programs                                       */
+/*   - System resources needed                                             */
+/*                                                                         */
+/* Reference:                                                              */
+/* https://www.nicklitten.com/relevant-blog-post-url                       */
+/*                                                                         */
+/* Modification History:                                                   */
+/* V.000 YYYY-MM-DD | Nick Litten | Initial creation                       */
+/*                                                                         */
+
+PGM        PARM(&PARM1 &PARM2 &RESULT)
+
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('PROGNAME Ver:000 Brief description')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © YYYY | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+/* --------------------------------------------------------------------------
+   Variable Declarations
+   -------------------------------------------------------------------------- */
+DCL        VAR(&PARM1) TYPE(*CHAR) LEN(10)
+DCL        VAR(&PARM2) TYPE(*CHAR) LEN(10)
+DCL        VAR(&RESULT) TYPE(*CHAR) LEN(3)
+DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+
+/* --------------------------------------------------------------------------
+   Main Program Logic
+   -------------------------------------------------------------------------- */
+
+/* Initialize result */
+CHGVAR     VAR(&RESULT) VALUE('ERR')
+
+/* Program logic here */
+
+/* Normal completion */
+CHGVAR     VAR(&RESULT) VALUE('OK')
+GOTO       CMDLBL(CLEANUP)
+
+
+/* --------------------------------------------------------------------------
+   Error Handling Routines
+   -------------------------------------------------------------------------- */
+
+/* General error handler */
+ERROR:
+RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+              MSGDTA('Error' *BCAT &MSGID *BCAT '-' +
+              *BCAT %SST(&MSGDTA 1 100)) MSGTYPE(*DIAG)
+GOTO       CMDLBL(CLEANUP)
+
+
+/* --------------------------------------------------------------------------
+   Cleanup Routine
+   -------------------------------------------------------------------------- */
+CLEANUP:
+
+/* Clean up resources here */
+
+RETURN
+
+ENDPGM

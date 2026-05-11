@@ -47,41 +47,44 @@
 /// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
 
 ctl-opt main(mainline) 
-        copyright('| C_IMPROV1 V1.0 - ASCII-EBCDIC Conversion with CCSID') 
+        copyright('| CONVERT3 V1.0 - ASCII-EBCDIC Conversion with CCSID') 
         dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);
 
 // File Declarations
-dcl-f filein disk(*ext) usage(*input) usropn keyed;
-dcl-f fileout disk(*ext) usage(*output) usropn;
+dcl-f filein  usage(*input) usropn keyed;
+dcl-f fileout usage(*output) usropn;
+
+// Data Structures for file I/O
+Dcl-Ds ds_filein likerec(rfilein:*input);
+Dcl-Ds ds_fileout likerec(rfileout:*output);
 
 Dcl-C RECORD_LENGTH 80;
-Dcl-C EBCDIC_CCSID 37;    // EBCDIC US/Canada
-Dcl-C ASCII_CCSID 819;    // ISO 8859-1 (Latin-1)
 
-// Global Variables
-Dcl-S recordsProcessed packed(9:0) inz(0);
-
-// Data structures with CCSID specifications
-Dcl-Ds fileInRec extname('FILEIN') qualified end-ds;
-Dcl-Ds fileOutRec extname('FILEOUT') qualified end-ds;
-
-Dcl-S ebcdicData char(RECORD_LENGTH) ccsid(EBCDIC_CCSID);
-Dcl-S asciiData char(RECORD_LENGTH) ccsid(ASCII_CCSID);
 
 // ------------------------------------------------------------------------------
-// Main Processing Logic
+/// @title Main Processing Logic
+/// @description Main entry point for the conversion program. Opens input and
+///              output files, reads EBCDIC records from FILEIN, converts each
+///              record to ASCII using the convertAndWriteRecord procedure, and
+///              writes the converted data to FILEOUT. Tracks the number of
+///              records processed and ensures proper file closure on completion.
+/// @return void
 // ------------------------------------------------------------------------------
 Dcl-Proc mainline;
+   Dcl-Pi *n;
+   end-pi;
+
+   Dcl-S recordsProcessed packed(9:0) inz(0);
 
    open filein;
    open fileout;
 
    // Read and process each record until end of file
-   read filein;
+   read filein ds_filein;
    dow (not %eof(filein));
-      convertAndWriteRecord();
+      convertAndWriteRecord(ds_filein.indata);
       recordsProcessed += 1;
-      read filein;
+      read filein ds_filein;
    enddo;
 
    // Normal termination
@@ -93,18 +96,36 @@ Dcl-Proc mainline;
 end-proc;
 
 // ------------------------------------------------------------------------------
-// Convert single record from EBCDIC to ASCII and write to output
+/// @title Convert and Write Record
+/// @description Converts a single 80-byte EBCDIC record to ASCII format using
+///              CCSID-based automatic character set conversion. The procedure
+///              accepts EBCDIC data, assigns it to a CCSID 37 variable, then
+///              assigns to a CCSID 819 variable (triggering automatic conversion),
+///              and writes the converted ASCII data to the output file.
+/// @param p_data char(80) - Input EBCDIC data to be converted
+/// @return void
 // ------------------------------------------------------------------------------
 Dcl-Proc convertAndWriteRecord;
+   Dcl-Pi *n;
+      p_data char(RECORD_LENGTH);
+   end-pi;
+
+   Dcl-C EBCDIC_CCSID 37;    // EBCDIC US/Canada
+   Dcl-S ebcdicData char(RECORD_LENGTH) ccsid(EBCDIC_CCSID);
+
+   Dcl-C ASCII_CCSID 819;    // ISO 8859-1 (Latin-1)
+   Dcl-S asciiData char(RECORD_LENGTH) ccsid(ASCII_CCSID);
   
    // Get input record data (EBCDIC)
-   ebcdicData = fileInRec.record;
+   ebcdicData = p_data;
   
    // Automatic conversion happens via CCSID assignment
    asciiData = ebcdicData;
   
    // Prepare and write output record
-   fileOutRec.out = asciiData;
-   write fileout fileOutRec;
+   ds_fileout.outdata = asciiData;
+   
+   write rfileout ds_fileout;
   
 end-proc;
+

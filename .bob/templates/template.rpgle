@@ -1,4 +1,5 @@
 **free
+/// ------------------------------------------------------------------------------
 ///
 /// Program: {PROGRAM_NAME} - {BRIEF_DESCRIPTION}
 /// Description: {DETAILED_DESCRIPTION}
@@ -36,6 +37,7 @@
 /// Modification History:
 /// v.001 {CURRENT_DATE} - Nick Litten - Initial creation
 ///
+/// ------------------------------------------------------------------------------
 
 ctl-opt dftactgrp(*no) actgrp(*new)
         option(*nodebugio:*srcstmt:*nounref)

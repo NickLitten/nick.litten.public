@@ -193,13 +193,120 @@
             "modernization_suggestions",
             "best_practices_enforcement",
             "template_application",
-            "version_management"
+            "version_management",
+            "sqlrpgle_conversion",
+            "native_io_detection"
         ],
         "preferences": {
             "verbose_explanations": true,
             "suggest_improvements": true,
             "auto_apply_standards": true,
             "educational_mode": true
+        }
+    },
+    "custom_instructions": {
+        "rpg_development": {
+            "enabled": true,
+            "priority": "high",
+            "description": "Focused RPG programming with SQLRPGLE preference and strict template adherence",
+            "instructions": [
+                "ALWAYS prefer SQLRPGLE over native file I/O operations (CHAIN, READ, WRITE, UPDATE, DELETE)",
+                "When generating RPG code, use SQL embedded statements for all database access",
+                "ALL new files must follow the templates in .bob/templates/ directory",
+                "ALL code must adhere to coding standards in .bob/coding-standards-*.md files",
+                "Use modern RPG syntax: dcl-s, dcl-ds, dcl-pi, dcl-proc",
+                "Include comprehensive error handling with SQLSTATE checking",
+                "Follow Nick Litten's naming conventions and documentation standards",
+                "Auto-insert proper file headers from templates",
+                "Maintain modification history in v.XXX format",
+                "Use qualified data structures for all complex data",
+                "Include SQL error handling in all database operations",
+                "Prefer SQL cursors over native file positioning",
+                "Use SQL transactions for data integrity"
+            ],
+            "file_io_conversion": {
+                "enabled": true,
+                "suggest_sql_alternatives": true,
+                "auto_detect_native_io": true,
+                "patterns": {
+                    "CHAIN": {
+                        "sql_alternative": "exec sql SELECT * INTO :dataStructure FROM {table} WHERE {key} = :keyValue;",
+                        "description": "Use SQL SELECT with INTO for single record retrieval",
+                        "error_handling": "Check SQLSTATE after SELECT"
+                    },
+                    "READ": {
+                        "sql_alternative": "exec sql DECLARE c1 CURSOR FOR SELECT * FROM {table} ORDER BY {key}; exec sql OPEN c1; exec sql FETCH c1 INTO :dataStructure;",
+                        "description": "Use SQL cursor for sequential reading",
+                        "error_handling": "Check SQLSTATE = '02000' for end of data"
+                    },
+                    "READE": {
+                        "sql_alternative": "exec sql SELECT * INTO :dataStructure FROM {table} WHERE {key} = :keyValue ORDER BY {key};",
+                        "description": "Use SQL SELECT with WHERE clause for equal key reads",
+                        "error_handling": "Check SQLSTATE after SELECT"
+                    },
+                    "WRITE": {
+                        "sql_alternative": "exec sql INSERT INTO {table} VALUES (:dataStructure);",
+                        "description": "Use SQL INSERT for adding records",
+                        "error_handling": "Check SQLSTATE for duplicate key or constraint violations"
+                    },
+                    "UPDATE": {
+                        "sql_alternative": "exec sql UPDATE {table} SET field1 = :value1, field2 = :value2 WHERE {key} = :keyValue;",
+                        "description": "Use SQL UPDATE with WHERE clause",
+                        "error_handling": "Check SQLSTATE and SQLERRD(3) for rows affected"
+                    },
+                    "DELETE": {
+                        "sql_alternative": "exec sql DELETE FROM {table} WHERE {key} = :keyValue;",
+                        "description": "Use SQL DELETE with WHERE clause",
+                        "error_handling": "Check SQLSTATE and SQLERRD(3) for rows affected"
+                    },
+                    "SETLL": {
+                        "sql_alternative": "exec sql DECLARE cursor FOR SELECT * FROM {table} WHERE {key} >= :keyValue ORDER BY {key};",
+                        "description": "Use SQL cursor with >= condition for positioning",
+                        "error_handling": "Check SQLSTATE after OPEN"
+                    },
+                    "SETGT": {
+                        "sql_alternative": "exec sql DECLARE cursor FOR SELECT * FROM {table} WHERE {key} > :keyValue ORDER BY {key};",
+                        "description": "Use SQL cursor with > condition for positioning",
+                        "error_handling": "Check SQLSTATE after OPEN"
+                    }
+                }
+            },
+            "template_enforcement": {
+                "enabled": true,
+                "strict_mode": true,
+                "template_directory": ".bob/templates",
+                "required_templates": {
+                    "rpgle": "template.rpgle",
+                    "sqlrpgle": "template.sqlrpgle",
+                    "clle": "template.clle",
+                    "pf": "template.pf",
+                    "table": "template.table"
+                },
+                "required_sections": [
+                    "file_header",
+                    "description",
+                    "purpose",
+                    "features",
+                    "usage",
+                    "modification_history",
+                    "copyright_statement",
+                    "author_field"
+                ],
+                "auto_apply_on_new_file": true
+            },
+            "coding_standards_enforcement": {
+                "enabled": true,
+                "strict_mode": true,
+                "standards_directory": ".bob",
+                "standards_files": [
+                    "coding-standards-rpgle.md",
+                    "coding-standards-sql.md",
+                    "coding-standards-clle.md",
+                    "coding-standards-dds.md"
+                ],
+                "auto_check_on_save": true,
+                "auto_correct_violations": true
+            }
         }
     }
 }

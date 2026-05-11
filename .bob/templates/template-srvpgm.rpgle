@@ -1,5 +1,5 @@
 **free
-///
+/// ------------------------------------------------------------------------------
 /// Service Program: {SRVPGM_NAME} - {BRIEF_DESCRIPTION}
 /// Description: {DETAILED_DESCRIPTION}
 ///
@@ -26,7 +26,7 @@
 ///
 /// Modification History:
 /// v.001 {CURRENT_DATE} - Nick Litten - Initial creation
-///
+/// ------------------------------------------------------------------------------
 
 ctl-opt nomain
         option(*nodebugio:*srcstmt:*nounref)
@@ -82,9 +82,29 @@ Dcl-Proc {PROCEDURE_NAME} export;
    
    // Local variables
    Dcl-S result {RETURN_TYPE};
+   Dcl-S errorMsg varchar(256);
    
-   // Procedure implementation
+   // Procedure implementation with error handling
+   Monitor;
+      
+      // Main procedure logic here
+      
+   On-Error;
+      // Log error details
+      errorMsg = 'Error in {PROCEDURE_NAME}: ' + %trim(%char(%error));
+      // Handle error appropriately
+      // - Log to job log
+      // - Return error indicator
+      // - Set result to error state
+      
+      On-Exit;
+         // Cleanup operations that run regardless of success or error
+         // - Close files
+         // - Release locks
+         // - Free allocated resources
+         // - Log procedure exit
+      EndMon;
    
-   Return result;
+      Return result;
    
 end-proc;
