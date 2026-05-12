@@ -9,12 +9,11 @@ SUBDIRS = check_subsystem_active \
  hello_world \
  list_libraries \
  mysql_server \
- read_directory_qshell \
+ rpg_code \
  security \
  sql_encryption \
  sqlrpgle_dynamic \
  stored_procs \
  subfile \
  upload_files \
- update_iasp \
  webservice

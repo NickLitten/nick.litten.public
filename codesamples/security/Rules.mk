@@ -24,22 +24,10 @@
 PWDEXPMON.CMD: PWDEXPMON-Password_Expiration_Monitor.cmd
 
 # PWDEXPMON Program - Password expiration monitor CL program
-PWDEXPMON.PGM: PWDEXPMON-Password_Expiration_Monitor.clle
+PWDEXPMON.PGM: PWDEXPMON-Password_Expiration_Monitor.pgm.clle
 
-# PWDEXPILE Module - Password expiration monitor ILE module
-PWDEXPILE.MODULE: PWDEXPILE-Password_Expiration_Monitor_ILE.sqlrpgle
+# PWDEXPILE Program - Password expiration monitor ILE program
+PWDEXPILE.PGM: PWDEXPILE-Password_Expiration_Monitor_ILE.pgm.sqlrpgle
 
 # SCHEDULE Program - Setup password monitor schedule
-SCHEDULE.PGM: SCHEDULE-Setup_Password_Monitor_Schedule.clle
-
-# EMAILSRV Module - Email service module
-EMAILSRV.MODULE: EMAILSRV-Email_Service.sqlrpgle
-
-# EMAILSRV Service Program - Email service program
-EMAILSRV.SRVPGM: EMAILSRV.bnd EMAILSRV.MODULE
-
-# USRPROFSRV Module - User profile service module
-USRPROFSRV.MODULE: USRPROFSRV-User_Profile_Service.sqlrpgle
-
-# USRPROFSRV Service Program - User profile service program
-USRPROFSRV.SRVPGM: USRPROFSRV-User_Profile_Service.bnd USRPROFSRV.MODULE
+SCHEDULE.PGM: SCHEDULE-Setup_Password_Monitor_Schedule.pgm.clle

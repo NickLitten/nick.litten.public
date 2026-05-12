@@ -1,6 +1,6 @@
 **free
 ///
-/// Service Program: NICKMOD - Service Program for Lessons
+/// Service Program: NICKSRV - Service Program for Lessons
 /// Description: This is an ever growing example service program filled with
 ///              useful procedures and sample code for various scenarios.
 ///
@@ -23,8 +23,8 @@
 ///   - Well-documented with examples
 ///
 /// Compilation:
-///   CRTRPGMOD MODULE(LIB/NICKMOD) SRCFILE(LIB/QRPGLESRC)
-///   CRTSRVPGM SRVPGM(LIB/NICKMOD) MODULE(LIB/NICKMOD) EXPORT(*ALL)
+///   CRTRPGMOD MODULE(LIB/NICKSRV) SRCFILE(LIB/QRPGLESRC)
+///   CRTSRVPGM SRVPGM(LIB/NICKSRV) MODULE(LIB/NICKSRV) EXPORT(*ALL)
 ///
 /// Author: Nick Litten
 ///
@@ -58,12 +58,6 @@ Dcl-Ds ApiError_t qualified template;
    Reserved char(1);
    ExceptionData char(256);
 end-ds;
-   
-   // IBM i Command Execution API
-   dcl-pr QCMDEXC extpgm('QCMDEXC');
-      command char(32000) const options(*varsize);
-      commandLength packed(15:5) const;
-   end-pr;
 
 
 // ------------------------------------------------------------------------------
@@ -206,7 +200,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '07009');
          // Error - Invalid descriptor index
          systemName = *blanks;
-      
          // Class 08: Connection exception
       When (sqlState = '08001');
          // Error - Application server unable to establish connection
@@ -226,12 +219,10 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '08007');
          // Error - Transaction resolution unknown
          systemName = *blanks;
-      
          // Class 21: Cardinality violation
       When (sqlState = '21000');
          // Error - Scalar subquery or SELECT INTO returned more than one row
          systemName = *blanks;
-      
          // Class 22: Data exception
       When (sqlState = '22001');
          // Error - Character data, right truncation
@@ -281,7 +272,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '22027');
          // Error - Trim error
          systemName = *blanks;
-      
          // Class 23: Integrity constraint violation
       When (sqlState = '23000');
          // Error - Integrity constraint violation (generic)
@@ -310,7 +300,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '23513');
          // Error - Row in parent table has dependent rows
          systemName = *blanks;
-      
          // Class 24: Invalid cursor state
       When (sqlState = '24000');
          // Error - Invalid cursor state
@@ -333,7 +322,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '24513');
          // Error - FETCH not valid, cursor not scrollable
          systemName = *blanks;
-      
          // Class 25: Invalid transaction state
       When (sqlState = '25000');
          // Error - Invalid transaction state
@@ -344,32 +332,26 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '25006');
          // Error - Read-only SQL transaction
          systemName = *blanks;
-      
          // Class 26: Invalid SQL statement identifier
       When (sqlState = '26000');
          // Error - Invalid SQL statement identifier
          systemName = *blanks;
-      
          // Class 28: Invalid authorization specification
       When (sqlState = '28000');
          // Error - Invalid authorization specification
          systemName = *blanks;
-      
          // Class 2D: Invalid transaction termination
       When (sqlState = '2D000');
          // Error - Invalid transaction termination
          systemName = *blanks;
-      
          // Class 2E: Invalid connection name
       When (sqlState = '2E000');
          // Error - Invalid connection name
          systemName = *blanks;
-      
          // Class 34: Invalid cursor name
       When (sqlState = '34000');
          // Error - Invalid cursor name
          systemName = *blanks;
-      
          // Class 38: External routine exception
       When (sqlState = '38000');
          // Error - External routine exception (generic)
@@ -386,7 +368,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '38004');
          // Error - Reading SQL-data not permitted
          systemName = *blanks;
-      
          // Class 39: External routine invocation exception
       When (sqlState = '39000');
          // Error - External routine invocation exception (generic)
@@ -397,7 +378,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '39004');
          // Error - Null value not allowed
          systemName = *blanks;
-      
          // Class 3B: Savepoint exception
       When (sqlState = '3B000');
          // Error - Savepoint exception (generic)
@@ -408,7 +388,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '3B002');
          // Error - Too many savepoints
          systemName = *blanks;
-      
          // Class 40: Transaction rollback
       When (sqlState = '40000');
          // Error - Transaction rollback (generic)
@@ -422,7 +401,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '40003');
          // Error - Statement completion unknown
          systemName = *blanks;
-      
          // Class 42: Syntax error or access rule violation
       When (sqlState = '42000');
          // Error - Syntax error or access rule violation (generic)
@@ -577,12 +555,10 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '42894');
          // Error - Default value not valid
          systemName = *blanks;
-      
          // Class 44: WITH CHECK OPTION violation
       When (sqlState = '44000');
          // Error - WITH CHECK OPTION violation
          systemName = *blanks;
-      
          // Class 51: Invalid application state
       When (sqlState = '51002');
          // Error - Commit or rollback not allowed
@@ -605,7 +581,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '51030');
          // Error - Distributed request not supported
          systemName = *blanks;
-      
          // Class 53: Insufficient resources
       When (sqlState = '53000');
          // Error - Insufficient resources (generic)
@@ -613,7 +588,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '53035');
          // Error - Maximum number of concurrent LOB locators exceeded
          systemName = *blanks;
-      
          // Class 54: SQL or product limit exceeded
       When (sqlState = '54000');
          // Error - SQL or product limit exceeded (generic)
@@ -657,7 +631,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '54053');
          // Error - Recursion not supported for application encoding scheme
          systemName = *blanks;
-      
          // Class 55: Object not in prerequisite state
       When (sqlState = '55000');
          // Error - Object not in prerequisite state (generic)
@@ -674,7 +647,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '55029');
          // Error - Local program attempted to use remote object
          systemName = *blanks;
-      
          // Class 56: Miscellaneous SQL or product error
       When (sqlState = '56000');
          // Error - Miscellaneous SQL or product error (generic)
@@ -682,7 +654,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '56084');
          // Error - Unsupported SQLTYPE in SQLDA
          systemName = *blanks;
-      
          // Class 57: Resource not available or operator intervention
       When (sqlState = '57000');
          // Error - Resource not available or operator intervention (generic)
@@ -720,7 +691,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '57050');
          // Error - Distributed transaction error
          systemName = *blanks;
-      
          // Class 58: System error
       When (sqlState = '58000');
          // Error - System error (generic)
@@ -758,7 +728,6 @@ Dcl-Proc ReturnSystemName export;
       When (sqlState = '58017');
          // Error - Execution failed due to data exception
          systemName = *blanks;
-      
          // Default case for any unhandled SQLSTATE
       Other;
          // Unknown or unhandled SQLSTATE
@@ -884,28 +853,38 @@ end-proc;
 // ------------------------------------------------------------------------------
 Dcl-Proc ExecuteCommand export;
    Dcl-Pi ExecuteCommand ind;
-      p_command char(512) const;
+      p_command varchar(1024);
       p_errorMsg char(256) options(*nopass:*omit);
    end-pi;
 
    Dcl-S cmdLength packed(15:5);
    Dcl-S errorMessage char(256);
   
-   // Validate input command
-   If (%trim(p_command) = '');
-      errorMessage = 'ERROR: Empty command string provided';
-      setErrorMessage(p_errorMsg : errorMessage);
-      Return *off;
-   EndIf;
-
-   // Calculate actual command length for efficiency
-   cmdLength = %len(%trim(p_command));
-  
-   // Execute the command with proper error handling
    monitor;
-      QCMDEXC(p_command : cmdLength);
-      Return *on;
-    
+
+      // Validate input command
+      If (%trim(p_command) = '');
+         errorMessage = 'ERROR: Empty command string provided';
+         setErrorMessage(p_errorMsg : errorMessage);
+         Return *off;
+      EndIf;
+
+      // Calculate actual command length for efficiency
+      cmdLength = %len(%trim(p_command));
+  
+      // Execute the command with proper error handling
+      exec sql 
+         CALL QSYS2.QCMDEXC(:p_command);
+
+      If (sqlState <> '00000');
+         // Handle error
+         errorMessage = 'Command execution failed: ' + %trim(p_command);
+         setErrorMessage(p_errorMsg : errorMessage);
+         Return *off;
+      Else;
+         Return *on;
+      EndIf;
+
    on-error;
       // Capture error details for diagnostics
       errorMessage = 'Command execution failed: ' + %trim(p_command);
@@ -1012,7 +991,7 @@ end-proc;
 Dcl-Proc setErrorMessage;
    Dcl-Pi *n;
       p_errorMsg char(256) options(*nopass:*omit);
-      p_message char(256) const;
+      p_message char(256) options(*NOPASS);
    end-pi;
 
    // Only set error message if parameter was passed and not omitted

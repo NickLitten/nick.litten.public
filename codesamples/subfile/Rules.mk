@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------------------
 
 # Subdirectories to process during build
-SUBDIRS = NOOB_Full_Load_Subfile_Modernization SAMPLESFL_Single_Page_Subfile_SQL SIMPLE_Full_Load_Subfile
+SUBDIRS = SAMPLESFL_Single_Page_Subfile_SQL
 
 # Default compilation settings for all modules and programs
 %.MODULE: private TGTRLS := V7R4M0

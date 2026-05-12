@@ -31,7 +31,20 @@ SIMPLEMOD.MODULE: SIMPLEMOD-Simple_Service_Program.sqlrpgle
 SIMPLESRV.SRVPGM: SIMPLESRV-Binder_Source.bnd SIMPLEMOD.MODULE
 
 # SIMPLEMOD Module - Simple service program module
-NICKMOD.MODULE: NICKMOD-Service_Program_for_Lessons.sqlrpgle
+NICKSRV.MODULE: NICKSRV-Service_Program_for_Lessons.sqlrpgle
 
 # SIMPLESRV Service Program - Simple service program
-NICKSRV.SRVPGM: NICKSRV-Binder_Source.bnd NICKMOD.MODULE
+NICKSRV.SRVPGM: NICKSRV-Binder_Source.bnd NICKSRV.MODULE
+
+
+# EMAILSRV Module - Email service module
+EMAILSRV.MODULE: EMAILSRV-Email_Service.sqlrpgle
+
+# EMAILSRV Service Program - Email service program
+EMAILSRV.SRVPGM: EMAILSRV.bnd EMAILSRV.MODULE
+
+# USRPROFSRV Module - User profile service module
+USRPROFSRV.MODULE: USRPROFSRV-User_Profile_Service.sqlrpgle
+
+# USRPROFSRV Service Program - User profile service program
+USRPROFSRV.SRVPGM: USRPROFSRV-User_Profile_Service.bnd USRPROFSRV.MODULE
