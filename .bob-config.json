@@ -1,0 +1,255 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "version": "1.0.0",
+    "project": {
+        "name": "NICKLITTEN",
+        "description": "Nick Litten Public GitHub Code Samples",
+        "author": "Nick Litten",
+        "repository": "https://github.com/NickLitten/nick.litten.public",
+        "platform": "IBM i",
+        "targetRelease": "V7R4M0"
+    },
+    "codingStandards": {
+        "commentSeparator": "-",
+        "author": "Nick Litten",
+        "copyrightYear": "2025",
+        "copyrightUrl": "https://www.nicklitten.com",
+        "versionFormat": "V.NNN",
+        "dateFormat": "YYYY-MM-DD",
+        "enforceStandards": true,
+        "autoCorrect": true,
+        "autoInsertHeaders": true
+    },
+    "languages": {
+        "rpgle": {
+            "extensions": [
+                ".rpgle",
+                ".sqlrpgle"
+            ],
+            "commentStyle": "///",
+            "headerTemplate": "templates/rpgle-header-template.txt",
+            "requireCopyright": true,
+            "copyrightFormat": "ctl-opt copyright('{version} - {description}');",
+            "versionCalculation": "modificationCount",
+            "enforceModernSyntax": true,
+            "requireFullyFree": true,
+            "indentation": 2,
+            "maxLineLength": 100,
+            "namingConvention": {
+                "procedures": "camelCase",
+                "constants": "UPPER_SNAKE_CASE",
+                "variables": "camelCase",
+                "dataStructures": "PascalCase"
+            }
+        },
+        "clle": {
+            "extensions": [
+                ".clle"
+            ],
+            "commentStyle": "/* */",
+            "headerTemplate": "templates/clle-header-template.txt",
+            "requireCopyright": true,
+            "copyrightFormat": "COPYRIGHT TEXT('{version} - {description}')",
+            "versionCalculation": "modificationCount",
+            "indentation": 3,
+            "maxLineLength": 80,
+            "namingConvention": {
+                "variables": "UPPER_CASE",
+                "labels": "UPPER_CASE"
+            }
+        },
+        "cmd": {
+            "extensions": [
+                ".cmd"
+            ],
+            "commentStyle": "/* */",
+            "headerTemplate": "templates/cmd-header-template.txt",
+            "requireCopyright": false,
+            "indentation": 15,
+            "maxLineLength": 80
+        },
+        "dds": {
+            "extensions": [
+                ".pf",
+                ".lf",
+                ".dspf",
+                ".prtf"
+            ],
+            "commentStyle": "*",
+            "headerTemplate": "templates/dds-header-template.txt",
+            "requireCopyright": false,
+            "indentation": 6,
+            "maxLineLength": 80,
+            "columnFormat": true
+        },
+        "sql": {
+            "extensions": [
+                ".table",
+                ".view",
+                ".sql"
+            ],
+            "commentStyle": "--",
+            "headerTemplate": "templates/sql-header-template.txt",
+            "requireCopyright": false,
+            "indentation": 4,
+            "maxLineLength": 100,
+            "enforceUpperCase": false,
+            "preferModernSyntax": true
+        },
+        "bnd": {
+            "extensions": [
+                ".bnd"
+            ],
+            "commentStyle": "/*",
+            "headerTemplate": "templates/bnd-header-template.txt",
+            "requireCopyright": false
+        },
+        "bnddir": {
+            "extensions": [
+                ".bnddir"
+            ],
+            "commentStyle": "!",
+            "headerTemplate": "templates/bnddir-header-template.txt",
+            "requireCopyright": false
+        }
+    },
+    "codeScanning": {
+        "enabled": true,
+        "scanOnSave": true,
+        "scanOnCommit": true,
+        "rules": {
+            "missingHeaders": {
+                "severity": "warning",
+                "autoFix": true
+            },
+            "outdatedHeaders": {
+                "severity": "info",
+                "autoFix": true
+            },
+            "missingCopyright": {
+                "severity": "warning",
+                "autoFix": true
+            },
+            "incorrectCommentSeparator": {
+                "severity": "warning",
+                "autoFix": true,
+                "message": "Use '-' as comment separator, not '='"
+            },
+            "missingModificationHistory": {
+                "severity": "warning",
+                "autoFix": true
+            },
+            "inconsistentIndentation": {
+                "severity": "info",
+                "autoFix": true
+            },
+            "longLines": {
+                "severity": "info",
+                "autoFix": false
+            },
+            "deprecatedSyntax": {
+                "severity": "warning",
+                "autoFix": false,
+                "patterns": {
+                    "rpgle": [
+                        "MOVE",
+                        "MOVEL",
+                        "Z-ADD",
+                        "Z-SUB",
+                        "GOTO",
+                        "TAG"
+                    ]
+                }
+            }
+        }
+    },
+    "headerBlocks": {
+        "required": [
+            "programName",
+            "description",
+            "author",
+            "modificationHistory"
+        ],
+        "optional": [
+            "purpose",
+            "features",
+            "usage",
+            "parameters",
+            "dependencies",
+            "reference"
+        ],
+        "autoGenerate": {
+            "programName": true,
+            "description": false,
+            "author": true,
+            "created": true,
+            "modificationHistory": true
+        }
+    },
+    "modificationHistory": {
+        "format": "{version} {date} | {author} | {description}",
+        "autoUpdate": true,
+        "trackChanges": true,
+        "versionIncrement": "auto",
+        "includeInCopyright": true
+    },
+    "templates": {
+        "directory": "templates",
+        "applyOnCreate": true,
+        "applyOnSave": false,
+        "customTemplates": {
+            "service": "templates/service-template.sqlrpgle",
+            "module": "templates/module-template.rpgle",
+            "trigger": "templates/SKELTRIG-Skeleton_Trigger_Program.pgm.rpgle"
+        }
+    },
+    "build": {
+        "system": "makei",
+        "rulesFile": "Rules.mk",
+        "validateBeforeBuild": true,
+        "enforceStandardsOnBuild": true
+    },
+    "integration": {
+        "codeForIBMi": {
+            "enabled": true,
+            "validateOnSave": true,
+            "formatOnSave": false
+        },
+        "git": {
+            "enforceStandardsOnCommit": true,
+            "validateHeadersOnCommit": true
+        }
+    },
+    "exclusions": {
+        "directories": [
+            ".vscode",
+            ".git",
+            "node_modules",
+            ".WORKINPROGRESS",
+            "code_snippets_NOCOMPILE"
+        ],
+        "filePatterns": [
+            "*.md",
+            "*.json",
+            "*.txt",
+            "*.log"
+        ]
+    },
+    "aiAssistant": {
+        "name": "BOB",
+        "role": "IBM i Development Assistant",
+        "capabilities": [
+            "code-generation",
+            "modernization",
+            "documentation",
+            "standards-enforcement",
+            "code-review"
+        ],
+        "preferences": {
+            "verbosity": "detailed",
+            "explainChanges": true,
+            "suggestImprovements": true,
+            "enforceStandards": true
+        }
+    }
+}

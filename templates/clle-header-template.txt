@@ -1,0 +1,72 @@
+/* Program: {PROGRAM_NAME}                                                  */
+/*                                                                          */
+/* Description: {DESCRIPTION}                                               */
+/*                                                                          */
+/* Purpose: {PURPOSE}                                                       */
+/*   - {PURPOSE_ITEM_1}                                                     */
+/*   - {PURPOSE_ITEM_2}                                                     */
+/*   - {PURPOSE_ITEM_3}                                                     */
+/*                                                                          */
+/* Features:                                                                */
+/*   - {FEATURE_1}                                                          */
+/*   - {FEATURE_2}                                                          */
+/*   - {FEATURE_3}                                                          */
+/*                                                                          */
+/* Usage: {USAGE_EXAMPLE}                                                   */
+/*                                                                          */
+/* Parameters:                                                              */
+/*   - {PARAM_1}: {PARAM_1_TYPE} - {PARAM_1_DESC}                          */
+/*   - {PARAM_2}: {PARAM_2_TYPE} - {PARAM_2_DESC}                          */
+/*                                                                          */
+/* Dependencies:                                                            */
+/*   - {DEPENDENCY_1}                                                       */
+/*   - {DEPENDENCY_2}                                                       */
+/*                                                                          */
+/* Reference:                                                               */
+/*   {REFERENCE_URL}                                                        */
+/*                                                                          */
+/* Modification History:                                                    */
+/*   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}                    */
+
+             PGM        PARM(&PARM1 &PARM2)
+
+             DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+             COPYRIGHT  TEXT('{VERSION} - {DESCRIPTION}')
+             DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+                          VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
+             DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+/* --------------------------------------------------------------------------
+   Variable Declarations
+   -------------------------------------------------------------------------- */
+
+             DCL        VAR(&PARM1) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&PARM2) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+             DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+
+/* --------------------------------------------------------------------------
+   Main Program Logic
+   -------------------------------------------------------------------------- */
+
+             /* Your code here */
+
+/* --------------------------------------------------------------------------
+   Error Handling
+   -------------------------------------------------------------------------- */
+
+ERROR:
+             RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Error' *BCAT &MSGID *BCAT '-' +
+                          *BCAT %SST(&MSGDTA 1 100)) MSGTYPE(*DIAG)
+
+/* --------------------------------------------------------------------------
+   Cleanup and Exit
+   -------------------------------------------------------------------------- */
+
+CLEANUP:
+             RETURN
+
+             ENDPGM

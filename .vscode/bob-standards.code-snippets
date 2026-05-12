@@ -1,0 +1,222 @@
+{
+  "RPGLE Program Header": {
+    "prefix": "bob-rpgle-header",
+    "body": [
+      "**free",
+      "",
+      "///",
+      "/// Program: ${1:PROGRAM_NAME}",
+      "///",
+      "/// Description: ${2:Brief description of the program}",
+      "///",
+      "/// Purpose:",
+      "///   - ${3:Main purpose item 1}",
+      "///   - ${4:Purpose item 2}",
+      "///   - ${5:Purpose item 3}",
+      "///",
+      "/// Features:",
+      "///   - ${6:Feature 1}",
+      "///   - ${7:Feature 2}",
+      "///   - ${8:Feature 3}",
+      "///",
+      "/// Usage: ${9:CALL PROGRAM_NAME}",
+      "///",
+      "/// Modification History:",
+      "///   V.001 ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} | Nick Litten | Initial creation",
+      "///",
+      "",
+      "ctl-opt copyright('V.001 - ${2:Brief description of the program}');",
+      "ctl-opt dftactgrp(*no) actgrp(*caller);",
+      "ctl-opt option(*srcstmt: *nodebugio);",
+      "ctl-opt bnddir('NICKLITTEN');",
+      "",
+      "// ---------------------------------------------------------------------------",
+      "// Program Information Data Structure",
+      "// ---------------------------------------------------------------------------",
+      "dcl-ds pgmInfo psds qualified;",
+      "  pgmName *proc;",
+      "  status *status;",
+      "  user char(10) pos(254);",
+      "  jobName char(10) pos(244);",
+      "  jobUser char(10) pos(254);",
+      "  jobNumber char(6) pos(264);",
+      "end-ds;",
+      "",
+      "// ---------------------------------------------------------------------------",
+      "// Main Program Logic",
+      "// ---------------------------------------------------------------------------",
+      "",
+      "$0",
+      "",
+      "*inlr = *on;",
+      "return;"
+    ],
+    "description": "BOB Standard RPGLE Program Header"
+  },
+  "CLLE Program Header": {
+    "prefix": "bob-clle-header",
+    "body": [
+      "/* Program: ${1:PROGRAM_NAME}                                                  */",
+      "/*                                                                          */",
+      "/* Description: ${2:Brief description of the program}                       */",
+      "/*                                                                          */",
+      "/* Purpose:                                                                 */",
+      "/*   - ${3:Main purpose item 1}                                             */",
+      "/*   - ${4:Purpose item 2}                                                  */",
+      "/*                                                                          */",
+      "/* Usage: ${5:CALL PROGRAM_NAME}                                            */",
+      "/*                                                                          */",
+      "/* Modification History:                                                    */",
+      "/*   V.001 ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} | Nick Litten | Initial creation                       */",
+      "",
+      "             PGM        PARM(&PARM1)",
+      "",
+      "             DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)",
+      "",
+      "             COPYRIGHT  TEXT('V.001 - ${2:Brief description of the program}')",
+      "             DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +",
+      "                          VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')",
+      "             DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)",
+      "",
+      "/* --------------------------------------------------------------------------",
+      "   Variable Declarations",
+      "   -------------------------------------------------------------------------- */",
+      "",
+      "             DCL        VAR(&PARM1) TYPE(*CHAR) LEN(10)",
+      "",
+      "/* --------------------------------------------------------------------------",
+      "   Main Program Logic",
+      "   -------------------------------------------------------------------------- */",
+      "",
+      "             $0",
+      "",
+      "             RETURN",
+      "",
+      "             ENDPGM"
+    ],
+    "description": "BOB Standard CLLE Program Header"
+  },
+  "SQL Table Header": {
+    "prefix": "bob-sql-table",
+    "body": [
+      "-- ---------------------------------------------------------------------------",
+      "-- Table: ${1:TABLE_NAME}",
+      "-- Description: ${2:Brief description of the table}",
+      "-- Author: Nick Litten",
+      "-- Created: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "-- ---------------------------------------------------------------------------",
+      "-- Purpose:",
+      "--   - ${3:Main purpose item 1}",
+      "--   - ${4:Purpose item 2}",
+      "--",
+      "-- Modification History:",
+      "--   V.001 ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} | Nick Litten | Initial creation",
+      "-- ---------------------------------------------------------------------------",
+      "",
+      "CREATE OR REPLACE TABLE",
+      "    ${1:TABLE_NAME} (",
+      "        -- Primary Key",
+      "        ${5:ID_COLUMN} INT NOT NULL GENERATED ALWAYS AS IDENTITY,",
+      "        ",
+      "        -- Data Columns",
+      "        ${6:COLUMN_NAME} ${7:VARCHAR(100)} ${8:NOT NULL},",
+      "        ",
+      "        -- Audit Fields",
+      "        CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,",
+      "        UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,",
+      "        ",
+      "        -- Constraints",
+      "        CONSTRAINT PK_${1:TABLE_NAME} PRIMARY KEY (${5:ID_COLUMN})",
+      "    ) RCDFMT ${9:RECORD_FORMAT};",
+      "",
+      "-- ---------------------------------------------------------------------------",
+      "-- Indexes",
+      "-- ---------------------------------------------------------------------------",
+      "",
+      "CREATE INDEX IDX_${1:TABLE_NAME}_${6:COLUMN_NAME}",
+      "    ON ${1:TABLE_NAME} (${6:COLUMN_NAME});",
+      "",
+      "$0"
+    ],
+    "description": "BOB Standard SQL Table Definition"
+  },
+  "RPGLE Procedure": {
+    "prefix": "bob-rpgle-proc",
+    "body": [
+      "// ---------------------------------------------------------------------------",
+      "// Procedure: ${1:procedureName}",
+      "// Description: ${2:Brief description of what this procedure does}",
+      "// ---------------------------------------------------------------------------",
+      "dcl-proc ${1:procedureName};",
+      "  dcl-pi *n ${3:returnType};",
+      "    ${4:parmName} ${5:parmType} ${6:const};",
+      "  end-pi;",
+      "  ",
+      "  // Local variables",
+      "  dcl-s ${7:localVar} ${8:varType};",
+      "  ",
+      "  $0",
+      "  ",
+      "  return ${9:returnValue};",
+      "end-proc;"
+    ],
+    "description": "BOB Standard RPGLE Procedure"
+  },
+  "RPGLE Data Structure": {
+    "prefix": "bob-rpgle-ds",
+    "body": [
+      "// ${1:Data structure description}",
+      "dcl-ds ${2:dsName} qualified;",
+      "  ${3:field1} ${4:char(10)};",
+      "  ${5:field2} ${6:packed(15:2)};",
+      "  $0",
+      "end-ds;"
+    ],
+    "description": "BOB Standard RPGLE Data Structure"
+  },
+  "Comment Separator": {
+    "prefix": "bob-separator",
+    "body": [
+      "// ---------------------------------------------------------------------------",
+      "// ${1:Section Title}",
+      "// ---------------------------------------------------------------------------"
+    ],
+    "description": "BOB Standard Comment Separator"
+  },
+  "Modification History Entry": {
+    "prefix": "bob-history",
+    "body": [
+      "///   V.${1:002} ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} | Nick Litten | ${2:Description of changes}"
+    ],
+    "description": "BOB Modification History Entry"
+  },
+  "CLLE Comment Separator": {
+    "prefix": "bob-cl-separator",
+    "body": [
+      "/* --------------------------------------------------------------------------",
+      "   ${1:Section Title}",
+      "   -------------------------------------------------------------------------- */"
+    ],
+    "description": "BOB Standard CL Comment Separator"
+  },
+  "SQL Comment Separator": {
+    "prefix": "bob-sql-separator",
+    "body": [
+      "-- ---------------------------------------------------------------------------",
+      "-- ${1:Section Title}",
+      "-- ---------------------------------------------------------------------------"
+    ],
+    "description": "BOB Standard SQL Comment Separator"
+  },
+  "DDS Comment Separator": {
+    "prefix": "bob-dds-separator",
+    "body": [
+      "      *---------------------------------------------------------------------",
+      "      * ${1:Section Title}",
+      "      *---------------------------------------------------------------------"
+    ],
+    "description": "BOB Standard DDS Comment Separator"
+  }
+}
+
+// Made with Bob
