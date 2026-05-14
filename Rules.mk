@@ -1,40 +1,52 @@
-# ------------------------------------------------------------------------------
-# Rules.mk - Root level build configuration for IBM i project
-# ------------------------------------------------------------------------------
-# This file defines subdirectories and common build settings for the project.
-# Each subdirectory contains its own Rules.mk with specific object targets.
-# ------------------------------------------------------------------------------
+# ---
+# Rules.mk - Root Level Build Configuration
+# ---
+# Project: IBM i TOBi Standards Compliant Build System
+# Purpose: Define global build settings and subdirectories for IBM i objects
+# ---
+# This file establishes default compilation parameters for all object types.
+# Subdirectories contain their own Rules.mk files with specific dependencies.
+# ---
 
-# ------------------------------------------------------------------------------
-# Global Build Settings (can be overridden in subdirectory Rules.mk files)
-# ------------------------------------------------------------------------------
+# ---
+# Global Build Settings
+# ---
+# These settings apply to all objects unless overridden in subdirectory Rules.mk
+# Use := for immediate assignment (required for proper make variable expansion)
+# ---
 
-# Default target release for all objects
+# Target Release - IBM i OS version compatibility
 %.MODULE: private TGTRLS := V7R4M0
 %.PGM:    private TGTRLS := V7R4M0
 %.SRVPGM: private TGTRLS := V7R4M0
 
-# Default program settings
-%.PGM:    private ENTMOD := *PGM
-%.PGM:    private ALWRTVSRC := *NO
-%.PGM:    private OPTIMIZE := *FULL
-%.PGM:    private ACTGRP := NICKLITTEN
+# Program Compilation Settings
+%.PGM:    private ENTMOD := *PGM          # Entry module is the program itself
+%.PGM:    private ALWRTVSRC := *NO        # Disallow retrieve source (production)
+%.PGM:    private OPTIMIZE := *FULL       # Full optimization for performance
+%.PGM:    private ACTGRP := NICKLITTEN    # Default activation group
+%.PGM:    private DBGVIEW := *SOURCE      # Include source view for debugging
 
-# Default module settings
-%.MODULE: private OPTIMIZE := *FULL
-%.MODULE: private DBGVIEW := *SOURCE
+# Module Compilation Settings
+%.MODULE: private OPTIMIZE := *FULL       # Full optimization for performance
+%.MODULE: private DBGVIEW := *SOURCE      # Include source view for debugging
 
-# Default service program settings
-%.SRVPGM: private ACTGRP := *CALLER
-%.SRVPGM: private ALWLIBUPD := *NO
-%.SRVPGM: private ALWUPD := *YES
+# Service Program Settings
+%.SRVPGM: private ACTGRP := *CALLER       # Use caller's activation group
+%.SRVPGM: private ALWLIBUPD := *NO        # Disallow library updates
+%.SRVPGM: private ALWUPD := *YES          # Allow service program updates
+%.SRVPGM: private DETAIL := *BASIC        # Basic signature detail level
 
-# Default file settings
-%.FILE:   private OPTION := *EVENTF
-%.FILE:   private GENLVL := 10
-%.CMD:    private OPTION := *EVENTF
+# File and Command Settings
+%.FILE:   private OPTION := *EVENTF       # Event file option
+%.FILE:   private GENLVL := 10            # Generation level
+%.CMD:    private OPTION := *EVENTF       # Event file option for commands
 
-# Default command settings
-# Subdirectories to process during build (order matters for dependencies)
-SUBDIRS = database binders services codesamples
+# ---
+# Build Order
+# ---
+# Subdirectories are processed in the order listed
+# Dependencies between directories must be respected
+# ---
+SUBDIRS := src
           
