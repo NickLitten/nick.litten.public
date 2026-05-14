@@ -1,62 +1,50 @@
 # AGENTS.md - Advanced Mode
 
-This file provides advanced mode guidance for agents working in this IBM i repository.
+This file provides advanced coding guidance for agents working in this IBM i repository.
 
-## Advanced Mode Capabilities
-
-### Available Tools
-- MCP tools (if configured)
-- Browser tools (if configured)
-- All standard code mode tools
-
-## Critical Coding Rules
-
-### File Creation Pattern
-- Programs MUST use dash separator: `PROGRAMNAME-Description.pgm.rpgle`
-- Service programs omit .pgm: `SERVICENAME-Description.sqlrpgle`
-- Always include binder source: `SERVICENAME-Description.bnd`
-
-### Mandatory Headers
-Every RPGLE/SQLRPGLE file MUST include:
-```rpgle
-ctl-opt copyright('V.001 - Description');
-ctl-opt dftactgrp(*no) actgrp(*caller);
-ctl-opt option(*srcstmt: *nodebugio);
-ctl-opt bnddir('NICKLITTEN');
-```
-
-Every CLLE file MUST include:
-```clle
-DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
-COPYRIGHT TEXT('V.001 - Description')
-DCL VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
-```
-
-### Comment Separator Enforcement
-- Use `///-----` NEVER `///=====`
-- Use `/* -----` NEVER `/* =====`
-- Use `-- -----` NEVER `-- =====`
-- BOB will fail code scanning if `=` is used
-
-### Modification History Rules
-- Format: `V.NNN YYYY-MM-DD | Nick Litten | Description`
-- Version increments with each entry (V.001, V.002, V.003...)
-- MUST update copyright ctl-opt with new version
-
-### Deprecated Syntax (Auto-Reject)
-Never use in RPGLE: MOVE, MOVEL, Z-ADD, Z-SUB, GOTO, TAG
-Use instead: assignment operators, %TRIM(), %SUBST(), structured programming
-
-### Rules.mk Requirements
-When adding new objects:
-- Add to OBJECTS list in subdirectory Rules.mk
-- Specify dependencies if needed: `MYPGM.PGM: MYFILE.FILE`
-- Override ACTGRP only if different from NICKLITTEN
-- Build order: database → binders → services → programs
+## Advanced Mode Specific Rules
 
 ### Template Usage
-Always use templates from `templates/` directory:
-- `rpgle-header-template.txt` for RPGLE/SQLRPGLE
-- `clle-header-template.txt` for CLLE
-- `sql-header-template.txt` for SQL tables
-- Templates enforce all required standards
+- When creating new files, ALWAYS use make targets (not manual copy)
+- `make new-rpgle NAME=prog` auto-substitutes placeholders with current USER and date
+- Never manually edit placeholder values - let sed handle substitution
+
+### Comment Block Requirements
+- RPGLE main headers use `///` triple-slash (not `//`)
+- Section separators use `// ---` (dashes, not equals)
+- Scripts enforce EXACT format - extra spaces or wrong characters break detection
+- Use `make fix-comments` to auto-add missing headers (dev mode only)
+
+### Standards Enforcement
+- `make standards` runs both comment checks and code scanning
+- Exit code 1 means violations found - must fix before commit
+- Dev profile (modern-rpg-dev) auto-fixes, CI profile (modern-rpg-ci) only checks
+- TODO markers allowed in dev, forbidden in CI
+
+### IBM i Coding Patterns
+- RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` - not optional
+- SQLRPGLE: Add `option(*sqlcursorstay)` to ctl-opt
+- CL: Variables use `&VAR` prefix and UPPER_SNAKE_CASE
+- All ILE programs: Include `bnddir('QC2LE')`
+
+### File Organization
+- Source files go in `src/{language}/` subdirectories (rpgle, sqlrpgle, clle, sql, etc.)
+- Includes go in `includes/` at root (not under src/)
+- Database files go in `database/` at root
+- Templates are in `.bob/templates/ibmi/` (BOB configuration directory)
+
+### Build System Quirks
+- Rules.mk uses `:=` for immediate assignment (not `=` deferred)
+- Scripts MUST run from project root (relative paths hardcoded)
+- sed -i behavior differs on macOS vs Linux (be aware when testing)
+- SHELL set to `/bin/bash` - scripts fail with `/bin/sh`
+
+### Critical Gotchas
+- Changing templates doesn't update existing files (manual update needed)
+- Moving `.bob/standards/ibmi-coding-standards.yml` breaks everything (path hardcoded)
+- Profile changes require editing BOTH `iproj.json` AND `.bob-profile.json`
+- Comment block format must be EXACT - scripts use regex matching
+
+## Access To
+- MCP tools (if configured)
+- Browser tools (if configured)

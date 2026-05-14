@@ -1,0 +1,79 @@
+      *---------------------------------------------------------------------
+      * {FILE_TYPE}: {FILE_NAME}
+      * Description: {DESCRIPTION}
+      * Author: {AUTHOR}
+      * Created: {DATE}
+      *---------------------------------------------------------------------
+      * Purpose: {PURPOSE}
+      *   - {PURPOSE_ITEM_1}
+      *   - {PURPOSE_ITEM_2}
+      *   - {PURPOSE_ITEM_3}
+      *
+      * Features:
+      *   - {FEATURE_1}
+      *   - {FEATURE_2}
+      *   - {FEATURE_3}
+      *
+      * Usage: {USAGE_EXAMPLE}
+      *
+      * Record Formats:
+      *   - {RECORD_FORMAT_1}: {RECORD_FORMAT_1_DESC}
+      *   - {RECORD_FORMAT_2}: {RECORD_FORMAT_2_DESC}
+      *
+      * Key Fields:
+      *   - {KEY_FIELD_1}
+      *   - {KEY_FIELD_2}
+      *
+      * Reference:
+      *   {REFERENCE_URL}
+      *
+      * Modification History:
+      *   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}
+      *---------------------------------------------------------------------
+     A          R {record_format}           PFILE({physical_file})
+      *
+      * ----------------------------------------------------------------
+      * Field Selection (if needed)
+      * ----------------------------------------------------------------
+     A            {field_name1}
+     A            {field_name2}
+     A            {field_name3}
+      *
+      * ----------------------------------------------------------------
+      * Select/Omit Criteria (if needed)
+      * ----------------------------------------------------------------
+     A          S {field_name}              COMP(EQ '{value}')
+      *   or
+      *         O {field_name}              COMP(EQ '{value}')
+      *
+      * ----------------------------------------------------------------
+      * Key Specification
+      * ----------------------------------------------------------------
+     A          K {key_field1}
+     A          K {key_field2}
+      *
+      * ----------------------------------------------------------------
+      * Join Logical File Example (if needed)
+      * ----------------------------------------------------------------
+      *         R {record_format}           JFILE({file1} {file2})
+      *         J                           JOIN({file1} {file2})
+      *         J                           JFLD({join_field1} {join_field2})
+      *
+      * ----------------------------------------------------------------
+      * Fields from File 1
+      * ----------------------------------------------------------------
+      *           {field_name1}              JREF({file1})
+      *
+      * ----------------------------------------------------------------
+      * Fields from File 2
+      * ----------------------------------------------------------------
+      *           {field_name2}              JREF({file2})
+      *
+      * ----------------------------------------------------------------
+      * Key Specification for Join
+      * ----------------------------------------------------------------
+      *         K {key_field}
+      *
+      * ----------------------------------------------------------------
+      * End of Logical File
+      * ----------------------------------------------------------------

@@ -1,0 +1,21 @@
+! ---------------------------------------------------------------------------
+! Binding Directory: {ILEPGM_NAME}
+! Description: {DESCRIPTION}
+! Author: {AUTHOR}
+! Created: {DATE}
+! ---------------------------------------------------------------------------
+!
+! Service Programs:
+!   - {SRVPGM_1}: {SRVPGM_1_DESC}
+!   - {SRVPGM_2}: {SRVPGM_2_DESC}
+!
+! Usage: Add to BNDDIR parameter in compile commands
+!
+! Modification History:
+!   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}
+! ---------------------------------------------------------------------------
+
+!DLTOBJ OBJ(&O/&N) OBJTYPE(*BNDDIR)
+CRTBNDDIR BNDDIR(&O/&N) TEXT('{DESCRIPTION}')
+ADDBNDDIRE BNDDIR(&O/&N) OBJ((*LIBL/{SRVPGM_1} *SRVPGM))
+ADDBNDDIRE BNDDIR(&O/&N) OBJ((*LIBL/{SRVPGM_2} *SRVPGM))

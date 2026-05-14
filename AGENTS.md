@@ -2,84 +2,41 @@
 
 This file provides guidance to agents when working with code in this repository.
 
-## Build System
-
-- Uses MAKEI build system (not standard npm/make)
-- Build command: `makei build` (from project root)
-- Compile single file: `makei compile -f FILENAME.pgm.rpgle`
-- Clean: `makei clean`
-- Build specific directory: `cd subdirectory && makei build`
+## Build System (Non-Standard)
+- Uses MAKEI (not make/npm) - `makei build` from project root
+- Single file: `makei compile -f FILENAME.pgm.rpgle`
+- Subdirectory builds: `cd subdirectory && makei build` (not from root)
 
 ## Critical Non-Standard Patterns
 
-### File Naming Convention
-- RPGLE programs: `PROGRAMNAME-Description.pgm.rpgle` (dash separator, not underscore)
-- SQLRPGLE programs: `PROGRAMNAME-Description.pgm.sqlrpgle`
-- CL programs: `PROGRAMNAME-Description.pgm.clle`
-- Service programs: `SERVICENAME-Description.sqlrpgle` (no .pgm prefix)
-- Binder source: `SERVICENAME-Description.bnd`
-- SQL tables: `tablename.table` (lowercase)
+### File Naming (Dash Separator Required)
+- Programs: `NAME-Description.pgm.rpgle` (dash, NOT underscore)
+- Services: `NAME-Description.sqlrpgle` (NO .pgm prefix)
+- Tables: `name.table` (lowercase only)
 
-### Comment Separator Rule
-- MUST use `-` (dash) for comment separators, NEVER `=` (equals)
-- This is enforced by BOB and will fail code scanning
-- Example: `///-----` not `///=====`
+### Comment Separator (BOB Enforced)
+- MUST use `-` (dash), NEVER `=` (equals) - `///-----` not `///=====`
+- BOB code scanning fails on `=` separators
 
-### Copyright Requirements
-- RPGLE/SQLRPGLE: MUST include `ctl-opt copyright('{VERSION} - {DESCRIPTION}');`
-- CLLE: MUST include `COPYRIGHT TEXT('{VERSION} - {DESCRIPTION}')`
-- Version format: `V.NNN` (e.g., V.001, V.002)
-- Version increments with each modification history entry
+### Copyright (Auto-Calculated Version)
+- RPGLE/SQLRPGLE: `ctl-opt copyright('V.NNN - description');`
+- CLLE: `COPYRIGHT TEXT('V.NNN - description')`
+- Version = modification history count (V.001, V.002, etc.)
 
-### Standard Control Options (RPGLE)
-```rpgle
-ctl-opt copyright('V.001 - Program description');
-ctl-opt dftactgrp(*no) actgrp(*caller);
-ctl-opt option(*srcstmt: *nodebugio);
-ctl-opt bnddir('NICKLITTEN');
+### Rules.mk Quirks
+- Default ACTGRP: NICKLITTEN (not *CALLER for .PGM files)
+- Uses `:=` immediate assignment (not `=` deferred)
+- Build order critical: database → binders → services → codesamples
+- Scripts MUST run from project root (paths hardcoded)
+
+### Binder Directory Format (.bnddir files)
 ```
-
-### Standard CL Program Options
-```clle
-DCLPRCOPT LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
-COPYRIGHT TEXT('V.001 - Program description')
-DCL VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
+!DLTOBJ OBJ(&O/&N) OBJTYPE(*BNDDIR)
+CRTBNDDIR BNDDIR(&O/&N) TEXT('description')
+ADDBNDDIRE BNDDIR(&O/&N) OBJ((*LIBL/SRVPGM *SRVPGM))
 ```
+Uses `&O` (library) and `&N` (name) substitution variables
 
-### Rules.mk Structure
-- Root Rules.mk defines global settings and SUBDIRS
-- Each subdirectory has its own Rules.mk defining OBJECTS
-- Default ACTGRP: NICKLITTEN (not *CALLER for programs)
-- Default TGTRLS: V7R4M0
-- Build order matters: database → binders → services → codesamples
-
-### Modification History Format
-```
-/// Modification History:
-///   V.001 YYYY-MM-DD | Nick Litten | Initial creation
-///   V.002 YYYY-MM-DD | Nick Litten | Description of change
-```
-
-## Code Style (Non-Obvious)
-
-- RPGLE comment style: `///` (triple slash) for documentation blocks
-- CLLE comment style: `/* */` (block comments)
-- SQL comment style: `--` (double dash)
-- DDS comment style: `*` in column 7
-- Indentation: 2 spaces for RPGLE, 3 spaces for CLLE, 4 spaces for SQL
-- Max line length: 100 chars (RPGLE), 80 chars (CLLE)
-- Naming: camelCase for procedures/variables, UPPER_SNAKE_CASE for constants, PascalCase for data structures
-
-## Deprecated Syntax (RPGLE)
-Never use: MOVE, MOVEL, Z-ADD, Z-SUB, GOTO, TAG
-Use modern equivalents: assignment, %TRIM(), %SUBST(), structured programming
-
-## Templates Location
-All templates in `templates/` directory with specific naming:
-- `rpgle-header-template.txt`
-- `clle-header-template.txt`
-- `cmd-header-template.txt`
-- `dds-header-template.txt`
-- `sql-header-template.txt`
-- `bnd-header-template.txt`
-- `bnddir-header-template.txt`
+### Service Program Control Options
+- MUST use `ctl-opt nomain` (not main program structure)
+- Standard bnddir: `bnddir('NICKLITTEN')` but service programs often omit this

@@ -1,0 +1,25 @@
+/* --------------------------------------------------------------------------- */
+/* Binder Source: SRVPGMNAME - Brief Description                               */
+/* --------------------------------------------------------------------------- */
+/* Binder Source: {BINDER_NAME}                                                */
+/* Description: {DESCRIPTION}                                                  */
+/* Author: {AUTHOR}                                                            */
+/* Created: {DATE}                                                             */
+/*                                                                             */ 
+/* Modification History:                                                       */
+/*   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}                        */
+/* --------------------------------------------------------------------------- */
+
+STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('SRVPGMNAME V.000')
+
+/* --------------------------------------------------------------------------- */
+/* Exported Procedures                                                         */
+/* --------------------------------------------------------------------------- */
+
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('{SIGNATURE}')
+
+  /* Exported Procedures */
+  EXPORT SYMBOL('{PROCEDURE_1}')
+  EXPORT SYMBOL('{PROCEDURE_2}')
+
+ENDPGMEXP

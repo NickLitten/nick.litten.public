@@ -1,0 +1,121 @@
+/* ---------------------------------------------------------------- */
+/* Program: {PROGRAM_NAME}                                          */
+/*                                                                  */
+/* Description: {DESCRIPTION}                                       */
+/*                                                                  */
+/* Purpose: {PURPOSE}                                               */
+/*   - {PURPOSE_ITEM_1}                                             */
+/*   - {PURPOSE_ITEM_2}                                             */
+/*   - {PURPOSE_ITEM_3}                                             */
+/*                                                                  */
+/* Features:                                                        */
+/*   - {FEATURE_1}                                                  */
+/*   - {FEATURE_2}                                                  */
+/*   - {FEATURE_3}                                                  */
+/*                                                                  */
+/* Usage: {USAGE_EXAMPLE}                                           */
+/*                                                                  */
+/* Parameters:                                                      */
+/*   - {PARAM_1}: {PARAM_1_TYPE} - {PARAM_1_DESC}                   */
+/*   - {PARAM_2}: {PARAM_2_TYPE} - {PARAM_2_DESC}                   */
+/*                                                                  */
+/* Dependencies:                                                    */
+/*   - {DEPENDENCY_1}                                               */
+/*   - {DEPENDENCY_2}                                               */
+/*                                                                  */
+/* Reference:                                                       */
+/*   {REFERENCE_URL}                                                */
+/*                                                                  */
+/* Modification History:                                            */
+/*   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}             */
+/* ---------------------------------------------------------------- */
+
+             PGM        PARM(&PARM1 &PARM2)
+
+             DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+             COPYRIGHT  TEXT('{VERSION} - {DESCRIPTION}')
+             DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+                          VALUE('{DESCRIPTION} | {VERSION}')
+             DCL        VAR(&COPYRIGHTP) TYPE(*PTR) +
+                        STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+/* ---------------------------------------------------------------- */
+/* Parameter Declarations                                           */
+/* ---------------------------------------------------------------- */
+             DCL        VAR(&PARM1) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&PARM2) TYPE(*CHAR) LEN(50)
+
+/* ---------------------------------------------------------------- */
+/* Local Variable Declarations                                      */
+/* ---------------------------------------------------------------- */
+             DCL        VAR(&MSG_TEXT) TYPE(*CHAR) LEN(512)
+             DCL        VAR(&MSG_ID) TYPE(*CHAR) LEN(7)
+             DCL        VAR(&MSG_FILE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MSG_LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&RETURN_CODE) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&COUNTER) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&SUCCESS) TYPE(*LGL)
+
+/* ---------------------------------------------------------------- */
+/* Constants                                                        */
+/* ---------------------------------------------------------------- */
+             DCL        VAR(&TRUE) TYPE(*LGL) VALUE('1')
+             DCL        VAR(&FALSE) TYPE(*LGL) VALUE('0')
+             DCL        VAR(&MAX_RETRIES) TYPE(*DEC) LEN(3 0) +
+                          VALUE(3)
+
+/* ---------------------------------------------------------------- */
+/* Global Error Monitoring                                          */
+/* ---------------------------------------------------------------- */
+             MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR_HANDLER))
+
+/* ---------------------------------------------------------------- */
+/* Main Logic                                                       */
+/* ---------------------------------------------------------------- */
+
+             /* Initialize variables */
+             CHGVAR     VAR(&RETURN_CODE) VALUE(0)
+             CHGVAR     VAR(&COUNTER) VALUE(0)
+             CHGVAR     VAR(&SUCCESS) VALUE(&TRUE)
+             CHGVAR     VAR(&MSG_FILE) VALUE('QCPFMSG')
+             CHGVAR     VAR(&MSG_LIB) VALUE('QSYS')
+
+             /* TODO: Add your main program logic here */
+
+             /* Example: Send completion message */
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Program completed successfully') +
+                          TOPGMQ(*PRV) MSGTYPE(*COMP)
+
+             /* Normal end of program */
+             GOTO       CMDLBL(END_PGM)
+
+/* ---------------------------------------------------------------- */
+/* Error Handler                                                    */
+/* ---------------------------------------------------------------- */
+ERROR_HANDLER:
+             /* Receive error message */
+             RCVMSG     MSGTYPE(*EXCP) RMV(*NO) +
+                          MSG(&MSG_TEXT) +
+                          MSGID(&MSG_ID)
+
+             /* Log error */
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Error in {member_name}: ' *CAT +
+                          &MSG_ID *CAT ' - ' *CAT &MSG_TEXT) +
+                          TOPGMQ(*PRV) MSGTYPE(*DIAG)
+
+             /* Set return code */
+             CHGVAR     VAR(&RETURN_CODE) VALUE(1)
+
+             /* Send escape message to caller */
+             SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                          MSGDTA('Program {member_name} failed') +
+                          TOPGMQ(*PRV (*CTLBDY)) MSGTYPE(*ESCAPE)
+
+/* ---------------------------------------------------------------- */
+/* End of Program                                                   */
+/* ---------------------------------------------------------------- */
+END_PGM:
+             ENDPGM

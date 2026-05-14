@@ -1,0 +1,251 @@
+      * ----------------------------------------------------------------
+      * Project: {project_name}
+      * Member : {member_name}
+      * Desc   : {description}
+      * Author : {author_name}
+      * Date   : {creation_date}
+      * ----------------------------------------------------------------
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. {program_name}.
+       AUTHOR. {author_name}.
+       DATE-WRITTEN. {creation_date}.
+       DATE-COMPILED.
+
+      *----------------------------------------------------------------
+      * ENVIRONMENT DIVISION
+      *----------------------------------------------------------------
+       ENVIRONMENT DIVISION.
+
+       CONFIGURATION SECTION.
+       SOURCE-COMPUTER. IBM-ISERIES.
+       OBJECT-COMPUTER. IBM-ISERIES.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+      *    SELECT INPUT-FILE
+      *        ASSIGN TO DATABASE-{input_file}
+      *        ORGANIZATION IS INDEXED
+      *        ACCESS MODE IS DYNAMIC
+      *        RECORD KEY IS INPUT-KEY
+      *        FILE STATUS IS INPUT-FILE-STATUS.
+      *
+      *    SELECT OUTPUT-FILE
+      *        ASSIGN TO DATABASE-{output_file}
+      *        ORGANIZATION IS SEQUENTIAL
+      *        FILE STATUS IS OUTPUT-FILE-STATUS.
+
+      *----------------------------------------------------------------
+      * DATA DIVISION
+      *----------------------------------------------------------------
+       DATA DIVISION.
+
+       FILE SECTION.
+      *FD  INPUT-FILE
+      *    LABEL RECORDS ARE STANDARD.
+      *01  INPUT-RECORD.
+      *    05  INPUT-KEY           PIC X(10).
+      *    05  INPUT-DATA          PIC X(100).
+      *
+      *FD  OUTPUT-FILE
+      *    LABEL RECORDS ARE STANDARD.
+      *01  OUTPUT-RECORD.
+      *    05  OUTPUT-DATA         PIC X(132).
+
+       WORKING-STORAGE SECTION.
+
+      *----------------------------------------------------------------
+      * Program Constants
+      *----------------------------------------------------------------
+       01  PROGRAM-CONSTANTS.
+           05  PROGRAM-NAME        PIC X(10) VALUE '{program_name}'.
+           05  PROGRAM-VERSION     PIC X(10) VALUE '1.0.0'.
+           05  SUCCESS-CODE        PIC 9(02) VALUE 00.
+           05  ERROR-CODE          PIC 9(02) VALUE 99.
+
+      *----------------------------------------------------------------
+      * File Status Variables
+      *----------------------------------------------------------------
+       01  FILE-STATUS-FIELDS.
+           05  INPUT-FILE-STATUS   PIC XX.
+               88  INPUT-FILE-OK   VALUE '00'.
+               88  INPUT-FILE-EOF  VALUE '10'.
+           05  OUTPUT-FILE-STATUS  PIC XX.
+               88  OUTPUT-FILE-OK  VALUE '00'.
+
+      *----------------------------------------------------------------
+      * Work Variables
+      *----------------------------------------------------------------
+       01  WORK-FIELDS.
+           05  WS-RETURN-CODE      PIC 9(02) VALUE ZERO.
+           05  WS-RECORD-COUNT     PIC 9(05) VALUE ZERO.
+           05  WS-ERROR-COUNT      PIC 9(05) VALUE ZERO.
+           05  WS-CURRENT-DATE     PIC 9(08).
+           05  WS-CURRENT-TIME     PIC 9(06).
+           05  WS-MESSAGE          PIC X(100).
+
+      *----------------------------------------------------------------
+      * Switches and Indicators
+      *----------------------------------------------------------------
+       01  PROGRAM-SWITCHES.
+           05  END-OF-FILE-SW      PIC X VALUE 'N'.
+               88  END-OF-FILE     VALUE 'Y'.
+               88  NOT-END-OF-FILE VALUE 'N'.
+           05  ERROR-FOUND-SW      PIC X VALUE 'N'.
+               88  ERROR-FOUND     VALUE 'Y'.
+               88  NO-ERROR-FOUND  VALUE 'N'.
+           05  FIRST-TIME-SW       PIC X VALUE 'Y'.
+               88  FIRST-TIME      VALUE 'Y'.
+               88  NOT-FIRST-TIME  VALUE 'N'.
+
+      *----------------------------------------------------------------
+      * Data Structures
+      *----------------------------------------------------------------
+       01  CUSTOMER-RECORD.
+           05  CUST-ID             PIC 9(10).
+           05  CUST-NAME           PIC X(50).
+           05  CUST-ADDRESS        PIC X(100).
+           05  CUST-STATUS         PIC X.
+               88  CUST-ACTIVE     VALUE 'A'.
+               88  CUST-INACTIVE   VALUE 'I'.
+           05  CUST-BALANCE        PIC S9(13)V99 COMP-3.
+
+      *----------------------------------------------------------------
+      * Error Information
+      *----------------------------------------------------------------
+       01  ERROR-INFO.
+           05  ERROR-PARAGRAPH     PIC X(30).
+           05  ERROR-MESSAGE       PIC X(100).
+           05  ERROR-SQLCODE       PIC S9(09) COMP-5.
+
+      *----------------------------------------------------------------
+      * PROCEDURE DIVISION
+      *----------------------------------------------------------------
+       PROCEDURE DIVISION.
+
+      *----------------------------------------------------------------
+      * Main Control Paragraph
+      *----------------------------------------------------------------
+       0000-MAIN-CONTROL.
+           PERFORM 1000-INITIALIZATION
+           IF NO-ERROR-FOUND
+               PERFORM 2000-PROCESS-RECORDS
+                   UNTIL END-OF-FILE OR ERROR-FOUND
+               PERFORM 3000-TERMINATION
+           END-IF
+           STOP RUN.
+
+      *----------------------------------------------------------------
+      * Initialization
+      *----------------------------------------------------------------
+       1000-INITIALIZATION.
+           DISPLAY 'Starting ' PROGRAM-NAME
+           ACCEPT WS-CURRENT-DATE FROM DATE YYYYMMDD
+           ACCEPT WS-CURRENT-TIME FROM TIME
+
+           MOVE ZERO TO WS-RECORD-COUNT
+           MOVE ZERO TO WS-ERROR-COUNT
+           SET NOT-END-OF-FILE TO TRUE
+           SET NO-ERROR-FOUND TO TRUE
+           SET FIRST-TIME TO TRUE
+
+      *    OPEN INPUT INPUT-FILE
+      *    IF NOT INPUT-FILE-OK
+      *        MOVE 'Error opening input file' TO WS-MESSAGE
+      *        PERFORM 9000-ERROR-ROUTINE
+      *    END-IF
+      *
+      *    OPEN OUTPUT OUTPUT-FILE
+      *    IF NOT OUTPUT-FILE-OK
+      *        MOVE 'Error opening output file' TO WS-MESSAGE
+      *        PERFORM 9000-ERROR-ROUTINE
+      *    END-IF
+
+           DISPLAY 'Initialization complete'.
+
+      *----------------------------------------------------------------
+      * Process Records
+      *----------------------------------------------------------------
+       2000-PROCESS-RECORDS.
+      *    PERFORM 2100-READ-INPUT-FILE
+      *    IF NOT END-OF-FILE AND NO-ERROR-FOUND
+      *        PERFORM 2200-PROCESS-RECORD
+      *        IF NO-ERROR-FOUND
+      *            PERFORM 2300-WRITE-OUTPUT-FILE
+      *        END-IF
+      *    END-IF
+           .
+
+      *----------------------------------------------------------------
+      * Read Input File
+      *----------------------------------------------------------------
+       2100-READ-INPUT-FILE.
+      *    READ INPUT-FILE
+      *        AT END
+      *            SET END-OF-FILE TO TRUE
+      *        NOT AT END
+      *            ADD 1 TO WS-RECORD-COUNT
+      *    END-READ
+      *
+      *    IF NOT INPUT-FILE-OK AND NOT INPUT-FILE-EOF
+      *        MOVE 'Error reading input file' TO WS-MESSAGE
+      *        PERFORM 9000-ERROR-ROUTINE
+      *    END-IF
+           .
+
+      *----------------------------------------------------------------
+      * Process Record
+      *----------------------------------------------------------------
+       2200-PROCESS-RECORD.
+      *    TODO: Add your record processing logic here
+      *
+      *    Example: Validate customer status
+      *    IF NOT CUST-ACTIVE AND NOT CUST-INACTIVE
+      *        MOVE 'Invalid customer status' TO WS-MESSAGE
+      *        PERFORM 9000-ERROR-ROUTINE
+      *    END-IF
+           .
+
+      *----------------------------------------------------------------
+      * Write Output File
+      *----------------------------------------------------------------
+       2300-WRITE-OUTPUT-FILE.
+      *    WRITE OUTPUT-RECORD
+      *    IF NOT OUTPUT-FILE-OK
+      *        MOVE 'Error writing output file' TO WS-MESSAGE
+      *        PERFORM 9000-ERROR-ROUTINE
+      *    END-IF
+           .
+
+      *----------------------------------------------------------------
+      * Termination
+      *----------------------------------------------------------------
+       3000-TERMINATION.
+      *    CLOSE INPUT-FILE
+      *    CLOSE OUTPUT-FILE
+
+           DISPLAY 'Records processed: ' WS-RECORD-COUNT
+           DISPLAY 'Errors encountered: ' WS-ERROR-COUNT
+
+           IF ERROR-FOUND
+               MOVE ERROR-CODE TO WS-RETURN-CODE
+               DISPLAY 'Program ended with errors'
+           ELSE
+               MOVE SUCCESS-CODE TO WS-RETURN-CODE
+               DISPLAY 'Program completed successfully'
+           END-IF
+
+           DISPLAY 'Ending ' PROGRAM-NAME.
+
+      *----------------------------------------------------------------
+      * Error Routine
+      *----------------------------------------------------------------
+       9000-ERROR-ROUTINE.
+           ADD 1 TO WS-ERROR-COUNT
+           SET ERROR-FOUND TO TRUE
+           DISPLAY 'ERROR: ' WS-MESSAGE
+           DISPLAY 'Error count: ' WS-ERROR-COUNT.
+
+      *----------------------------------------------------------------
+      * End of Program
+      *----------------------------------------------------------------

@@ -1,49 +1,41 @@
 # AGENTS.md - Ask Mode
 
-This file provides documentation-focused guidance for agents in Ask mode working with this IBM i repository.
+This file provides documentation-specific guidance for agents working in this IBM i repository.
 
-## Non-Obvious Documentation Context
+## Ask Mode Specific Rules
 
-### File Organization (Counterintuitive)
-- `code_snippets_NOCOMPILE/` contains educational examples that don't compile
-- `codesamples/` contains working, compilable examples organized by topic
-- `templates/` directory contains header templates with `{VARIABLE}` placeholders
-- `.bob-config.json` is the master configuration for all coding standards
+### Non-Obvious Naming
+- "BOB" refers to the IBM i development assistant/tooling
+- "ILE" = Integrated Language Environment (IBM i concept)
+- "DDS" = Data Description Specifications (legacy IBM i)
+- "QGPL" = General Purpose Library (forbidden in code)
+- "QC2LE" = C runtime binding directory (required for ILE)
 
-### Documentation Files
-- `CODING_STANDARDS.md` - Complete standards reference (715 lines)
-- `BOB_USAGE_GUIDE.md` - How to use BOB assistant (738 lines)
-- `RULES_MK_GUIDE.md` - MAKEI build system guide
-- `README_BOB_STANDARDS.md` - Quick reference summary
+### Template System Context
+- Templates use `{placeholder}` format for substitution
+- Make targets handle placeholder replacement automatically
+- Templates are in `.bob/templates/ibmi/` (BOB configuration directory)
 
-### Hidden Patterns
-- Version numbers calculated from modification history count (not manual)
-- Copyright statement MUST match modification history version
-- Comment separators enforced by automated scanning (dash only, never equals)
-- File extensions determine which template is applied automatically
+### Standards File Context
+- `.bob/standards/ibmi-coding-standards.yml` is the single source of truth
+- File location is hardcoded in multiple places - cannot be moved
+- Contains language-specific sections: rpgle, sqlrpgle, clle, sql, dds, cblle, cmd
+
+### BOB Profile Context
+- Three profiles defined in `.bob-profile.json`:
+  - modern-rpg-dev: Development with auto-fix
+  - modern-rpg-ci: CI/CD with strict checking
+  - legacy-maintenance: Relaxed rules for legacy code
+- Active profile set in `iproj.json` via IBMI_STANDARD_PROFILE env var
 
 ### Build System Context
-- MAKEI is IBM i-specific, not standard make/npm
-- Root Rules.mk defines SUBDIRS build order (dependencies matter)
-- Each subdirectory has own Rules.mk with OBJECTS list
-- Default ACTGRP is NICKLITTEN (not *CALLER) for programs
-- Service programs use ACTGRP(*CALLER) by default
+- Main Makefile only contains `include Rules.mk`
+- All build logic is in Rules.mk (not Makefile)
+- Make targets require NAME parameter: `make new-rpgle NAME=myprogram`
+- Scripts must be run from project root (paths are relative)
 
-### Template System
-- Templates in `templates/` use `{VARIABLE_NAME}` format
-- BOB auto-fills: {AUTHOR}, {DATE}, {VERSION}
-- BOB prompts for: {DESCRIPTION}, {PURPOSE}, {FEATURE_N}
-- Template selection based on file extension from `.bob-config.json`
-
-### Non-Standard Naming
-- Programs: `NAME-Description.pgm.rpgle` (dash separator required)
-- Services: `NAME-Description.sqlrpgle` (no .pgm prefix)
-- Binders: `NAME-Description.bnd` (matches service program name)
-- Tables: `name.table` (lowercase, not uppercase)
-
-### Code Organization
-- `database/` - SQL tables and DDS files
-- `binders/` - Binding directories (.bnddir files)
-- `services/` - Service programs with binder source
-- `codesamples/` - Working examples organized by subdirectory
-- `includes/` - Copybooks split into legacy/ and modern/ subdirectories
+### Critical Documentation Gaps
+- Comment separator convention (dashes not equals) is enforced but not obvious
+- Template placeholder substitution happens via sed in make targets
+- Scripts expect exact comment block format - extra spaces break detection
+- Profile switching requires editing TWO files (iproj.json AND .bob-profile.json)

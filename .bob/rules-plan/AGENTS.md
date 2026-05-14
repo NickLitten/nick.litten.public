@@ -1,62 +1,55 @@
 # AGENTS.md - Plan Mode
 
-This file provides planning and architectural guidance for agents working with this IBM i repository.
+This file provides architectural guidance for agents working in this IBM i repository.
 
-## Non-Obvious Architectural Constraints
+## Plan Mode Specific Rules
 
-### Build Dependencies (Critical Order)
-Build order MUST follow: database → binders → services → codesamples
-- Database objects must exist before programs reference them
-- Binding directories must exist before service programs use them
-- Service programs must exist before programs call them
-- Violating order causes compilation failures
+### Project Architecture
+- This is a TEMPLATE project for IBM i development, not an application
+- Purpose: Provide starting point for new IBM i projects with modern standards
+- Core components: Templates, Standards, Scripts, Documentation
+- No runtime application code - only templates and tooling
 
-### Activation Group Strategy
-- Programs default to ACTGRP(NICKLITTEN) - shared activation group
-- Service programs default to ACTGRP(*CALLER) - inherit caller's group
-- This is OPPOSITE of typical IBM i defaults (*NEW for programs)
-- Override only when isolation required (batch jobs, long-running processes)
+### Template System Architecture
+- Templates in `.bob/templates/ibmi/` for 10 IBM i languages
+- Make targets copy templates and substitute placeholders via sed
+- Placeholder format: `{project_name}`, `{author_name}`, `{creation_date}`, etc.
+- Substitution happens at file creation time (not runtime)
 
-### File Naming Impact on Build
-- Dash separator in filenames is REQUIRED for build system parsing
-- `PROGRAM-Description.pgm.rpgle` → creates PROGRAM.PGM object
-- `SERVICE-Description.sqlrpgle` → creates SERVICE.SRVPGM object
-- Underscore separator will break MAKEI object name extraction
+### Standards Enforcement Architecture
+- Two-phase checking: comment blocks + code scanning
+- `ensure-comment-blocks.sh` checks/fixes header comments
+- `scan-standards.sh` scans against YAML rules
+- Both scripts exit 1 on violations for CI integration
+- Scripts must run from project root (hardcoded relative paths)
 
-### Service Program Pattern
-Service programs MUST have matching binder source:
-- `MYSRV-Description.sqlrpgle` requires `MYSRV-Description.bnd`
-- Binder defines exported procedures with STRPGMEXP/ENDPGMEXP
-- Missing binder source causes link-time failures
-- Signature in binder must match service program version
+### BOB Profile Architecture
+- Profile system controls behavior: dev (auto-fix) vs CI (check-only)
+- Profiles defined in `.bob-profile.json` (3 profiles)
+- Active profile set in `iproj.json` via environment variables
+- Profile switching requires editing BOTH files (intentional coupling)
 
-### Template-Driven Development
-- All new files should use templates from `templates/` directory
-- Templates enforce copyright, modification history, standard options
-- Skipping templates causes BOB code scanning failures
-- Manual header creation often misses required elements
+### Build System Architecture
+- Makefile delegates to Rules.mk (single include statement)
+- Rules.mk defines all targets using immediate assignment (`:=`)
+- Environment variables exported for scripts: IBMI_PROJECT_NAME, etc.
+- Make targets create files in language-specific subdirectories
 
-### Version Management Strategy
-- Version numbers auto-increment based on modification history entries
-- Copyright ctl-opt MUST match latest version in history
-- Mismatch between copyright and history fails BOB validation
-- Version format strictly V.NNN (three digits, zero-padded)
+### Directory Structure Constraints
+- `includes/` and `database/` at root level (not under src/)
+- `.bob/templates/ibmi/` subdirectory required (BOB configuration directory)
+- `.bob/standards/ibmi-coding-standards.yml` path hardcoded everywhere
 
-### Rules.mk Maintenance Pattern
-When adding new objects to subdirectory:
-1. Add to OBJECTS list in subdirectory Rules.mk
-2. Declare dependencies: `NEWPGM.PGM: REQUIREDFILE.FILE`
-3. Override defaults only if needed: `NEWPGM.PGM: private ACTGRP := CUSTOM`
-4. Test build in subdirectory before root build
+### Critical Architectural Decisions
+- Comment separators use dashes (---) not equals (===) - enforced by regex
+- Template placeholders use curly braces - sed substitution at creation
+- Scripts assume bash (not sh) - SHELL explicitly set in Rules.mk
+- sed -i behavior differs macOS vs Linux - be aware for cross-platform
+- Profile changes require dual-file edit - prevents accidental mismatches
 
-### Code Organization Philosophy
-- `codesamples/` organized by topic (not by object type)
-- Each topic subdirectory has own Rules.mk
-- Working examples only (non-compiling code in `code_snippets_NOCOMPILE/`)
-- Service programs centralized in `services/` (shared across samples)
-
-### Documentation Standards Impact
-- Comment separator (`-` vs `=`) affects automated scanning
-- BOB scans on save/commit and blocks violations
-- Triple-slash (`///`) for RPGLE is non-negotiable
-- Changing comment style breaks template matching
+### Non-Obvious Dependencies
+- All ILE programs depend on QC2LE binding directory
+- Scripts depend on exact comment block format (regex matching)
+- Make targets depend on NAME parameter being set
+- Standards checking depends on running from project root
+- Template system depends on sed being available

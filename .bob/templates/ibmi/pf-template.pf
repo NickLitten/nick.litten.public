@@ -1,0 +1,65 @@
+      *---------------------------------------------------------------------
+      * {FILE_TYPE}: {FILE_NAME}
+      * Description: {DESCRIPTION}
+      * Author: {AUTHOR}
+      * Created: {DATE}
+      *---------------------------------------------------------------------
+      * Purpose: {PURPOSE}
+      *   - {PURPOSE_ITEM_1}
+      *   - {PURPOSE_ITEM_2}
+      *   - {PURPOSE_ITEM_3}
+      *
+      * Features:
+      *   - {FEATURE_1}
+      *   - {FEATURE_2}
+      *   - {FEATURE_3}
+      *
+      * Usage: {USAGE_EXAMPLE}
+      *
+      * Record Formats:
+      *   - {RECORD_FORMAT_1}: {RECORD_FORMAT_1_DESC}
+      *   - {RECORD_FORMAT_2}: {RECORD_FORMAT_2_DESC}
+      *
+      * Key Fields:
+      *   - {KEY_FIELD_1}
+      *   - {KEY_FIELD_2}
+      *
+      * Reference:
+      *   {REFERENCE_URL}
+      *
+      * Modification History:
+      *   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}
+      *---------------------------------------------------------------------
+     A                                      UNIQUE
+     A          R {record_format}           TEXT('Record format description')
+      *
+      * ----------------------------------------------------------------
+      * Key Fields
+      * ----------------------------------------------------------------
+     A            {key_field}               TEXT('Key field description')
+      *
+      * ----------------------------------------------------------------
+      * Data Fields
+      * ----------------------------------------------------------------
+     A            {field_name1}             TEXT('Field description')
+     A            {field_name2}             TEXT('Field description')
+     A            {field_name3}             TEXT('Field description')
+      *
+      * ----------------------------------------------------------------
+      * Audit Fields (Standard)
+      * ----------------------------------------------------------------
+     A            CREATED_BY    10A         TEXT('Created by user')
+     A            CREATED_DATE    L         TEXT('Created date')
+     A            CREATED_TIME    T         TEXT('Created time')
+     A            MODIFIED_BY   10A         TEXT('Modified by user')
+     A            MODIFIED_DATE   L         TEXT('Modified date')
+     A            MODIFIED_TIME   T         TEXT('Modified time')
+      *
+      * ----------------------------------------------------------------
+      * Key Specification
+      * ----------------------------------------------------------------
+     A          K {key_field}
+      *
+      * ----------------------------------------------------------------
+      * End of Physical File
+      * ----------------------------------------------------------------

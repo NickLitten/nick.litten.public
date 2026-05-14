@@ -1,0 +1,609 @@
+# ============================================================================
+# IBM i Coding Standards for Modern RPG Development
+# Project: NickLitten/template
+# Purpose: Define coding standards, rules, and best practices for IBM i
+# ============================================================================
+
+version: "1.0.0"
+project: "NickLitten/template"
+description: "Comprehensive coding standards for modern IBM i development"
+
+# ============================================================================
+# GENERAL STANDARDS
+# ============================================================================
+general:
+  encoding: "UTF-8"
+  line_endings: "LF"
+  max_line_length: 100
+  indent_style: "spaces"
+  indent_size: 2
+  trim_trailing_whitespace: true
+  insert_final_newline: true
+
+  naming_conventions:
+    programs: "UPPER_SNAKE_CASE"  # MY_PROGRAM
+    procedures: "PascalCase"       # MyProcedure
+    variables: "camelCase"         # myVariable
+    constants: "UPPER_SNAKE_CASE"  # MY_CONSTANT
+    files: "UPPER_SNAKE_CASE"      # MY_FILE
+    fields: "PascalCase"           # MyField
+
+  comment_requirements:
+    header_block: true
+    procedure_documentation: true
+    complex_logic_explanation: true
+    todo_tracking: true
+
+# ============================================================================
+# RPG/RPGLE STANDARDS
+# ============================================================================
+rpgle:
+  version: "free_format"
+
+  structure:
+    required_sections:
+      - "ctl-opt"
+      - "dcl-pi"
+      - "dcl-pr"
+      - "dcl-s"
+      - "dcl-ds"
+      - "main_logic"
+      - "procedures"
+
+    section_order:
+      - "header_comment"
+      - "ctl-opt"
+      - "dcl-f"
+      - "dcl-pi"
+      - "dcl-pr"
+      - "dcl-s"
+      - "dcl-c"
+      - "dcl-ds"
+      - "main_logic"
+      - "procedures"
+
+  control_options:
+    required:
+      - "dftactgrp(*no)"
+      - "actgrp(*caller)"
+      - "option(*nodebugio:*srcstmt)"
+      - "bnddir('QC2LE')"
+    recommended:
+      - "main(MainProcedure)"
+      - "alwnull(*usrctl)"
+      - "datfmt(*iso)"
+      - "timfmt(*iso)"
+      - "decedit('0,')"
+
+  best_practices:
+    - "Use fully free-format RPG (no fixed columns)"
+    - "Use dcl-proc for all procedures"
+    - "Use dcl-pi for procedure interfaces"
+    - "Use qualified data structures"
+    - "Use *N for unused parameters"
+    - "Use const for read-only parameters"
+    - "Use options(*nopass) for optional parameters"
+    - "Avoid GOTO statements"
+    - "Use SELECT/WHEN instead of nested IF"
+    - "Use modern built-in functions (BIFs)"
+    - "Initialize all variables"
+    - "Use descriptive variable names"
+    - "Keep procedures focused and small"
+    - "Use return values instead of global variables"
+
+  forbidden:
+    - "Fixed-format code"
+    - "GOTO statements"
+    - "Global variables (use parameters)"
+    - "Hard-coded library names"
+    - "Magic numbers (use named constants)"
+    - "QGPL library references"
+
+  data_types:
+    preferred:
+      - "varchar"
+      - "int"
+      - "uns"
+      - "packed"
+      - "zoned"
+      - "date"
+      - "time"
+      - "timestamp"
+      - "ind"
+    avoid:
+      - "char (use varchar)"
+      - "numeric (use int/packed)"
+
+# ============================================================================
+# SQLRPGLE STANDARDS
+# ============================================================================
+sqlrpgle:
+  inherits: "rpgle"
+
+  sql_standards:
+    - "Use embedded SQL for database operations"
+    - "Use prepared statements for dynamic SQL"
+    - "Use parameter markers to prevent SQL injection"
+    - "Use QSYS2 services where appropriate"
+    - "Use CTEs (Common Table Expressions) for complex queries"
+    - "Use proper error handling (SQLCODE/SQLSTATE)"
+    - "Use SET OPTION for SQL options"
+    - "Use COMMIT(*NONE) for read-only operations"
+
+  control_options:
+    additional:
+      - "option(*sqlcursorstay)"
+
+  sql_options:
+    recommended:
+      - "COMMIT = *NONE"
+      - "NAMING = *SQL"
+      - "CLOSQLCSR = *ENDMOD"
+      - "DATFMT = *ISO"
+      - "TIMFMT = *ISO"
+
+  best_practices:
+    - "Use EXEC SQL for all SQL statements"
+    - "Check SQLCODE after each SQL operation"
+    - "Use descriptive cursor names"
+    - "Close cursors when done"
+    - "Use WITH UR for read-only queries"
+    - "Use proper transaction boundaries"
+    - "Avoid SELECT * (specify columns)"
+    - "Use indexes appropriately"
+
+# ============================================================================
+# CL/CLLE STANDARDS
+# ============================================================================
+clle:
+  version: "ile"
+
+  structure:
+    required_sections:
+      - "pgm_declaration"
+      - "variable_declarations"
+      - "main_logic"
+      - "error_handling"
+      - "endpgm"
+
+  best_practices:
+    - "Use CLLE (ILE CL) instead of CLP"
+    - "Use MONMSG for error handling"
+    - "Use descriptive variable names"
+    - "Use &VAR for all variables"
+    - "Document all parameters"
+    - "Use CHGVAR for assignments"
+    - "Use SNDPGMMSG for messages"
+    - "Use CALLPRC for ILE procedure calls"
+    - "Avoid hard-coded values"
+    - "Use message files for user messages"
+
+  naming:
+    variables: "UPPER_SNAKE_CASE"  # &MY_VAR
+    labels: "UPPER_SNAKE_CASE"     # ERROR_HANDLER
+
+  forbidden:
+    - "Hard-coded library names"
+    - "QGPL references"
+    - "Unmonitored commands"
+    - "Missing error handling"
+
+# ============================================================================
+# SQL STANDARDS
+# ============================================================================
+sql:
+  version: "db2_for_i"
+
+  formatting:
+    keywords: "UPPERCASE"
+    identifiers: "PascalCase"
+    indent_size: 2
+
+  best_practices:
+    - "Use meaningful table and column names"
+    - "Use QSYS2 catalog views"
+    - "Use CTEs for complex queries"
+    - "Use proper JOIN syntax (not WHERE)"
+    - "Use FETCH FIRST n ROWS for limiting"
+    - "Use COALESCE for NULL handling"
+    - "Use CASE for conditional logic"
+    - "Add comments for complex queries"
+    - "Use schema qualification"
+    - "Use indexes for performance"
+
+  ddl_standards:
+    - "Use CREATE OR REPLACE"
+    - "Use RCDFMT for record formats"
+    - "Use proper data types"
+    - "Define primary keys"
+    - "Define foreign keys"
+    - "Add column comments"
+    - "Use CHECK constraints"
+    - "Use DEFAULT values"
+
+  forbidden:
+    - "SELECT *"
+    - "Unqualified table names"
+    - "Hard-coded values in WHERE"
+    - "Missing WHERE clause on UPDATE/DELETE"
+
+# ============================================================================
+# DDS STANDARDS (Legacy Support)
+# ============================================================================
+dds:
+  note: "DDS is legacy - prefer SQL DDL for new development"
+
+  physical_file:
+    required_keywords:
+      - "UNIQUE (if applicable)"
+      - "TEXT"
+      - "REF (for referential integrity)"
+
+    best_practices:
+      - "Use meaningful field names"
+      - "Use COLHDG for column headings"
+      - "Use TEXT for descriptions"
+      - "Use EDTCDE/EDTWRD for editing"
+      - "Use CHECK for validation"
+      - "Use DFT for defaults"
+
+  logical_file:
+    best_practices:
+      - "Use JFILE for joins"
+      - "Use PFILE for base file"
+      - "Use SELECT/OMIT for filtering"
+      - "Use proper key fields"
+
+  display_file:
+    best_practices:
+      - "Use INDARA for indicator area"
+      - "Use PRINT for printable screens"
+      - "Use CA/CF for function keys"
+      - "Use SFLCTL/SFLDSP for subfiles"
+      - "Use OVERLAY for window records"
+
+# ============================================================================
+# COBOL/CBLLE STANDARDS
+# ============================================================================
+cblle:
+  version: "ile"
+
+  structure:
+    divisions:
+      - "IDENTIFICATION DIVISION"
+      - "ENVIRONMENT DIVISION"
+      - "DATA DIVISION"
+      - "PROCEDURE DIVISION"
+
+  best_practices:
+    - "Use ILE COBOL (CBLLE)"
+    - "Use COPY for common code"
+    - "Use 88-level conditions"
+    - "Use EVALUATE instead of nested IF"
+    - "Use proper indentation"
+    - "Use meaningful data names"
+    - "Use INITIALIZE for initialization"
+    - "Use proper error handling"
+
+  naming:
+    data_names: "KEBAB-CASE"      # MY-DATA-NAME
+    paragraph_names: "KEBAB-CASE" # MY-PARAGRAPH
+
+# ============================================================================
+# COMMAND (CMD) STANDARDS
+# ============================================================================
+cmd:
+  best_practices:
+    - "Use meaningful command names"
+    - "Use PROMPT for parameter prompts"
+    - "Use CHOICE for valid values"
+    - "Use DFT for default values"
+    - "Use RSTD for restricted values"
+    - "Use proper parameter types"
+    - "Document all parameters"
+    - "Use message files"
+    - "Use validity checking programs"
+
+  naming:
+    commands: "UPPER_SNAKE_CASE"  # MY_CMD
+    parameters: "UPPER_SNAKE_CASE" # MY_PARM
+
+# ============================================================================
+# COMMENT BLOCK STANDARDS
+# ============================================================================
+comment_blocks:
+  header_block:
+    required: true
+    format: "language_specific"
+
+    required_fields:
+      - "Project"
+      - "Member"
+      - "Desc"
+      - "Author"
+      - "Date"
+
+    optional_fields:
+      - "Modified"
+      - "Version"
+      - "Copyright"
+      - "License"
+
+    templates:
+      rpgle: |
+        ///
+        /// Program: {program_name} - {description}
+        ///
+        /// Description: [Detailed description of what the program does]
+        ///
+        /// Purpose: Educational/Production example demonstrating:
+        /// - [Key concept or feature 1]
+        /// - [Key concept or feature 2]
+        ///
+        /// Features:
+        /// - [Feature 1 with brief explanation]
+        /// - [Feature 2 with brief explanation]
+        ///
+        /// Usage: [How to call/use the program]
+        ///
+        /// Modification History:
+        /// 1.0.0 {creation_date} | {author_name} | Initial creation
+        ///
+
+      rpgle_legacy: |
+        // ------------------------------------------------------------------
+        // Project: {project_name}
+        // Member : {member_name}
+        // Desc   : {description}
+        // Author : {author_name}
+        // Date   : {creation_date}
+        // ------------------------------------------------------------------
+
+      sql: |
+        -- ------------------------------------------------------------------
+        -- Project: {project_name}
+        -- Member : {member_name}
+        -- Desc   : {description}
+        -- Author : {author_name}
+        -- Date   : {creation_date}
+        -- ------------------------------------------------------------------
+
+      clle: |
+        /* ---------------------------------------------------------------- */
+        /* Project: {project_name}                                          */
+        /* Member : {member_name}                                           */
+        /* Desc   : {description}                                           */
+        /* Author : {author_name}                                           */
+        /* Date   : {creation_date}                                         */
+        /* ---------------------------------------------------------------- */
+
+      cblle: |
+              * ----------------------------------------------------------------
+              * Project: {project_name}
+              * Member : {member_name}
+              * Desc   : {description}
+              * Author : {author_name}
+              * Date   : {creation_date}
+              * ----------------------------------------------------------------
+
+  procedure_documentation:
+    required: true
+    format: |
+      // Procedure: {procedure_name}
+      // Purpose  : {purpose}
+      // Parameters:
+      //   {param_name} - {param_description}
+      // Returns  : {return_description}
+
+    example: |
+      // Procedure: CalculateTotal
+      // Purpose  : Calculate order total with tax
+      // Parameters:
+      //   orderAmount - Base order amount
+      //   taxRate     - Tax rate as decimal
+      // Returns  : Total amount including tax
+
+# ============================================================================
+# CODE SCANNING RULES
+# ============================================================================
+scanning_rules:
+  error_patterns:
+    - pattern: "GOTO"
+      severity: "error"
+      message: "GOTO statements are forbidden"
+      languages: ["rpgle", "sqlrpgle"]
+
+    - pattern: "QGPL/"
+      severity: "error"
+      message: "Hard-coded QGPL library reference"
+      languages: ["all"]
+
+    - pattern: "SELECT \\*"
+      severity: "error"
+      message: "SELECT * is forbidden - specify columns"
+      languages: ["sql", "sqlrpgle"]
+
+    - pattern: "\\*INLR\\s*=\\s*\\*ON"
+      severity: "warning"
+      message: "Use return instead of *INLR in procedures"
+      languages: ["rpgle", "sqlrpgle"]
+
+  warning_patterns:
+    - pattern: "TODO|FIXME"
+      severity: "warning"
+      message: "TODO/FIXME marker found"
+      languages: ["all"]
+
+    - pattern: "DFTACTGRP\\(\\*YES\\)"
+      severity: "warning"
+      message: "Default activation group should be *NO for ILE"
+      languages: ["rpgle", "sqlrpgle"]
+
+    - pattern: "CHAR\\("
+      severity: "info"
+      message: "Consider using VARCHAR instead of CHAR"
+      languages: ["rpgle", "sqlrpgle"]
+
+  required_patterns:
+    - pattern: "ctl-opt"
+      severity: "error"
+      message: "Missing control options"
+      languages: ["rpgle", "sqlrpgle"]
+
+    - pattern: "Project:\\s*\\S+"
+      severity: "error"
+      message: "Missing standard header comment block"
+      languages: ["all"]
+
+# ============================================================================
+# AUTO-CORRECTION RULES
+# ============================================================================
+auto_correction:
+  enabled: true
+
+  rules:
+    - name: "insert_header_block"
+      description: "Insert missing header comment block"
+      action: "insert_at_start"
+      template: "comment_blocks.header_block"
+
+    - name: "fix_line_endings"
+      description: "Convert to LF line endings"
+      action: "replace"
+      pattern: "\\r\\n"
+      replacement: "\\n"
+
+    - name: "trim_trailing_whitespace"
+      description: "Remove trailing whitespace"
+      action: "replace"
+      pattern: "[ \\t]+$"
+      replacement: ""
+
+    - name: "ensure_final_newline"
+      description: "Ensure file ends with newline"
+      action: "append"
+      condition: "missing_final_newline"
+      content: "\\n"
+
+# ============================================================================
+# TEMPLATE APPLICATION RULES
+# ============================================================================
+template_rules:
+  auto_apply: true
+
+  file_type_detection:
+    - extension: ".rpgle"
+      template: "templates/ibmi/rpgle-template.rpgle"
+
+    - extension: ".sqlrpgle"
+      template: "templates/ibmi/sqlrpgle-template.sqlrpgle"
+
+    - extension: ".clle"
+      template: "templates/ibmi/clle-template.clle"
+
+    - extension: ".sql"
+      template: "templates/ibmi/sql-template.sql"
+
+    - extension: ".cblle"
+      template: "templates/ibmi/cblle-template.cblle"
+
+    - extension: ".pf"
+      template: "templates/ibmi/pf-template.pf"
+
+    - extension: ".lf"
+      template: "templates/ibmi/lf-template.lf"
+
+    - extension: ".dspf"
+      template: "templates/ibmi/dspf-template.dspf"
+
+    - extension: ".prtf"
+      template: "templates/ibmi/prtf-template.prtf"
+
+    - extension: ".cmd"
+      template: "templates/ibmi/cmd-template.cmd"
+
+  placeholder_substitution:
+    enabled: true
+    placeholders:
+      - "{project_name}"
+      - "{member_name}"
+      - "{description}"
+      - "{author_name}"
+      - "{creation_date}"
+      - "{program_name}"
+      - "{procedure_name}"
+
+# ============================================================================
+# BOB INTEGRATION
+# ============================================================================
+bob_integration:
+  profiles:
+    modern-rpg-dev:
+      description: "Development profile with auto-fix"
+      comment_mode: "auto-fix"
+      standards_check: "warning"
+      auto_format: true
+
+    modern-rpg-ci:
+      description: "CI/CD profile with strict checking"
+      comment_mode: "check"
+      standards_check: "error"
+      auto_format: false
+
+  build_hooks:
+    pre_build:
+      - "scripts/ensure-comment-blocks.sh --check src"
+      - "scripts/scan-standards.sh src"
+
+    post_build:
+      - "echo Standards checks complete"
+
+  commands:
+    check_standards: "make standards"
+    fix_comments: "scripts/ensure-comment-blocks.sh --fix src"
+    scan_code: "scripts/scan-standards.sh src"
+
+# ============================================================================
+# DOCUMENTATION REQUIREMENTS
+# ============================================================================
+documentation:
+  required_files:
+    - "README.md"
+    - "CHANGELOG.md"
+    - "docs/API.md"
+
+  readme_sections:
+    - "Project Description"
+    - "Installation"
+    - "Usage"
+    - "Configuration"
+    - "Contributing"
+    - "License"
+
+  code_documentation:
+    - "All public procedures must be documented"
+    - "Complex algorithms must be explained"
+    - "API endpoints must be documented"
+    - "Configuration options must be documented"
+
+# ============================================================================
+# VERSION CONTROL
+# ============================================================================
+version_control:
+  required_files:
+    - ".gitignore"
+    - ".gitattributes"
+
+  commit_message_format:
+    pattern: "^(feat|fix|docs|style|refactor|test|chore):\\s.+"
+    example: "feat: Add customer lookup procedure"
+
+  branch_naming:
+    pattern: "^(feature|bugfix|hotfix|release)/[a-z0-9-]+$"
+    example: "feature/customer-lookup"
+
+# ============================================================================
+# END OF STANDARDS
+# ============================================================================
+
+# Made with Bob
