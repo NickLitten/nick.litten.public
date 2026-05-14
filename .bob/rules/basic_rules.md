@@ -2,7 +2,9 @@ I want IBM BOB to work as efficiently as possible for our team of IBM-i programm
 
 Create coding standards templates for all IBM-i languages, based on best practices for modern RPG application development.
 
-All standards will be using CODE FOR IBM-i extension. Rules.mk will follow CODE FOR IBM-i and MAKEI standards.
+Use file naming for IBM-i TOBi - all source code will be name in the case specific format of OBJECTNAME-The_Description_next.objectype
+
+Rules.mk will follow IBM-i TOBi and MAKEI standards.
 
 Review this project and store all bob configuration files in the .bob folder, including templates, scripts, standards and documentation.
 
