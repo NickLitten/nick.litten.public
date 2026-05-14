@@ -1,7 +1,9 @@
--- -----------------------------------------------------
--- TABLE LOCATION:  CRUD01TBL                           
--- PURPOSE: SAVE THE TASKS                            
--- -----------------------------------------------------
+-- ---------------------------------------------------------------------
+-- SQL Table: CRUD01TBL
+-- Description: Task management table for TODO list operations
+-- Author: Nick Litten
+-- Date: 2026-05-14
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     CRUD01TBL (
         TASK_ID NUMERIC (10, 0) NOT NULL DEFAULT,
@@ -16,8 +18,10 @@ CREATE OR REPLACE TABLE
         CONSTRAINT PK_TASK PRIMARY KEY (TASK_ID)
     );
 
+
 -- TABLE TAG
 LABEL ON TABLE CRUD01TBL IS 'TASKS TODO LIST';
+
 
 -- ADDING TEXT DESCRIPTION TO FIELDS
 LABEL ON CRUD01TBL (

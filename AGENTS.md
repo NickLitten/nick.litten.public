@@ -2,41 +2,41 @@
 
 This file provides guidance to agents when working with code in this repository.
 
-## Build System (Non-Standard)
-- Uses MAKEI (not make/npm) - `makei build` from project root
-- Single file: `makei compile -f FILENAME.pgm.rpgle`
-- Subdirectory builds: `cd subdirectory && makei build` (not from root)
+## File Naming Standard (CRITICAL)
+- ALL source files MUST use format: `OBJECTNAME-Description_With_Underscores.extension`
+- Object name: UPPERCASE (e.g., CRUD01TBL, ALLFILE, SAMPLEDB)
+- Description: Title_Case with underscores (e.g., Task_Management, All_Field_Types)
+- Extension: lowercase (e.g., .table, .pf, .rpgle, .sqlrpgle, .clle)
+- Example: `CRUD01TBL-Task_Management.table`, `ALLFILE-All_Field_Types.pf`
 
-## Critical Non-Standard Patterns
+## Comment Standards (EXACT Format Required)
+- RPGLE/SQLRPGLE: `///` triple-slash for headers, `// ---` for sections (dashes only, not equals)
+- SQL/Table files: `--` with `-` separators (never `=`)
+- CLLE/CMD: `/* */` block comments
+- DDS (.pf/.dspf): `*` prefix
+- Scripts use regex matching - extra spaces or wrong characters break detection
 
-### File Naming (Dash Separator Required)
-- Programs: `NAME-Description.pgm.rpgle` (dash, NOT underscore)
-- Services: `NAME-Description.sqlrpgle` (NO .pgm prefix)
-- Tables: `name.table` (lowercase only)
+## IBM i Coding Requirements
+- RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` (not optional)
+- SQLRPGLE: Add `option(*sqlcursorstay)` to ctl-opt
+- All ILE programs: Include `bnddir('QC2LE')` or `bnddir('NICKLITTEN')`
+- SQLRPGLE: Always check SQLSTATE after SQL statements, use fully qualified names
 
-### Comment Separator (BOB Enforced)
-- MUST use `-` (dash), NEVER `=` (equals) - `///-----` not `///=====`
-- BOB code scanning fails on `=` separators
+## Build System Quirks
+- Rules.mk uses `:=` for immediate assignment (not `=` deferred)
+- Scripts MUST run from project root (relative paths hardcoded)
+- sed -i behavior differs on macOS vs Linux
+- SHELL set to `/bin/bash` - scripts fail with `/bin/sh`
 
-### Copyright (Auto-Calculated Version)
-- RPGLE/SQLRPGLE: `ctl-opt copyright('V.NNN - description');`
-- CLLE: `COPYRIGHT TEXT('V.NNN - description')`
-- Version = modification history count (V.001, V.002, etc.)
+## Critical Gotchas
+- Moving `.bob/standards/ibmi-coding-standards.yml` breaks everything (path hardcoded)
+- Profile changes require editing BOTH `iproj.json` AND `.bob-profile.json`
+- Comment separator convention (dashes not equals) is enforced but not obvious
+- Template placeholder substitution happens via sed in make targets
+- Scripts expect exact comment block format - extra spaces break detection
 
-### Rules.mk Quirks
-- Default ACTGRP: NICKLITTEN (not *CALLER for .PGM files)
-- Uses `:=` immediate assignment (not `=` deferred)
-- Build order critical: database → binders → services → codesamples
-- Scripts MUST run from project root (paths hardcoded)
-
-### Binder Directory Format (.bnddir files)
-```
-!DLTOBJ OBJ(&O/&N) OBJTYPE(*BNDDIR)
-CRTBNDDIR BNDDIR(&O/&N) TEXT('description')
-ADDBNDDIRE BNDDIR(&O/&N) OBJ((*LIBL/SRVPGM *SRVPGM))
-```
-Uses `&O` (library) and `&N` (name) substitution variables
-
-### Service Program Control Options
-- MUST use `ctl-opt nomain` (not main program structure)
-- Standard bnddir: `bnddir('NICKLITTEN')` but service programs often omit this
+## File Organization
+- Includes: `includes/` at root (not under src/)
+- Database: `database/` at root
+- Templates: `.bob/templates/ibmi/`
+- Code samples: `codesamples/` with subdirectories by category

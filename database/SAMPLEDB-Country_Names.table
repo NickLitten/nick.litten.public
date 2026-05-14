@@ -1,13 +1,20 @@
--- ---------------------------------------------------------------------------
--- Table: SAMPLEDB
--- Description: Sample table containing European country information
+-- ---------------------------------------------------------------------
+-- SQL Table: SAMPLEDB
+-- Description: European country information reference table
 -- Author: Nick Litten
--- Created: 2026-02-06
--- ---------------------------------------------------------------------------
+-- Date: 2026-02-06
+-- ---------------------------------------------------------------------
 DROP INDEX IDX_SAMPLEDB_NAME;
+
+
 DROP INDEX IDX_SAMPLEDB_REGION;
+
+
 DROP INDEX IDX_SAMPLEDB_EU;
+
+
 DROP VIEW V_SAMPLEDB_SUMMARY;
+
 
 CREATE OR REPLACE TABLE
     SAMPLEDB (
@@ -46,12 +53,15 @@ CREATE OR REPLACE TABLE
     ) RCDFMT SAMPLEDBR;
 
 
--- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
 -- Indexes for performance optimization
+-- ---------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 CREATE INDEX IDX_SAMPLEDB_NAME ON SAMPLEDB (COUNTRY_NAME);
 
+
 CREATE INDEX IDX_SAMPLEDB_REGION ON SAMPLEDB (REGION);
+
 
 CREATE INDEX IDX_SAMPLEDB_EU ON SAMPLEDB (EU_MEMBER);
 

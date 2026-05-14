@@ -2,48 +2,44 @@
 
 This file provides advanced coding guidance for agents working in this IBM i repository.
 
-## Advanced Mode Specific Rules
+## File Naming Standard (CRITICAL)
+- ALL source files MUST use format: `OBJECTNAME-Description_With_Underscores.extension`
+- Object name: UPPERCASE (e.g., CRUD01TBL, ALLFILE, SAMPLEDB)
+- Description: Title_Case with underscores (e.g., Task_Management, All_Field_Types)
+- Extension: lowercase (e.g., .table, .pf, .rpgle, .sqlrpgle, .clle)
+- Example: `CRUD01TBL-Task_Management.table`, `ALLFILE-All_Field_Types.pf`
 
-### Template Usage
-- When creating new files, ALWAYS use make targets (not manual copy)
-- `make new-rpgle NAME=prog` auto-substitutes placeholders with current USER and date
-- Never manually edit placeholder values - let sed handle substitution
+## Comment Standards (EXACT Format Required)
+- RPGLE/SQLRPGLE: `///` triple-slash for headers, `// ---` for sections (dashes only, not equals)
+- SQL/Table files: `--` with `-` separators (never `=`)
+- CLLE/CMD: `/* */` block comments
+- DDS (.pf/.dspf): `*` prefix
+- Scripts use regex matching - extra spaces or wrong characters break detection
 
-### Comment Block Requirements
-- RPGLE main headers use `///` triple-slash (not `//`)
-- Section separators use `// ---` (dashes, not equals)
-- Scripts enforce EXACT format - extra spaces or wrong characters break detection
-- Use `make fix-comments` to auto-add missing headers (dev mode only)
-
-### Standards Enforcement
-- `make standards` runs both comment checks and code scanning
-- Exit code 1 means violations found - must fix before commit
-- Dev profile (modern-rpg-dev) auto-fixes, CI profile (modern-rpg-ci) only checks
-- TODO markers allowed in dev, forbidden in CI
-
-### IBM i Coding Patterns
-- RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` - not optional
+## IBM i Coding Requirements
+- RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` (not optional)
 - SQLRPGLE: Add `option(*sqlcursorstay)` to ctl-opt
-- CL: Variables use `&VAR` prefix and UPPER_SNAKE_CASE
-- All ILE programs: Include `bnddir('QC2LE')`
+- All ILE programs: Include `bnddir('QC2LE')` or `bnddir('NICKLITTEN')`
+- SQLRPGLE: Always check SQLSTATE after SQL statements, use fully qualified names
 
-### File Organization
-- Source files go in `src/{language}/` subdirectories (rpgle, sqlrpgle, clle, sql, etc.)
-- Includes go in `includes/` at root (not under src/)
-- Database files go in `database/` at root
-- Templates are in `.bob/templates/ibmi/` (BOB configuration directory)
-
-### Build System Quirks
+## Build System Quirks
 - Rules.mk uses `:=` for immediate assignment (not `=` deferred)
 - Scripts MUST run from project root (relative paths hardcoded)
-- sed -i behavior differs on macOS vs Linux (be aware when testing)
+- sed -i behavior differs on macOS vs Linux
 - SHELL set to `/bin/bash` - scripts fail with `/bin/sh`
 
-### Critical Gotchas
-- Changing templates doesn't update existing files (manual update needed)
+## Critical Gotchas
 - Moving `.bob/standards/ibmi-coding-standards.yml` breaks everything (path hardcoded)
 - Profile changes require editing BOTH `iproj.json` AND `.bob-profile.json`
-- Comment block format must be EXACT - scripts use regex matching
+- Comment separator convention (dashes not equals) is enforced but not obvious
+- Template placeholder substitution happens via sed in make targets
+- Scripts expect exact comment block format - extra spaces break detection
+
+## File Organization
+- Includes: `includes/` at root (not under src/)
+- Database: `database/` at root
+- Templates: `.bob/templates/ibmi/`
+- Code samples: `codesamples/` with subdirectories by category
 
 ## Access To
 - MCP tools (if configured)

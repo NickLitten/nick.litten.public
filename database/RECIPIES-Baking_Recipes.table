@@ -1,6 +1,9 @@
--- RECIPIES - Simple Baking RECIPIEs Table
--- This table stores basic baking RECIPIE information
--- Used for demonstrating CRUD operations with display files
+-- ---------------------------------------------------------------------
+-- SQL Table: RECIPIES
+-- Description: Baking recipes table for CRUD operations demonstration
+-- Author: Nick Litten
+-- Date: 2026-05-14
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     RECIPIES (
         RECID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -38,13 +41,7 @@ LABEL ON COLUMN RECIPIES (
 
 -- Insert sample data
 INSERT INTO
-    RECIPIES (
-        RECNAME,
-        CATEGORY,
-        PREPTIME,
-        SERVINGS,
-        DIFFICULTY
-    )
+    RECIPIES (RECNAME, CATEGORY, PREPTIME, SERVINGS, DIFFICULTY)
 VALUES
     (
         'Chocolate Chip Cookies',
@@ -61,7 +58,13 @@ VALUES
     ('Sugar Cookies', 'Cookies', 25, 36, 'Easy'),
     ('Blueberry Muffins', 'Breads', 35, 12, 'Easy'),
     ('Carrot Cake', 'Cakes', 55, 12, 'Medium'),
-    ('Peanut Butter Cookies', 'Cookies', 20, 24, 'Easy'),
+    (
+        'Peanut Butter Cookies',
+        'Cookies',
+        20,
+        24,
+        'Easy'
+    ),
     ('Croissants', 'Breads', 180, 8, 'Hard'),
     ('Lemon Bars', 'Desserts', 40, 16, 'Medium'),
     ('Tiramisu', 'Desserts', 30, 12, 'Medium'),

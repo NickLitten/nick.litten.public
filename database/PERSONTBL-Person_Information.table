@@ -1,9 +1,10 @@
--- Table: PERSONTBL
--- Description: Person table with Name, Date of Birth, and Address
--- Created: 2026-02-03
--- Drop table if it exists
--- Create the PERSONTBL table
-CREATE or replace TABLE
+-- ---------------------------------------------------------------------
+-- SQL Table: PERSONTBL
+-- Description: Person table with name, date of birth, and address
+-- Author: Nick Litten
+-- Date: 2026-02-03
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE TABLE
     PERSONTBL (
         PNAME VARCHAR(50) NOT NULL,
         PDOB DATE,
