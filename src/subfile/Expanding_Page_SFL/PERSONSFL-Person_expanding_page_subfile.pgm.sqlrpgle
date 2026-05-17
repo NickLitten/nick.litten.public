@@ -52,7 +52,7 @@ Dcl-S USERNAME char(10);
 // ------------------------------------------------------------------------------
 exec sql set option commit = *none, closqlcsr = *endmod;
 
-open PERSONSFL;
+open PERSONTBL1;
 
 PGMNAME = 'PERSONSFL';
 USERNAME = 'SOMEBLOKE';
@@ -82,7 +82,7 @@ dow (not Exit);
 
 enddo;
 
-close PERSONSFL;
+close PERSONTBL1;
 *inlr = *on;
 Return;
 
@@ -105,7 +105,7 @@ Dcl-Proc LoadSubfile;
    // Declare cursor for initial load
    exec sql declare C1 cursor for
       select :PNAME, PDOB, PADDRESS
-      from PERSONTBL
+      from PERSONTBL1
       order by :PNAME;
    
    exec sql open C1;
@@ -169,7 +169,7 @@ Dcl-Proc ProcessSelections;
    dow (CurrentRRN <= LastRRN);
       chain CurrentRRN SFLREC;
       
-      If (%found(PERSONSFL));
+      If (%found(PERSONTBL1));
          Select;
             When (SFLSEL = '1');  // Display details
                DisplayDetails();

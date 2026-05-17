@@ -35,6 +35,18 @@
 -- Modification History:
 --   1.0 2026-02-03 | Nick Litten | Initial creation with 50 sample records
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
+-- Drop existing objects if they exist
+-- ---------------------------------------------------------------------
+DROP INDEX IF EXISTS PERSONTBL1;
+
+
+DROP TABLE IF EXISTS PERSONTBL;
+
+
+-- ---------------------------------------------------------------------
+-- Create table
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     PERSONTBL (
         PNAME VARCHAR(50) NOT NULL,
@@ -54,6 +66,14 @@ LABEL ON COLUMN PERSONTBL (
 
 -- Add table comment
 COMMENT ON TABLE PERSONTBL IS 'Person table with name, date of birth, and address information';
+
+
+-- Create index over PERSONTBL keyed by PNAME
+CREATE INDEX PERSONTBL1 ON PERSONTBL (PNAME ASC) RCDFMT PERSONR;
+
+
+-- Add index comment
+COMMENT ON INDEX PERSONTBL1 IS 'Logical file over PERSONTBL keyed by person name';
 
 
 -- Sample Data - 50 rows for testing expanding page subfile

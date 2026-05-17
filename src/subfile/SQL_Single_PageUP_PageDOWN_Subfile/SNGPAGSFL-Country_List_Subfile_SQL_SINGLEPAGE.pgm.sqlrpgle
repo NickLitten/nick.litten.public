@@ -1,7 +1,7 @@
 **free
 
 ///
-/// Program: SAMPLESFL - Single Page Subfile for Country Data
+/// Program: SNGPAGSFL - Single Page Subfile for Country Data
 ///
 /// Description: Displays European country information in a single-page subfile
 ///              format with the ability to view detailed information for each
@@ -41,9 +41,9 @@
 ///   - commit(*none): No commitment control
 ///   - closqlcsr(*endmod): Close cursors at module end
 ///
-/// Usage: CALL SAMPLESFL
+/// Usage: CALL SNGPAGSFL
 ///
-/// Display File: SAMPLESFL.DSPF
+/// Display File: SNGPAGSFL.DSPF
 ///   - SFLCTL: Subfile control record
 ///   - SFLREC: Subfile detail record (18 records per page)
 ///   - FOOTREC: Footer with function keys
@@ -78,7 +78,7 @@ ctl-opt
   actgrp(*new)
   indent('| ')
   alwnull(*usrctl)
-  copyright('SAMPLESFL | V.003 | Single page subfile for SAMPLEDB table')
+  copyright('SNGPAGSFL | V.003 | Single page subfile for SAMPLEDB table')
   dftactgrp(*no)
   bnddir('QC2LE')
   ;
@@ -86,7 +86,7 @@ ctl-opt
 // --------------------------------------------------------------------------
 // File Declarations
 // --------------------------------------------------------------------------
-dcl-f SAMPLESFL workstn sfile(SFLREC:RRN) indds(Indicators) usropn;
+dcl-f SNGPAGSFL workstn sfile(SFLREC:RRN) indds(Indicators) usropn;
 
 // --------------------------------------------------------------------------
 // Named Constants
@@ -116,8 +116,8 @@ end-ds;
 // Standalone Variables - Display Control
 // --------------------------------------------------------------------------
 Dcl-S RRN packed(4:0);
-Dcl-s PageSize packed(4:0) inz(18); // must match the value of SFLPAG in DSPF
-Dcl-S PGMNAME char(10) inz('SAMPLESFL');
+Dcl-S PageSize packed(4:0) inz(18); // must match the value of SFLPAG in DSPF
+Dcl-S PGMNAME char(10) inz('SNGPAGSFL');
 Dcl-S USERNAME char(10);
 Dcl-S CurrentPage packed(4:0) inz(1);
 Dcl-S TotalRecords packed(4:0) inz(0);
@@ -168,20 +168,22 @@ Dcl-Proc mainline;
       write FOOTREC;
       exfmt SFLCTL;
       
-      If (Indicators.Exit);
-         leave;
-      EndIf;
+      Select;
+         When (Indicators.Exit);
+            leave;
       
-      If (Indicators.Refresh);
-         iter;
-      EndIf;
+         When (Indicators.Refresh);
+            iter;
       
-      // Handle page navigation
-      HandlePageNavigation();
-      
-      // Process user selections
-      ProcessSelections();
-      
+            // Handle page navigation
+         When (Indicators.PageDown) or If (Indicators.PageUp); 
+            HandlePageNavigation();
+
+         Other;
+            // Process user selections
+            ProcessSelections();
+      EndSl;
+
    enddo;
    
    // Cleanup and exit
@@ -202,7 +204,7 @@ Dcl-Proc InitializeProgram;
    
    // Open display file
    monitor;
-      open SAMPLESFL;
+      open SNGPAGSFL;
       DisplayFileOpen = *on;
    on-error;
       // Display file open failed
@@ -234,7 +236,7 @@ Dcl-Proc CleanupProgram;
    // Close display file if open
    If (DisplayFileOpen);
       monitor;
-         close SAMPLESFL;
+         close SNGPAGSFL;
          DisplayFileOpen = *off;
       on-error;
          // Ignore close errors
@@ -461,7 +463,7 @@ Dcl-Proc ProcessSelections;
       
       chain CurrentRRN SFLREC;
       
-      If (%found(SAMPLESFL));
+      If (%found(SNGPAGSFL));
          Select;
             When (SFLSEL = SELECTION_DISPLAY);
                DisplayDetails(CCODE);

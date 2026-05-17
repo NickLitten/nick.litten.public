@@ -11,8 +11,7 @@
 # ---
 # Build Order
 # ---
-SUBDIRS := SAMPLESFL_Single_Page_Subfile_SQL
-
+SUBDIRS := Expanding_Page_SFL \ Full_Load_Subfile_Modernization \ Simple_Full_Load_Subfile \ SQL_Single_PageUP_PageDOWN_Subfile
 # ---
 # Compilation Settings
 # ---

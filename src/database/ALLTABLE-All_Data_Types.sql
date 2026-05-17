@@ -57,6 +57,17 @@
 --   1.0 2026-04-03 | Nick Litten | Initial creation
 -- ---------------------------------------------------------------------------
 
+-- ---------------------------------------------------------------------
+-- Drop existing objects if they exist
+-- ---------------------------------------------------------------------
+DROP INDEX IF EXISTS ALLTABLE_IDX1;
+DROP INDEX IF EXISTS ALLTABLE_IDX2;
+DROP INDEX IF EXISTS ALLTABLE_IDX3;
+DROP TABLE IF EXISTS ALLTABLE;
+
+-- ---------------------------------------------------------------------
+-- Create table
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE ALLTABLE (
     -- -----------------------------------------------------------------
     -- CHARACTER STRING TYPES

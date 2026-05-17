@@ -1,5 +1,5 @@
-      ctl-opt 
-        dftactgrp(*no)
+**FREE
+ctl-opt dftactgrp(*no)
         actgrp(MYACTGRP)
         bnddir('MYBNDDIR')
         optimize(*full)

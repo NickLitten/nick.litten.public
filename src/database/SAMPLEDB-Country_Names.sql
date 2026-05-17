@@ -54,18 +54,27 @@
 -- Modification History:
 --   1.0 2026-02-06 | Nick Litten | Initial creation with European countries
 -- ---------------------------------------------------------------------------
-DROP INDEX IDX_SAMPLEDB_NAME;
+-- ---------------------------------------------------------------------
+-- Drop existing objects if they exist
+-- ---------------------------------------------------------------------
+DROP VIEW IF EXISTS V_SAMPLEDB_SUMMARY;
 
 
-DROP INDEX IDX_SAMPLEDB_REGION;
+DROP INDEX IF EXISTS IDX_SAMPLEDB_NAME;
 
 
-DROP INDEX IDX_SAMPLEDB_EU;
+DROP INDEX IF EXISTS IDX_SAMPLEDB_REGION;
 
 
-DROP VIEW V_SAMPLEDB_SUMMARY;
+DROP INDEX IF EXISTS IDX_SAMPLEDB_EU;
 
 
+DROP TABLE IF EXISTS SAMPLEDB;
+
+
+-- ---------------------------------------------------------------------
+-- Create table
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     SAMPLEDB (
         -- Primary Key: ISO 3166-1 alpha-2 country code

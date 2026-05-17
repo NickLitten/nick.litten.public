@@ -39,6 +39,15 @@
 -- Modification History:
 --   1.0 2026-05-14 | Nick Litten | Initial creation with 26 sample recipes
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------
+-- Drop existing objects if they exist
+-- ---------------------------------------------------------------------
+DROP TABLE IF EXISTS RECIPIES;
+
+
+-- ---------------------------------------------------------------------
+-- Create table
+-- ---------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     RECIPIES (
         RECID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,

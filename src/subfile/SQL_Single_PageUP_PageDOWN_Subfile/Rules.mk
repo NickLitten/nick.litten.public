@@ -22,9 +22,9 @@
 # Object Dependencies
 # ---
 
-# SAMPLESFL Display File - Country list subfile display file
-SAMPLESFL.FILE: SAMPLESFL-Country_List_Subfile_SQL_SINGLEPAGE.dspf
+# SNGPAGSFL Display File - Country list subfile display file
+SNGPAGSFL.FILE: SNGPAGSFL-Country_List_Subfile_SQL_SINGLEPAGE.dspf
 
-# SAMPLESFL Program - Country list subfile SQL program
+# SNGPAGSFL Program - Country list subfile SQL program
 # Note: Depends on SAMPLEDB table from database directory
-SAMPLESFL.PGM: SAMPLESFL-Country_List_Subfile_SQL_SINGLEPAGE.pgm.sqlrpgle SAMPLESFL.FILE
+SNGPAGSFL.PGM: SNGPAGSFL-Country_List_Subfile_SQL_SINGLEPAGE.pgm.sqlrpgle SNGPAGSFL.FILE

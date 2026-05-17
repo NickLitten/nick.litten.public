@@ -50,3 +50,5 @@ ALLTABLE.FILE: ALLTABLE-All_Data_Types.sql
 
 # ALLFILE Physical File - Comprehensive DDS field types example
 ALLFILE.FILE: ALLFILE-All_Field_Types.pf
+
+SIMPLEFILE.FILE: SIMPLEFILE-Super_Simple_file_with_NAME_ADDRESS.pf
