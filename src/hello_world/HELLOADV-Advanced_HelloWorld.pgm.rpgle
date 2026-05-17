@@ -23,48 +23,57 @@
 ///   - PCML embedding for web service integration
 ///   - Version tracking via copyright option
 ///
-/// Control Options:
-///   - main(mainline): Eliminates RPG cycle, uses main procedure
-///   - pgminfo(*pcml:*module): Embeds parameter metadata
-///   - copyright: Version info accessible via DSPPGM
-///
 /// Usage: CALL HELLOADV
 ///
-/// User Interaction:
-///   1. Displays "Hello World!" message
-///   2. Prompts user to press Y to continue
-///   3. Validates input and repeats until Y is entered
+/// Parameters:
+///   None
 ///
-/// Copybooks Required:
+/// Dependencies:
 ///   - header.rpgleinc: Standard control options
 ///
-/// Modification History:
-///   V.000 2020.03.14 | Nick Litten | Initial creation
-///   2026-04-02 | Bob AI | Added comprehensive documentation
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=programming-ile-rpg
 ///
+/// Modification History:
+///   1.0 2020-03-14 | Nick Litten | Initial creation
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive documentation
+///
+
 
 /include 'header.rpgleinc'
 
 ctl-opt
-  copyright('HelloAdvanced | V.000 | Sample Stylised RPG Program')
-  ;
+  main(mainline)
+  copyright('HelloAdvanced | V.000 | Sample Stylised RPG Program');
+
 // Procedure: mainline
 // Description: Main entry point for the program.
 Dcl-Proc mainline;
-  Dcl-Pi mainline;
-  end-pi;
+   Dcl-Pi mainline;
+   end-pi;
 
-  Dcl-S msg char(50);
-  Dcl-S reply char(1);
+   Dcl-S msg char(50);
+   Dcl-S reply char(1);
 
-  msg = 'Hello World!';
-  dsply msg;
+   msg = 'Hello World!';
+   dsply msg;
 
-  msg = 'Press Y to continue';
-  Dou (%upper(reply) = 'Y');
-    dsply msg '' reply;
-  enddo;
+   msg = 'Press Y to continue';
+   
+   Dou (%upper(reply) = 'Y');
+      dsply msg '' reply;
+   enddo;
 
-  Return;
+   success = *on;
+
+   Return;
+
+   on-exit success;
+
+      If (not success);
+         // Handle abnormal end
+      Else;
+         // do *normal* program closure items - close files, etc
+      EndIf;
 
 end-proc;

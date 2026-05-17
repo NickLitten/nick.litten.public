@@ -38,20 +38,20 @@
 /// Dependencies:
 ///   - Include: header.rpgleinc
 ///
-/// Control Options:
-///   - main(mainline): Uses main procedure pattern
-///   - pgminfo(*pcml:*module): Embeds parameter metadata
-///   - copyright: Version info for tracking
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=debugger-debugging-programs
 ///
 /// Modification History:
-/// 1.0 2025-03-27 | Nick Litten | Initial creation
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+///   1.0 2025-03-27 | Nick Litten | Initial creation
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
+///
 
 /include 'header.rpgleinc'
 
 ctl-opt
-  copyright('Bug Me RPG | V.000 | Sample RPG Program for Debug')
-  ;
+  main(mainline)
+  copyright('Bug Me RPG | V.000 | Sample RPG Program for Debug');
+  
 // Procedure: mainline
 // Description: Main entry point for the program.
 Dcl-Proc mainline;

@@ -1,3 +1,24 @@
-select gethint(SSN_ENCRYPTED)
-  from NICKLITTEN.CUSTENC
-  fetch first 1 row only;
+-- --------------------------------------------------------------------------
+-- Script: get_hint.sql
+-- Purpose: Retrieves encryption hint from encrypted field
+-- Author: Nick Litten
+-- --------------------------------------------------------------------------
+-- Description:
+--   Demonstrates the GETHINT function to retrieve the encryption hint
+--   stored with an encrypted field. Hints can assist with password
+--   recovery without exposing the actual password.
+--
+-- Usage:
+--   Run after create_encrypted_stuff.sql to see encryption hints
+--   Modify field name to check hints for different encrypted columns
+--
+-- Reference:
+--   - IBM i SQL Reference - GETHINT function
+--   - https://www.nicklitten.com/ibm-i-sql-encryption/
+-- --------------------------------------------------------------------------
+SELECT
+  GETHINT(SSN_ENCRYPTED)
+FROM
+  NICKLITTEN.CUSTENC
+FETCH FIRST
+  1 ROW ONLY;

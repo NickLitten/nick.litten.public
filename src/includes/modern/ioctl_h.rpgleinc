@@ -35,9 +35,9 @@
         /endif
         /endif
 
-          // *****************************************************************
+          // **
           //   The following requests can be made using ioctl():
-          // *****************************************************************
+          // **
           //                                          Gen SIGIO signals for
           //                                          async I/O
          dcl-c FIOASYNC 131075;
@@ -101,9 +101,9 @@
         /endif
 
 
-          // *****************************************************************
+          // **
           //  Flags for the ifr_flags member of the ifreq structure
-          // *****************************************************************
+          // **
           //                                     receive all multicast packets
          dcl-c IFF_ALLMULTI 1;
           //                                     token-ring routing supported
@@ -137,9 +137,9 @@
          dcl-c IFF_MULTICAST 16384;
 
 
-          // *****************************************************************
+          // **
           //  Flags for the rt_flags field of the rtentry structure:
-          // *****************************************************************
+          // **
           //                                       black hole -- silently drop
          dcl-c RTF_BLACKHOLE 64;
           //                                       created dynamically
@@ -162,9 +162,9 @@
          dcl-c RTF_UP 1;
 
 
-          // *****************************************************************
+          // **
           //  Constants for the rt_protocol field of the rtentry structure:
-          // *****************************************************************
+          // **
           //                                      route learned, sockets, etc
          dcl-c RTP_OTHER 1;
           //                                      route learned, configuration
@@ -195,7 +195,7 @@
          dcl-c RTP_BGP 14;
 
 
-          // *****************************************************************
+          // **
           //  Interface Entry Request Structure (ifreq)
           //  #define ifr_addr        ifr_ifru.ifru_addr
           //  #define ifr_mask        ifr_ifru.ifru_mask
@@ -218,7 +218,7 @@
           //       u_char ifru_TOS;                 /* type-of-service       */
           //    } ifr_ifru;
           //  };
-          // *****************************************************************
+          // **
           dcl-s p_ifreq pointer;
           dcl-ds ifreq INZ based(p_ifreq) align;
             /if defined(USE_QUALIFIED)
@@ -241,7 +241,7 @@
             ifr_TOS uns(3) overlay(ifr_addr);
           end-ds ifreq;
 
-          // *****************************************************************
+          // **
           //  Interface Configuration List Structure (ifconf)
           //  #define ifc_buf         ifc_ifcu.ifcu_buf
           //  #define ifc_req         ifc_ifcu.ifcu_req
@@ -256,7 +256,7 @@
           //       struct ifreq *ifcu_req;    /* returned list of interfaces */
           //    } ifc_ifcu;
           //  };
-          // *****************************************************************
+          // **
          dcl-s p_ifconf pointer;
          dcl-ds ifconf INZ based(p_ifconf) align;
           ifc_len int(10);
@@ -266,7 +266,7 @@
          end-ds ifconf;
 
 
-          // *****************************************************************
+          // **
           //  Route Entry Structure (rtentry)
           //  struct rtentry {                /* route entry                 */
           //    struct sockaddr rt_dst;       /* route destination

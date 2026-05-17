@@ -1,9 +1,44 @@
--- ---------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- SQL Table: RECIPIES
 -- Description: Baking recipes table for CRUD operations demonstration
 -- Author: Nick Litten
--- Date: 2026-05-14
--- ---------------------------------------------------------------------
+-- Created: 2026-05-14
+-- ---------------------------------------------------------------------------
+-- Purpose: Demonstrate recipe management and CRUD operations
+--   - Store baking recipes with preparation details
+--   - Track recipe difficulty and serving sizes
+--   - Categorize recipes by type
+--
+-- Features:
+--   - Auto-increment identity column for recipe ID
+--   - Primary key constraint on RECID
+--   - Default values for numeric fields
+--   - 26 sample baking recipes included
+--   - Category-based organization
+--
+-- Usage: Recipe management and CRUD demonstrations
+--   SELECT * FROM RECIPIES WHERE DIFFICULTY = 'Easy';
+--   INSERT INTO RECIPIES (RECNAME, CATEGORY, PREPTIME, SERVINGS, DIFFICULTY)
+--     VALUES('New Recipe', 'Cakes', 45, 8, 'Medium');
+--   UPDATE RECIPIES SET PREPTIME = 60 WHERE RECID = 1;
+--
+-- Columns:
+--   - RECID: Auto-increment recipe identifier (primary key)
+--   - RECNAME: Name of the recipe
+--   - CATEGORY: Recipe category (Cookies, Bread, Cakes, Pies, Desserts)
+--   - PREPTIME: Preparation time in minutes
+--   - SERVINGS: Number of servings produced
+--   - DIFFICULTY: Difficulty level (Easy, Medium, Hard)
+--
+-- Dependencies:
+--   None
+--
+-- Reference:
+--   https://www.ibm.com/docs/en/i/7.5?topic=reference-sql
+--
+-- Modification History:
+--   1.0 2026-05-14 | Nick Litten | Initial creation with 26 sample recipes
+-- ---------------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     RECIPIES (
         RECID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,

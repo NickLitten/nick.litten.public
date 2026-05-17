@@ -63,8 +63,8 @@
 ///
 /// Modification History:
 ///   V.000 2026-04-17 | Nick Litten | Initial creation
-///   V.001 2026-04-18 | Bob AI | Added comprehensive triple-slash documentation
-///   V.002 2026-04-18 | Bob AI | Applied coding standards template
+///   V.001 2026-04-18 | Nick Litten | Added comprehensive triple-slash documentation
+///   V.002 2026-04-18 | Nick Litten | Applied coding standards template
 ///
 
 ctl-opt

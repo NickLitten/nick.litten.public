@@ -29,7 +29,7 @@
 
         /define SSL_H
 
-          // ***************************************************************
+          // 
           //  The SSL Init Structure.  (All fields are for input to API)
           //   struct SSLInitStr {
           //      char *               keyringFileName;
@@ -47,7 +47,7 @@
           //   cipherSuiteListLen = number of suite entries in prev param.
           //   note that the cipherSuiteList element is a pointer to an
           //   array of unsigned shorts (i.e. 5U 0)
-          // ***************************************************************
+          // 
          dcl-s p_SSLInitStr pointer;
          dcl-ds SSLInitStr INZ based(p_SSLInit) align;
           SSLInit_keyri pointer;
@@ -56,7 +56,7 @@
           SSLInit_ciphe zoned(0:0);
          end-ds SSLInitStr;
 
-          // ***************************************************************
+          // 
           //   struct SSLInitAppStr {
           //         char         *applicationID;
           //         unsigned int  applicationIDLen;
@@ -85,7 +85,7 @@
           //       are in the SSLInitStr struct above, except that if you
           //       pass NULL, the system will use the values from SSL_Init.
           //    reserved1 must be all x'00'
-          // ***************************************************************
+          // 
          dcl-ds SSLInitAppStr INZ based(p_SSLInitApp) align;
           SSLInitApp_a pointer;
           SSLInitApp_a uns(0);
@@ -96,7 +96,7 @@
           SSLInitApp_rese char(28);
          end-ds SSLInitAppStr;
 
-          // ***************************************************************
+          // 
           //   The SSLHandle structure is returned by the SSL_Create API
           //   struct SSLHandleStr {
           //      int            fd;
@@ -112,7 +112,7 @@
           //      int            peerCertValidateRc;
           //      int            (*exitPgm)(struct SSLHandleStr* sslh);
           //   };
-          // ***************************************************************
+          // 
          dcl-s p_SSLHandle pointer;
          dcl-ds SSLHandleStr INZ based(p_SSLHandle);
           SSLHandle_fd int(10);
@@ -129,17 +129,17 @@
           SSLHandle_exitP pointer procptr;
          end-ds SSLHandleStr;
 
-          // ***************************************************************
+          // 
           //  Flags for the SSL_Create() proc
-          // ***************************************************************
+          // 
          dcl-c SSL_ENCRYPT 1;
          dcl-c SSL_DONT_ENCRYP 0;
 
-          // ***************************************************************
+          // 
           //  Error numbers that can be returned by the SSL_xxxx procs.
           //    (Note that some of these, such as SSL_ERROR_IO, merely
           //     mean that you need to check errno)
-          // ***************************************************************
+          // 
          dcl-c SSL_ERROR_NO_CIPHERS -1;
          dcl-c SSL_ERROR_NO_CERTIFICATE -2;
          dcl-c SSL_ERROR_BAD_CERTIFICATE -4;
@@ -172,118 +172,118 @@
          dcl-c SSL_ERROR_UNKNOWN -99;
          dcl-c SSL_ERROR_NOT_REGISTERED -1009;
 
-          // ***************************************************************
+          // 
           //   The following cipher suites work when using a version 3.0
           //   to version 3.0 SSL implementation
-          // ***************************************************************
+          // 
          dcl-c SSL_RSA_WITH_NULL_MD5 1;
          dcl-c SSL_RSA_WITH_NULL_SHA 2;
          dcl-c SSL_RSA_WITH_RC4_128_SHA 5;
          dcl-c SSL_RSA_WITH_DES_CBC_SHA 9;
          dcl-c SSL_RSA_WITH_3DES_EDE_CBC_SHA 10;
 
-          // ***************************************************************
+          // 
           //   The following cipher suites work when using a version 2.0
           //   to version 2.0 SSL implementation as well as version 3.0
           //   to version 3.0...
-          // ***************************************************************
+          // 
          dcl-c SSL_RSA_EXPORT_WITH_RC4_40_MD5 3;
          dcl-c SSL_RSA_WITH_RC4_128_MD5 4;
          dcl-c SSL_RSA_EXPORT_WITH_RC2_CBC_40_MD5 6;
 
-          // ***************************************************************
+          // 
           //   The following cipher suites work when using a version 2.0
           //   to version 2.0 SSL implementation
-          // ***************************************************************
+          // 
          dcl-c SSL_RSA_WITH_RC2_CBC_128_MD5 65281;
          dcl-c SSL_RSA_WITH_DES_CBC_MD5 65282;
          dcl-c SSL_RSA_WITH_3DES_EDE_CBC_MD5 65283;
 
-          // ***************************************************************
+          // 
           //   values for "how" parm of SSL_Handshake
-          // ***************************************************************
+          // 
          dcl-c SSL_HANDSHAKE_AS_CLIENT 0;
          dcl-c SSL_HANDSHAKE_AS_SERVER 1;
          dcl-c SSL_HANDSHAKE_AS_SERVER_WITH_CLIENT_AUTH 2;
          dcl-c SSL_HANDSHAKE_AS_SERVER_WITH_OPTIONAL_CLIENT_AUTH 3;
 
-          // ***************************************************************
+          // 
           //   Initialize the current job for SSL
           //   int SSL_Init(SSLInit *init);
           //   The SSL_Init function is used to establish the SSL security
           //   information to be used for all SSL sessions for the current
           //   job.
-          // ***************************************************************
+          // 
          dcl-pr SSL_Init int(10) ExtProc('SSL_Init');
          init pointer value;
          end-pr SSL_Init;
 
-          // ***************************************************************
+          // 
           //   Initialize the Current Job for SSL processing Based on the
           //    Application Identifier
           //  int SSL_Init_Application(SSLInitApp *init_app);
           //  Uses the application identifier to determine and then
           //  establish the certificate for use by the SSL handshake
           //  protocol processing.
-          // ***************************************************************
+          // 
          dcl-pr SSL_Init_Application int(10) ExtProc('SSL_Init_Application');
          init_app pointer value;
          end-pr SSL_Init_Application;
 
-          // ***************************************************************
+          // 
           //  SSL_Create() -- enable SSL support on a given socket descr.
           //    SSLHandle *SSL_Create(int socket_descriptor, int flags);
-          // ***************************************************************
+          // 
          dcl-pr SSL_Create pointer ExtProc('SSL_Create');
          Sock_desc zoned(0:VA) ue;
          flags int(10) value;
          end-pr SSL_Create;
 
-          // ***************************************************************
+          // 
           //  Initiate the SSL Handshake protool
           //   int SSL_Handshake(SSLHandle *handle, int how);
           //   The SSL_Handshake() function is used by a program to initiate
           //   the SSL handshake protocol.  Both the client and the server
           //   program must call the SSL_Handshake verb in order to initiate
           //   handshake processing.
-          // ***************************************************************
+          // 
          dcl-pr SSL_Handshake int(10) ExtProc('SSL_Handshake');
           handle pointer value;
           how int(10) value;
          end-pr SSL_Handshake;
 
-          // ***************************************************************
+          // 
           //  Read data from SSL-enabled socket
           //   int SSL_Read(SSLHandle *handle, void *buffer, int buflen);
           //   handle = handle returned by SSL_Create
           //   buffer = place where the data is :)
           //   buflen = size of buffer (max size to read at once)
           //  returns length of data read, or an error upon failure
-          // ***************************************************************
+          // 
          dcl-pr SSL_Read int(10) ExtProc('SSL_Read');
           handle pointer value;
           buffer pointer value;
           buflen int(10) value;
          end-pr SSL_Read;
 
-          // ***************************************************************
+          // 
           //  Write data to SSL-enabled socket
           //   int SSL_Write(SSLHandle *handle, void *buffer, int buflen);
           //   handle = handle returned by SSL_Create
           //   buffer = place where the data is :)
           //   buflen = size of buffer (amount of data to write)
           //  returns length of data written, or an error upon failure
-          // ***************************************************************
+          // 
          dcl-pr SSL_Write int(10) ExtProc('SSL_Write');
           handle pointer value;
           buffer pointer value;
           buflen int(10) value;
          end-pr SSL_Write;
 
-          // ***************************************************************
+          // 
           //   End SSL support for a given SSL-enabled socket.
           //    handle = SSL session to end.
-          // ***************************************************************
+          // 
          dcl-pr SSL_Destroy  ExtProc('SSL_Destroy');
           handle pointer value;
          end-pr SSL_Destroy;

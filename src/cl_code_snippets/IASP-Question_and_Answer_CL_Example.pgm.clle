@@ -45,11 +45,17 @@
 /*   - User must have authority to SETASPGRP command            */
 /*   - MAIN menu must exist for GO MENU(MAIN)                   */
 /* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i CL Programming Guide                               */
+/*   - SETASPGRP Command Reference                              */
+/*   - https://www.nicklitten.com/ibm-i-iasp-management/        */
+/* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2025.02.25 V01 Initial creation                   */
 /* Bob AI     2026.04.02 V02 Added comprehensive documentation  */
 /* NickLitten 2026.04.04 V03 Standardized header block          */
+/* Bob AI     2026.05.14 V04 Added Reference section            */
 /* ------------------------------------------------------------ */
 
 PGM

@@ -54,9 +54,13 @@
 ///   - actgrp(*new): Creates new activation group per call
 ///   - alwnull(*usrctl): Allows null-capable fields with user control
 ///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=procedures-external-stored
+///
 /// Modification History:
-/// 1.0 2025-10-14 | Nick Litten | Created for online example
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+///   1.0 2025-10-14 | Nick Litten | Created for online example
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
+///
 
 ctl-opt
      main(mainline)
@@ -68,23 +72,23 @@ ctl-opt
      alwnull(*usrctl)
      copyright('STOREPRCS | V.000 | Stored Procedure using SQL in RPG');
 
-dcl-proc mainline;
-     dcl-pi *n;
-          emp_id_in int(10) const;
-          emp_name_out char(50);
-          city_out char(30);
-     end-pi;
+Dcl-Proc mainline;
+   Dcl-Pi *n;
+      emp_id_in int(10) const;
+      emp_name_out char(50);
+      city_out char(30);
+   end-pi;
 
-     exec sql
+   exec sql
           select emp_name, city
                into :emp_name_out, :city_out
                from nicklitten/employee_master
                where emp_id = :emp_id_in;
 
-     if sqlcode <> 0;
-          emp_name_out = 'no employee found';
-          city_out = 'n/a';
-     endif;
+   If (sqlcode <> 0);
+      emp_name_out = 'no employee found';
+      city_out = 'n/a';
+   EndIf;
 
-     return;
+   Return;
 end-proc;

@@ -2,7 +2,7 @@
 /* LSTLIBSIMP - List Libraries Simply                           */
 /* ------------------------------------------------------------ */
 /* Program.......... LSTLIBSIMP                                 */
-/* Author........... nick@nicklitten.com                        */
+/* Author........... Nick Litten                                */
 /* Calling Program.. *NONE                                      */
 /* Calling Command.. *NONE                                      */
 /* Function......... Simple library inventory program that      */
@@ -15,15 +15,37 @@
 /*                   SRCFILE(library/QCLLESRC)                  */
 /*                   SRCMBR(LSTLIBSIMP)                         */
 /* -------------------------------------------------------------*/
-/* Description:                                                 */
-/*   This program demonstrates a streamlined approach to:       */
-/*   1. Query all libraries using QSYS2.SYSSCHEMAS              */
-/*   2. Call QLIRLIBD API for each library to get statistics    */
-/*   3. Store results in a temporary table                      */
-/*   4. Export to CSV file using CPYTOIMPF                      */
+/* Purpose: Educational example demonstrating:                  */
+/*   - SQL catalog queries (QSYS2.SYSSCHEMAS)                   */
+/*   - IBM i API usage (QLIRLIBD)                               */
+/*   - Binary data extraction from API buffers                  */
+/*   - Dynamic SQL statement construction                       */
+/*   - CSV file export with CPYTOIMPF                           */
+/*   - Loop processing with DOWHILE/RCVF                        */
 /* -------------------------------------------------------------*/
-/* Output: /home/libinventory.csv                               */
-/*   Columns: Library Name, Number of Objects, Library Size     */
+/* Features:                                                    */
+/*   - Queries all libraries from system catalog                */
+/*   - Calls QLIRLIBD API for each library                      */
+/*   - Extracts object count and library size                   */
+/*   - Stores results in temporary table                        */
+/*   - Exports to CSV: /home/libinventory.csv                   */
+/*   - Columns: Library Name, Number of Objects, Library Size   */
+/* -------------------------------------------------------------*/
+/* Usage: CALL LSTLIBSIMP                                       */
+/*        Output file: /home/libinventory.csv                   */
+/* -------------------------------------------------------------*/
+/* Parameters: None                                             */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - NICKLITTEN/LSTLIB file must exist                        */
+/*   - User must have authority to query QSYS2.SYSSCHEMAS       */
+/*   - User must have authority to call QLIRLIBD API            */
+/*   - /home directory must be writable                         */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i API Reference (QLIRLIBD)                           */
+/*   - QSYS2.SYSSCHEMAS Catalog View                            */
+/*   - https://www.nicklitten.com/ibm-i-library-inventory/      */
 /* -------------------------------------------------------------*/
 /* STATUS: WORK IN PROGRESS                                     */
 /* -------------------------------------------------------------*/
@@ -31,6 +53,7 @@
 /* Author     Date       Description                            */
 /* NickLitten 2026.02.19 V01 Initial creation (WIP)             */
 /* NickLitten 2026.04.04 V02 Standardized header block          */
+/* Bob AI     2026.05.14 V03 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
  
 PGM

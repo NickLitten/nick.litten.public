@@ -41,8 +41,8 @@
 /*                                                                          */
 /* Modification History:                                                    */
 /* V.000 2025-xx-xx | Nick Litten | Initial creation                       */
-/* V.001 2026-04-02 | Bob AI | Added comprehensive documentation           */
-/* V.002 2026-04-18 | Bob AI | Applied proper CLLE block comment format    */
+/* V.001 2026-04-02 | Nick Litten | Added comprehensive documentation           */
+/* V.002 2026-04-18 | Nick Litten | Applied proper CLLE block comment format    */
 
 PGM        PARM(&SBS &LIB &RESULT)
 

@@ -1,3 +1,11 @@
+/*-----------------------------------------------------------------*/
+/* Binder Source: NICKSRV                                          */
+/* Description: Export list for Nick's Service Program             */
+/* Service Program: NICKSRV                                        */
+/* Exports: ReturnSystemName, ReturnJobEnvironment,               */
+/*          ExecuteCommand, DisplayWindow                         */
+/*-----------------------------------------------------------------*/
+
 STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Nick_V1')
 
   EXPORT SYMBOL('ReturnSystemName')

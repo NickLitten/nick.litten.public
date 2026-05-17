@@ -57,7 +57,7 @@
 ///
 /// Modification History:
 /// 1.0 2019-06-25 | Nick Litten | Initial creation
-/// 2.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/// 2.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
 
 ctl-opt main(mainline) 
         copyright('| CRUD01RPG V2.0 - Improved') 
@@ -104,7 +104,7 @@ Dcl-C MAX_RRN        9999;
 // DISPLAY FILE INDICATORS - Using based data structure for clarity
 // ------------------------------------------------------------------------------
 
-Dcl-S ptrDisplayIndicators Pointer Inz(%Addr(*In));
+dcl-s ptrDisplayIndicators Pointer Inz(%Addr(*In));
 Dcl-Ds DisplayIndicators Based(ptrDisplayIndicators);
    // Subfile control indicators
    SflDsp          Ind Pos(99);
@@ -128,7 +128,7 @@ end-ds;
 // SQL ERROR HANDLING - Improved access to SQLSTATE
 // ------------------------------------------------------------------------------
 
-Dcl-S pSqlstate Pointer Inz(%Addr(SQLState));
+dcl-s pSqlstate Pointer Inz(%Addr(SQLState));
 Dcl-Ds Ds_SqlState based(pSqlstate);
    xSqlstate char(2);
 end-ds;
@@ -156,21 +156,21 @@ Dcl-Ds taskRecord extname('CRUD01TBL') qualified end-ds;
 // ------------------------------------------------------------------------------
 
 // Subfile management
-Dcl-S subfileRRN      int(5);
-Dcl-S initialPos      int(10) inz(0);
-Dcl-S finalPos        int(10) inz(10);
-Dcl-S prevInitialPos  int(10);
-Dcl-S prevFinalPos    int(10);
+dcl-s subfileRRN      int(5);
+dcl-s initialPos      int(10) inz(0);
+dcl-s finalPos        int(10) inz(10);
+dcl-s prevInitialPos  int(10);
+dcl-s prevFinalPos    int(10);
 
 // Task data for cursor operations
 Dcl-Ds taskData likeds(t_taskData);
 
 // Query filtering
-Dcl-S whereClause     varchar(500) inz('');
+dcl-s whereClause     varchar(500) inz('');
 
 // Operation control
-Dcl-S crudFinalized   ind;
-Dcl-S currentUser     char(10) inz(*user);
+dcl-s crudFinalized   ind;
+dcl-s currentUser     char(10) inz(*user);
 
 
 
@@ -179,7 +179,7 @@ Dcl-S currentUser     char(10) inz(*user);
 // ------------------------------------------------------------------------------
 
 Dcl-Proc mainline;
-   Dcl-S screenMode char(1);
+   dcl-s screenMode char(1);
   
    monitor;
       open CRUD01PNL;
@@ -310,10 +310,10 @@ Dcl-Proc centerText;
       length int(5) const;
    end-pi;
   
-   Dcl-S blanksNeeded int(5);
-   Dcl-S startPos int(5);
-   Dcl-S centered char(80) inz(*blanks);
-   Dcl-S textLen int(5);
+   dcl-s blanksNeeded int(5);
+   dcl-s startPos int(5);
+   dcl-s centered char(80) inz(*blanks);
+   dcl-s textLen int(5);
   
    textLen = %len(%trim(text));
   
@@ -378,7 +378,7 @@ Dcl-Proc ShowSubfile;
       mode char(1) const;
    end-pi;
   
-   Dcl-S nextMode char(1);
+   dcl-s nextMode char(1);
   
    dow (not pfkey(03));
       WriteScreen(mode);
@@ -455,7 +455,7 @@ Dcl-Proc handlePageDown;
       mode char(1) const;
    end-pi;
   
-   Dcl-S recordExists ind;
+   dcl-s recordExists ind;
   
    If (initialPos > 0 and finalPos > PERPAGE);
       recordExists = checkRecordsExist(initialPos : finalPos);
@@ -482,7 +482,7 @@ Dcl-Proc checkRecordsExist;
       endPos int(10) const;
    end-pi;
   
-   Dcl-S recordCount int(10);
+   dcl-s recordCount int(10);
   
    exec sql
     SELECT COUNT(*) INTO :recordCount
@@ -502,7 +502,7 @@ Dcl-Proc processSubfileOptions;
       nextMode char(1);
    end-pi;
   
-   Dcl-S rrn int(5);
+   dcl-s rrn int(5);
   
    nextMode = *blanks;
   
@@ -585,7 +585,7 @@ end-proc;
 
 // ActivateSubfile - Prepare and display subfile
 Dcl-Proc ActivateSubfile;
-   Dcl-S totalRecords int(10);
+   dcl-s totalRecords int(10);
   
    SflInitial();
    FillSubfile();
@@ -609,7 +609,7 @@ end-proc;
 
 // FillSubfile - Load subfile with data using cursor
 Dcl-Proc FillSubfile;
-   Dcl-S count int(5) inz(0);
+   dcl-s count int(5) inz(0);
   
    prevInitialPos = initialPos;
    prevFinalPos = finalPos;
@@ -676,7 +676,7 @@ Dcl-Proc getTotalRecords;
    Dcl-Pi *N int(10);
    end-pi;
   
-   Dcl-S total int(10);
+   dcl-s total int(10);
   
    exec sql
     SELECT COUNT(*) INTO :total
@@ -701,7 +701,7 @@ Dcl-Proc validateScreen;
       mode char(1) const;
    end-pi;
   
-   Dcl-S hasErrors ind inz(*off);
+   dcl-s hasErrors ind inz(*off);
   
    IndErrors = *zeros;
    resetErrors();
@@ -728,8 +728,8 @@ Dcl-Proc validateInsert;
    Dcl-Pi *N ind;
    end-pi;
   
-   Dcl-S exists char(1);
-   Dcl-S hasErrors ind inz(*off);
+   dcl-s exists char(1);
+   dcl-s hasErrors ind inz(*off);
   
    // Check if task ID already exists
    clear exists;
@@ -779,7 +779,7 @@ Dcl-Proc validateModify;
    Dcl-Pi *N ind;
    end-pi;
   
-   Dcl-S hasErrors ind inz(*off);
+   dcl-s hasErrors ind inz(*off);
   
    // Validate start date
    test(de) *iso STARTDATE;
@@ -820,7 +820,7 @@ Dcl-Proc InsertScreen;
       mode char(1) const;
    end-pi;
   
-   Dcl-S nextMode char(1);
+   dcl-s nextMode char(1);
   
    WriteScreen(mode);
   
@@ -910,7 +910,7 @@ Dcl-Proc ModifyScreen;
       mode char(1) const;
    end-pi;
   
-   Dcl-S nextMode char(1);
+   dcl-s nextMode char(1);
   
    loadDataToScreen();
    WriteScreen(mode);
@@ -997,7 +997,7 @@ Dcl-Proc DeleteScreen;
       mode char(1) const;
    end-pi;
   
-   Dcl-S nextMode char(1);
+   dcl-s nextMode char(1);
   
    loadDataToScreen();
    WriteScreen(mode);
@@ -1075,7 +1075,7 @@ Dcl-Proc ViewScreen;
       mode char(1) const;
    end-pi;
   
-   Dcl-S nextMode char(1);
+   dcl-s nextMode char(1);
   
    loadDataToScreen();
    WriteScreen(mode);

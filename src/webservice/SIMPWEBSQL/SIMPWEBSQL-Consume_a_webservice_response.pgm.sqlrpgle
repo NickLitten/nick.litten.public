@@ -58,7 +58,7 @@
 ///
 /// Modification History:
 /// 1.0 2022-06-11 | Nick Litten | Initial creation
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/// 1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
 
 /title Simply consume a webservice response from nicklitten dot com
 ctl-opt
@@ -70,29 +70,29 @@ ctl-opt
   /endIf
   copyright('SIMPWEBSQL: Version 1.0 June 2022');
 
-dcl-ds psds PSDS qualified;
-  program char(10) pos(1);
+Dcl-Ds psds PSDS qualified;
+   program char(10) pos(1);
 end-ds;
 
 
-//-- SIMPWEBSQL - Consume an external internet webservice from
-//-- my IBMi System. Get the JSON result and let SQL decompose
-//-- that from JSON into fields that I can use.
-dcl-proc SIMPWEBSQL;
-dcl-pi SIMPWEBSQL end-pi;
+// -- SIMPWEBSQL - Consume an external internet webservice from
+// -- my IBMi System. Get the JSON result and let SQL decompose
+// -- that from JSON into fields that I can use.
+Dcl-Proc SIMPWEBSQL;
+   Dcl-Pi SIMPWEBSQL end-pi;
 
-// Output values
-dcl-s g_firstname varchar(50);
-dcl-s g_surname varchar(50);
-dcl-s g_website varchar(50);
+   // Output values
+   Dcl-S g_firstname varchar(50);
+   Dcl-S g_surname varchar(50);
+   Dcl-S g_website varchar(50);
 
-// result string humans who like to know what happened
-dcl-s g_result char(50);
+   // result string humans who like to know what happened
+   Dcl-S g_result char(50);
 
-monitor;
+   monitor;
 
-    // consume external webservice
-    exec sql
+      // consume external webservice
+      exec sql
     select firstname, surname, website
     into :g_firstname, :g_surname, :g_website
     from JSON_TABLE( SYSTOOLS.HTTPGETCLOB (
@@ -104,28 +104,28 @@ monitor;
     ) error on error
     ) as x;
 
-    Select;
-    when sqlcode = 0;
-    g_result = 'Completed normally';
-    when sqlcode = 100;
-    g_result = 'No data found';
-    when sqlcode > 0;
-    g_result = 'Completed with warning';
-    when sqlcode < 0;
-    g_result = 'Did not complete normally';
-    endsl;
+      Select;
+         When (sqlcode = 0);
+            g_result = 'Completed normally';
+         When (sqlcode = 100);
+            g_result = 'No data found';
+         When (sqlcode > 0);
+            g_result = 'Completed with warning';
+         When (sqlcode < 0);
+            g_result = 'Did not complete normally';
+      EndSl;
 
-    // Display values returned
-    DSPLY sqlcode;
-    DSPLY g_firstname;
-    DSPLY g_surname;
-    DSPLY g_website;
+      // Display values returned
+      DSPLY sqlcode;
+      DSPLY g_firstname;
+      DSPLY g_surname;
+      DSPLY g_website;
 
-    return;
+      Return;
 
-on-error ;
-    dump(a);
-    dsply ('*** Webservice(' + %trim(psds.program) + ') has failed!');
-endmon ;
+   on-error ;
+      dump(a);
+      dsply ('*** Webservice(' + %trim(psds.program) + ') has failed!');
+   endmon ;
 
 end-proc;

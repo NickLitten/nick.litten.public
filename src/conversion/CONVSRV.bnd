@@ -1,3 +1,11 @@
+/*-----------------------------------------------------------------*/
+/* Binder Source: CONVSRV                                          */
+/* Description: Export list for Conversion Service Program         */
+/* Service Program: CONVSRV                                        */
+/* Exports: ConvertEbcdicToAscii, ConvertAsciiToEbcdic,           */
+/*          ConvertFixedEbcdicToAscii, ConvertFixedAsciiToEbcdic  */
+/*-----------------------------------------------------------------*/
+
 STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('CONVSRV V1.0')
 
   EXPORT SYMBOL(ConvertEbcdicToAscii)

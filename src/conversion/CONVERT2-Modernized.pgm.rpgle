@@ -1,10 +1,45 @@
 **free
-// ------------------------------------------------------------------------------
-// Program: CONVERSION
-// Description: Convert EBCDIC data to ASCII data (80-byte records)
-// Author: Nick Litten
-// Created: 2026-03-25
-// ------------------------------------------------------------------------------
+
+///
+/// Program: CONVERT2 - EBCDIC to ASCII Conversion (Modernized)
+///
+/// Description: Converts EBCDIC data to ASCII using the QDCXLATE API.
+///              Reads 80-byte fixed-length records from an input file and
+///              writes converted ASCII records to an output file. This is
+///              a modernized version of the original fixed-format program.
+///
+/// Purpose: Educational example demonstrating:
+///   - Modern free-format RPG syntax
+///   - File processing with keyed input files
+///   - QDCXLATE API for character conversion
+///   - DO-WHILE loop for file processing
+///   - Record counting and processing metrics
+///
+/// Features:
+///   - Free-format RPG syntax
+///   - Uses QDCXLATE API with QTCPASC translation table
+///   - Processes 80-byte fixed-length records
+///   - Tracks number of records processed
+///   - Clean activation group management
+///
+/// Usage: CALL CONVERT2
+///        (Reads from FILEIN, writes to FILEOUT)
+///
+/// Parameters:
+///   None
+///
+/// Dependencies:
+///   - Input file: FILEIN (80-byte EBCDIC records)
+///   - Output file: FILEOUT (80-byte ASCII records)
+///   - QDCXLATE API (system program)
+///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/qdcxlate.html
+///
+/// Modification History:
+///   1.0 2026-03-25 | Nick Litten | Initial modernized version
+///
+
 
 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);
 

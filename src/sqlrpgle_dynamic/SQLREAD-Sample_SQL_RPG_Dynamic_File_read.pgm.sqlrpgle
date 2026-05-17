@@ -46,9 +46,13 @@
 /// Control Options:
 ///   - copyright: Program identification and version
 ///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=statements-prepare
+///
 /// Modification History:
-/// 1.0 2025-09-05 | Nick Litten | Created from example by Aldo Succi
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+///   1.0 2025-09-05 | Nick Litten | Created from example by Aldo Succi
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
+///
 
 ctl-opt
   copyright('SQLREAD | V.000 | Simple example of using dynamic SQL in RPG');
@@ -56,25 +60,25 @@ ctl-opt
 /include 'header.rpgleinc'
  
 // Declare variable to hold the customer type (3 characters)
-dcl-s wCLCIB0 CHAR(3);
+Dcl-S wCLCIB0 CHAR(3);
  
 // Declare variable to hold the customer name retrieved from the database
-dcl-s wCLNOM0 CHAR(50);
+Dcl-S wCLNOM0 CHAR(50);
  
 // Declare a character variable to hold the SQL statement.
 // INZ(...) initializes the variable with a parameterized SQL query.
 // The "?" acts as a placeholder for values supplied at runtime.
-dcl-s SqlString CHAR(500) INZ('SELECT CLNOM0 FROM CLANA00F WHERE CLCIB0 = ?');
-//* Prepare the SQL statement stored in SqlString.                *
-//* PREPARE converts the text in SqlString into an executable SQL *
-//* statement identified here as 'Sql1'.                          *
+Dcl-S SqlString CHAR(500) INZ('SELECT CLNOM0 FROM CLANA00F WHERE CLCIB0 = ?');
+// * Prepare the SQL statement stored in SqlString.                *
+// * PREPARE converts the text in SqlString into an executable SQL *
+// * statement identified here as 'Sql1'.                          *
 Exec SQL PREPARE Sql1 FROM :SqlString;
  
 // Associate the prepared SQL statement with a cursor.
 // A cursor allows row-by-row retrieval of query results.
 Exec SQL DECLARE Cursor1 CURSOR FOR Sql1;
-//* Assign the customer type to be used as input    *
-//* for the parameterized query.                    *
+// * Assign the customer type to be used as input    *
+// * for the parameterized query.                    *
 wCLCIB0 = 'BBB';
  
 // Open the cursor, supplying the parameter value (wCLCIB0).
@@ -89,8 +93,8 @@ Exec SQL FETCH Cursor1 INTO :wCLNOM0;
 // In a real-world program, this could be written to a display file,
 // printed, or processed further.
 Dsply wCLNOM0;   
-//* Close the cursor to release resources. *
+// * Close the cursor to release resources. *
 Exec SQL CLOSE Cursor1;
-//* End of program *
+// * End of program *
 *inlr = *on; // Set the last record indicator to ON, ending the program.
-return;      // Return control to the caller or operating system.
+Return;      // Return control to the caller or operating system.

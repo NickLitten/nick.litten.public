@@ -69,7 +69,7 @@ RTN = '2';
 
 // first time read - rtn=4 if file empty
 read  QTXTSRC;
-If *IN50        = '1';
+If (*IN50        = '1');
    RTN = '3';
    goto  ENDPGM;
 EndIf;
@@ -78,9 +78,9 @@ DOW (*IN50 = *OFF);
    RECORD = SRCDTA;
 
    // rtn=1 if partner mismatch - return partner found
-   If FLAG = '/*@@';
-      If FILE = FILEN;
-         If PART <> PARTN;
+   If (FLAG = '/*@@');
+      If (FILE = FILEN);
+         If (PART <> PARTN);
             PART = PARTN;
             RTN = '1';
             goto  ENDPGM;

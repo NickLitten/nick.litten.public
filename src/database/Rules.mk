@@ -27,22 +27,22 @@
 # ---
 
 # RECIPIES Table - Baking recipes for CRUD examples
-RECIPIES.FILE: RECIPIES-Baking_Recipes.table
+RECIPIES.FILE: RECIPIES-Baking_Recipes.sql
 
 # CRUD01TBL Table - Task management table for CRUD operations
-CRUD01TBL.FILE: CRUD01TBL-Task_Management.table
+CRUD01TBL.FILE: CRUD01TBL-Task_Management.sql
 
 # FOODFILE Table - Ingredient inventory database
-FOODFILE.FILE: FOODFILE-Ingredient_Inventory.table
+FOODFILE.FILE: FOODFILE-Ingredient_Inventory.sql
 
 # PERSONTBL Table - Person information with name, DOB, address
-PERSONTBL.FILE: PERSONTBL-Person_Information.table
+PERSONTBL.FILE: PERSONTBL-Person_Information.sql
 
 # SAMPLEDB Table - Country names sample database
-SAMPLEDB.FILE: SAMPLEDB-Country_Names.table
+SAMPLEDB.FILE: SAMPLEDB-Country_Names.sql
 
 # ALLTABLE Table - Comprehensive SQL data types example
-ALLTABLE.FILE: ALLTABLE-All_Data_Types.table
+ALLTABLE.FILE: ALLTABLE-All_Data_Types.sql
 
 # ---
 # DDS Physical Files

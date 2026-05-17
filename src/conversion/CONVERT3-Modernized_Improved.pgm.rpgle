@@ -44,7 +44,7 @@
 ///
 /// Modification History:
 /// 1.0 2026-04-01 | Nick Litten | Created simplified CCSID version
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/// 1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
 
 ctl-opt main(mainline) 
         copyright('| CONVERT3 V1.0 - ASCII-EBCDIC Conversion with CCSID') 

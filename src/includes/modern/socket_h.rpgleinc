@@ -31,16 +31,16 @@
         //    here.  There may be some that I missed (because I havent needed
         //    them) if you need them, you'll have to add them yourself :)
         //       SCK 08/06/1998
-        // **********************************************************************
+        // *******
 
         /if defined(SOCKET_H)
         /eof
         /endif
         /define SOCKET_H
 
-        // *********************************************************************
+        // ******
         //   C O N S T A N T S
-        // *********************************************************************
+        // ******
          dcl-c IPVERSION CONST(4);
 
         // ************************************************
@@ -615,9 +615,9 @@
         /endif
 
 
-          // *********************************************************************
+          // ******
           //   S U B P R O C E D U R E   P R O T O T Y P E S
-          // *********************************************************************
+          // ******
           //     socket--Create Socket
           //     int  socket(int address_family,
           //                 int type,

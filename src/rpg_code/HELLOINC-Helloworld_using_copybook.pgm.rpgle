@@ -1,58 +1,58 @@
 **free
-// --------------------------------------------------------------------- 
-// Alternate Helloworld with copybook
-// --------------------------------------------------------------------- 
-//
-// This program is a simple 'Hello World' style RPG program which has
-// been fleshed out to match my preferred standard RPG style.
-//
-// The control options define runtime setup for this program including
-// some notable options:
-// * main(mainline) - tell RPG not to add all the usual RPG Cycle info
-//                    but to execute the procedure called MAINLINE by
-//                    default.
-// * pgminfo(*pcml:*module) - this embeds the parameter information in
-//                    the compiled object so that processes like the 
-//                    integrated webserver can see the expected parms
-// * copyright - store version information against the program to make
-//                    version information available using DSPPGM
-//
-// --------------------------------------------------------------------- 
-// Modification History:                                                 
-// V.000 2024.11.22 NJL Created      
-// V.001 2024.12.11 NJL Christmas Update                                          
-// --------------------------------------------------------------------- 
+
+/// Program: HELLOINC - Hello World Using Copybook
+///
+/// Description: Enhanced "Hello World" program demonstrating the use of
+///              copybook includes for standardized program structure. Shows
+///              interactive user prompting with DSPLY and loop control.
+///
+/// Purpose: Educational example demonstrating:
+///   - Copybook inclusion (/include directive)
+///   - Standard header and variable includes
+///   - Interactive DSPLY with reply parameter
+///   - DOU loop for user confirmation
+///   - String manipulation with %UPPER
+///   - Proper program termination with *INLR
+///
+/// Features:
+///   - Uses standard header.rpgleinc for control options
+///   - Uses variables.rpgleinc for common declarations
+///   - Interactive user prompting
+///   - Loop until user confirms with 'Y'
+///   - Case-insensitive input handling
+///   - Demonstrates copybook standardization
+///
+/// Usage: CALL HELLOINC
+///        Displays: 'Hello World!'
+///        Prompts: 'Press Y to continue'
+///        Waits for user to enter 'Y' or 'y'
+///
+/// Dependencies:
+///   - Include: header.rpgleinc
+///   - Include: variables.rpgleinc
+///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=definitions-include
+///
+/// Modification History:
+///   1.0 2024-11-22 | Nick Litten | Initial creation
+///   1.1 2024-12-11 | Nick Litten | Christmas update
+///
 
 /include 'header.rpgleinc'
 
-ctl-opt
-  copyright('HelloAlternate | V.001 | Sample Stylised RPG Program');
-
 /include 'variables.rpgleinc'
 
-Dcl-Proc mainline;
-   Dcl-Pi mainline;
-   end-pi;
+Dcl-S msg char(50);
+Dcl-S reply char(1);
 
-   Dcl-S msg char(50);
-   Dcl-S reply char(1);
+msg = 'Hello World!';
+dsply msg;
 
-   msg = 'Hello World!';
-   dsply msg;
+msg = 'Press Y to continue';
+dou (%upper(reply) = 'Y');
+   dsply msg '' reply;
+enddo;
 
-   msg = 'Press Y to continue';
-   Dou (%upper(reply) = 'Y');
-      dsply msg '' reply;
-   enddo;
-
-   Return;
-
-   on-exit success;
-
-      If not success;
-         // Handle abnormal end
-      Else;
-         // do *normal* program closure items - close files, etc
-      EndIf;
-
-end-proc;
+*inlr = *on;
+Return;

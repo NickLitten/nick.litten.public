@@ -59,7 +59,7 @@
 ///
 /// Modification History:
 ///   V.000 2026-02-03 | Nick Litten | Initial creation - modular email service
-///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///   V.001 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///
 
 ctl-opt

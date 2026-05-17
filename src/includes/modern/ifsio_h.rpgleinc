@@ -26,19 +26,19 @@
       /endif
 
       /define IFSIO_H  
-      // *********************************************************************
+      // ******
       //  Some CCSID definitions that I've found useful
-      // *********************************************************************
+      // ******
       dcl-c CP_MSDOS 437;
       dcl-c CP_ISO8859_1 819;
       dcl-c CP_WINDOWS 1252;
       dcl-c CP_UTF8 1208;
       dcl-c CP_UCS2 1200;
       dcl-c CP_CURJOB 0;
-      // *********************************************************************
+      // ******
       //   Flags for use in open()
       //  More than one can be used -- add them together.
-      // *********************************************************************
+      // ******
       //   00000000000000000000000000000001          Reading Only
       dcl-c O_RDONLY 1;
       //   00000000000000000000000000000010          Writing Only
@@ -91,30 +91,30 @@
       //   00100000000000000000000000000000          Large file access
       //                                             (for >2GB files)
       dcl-c O_LARGEFILE 536870912;
-      // *********************************************************************
+      // ******
       //  Access mode flags for access() and accessx()
       //    F_OK = File Exists
       //    R_OK = Read Access
       //    W_OK = Write Access
       //    X_OK = Execute or Search
-      // *********************************************************************
+      // ******
       dcl-c F_OK 0;
       dcl-c R_OK 4;
       dcl-c W_OK 2;
       dcl-c X_OK 1;
-      // *********************************************************************
+      // ******
       //  class of users flags for accessx()
       //    ACC_SELF = Check access based on effective uid/gid
       //    ACC_INVOKER = Check access based on real uid/gid
       //                  ( this is equvalent to calling access() )
       //    ACC_OTHERS = Check access of someone not the owner
       //    ACC_ALL = Check access of all users
-      // *********************************************************************
+      // ******
       dcl-c ACC_SELF 0;
       dcl-c ACC_INVOKER 1;
       dcl-c ACC_OTHERS 8;
       dcl-c ACC_ALL 32;
-      // *********************************************************************
+      // ******
       //       Mode Flags.
       //          basically, the mode parm of open(), creat(), chmod(),etc
       //          uses 9 least significant bits to determine the
@@ -123,7 +123,7 @@
       //            access:     R W X    R W X    R W X
       //            bit:        8 7 6    5 4 3    2 1 0
       //  (This is accomplished by adding the flags below to get the mode)
-      // *********************************************************************
+      // ******
       //                                          owner authority
       dcl-c S_IRUSR 256;
       dcl-c S_IWUSR 128;
@@ -146,25 +146,25 @@
       dcl-c S_ISGID 1024;
       //                                          Set effective UID
       dcl-c S_ISUID 2048;
-      // *********************************************************************
+      // ******
       //  My own special MODE shortcuts for open() (instead of those above)
-      // *********************************************************************
+      // ******
       dcl-c M_RDONLY const(292);
       dcl-c M_RDWR const(438);
       dcl-c M_RWX const(511);
-      // *********************************************************************
+      // ******
       //  "whence" constants for use with seek(), lseek() and others
-      // *********************************************************************
+      // ******
       /if not defined(SEEK_WHENCE_VALUES)
       dcl-c SEEK_SET CONST(0);
       dcl-c SEEK_CUR CONST(1);
       dcl-c SEEK_END CONST(2);
       /define SEEK_WHENCE_VALUES
       /endif
-      // *********************************************************************
+      // ******
       //  flags specified in the f_flags element of the ds_statvfs
       //    data structure used by the statvfs() API
-      // *********************************************************************
+      // ******
       dcl-c ST_RDONLY CONST(1);
       dcl-c ST_NOSUID CONST(2);
       dcl-c ST_CASE_SENSITITIVE CONST(4);
@@ -174,9 +174,9 @@
       dcl-c ST_NO_MOUNT_OVER CONST(64);
       dcl-c ST_NO_EXPORTS CONST(128);
       dcl-c ST_SYNCHRONOUS CONST(256);
-      // *********************************************************************
+      // ******
       //  Constants used by pathconf() API
-      // *********************************************************************
+      // ******
       dcl-c PC_CHOWN_RESTRICTED 0;
       dcl-c PC_LINK_MAX 1;
       dcl-c PC_MAX_CANON 2;
@@ -187,9 +187,9 @@
       dcl-c PC_PIPE_BUF 7;
       dcl-c PC_VDISABLE 8;
       dcl-c PC_THREAD_SAFE 9;
-      // *********************************************************************
+      // ******
       //  Constants used by sysconf() API
-      // *********************************************************************
+      // ******
       dcl-c SC_CLK_TCK 2;
       dcl-c SC_NGROUPS_MAX 3;
       dcl-c SC_OPEN_MAX 4;
@@ -197,7 +197,7 @@
       dcl-c SC_CCSID 10;
       dcl-c SC_PAGE_SIZE 11;
       dcl-c SC_PAGESIZE 12;
-      // *********************************************************************
+      // ******
       //  File Information Structure (stat)
       //    struct stat {
       //      mode_t         st_mode;       /* File mode                       
@@ -227,7 +227,7 @@
       //      char           st_reserved1[36]; /* Reserved                 @B4A
       //   };
       //                                                                   @A2A
-      // *********************************************************************
+      // ******
       dcl-ds statds INZ qualified BASED(Template);
         st_mode uns(10);
         st_ino uns(10);
@@ -254,7 +254,7 @@
         st_ino_gen_id uns(10);
       end-ds statds;
 
-      // *********************************************************************
+      // ******
       //  File Information Structure, Large File Enabled (stat64)
       //    struct stat64 {                                                    */
       //      mode_t         st_mode;       /* File mode                       */
@@ -284,7 +284,7 @@
       //      char           st_reserved1[26]; /* Reserved            @B4A @B5C*/
       //      unsigned short st_ccsid;      /* Object data ccsid           @AAA*/
       //   };                                                                  */
-      // *********************************************************************
+      // ******
       dcl-ds statds64 INZ qualified BASED(Template);
         st_mode uns(10);
         st_ino uns(10);
@@ -309,7 +309,7 @@
         st_reserved1 char(26);
         st_ccsid uns(5);
       end-ds statds64;
-      // *********************************************************************
+      // ******
       //  ds_statvfs - data structure to receive file system info
       //    f_bsize   = file system block size (in bytes)
       //    f_frsize  = fundamental block size in bytes.
@@ -338,7 +338,7 @@
       //   Since f_basetype is null-terminated, you should read it
       //   in ILE RPG with:
       //        myString = %str(%addr(ds_statvfs.f_basetype))
-      // *********************************************************************
+      // ******
       dcl-ds ds_statvfs INZ qualified BASED(Template);
         f_bsize uns(10);
         f_frsize uns(10);
@@ -359,7 +359,7 @@
         f_basetype char(80);
       end-ds ds_statvfs;
 
-      // *********************************************************************
+      // ******
       //  Group Information Structure (group)
       //   struct group {
       //         char    *gr_name;        /* Group name.                      */
@@ -367,14 +367,14 @@
       //         char    **gr_mem;        /* A null-terminated list of pointers
       //                                     to the individual member names.  */
       //   };
-      // *********************************************************************
+      // ******
       dcl-ds group INZ qualified BASED(Template);
         gr_name pointer;
         gr_gid uns(10);
         gr_mem pointer DIM(256);
       end-ds group;
 
-      // *********************************************************************
+      // ******
       //  User Information Structure (passwd)
       //  (Don't let the name fool you, this structure does not contain
       //   any password information.  Its named after the UNIX file that
@@ -386,7 +386,7 @@
       //         char    *pw_dir;             /* Initial working directory.   */
       //         char    *pw_shell;           /* Initial user program.        */
       //    };
-      // *********************************************************************
+      // ******
       dcl-ds passwd INZ qualified BASED(Template);
         pw_name pointer;
         pw_uid uns(10);
@@ -395,19 +395,19 @@
         pw_shell pointer;
       end-ds passwd;
 
-      // *********************************************************************
+      // ******
       //  File Time Structure (utimbuf)
       //  struct utimbuf {
       //     time_t     actime;           /*  access time       */
       //     time_t     modtime;          /*  modification time */
       //  };
-      // *********************************************************************
+      // ******
       dcl-ds utimbuf INZ qualified BASED(Template);
         actime int(10);
         modtime int(10);
       end-ds utimbuf;
 
-      // *********************************************************************
+      // ******
       //  Directory Entry Structure (dirent)
       //  struct dirent {
       //    char           d_reserved1[16];  /* Reserved                       */
@@ -423,7 +423,7 @@
       //                                      * excluding NULL terminator      */
       //    char           d_name[_QP0L_DIR_NAME]; /* Name...null terminated   */
       //  };
-      // *********************************************************************
+      // ******
       dcl-ds dirent INZ qualified BASED(Template);
         d_reserv1 char(16);
         d_fileno_gen_idd_fileno uns(10);
@@ -438,13 +438,13 @@
         d_name char(640);
       end-ds dirent;
       
-      // *********************************************************************
+      // ******
       //  I/O Vector Structure
       //      struct iovec {
       //         void    *iov_base;
       //         size_t  iov_len;
       //      }
-      // *********************************************************************
+      // ******
       /if not defined(IOVEC_DS_DEFINED)
       dcl-ds iovec INZ qualified BASED(p_iovec);
         iov_base pointer;
@@ -1152,4 +1152,4 @@
         io_vector  like(iovec) dim(256) options(*varsize);
         vector_len int(10) value;
       end-pr writev;
-      // *********************************************************************  
+      // ******  

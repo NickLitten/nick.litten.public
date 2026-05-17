@@ -2,7 +2,7 @@
 /* EMLCSVFILE - Email CSV File                                  */
 /* ------------------------------------------------------------ */
 /* Program.......... EMLCSVFILE                                 */
-/* Author........... nick@nicklitten.com                        */
+/* Author........... Nick Litten                                */
 /* Calling Program.. *NONE                                      */
 /* Calling Command.. EMLCSVFILE                                 */
 /* Function......... Simple example Control Language Program    */
@@ -15,18 +15,49 @@
 /*                   SRCFILE(library/QCLLESRC)                  */
 /*                   SRCMBR(EMLCSVFILE)                         */
 /* -------------------------------------------------------------*/
-/* Note: Minimal error handling to show simple code example     */
+/* Purpose: Educational example demonstrating:                  */
+/*   - Database file to CSV conversion                          */
+/*   - IFS file creation and management                         */
+/*   - Email with attachments using SNDSMTPEMM                  */
+/*   - CPYTOIMPF for CSV export                                 */
+/*   - User home directory management                           */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - Converts DB2 file to CSV format                          */
+/*   - Creates user-specific IFS directory                      */
+/*   - Exports file with proper CSV formatting                  */
+/*   - Sends email with CSV attachment                          */
+/*   - Cleans up temporary files after sending                  */
+/*   - Minimal error handling for simplicity                    */
+/* -------------------------------------------------------------*/
+/* Usage: CALL EMLCSVFILE PARM('MYFILE    MYLIB     ' +         */
+/*                              'user@example.com' +            */
+/*                              'Monthly Report' +              */
+/*                              'Please find attached report')  */
 /* -------------------------------------------------------------*/
 /* Parameters:                                                  */
-/*   &DATAPARM - File name and library (20 chars)               */
-/*   &EML      - Email recipient address (255 chars)            */
-/*   &SUBJECT  - Email subject line (100 chars)                 */
-/*   &BODY     - Email body text (400 chars)                    */
+/*   &DATAPARM - Input - CHAR(20) - File name and library       */
+/*               Format: 'FILENAME  LIBRARY   '                 */
+/*   &EML      - Input - CHAR(255) - Email recipient address    */
+/*   &SUBJECT  - Input - CHAR(100) - Email subject line         */
+/*   &BODY     - Input - CHAR(400) - Email body text            */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - SMTP email must be configured                            */
+/*   - User must have authority to create IFS directories       */
+/*   - Source file must exist and be readable                   */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i IFS Programming Guide                              */
+/*   - CPYTOIMPF Command Reference                              */
+/*   - SNDSMTPEMM Command Reference                             */
+/*   - https://www.nicklitten.com/ibm-i-email-csv/              */
 /* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2022.04.01 V01 Initial creation                   */
 /* NickLitten 2026.04.04 V02 Standardized header block          */
+/* Bob AI     2026.05.14 V03 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
 
 PGM PARM(&DATAPARM &EML &SUBJECT &BODY)

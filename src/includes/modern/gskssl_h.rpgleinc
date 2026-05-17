@@ -26,11 +26,11 @@
         // * This is a /copy file containing the constants, prototypes
         // * and structures needed to call IBM's Global Secure Toolkit
 
-        // ***************************************************************
+        // 
         //   These errors may be returned by any of the GSKit functions:
         //   (exception: _INVALID_HANDLE & _INVALID_STATE are never
         //               returned by the 'open' function)
-        // ***************************************************************
+        // 
         dcl-c GSK_OK const(0) ;
         dcl-c GSK_INVALID_HA const(1) ;
         dcl-c GSK_API_NOT_AV const(2) ;
@@ -46,9 +46,9 @@
         dcl-c GSK_ERROR_UNKN const(12);
 
 
-        // ***************************************************************
+        // 
         //  These errors may be returned by any of the '_open' functions
-        // ***************************************************************
+        // 
         dcl-c GSK_OPEN_CIPHE const(101) ;
         dcl-c GSK_KEYFILE_IO const(102) ;
         dcl-c GSK_KEYFILE_IN const(103) ;
@@ -59,23 +59,23 @@
         dcl-c GSK_ERROR_LOAD const(108);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the gsk_enviornment_init function:
-        // ***************************************************************
+        // 
         dcl-c GSK_NO_KEYFILE const(201) ;
         dcl-c GSK_KEYRING_OP extfld const(202) ;
         dcl-c GSK_RSA_TEMP_K extfld const(203);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by all '_close' functions:
-        // ***************************************************************
+        // 
         dcl-c GSK_CLOSE_FAIL const(301);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the 'gsk_secure_soc_init' function:
-        // ***************************************************************
+        // 
         dcl-c GSK_ERROR_BAD_ const(401) ;
         dcl-c GSK_ERROR_NO_C const(402) ;
         dcl-c GSK_ERROR_NO_C extfld const(403) ;
@@ -106,23 +106,23 @@
         dcl-c GSK_ERROR_NO_P const(428);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the read and write functions:
-        // ***************************************************************
+        // 
         dcl-c GSK_INVALID_BU const(501);
         dcl-c GSK_WOULD_BLOC const(502);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the gsk_secure_soc_misc function:
-        // ***************************************************************
+        // 
         dcl-c GSK_ERROR_NOT_ const(601) ;
         dcl-c GSK_MISC_INVAL const(602);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the gsk_attribute_set_ functions:
-        // ***************************************************************
+        // 
         dcl-c GSK_ATTRIBUTE_ const(701) ;
         dcl-c GSK_ATTRIBUTE_ const(702) ;
         dcl-c GSK_ATTRIBUTE_ ind const(703) ;
@@ -130,26 +130,26 @@
         dcl-c GSK_ATTRIBUTE_ C const(705);
 
 
-        // ***************************************************************
+        // 
         //   These may be returned by the cert prompt callback routine:
-        // ***************************************************************
+        // 
         dcl-c GSK_SC_OK C ind 1501) ;
         dcl-c GSK_SC_CANCEL zoned(0:C) NST(1502);
 
 
-        // ***************************************************************
+        // 
         //   Reserve ranges for return values & enumerated types on a
         //    per-platform basis:
-        // ***************************************************************
+        // 
         dcl-c GSK_AS400_BASE  ONST(6000) ;
         dcl-c GSK_AS400_BASE const(6999) ;
         dcl-c GSK_OS390_BASE  ONST(7000) ;
         dcl-c GSK_OS390_BASE const(7999);
 
 
-        // ***************************************************************
+        // 
         //   AS/400 specific errors:
-        // ***************************************************************
+        // 
         dcl-c GSK_AS400_ERRO const(6000) ;
         dcl-c GSK_AS400_ERRO const(6001) ;
         dcl-c GSK_AS400_ERRO const(6002) ;
@@ -170,7 +170,7 @@
         dcl-s gsk_handle pointer;
 
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_MISC_ID_T
         //    {
         //      GSK_RESET_CIPHER = 100,  /* Rerun handshake */
@@ -178,13 +178,13 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_MISC_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_MISC_ID;
-        // ***************************************************************
+        // 
         dcl-s GSK_MISC_ID int(10);
         dcl-c GSK_RESET_CIPH const(100) ;
         dcl-c GSK_RESET_SESS const(101);
 
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_BUF_ID_T
         //    {
         //      GSK_USER_DATA = 200,
@@ -205,7 +205,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_BUF_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_BUF_ID;
-        // ***************************************************************
+        // 
         dcl-s GSK_BUF_ID int(10) ;
         dcl-c GSK_USER_DATA zoned(0:C) NST(200);
         dcl-c GSK_KEYRING_FI const(201) ;
@@ -224,7 +224,7 @@
         dcl-c GSK_OS400_APPL const(6999);
 
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_NUM_ID_T
         //    {
         //      GSK_FD = 300,
@@ -238,7 +238,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_NUM_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_NUM_ID;
-        // ***************************************************************
+        // 
         dcl-s GSK_NUM_ID int(10) ;
         dcl-c GSK_FD C zoned(0:30) ) ;
         dcl-c GSK_V2_SESSION const(301) ;
@@ -250,7 +250,7 @@
         dcl-c GSK_HANDSHAKE_ const(6998);
 
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_ENUM_ID_T
         //    {
         //      GSK_CLIENT_AUTH_TYPE = 401,
@@ -263,7 +263,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_ENUM_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_ENUM_ID ;
-        // ***************************************************************
+        // 
         dcl-s GSK_ENUM_ID int(10) ;
         dcl-c GSK_CLIENT_AUT const(401);
         dcl-c GSK_SESSION_TY const(402) ;
@@ -275,7 +275,7 @@
         dcl-c GSK_SERVER_AUT const(410);
 
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_ENUM_VALUE_T
         //    {
         //      GSK_NULL = 500,                         /* Use for initial value   *
@@ -299,7 +299,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_ENUM_VALUE_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_ENUM_VALUE ;
-        // ***************************************************************
+        // 
         dcl-s GSK_ENUM_VALUE int(10) ;
         dcl-c GSK_NULL C zoned(0:T() 00) ;
         dcl-c GSK_CLIENT_AUT const(503) ;
@@ -322,7 +322,7 @@
         dcl-c GSK_SERVER_AUT const(535) ;
         dcl-c GSK_OS400_CLIE const(6995);
 
-        // ***************************************************************
+        // 
         //    /* The following enumerated type is the identifier for the data type
         //       of the elements of the array of information in the gsk_cert_data
         //       structure. Note that depending on the specific certificate, some
@@ -355,7 +355,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_CERT_DATA_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_CERT_DATA_ID;
-        // ***************************************************************
+        // 
         dcl-s GSK_CERT_DATA_ char(1);
         dcl-c CERT_BODY_DER zoned(0:C) NST(600);
         dcl-c CERT_BODY_BASE const(601);
@@ -385,14 +385,14 @@
         dcl-c CERT_VALID_FRO const(662);
         dcl-c CERT_VALID_TO zoned(0:C) NST(663);
 
-        // ***************************************************************
+        // 
         //    typedef struct gsk_cert_data_elem_t
         //    {
         //      GSK_CERT_DATA_ID cert_data_id;  /* identifer of each data type */
         //      char *cert_data_p;  /* pointer to data */
         //      int cert_data_l;  /* length of data (not including trailing null) */
         //    } gsk_cert_data_elem;
-        // ***************************************************************
+        // 
         dcl-c p_gsk_cert_datpointer;
         dcl-c GSK_cert_data_ extfld ALIGN BASED(p_gsk_cert_data_elem);
         dcl-c cert_data_id  like(GSK_CERT_DATA_ID);
@@ -400,7 +400,7 @@
         dcl-c cert_data_l int(10);
         dcl-c cert_padding char(12);
 
-        // ***************************************************************
+        // 
         //    typedef enum GSK_CERT_ID_T
         //    {
         //      GSK_PARTNER_CERT_INFO = 700,
@@ -408,7 +408,7 @@
         //                   /* Force enum size to 4 bytes - do not use this value *
         //      GSK_AS400_CERT_FINAL = GSK_AS400_4BYTE_VALUE
         //    } GSK_CERT_ID ;
-        // ***************************************************************
+        // 
         dcl-s GSK_CERT_ID int(10) ;
         dcl-c GSK_PARTNER_CE const(700) ;
         dcl-c GSK_LOCAL_CERT const(701);

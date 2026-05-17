@@ -1,9 +1,33 @@
-      * ------------------------------------------------------------====
-      * Display File: SAMPLESFL
-      * Description: Single page subfile for SAMPLEDB country table
-      * Author: Bob
+      * ---------------------------------------------------------------------------
+      * Display File: SAMPLESFL - Country List Subfile (Single Page)
+      * Description: Interactive subfile display for European country database
+      *
+      * Purpose:
+      *   - Display country information in a single-page subfile format
+      *   - Allow selection of countries for detailed view
+      *   - Demonstrate subfile programming with SQL data source
+      *
+      * Features:
+      *   - Single page subfile (18 records per page)
+      *   - Selection option (5=Display Details)
+      *   - Detail overlay screen for selected country
+      *   - Function key support (F3/F5/F12, PageUp/PageDown)
+      *   - Color-coded display elements
+      *   - Record count display
+      *
+      * Record Formats:
+      *   SFLREC    - Subfile record (country list)
+      *   SFLCTL    - Subfile control
+      *   FOOTREC   - Footer with function keys
+      *   DETAILREC - Detail overlay display
+      *
+      * Usage:
+      *   Used by SAMPLESFL program to display SAMPLEDB country data
+      *   Supports interactive selection and detail viewing
+      *
+      * Author: Nick Litten
       * Created: 2026-04-17
-      * ------------------------------------------------------------====
+      * ---------------------------------------------------------------------------
      A                                      DSPSIZ(27 132 *DS3)
      A                                      PRINT
      A                                      INDARA

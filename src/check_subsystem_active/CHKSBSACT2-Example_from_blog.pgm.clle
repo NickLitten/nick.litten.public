@@ -19,17 +19,22 @@
 /*                                                                          */
 /* Usage: CALL CHKSBSACT2                                                   */
 /*                                                                          */
-/* API Used:                                                                */
-/*   - QWDRSBSD: Retrieve Subsystem Description                            */
+/* Parameters:                                                              */
+/*   None                                                                   */
+/*                                                                          */
+/* Dependencies:                                                            */
+/*   - API: QWDRSBSD (Retrieve Subsystem Description)                      */
 /*   - Format: SBSI0100                                                    */
 /*   - Status at positions 29-38 in return structure                       */
 /*                                                                          */
 /* Reference:                                                               */
 /* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status*/
+/* https://www.ibm.com/docs/en/i/7.5?topic=ssw_ibm_i_75/apis/qwdrsbsd.html */
 /*                                                                          */
 /* Modification History:                                                    */
-/* V.000 2025-xx-xx | Nick Litten | Initial creation from blog example     */
-/* V.001 2026-04-18 | Bob AI | Applied coding standards                    */
+/*   1.0 2025-01-01 | Nick Litten | Initial creation from blog example     */
+/*   1.1 2026-04-18 | Nick Litten | Applied coding standards                    */
+/*                                                                          */
 
 PGM
 

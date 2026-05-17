@@ -23,22 +23,24 @@
 ///   - Version tracking via copyright control option
 ///   - PCML embedding for web service compatibility
 ///
-/// Control Options:
-///   - main(mainline): Uses modern main procedure pattern
-///   - pgminfo(*pcml:*module): Embeds parameter info for IWS
-///   - copyright: Stores version info accessible via DSPPGM
-///
 /// Usage: CALL HELLOINC
 ///
-/// Copybooks Required:
+/// Parameters:
+///   None
+///
+/// Dependencies:
 ///   - header.rpgleinc: Standard control options and setup
 ///   - variables.rpgleinc: Common variable declarations
 ///
-/// Modification History:
-///   V.000 2024.11.22 | Nick Litten | Initial creation
-///   V.001 2024.12.11 | Nick Litten | Christmas update
-///   2026-04-02 | Bob AI | Added comprehensive documentation
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=programming-ile-rpg
 ///
+/// Modification History:
+///   1.0 2024-11-22 | Nick Litten | Initial creation
+///   1.1 2024-12-11 | Nick Litten | Christmas update
+///   1.2 2026-04-02 | Nick Litten | Added comprehensive documentation
+///
+
 
 /include 'header.rpgleinc'
 
@@ -47,29 +49,16 @@ ctl-opt
 
 /include 'variables.rpgleinc'
 
-Dcl-Proc mainline;
-   Dcl-Pi mainline;
-   end-pi;
+Dcl-S msg char(50);
+Dcl-S reply char(1);
 
-   Dcl-S msg char(50);
-   Dcl-S reply char(1);
+msg = 'Hello World!';
+dsply msg;
 
-   msg = 'Hello World!';
-   dsply msg;
+msg = 'Press Y to continue';
+Dou (%upper(reply) = 'Y');
+   dsply msg '' reply;
+enddo;
 
-   msg = 'Press Y to continue';
-   Dou (%upper(reply) = 'Y');
-      dsply msg '' reply;
-   enddo;
-
-   Return;
-
-   on-exit success;
-
-      If not success;
-         // Handle abnormal end
-      Else;
-         // do *normal* program closure items - close files, etc
-      EndIf;
-
-end-proc;
+*inlr = *on;
+Return;

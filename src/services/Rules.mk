@@ -39,10 +39,16 @@ NICKSRV.SRVPGM: NICKSRV-Binder_Source.bnd NICKSRV.MODULE
 EMAILSRV.MODULE: EMAILSRV-Email_Service.sqlrpgle
 
 # EMAILSRV Service Program - Email service program
-EMAILSRV.SRVPGM: EMAILSRV.bnd EMAILSRV.MODULE
+EMAILSRV.SRVPGM: EMAILSRV-Email_Service.bnd EMAILSRV.MODULE
 
-# USRPROFSRV Module - User profile service module
-USRPROFSRV.MODULE: USRPROFSRV-User_Profile_Service.sqlrpgle
+# USRPRFSRV Module - User profile service module
+USRPRFSRV.MODULE: USRPRFSRV-User_Profile_Service.sqlrpgle
 
-# USRPROFSRV Service Program - User profile service program
-USRPROFSRV.SRVPGM: USRPROFSRV-User_Profile_Service.bnd USRPROFSRV.MODULE
+# USRPRFSRV Service Program - User profile service program
+USRPRFSRV.SRVPGM: USRPRFSRV-User_Profile_Service.bnd USRPRFSRV.MODULE
+
+# MYBNDDIR Binding Directory - Sample binding directory for examples
+MYBNDDIR.BNDDIR: MYBNDDIR-Nicks_Sample_Binding_Directory.bnddir
+
+# PWDMON Binding Directory - Password monitor service program bindings
+PWDMON.BNDDIR: PWDMON-Password_Monitor_Binding_Directory.bnddir

@@ -1,3 +1,1 @@
-**free
-
-Dcl-S SUCCESS ind inz(*off);
+      dcl-s success ind inz(*off);

@@ -20,7 +20,7 @@
 ///   - Loads exactly 9999 records into subfile
 ///   - Each record displays incrementing counter (1-9999)
 ///   - Uses full free-format syntax throughout
-///   - Modern Dcl-F and Dcl-S declarations
+///   - Modern Dcl-F and dcl-s declarations
 ///   - CLEAR opcode for variable initialization
 ///   - F3=Exit function key support
 ///   - Page up/down scrolling through records
@@ -50,7 +50,7 @@
 ///
 /// Modification History:
 ///   V.000 2020-01-15 | Nick Litten | Initial creation - IBM i tutorial
-///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///   V.001 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///
 
 ctl-opt

@@ -24,11 +24,41 @@
 /*   - ASP group switching with SETASPGRP                       */
 /*   - Comprehensive error messages                             */
 /* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - DOUNTIL loop for robust user interaction                 */
+/*   - Maximum retry counter (3 attempts)                       */
+/*   - Comprehensive error handling with MONMSG                 */
+/*   - Case-insensitive input using %UPPER function             */
+/*   - Validates user response against allowed values           */
+/*   - Sets job ASP group based on selection                    */
+/*   - Detailed error messages with MSGID and MSGDTA            */
+/*   - Graceful exit after max retries                          */
+/*   - Sends confirmation message to job log                    */
+/*   - Navigates to MAIN menu after completion                  */
+/* -------------------------------------------------------------*/
+/* Usage: CALL IASPLOOP                                         */
+/*        (Interactive - prompts user for IASP selection)       */
+/*        Maximum 3 retry attempts before exit                  */
+/* -------------------------------------------------------------*/
+/* Parameters: None                                             */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - IASP1 and IASP2 must be configured on the system         */
+/*   - User must have authority to SETASPGRP command            */
+/*   - MAIN menu must exist for GO MENU(MAIN)                   */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i CL Programming Guide                               */
+/*   - SETASPGRP Command Reference                              */
+/*   - DOUNTIL Loop Control Structure                           */
+/*   - https://www.nicklitten.com/ibm-i-error-handling/         */
+/* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2025.02.25 V01 Initial creation                   */
 /* NickLitten 2026.02.05 V02 Enhanced with error handling       */
 /* NickLitten 2026.04.04 V03 Standardized header block          */
+/* Bob AI     2026.05.14 V04 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
 
 PGM

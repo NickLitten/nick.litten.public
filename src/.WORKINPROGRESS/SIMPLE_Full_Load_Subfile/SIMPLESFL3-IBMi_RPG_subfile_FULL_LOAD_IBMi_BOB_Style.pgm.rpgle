@@ -53,8 +53,8 @@
 ///   V.000 1994-05-23 | Nick Litten | Initial creation
 ///   V.001 2007-10-03 | Nick Litten | Converted to free format RPG
 ///   V.002 2018-05-25 | Nick Litten | Updated as part of Video RPG Upgrade Tour
-///   V.003 2026-02-03 | Bob AI | Enhanced with modern practices and error handling
-///   V.004 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///   V.003 2026-02-03 | Nick Litten | Enhanced with modern practices and error handling
+///   V.004 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///
 
 ctl-opt

@@ -2,7 +2,7 @@
 /* CLBNDPGM - Simple Bound CL Program                           */
 /* ------------------------------------------------------------ */
 /* Program.......... CLBNDPGM                                   */
-/* Author........... nick@nicklitten.com                        */
+/* Author........... Nick Litten                                */
 /* Calling Program.. *NONE                                      */
 /* Calling Command.. *NONE                                      */
 /* Function......... Simple CLLE bound program that receives a  */
@@ -17,10 +17,40 @@
 /* Note: Copybook location defined in "Include Paths" section   */
 /*       of VS Code for IBM i - Project Explorer                */
 /* -------------------------------------------------------------*/
+/* Purpose: Educational example demonstrating:                  */
+/*   - ILE bound CL program creation                            */
+/*   - Parameter passing in CLLE                                */
+/*   - Use of copybook includes (INCLUDE SRCSTMF)               */
+/*   - Sending completion messages                              */
+/*   - Basic CLLE program structure                             */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - Single parameter input (20 characters)                   */
+/*   - Uses header.clleinc copybook for variable declarations   */
+/*   - Sends parameter value as completion message              */
+/*   - Demonstrates ILE bound program compilation               */
+/* -------------------------------------------------------------*/
+/* Usage: CALL CLBNDPGM PARM('Your message here')               */
+/*        Example: CALL CLBNDPGM PARM('Hello from CL')          */
+/* -------------------------------------------------------------*/
+/* Parameters:                                                  */
+/*   &MSG - Input - CHAR(20) - Message text to display          */
+/*          Defined in header.clleinc copybook                  */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - header.clleinc copybook must be in include path          */
+/*   - Include path configured in VS Code Project Explorer      */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i CL Programming Guide                               */
+/*   - ILE Concepts (SC41-5606)                                 */
+/*   - https://www.nicklitten.com/ibm-i-clle-examples/          */
+/* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2024.11.25 V01 Initial creation                   */
 /* NickLitten 2026.04.04 V02 Standardized header block          */
+/* Bob AI     2026.05.14 V03 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
 
 PGM PARM(&MSG)

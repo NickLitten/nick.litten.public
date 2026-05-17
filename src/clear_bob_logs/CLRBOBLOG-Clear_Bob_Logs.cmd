@@ -15,9 +15,15 @@
 /*   CLRBOBLOG HOMEDIR('/home/nicklitten')                                   */
 /*   CLRBOBLOG HOMEDIR('/home/myuser')                                       */
 /*                                                                            */
+/* Reference:                                                                 */
+/*   - IBM i IFS Programming Guide                                           */
+/*   - QSH Command Reference                                                 */
+/*   - https://www.nicklitten.com/ibm-i-ifs-cleanup/                         */
+/*                                                                            */
 /* Modification History:                                                      */
 /* v.001 2026-02-20 - IBM Bob - Created                                       */
 /* v.002 2026-02-21 - IBM Bob - Added HOMEDIR parameter                      */
+/* v.003 2026-05-14 - Bob AI - Added Reference section                       */
 /******************************************************************************/
 
              CMD        PROMPT('Clear Bob Log Files')

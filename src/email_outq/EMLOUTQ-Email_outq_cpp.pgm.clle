@@ -2,7 +2,7 @@
 /* EMLOUTQ - Email Output Queue Spooled Files                   */
 /* ------------------------------------------------------------ */
 /* Program.......... EMLOUTQ                                    */
-/* Author........... nick@nicklitten.com                        */
+/* Author........... Nick Litten                                */
 /* Calling Program.. *NONE                                      */
 /* Calling Command.. EMLOUTQ                                    */
 /* Function......... Generates a list of all spool files in an  */
@@ -16,20 +16,59 @@
 /*                   SRCFILE(library/QCLLESRC)                  */
 /*                   SRCMBR(EMLOUTQ)                            */
 /* -------------------------------------------------------------*/
+/* Purpose: Advanced example demonstrating:                     */
+/*   - IBM i API usage (QUSCRTUS, QUSLSPL, QUSRTVUS, QUSRSPLA)  */
+/*   - User space creation and manipulation                     */
+/*   - Spooled file processing and conversion                   */
+/*   - PDF and TXT file generation from spool files             */
+/*   - Email automation with attachments                        */
+/*   - Complex error handling with API error codes              */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - Lists all spooled files from specified output queue      */
+/*   - Converts spool files to PDF or TXT format                */
+/*   - Emails each file as attachment                           */
+/*   - Optional: Skip held spooled files                        */
+/*   - Optional: Delete spooled files after emailing            */
+/*   - Marks files as emailed in user data if not deleted       */
+/*   - Comprehensive API error handling                         */
+/*   - Progress messages for each file processed                */
+/* -------------------------------------------------------------*/
+/* Usage: CALL EMLOUTQ PARM('MYOUTQ    MYLIB     ' +            */
+/*                          '/tmp' +                            */
+/*                          'admin@example.com' +               */
+/*                          'Spool Files' +                     */
+/*                          '*PDF' +                            */
+/*                          '*NO' +                             */
+/*                          '*NO')                              */
+/* -------------------------------------------------------------*/
 /* Parameters:                                                  */
-/*   &OUTQPARM  - Output queue name and library (20 chars)      */
-/*   &IFS_FLR   - IFS folder for temporary PDF storage          */
-/*   &EMAIL     - Email recipient address                       */
-/*   &SUBJECT   - Email subject line                            */
-/*   &TYPE      - Attachment format (*PDF or *TXT)              */
-/*   &IGNOREHLD - Ignore held spooled files (*YES/*NO)          */
-/*   &DELETE    - Delete spooled files after emailing (*YES/*NO)*/
+/*   &OUTQPARM  - Input - CHAR(20) - Output queue name/library  */
+/*   &IFS_FLR   - Input - CHAR(100) - IFS folder for temp files */
+/*   &EMAIL     - Input - CHAR(100) - Email recipient address   */
+/*   &SUBJECT   - Input - CHAR(100) - Email subject line        */
+/*   &TYPE      - Input - CHAR(4) - Attachment format (*PDF/*TXT)*/
+/*   &IGNOREHLD - Input - CHAR(4) - Ignore held files (*YES/*NO)*/
+/*   &DELETE    - Input - CHAR(4) - Delete after email (*YES/*NO)*/
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - SMTP email must be configured                            */
+/*   - User must have authority to output queue                 */
+/*   - IFS folder must exist and be writable                    */
+/*   - APIs: QUSCRTUS, QUSLSPL, QUSRTVUS, QUSRSPLA, QUSDLTUS    */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i API Reference (User Space APIs)                    */
+/*   - CPYSPLF Command Reference                                */
+/*   - SNDSMTPEMM Command Reference                             */
+/*   - https://www.nicklitten.com/ibm-i-email-spool-files/      */
 /* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2017.10.04 V01 Initial creation                   */
 /* NickLitten 2021.05.07 V02 Fix 20 char field truncation      */
 /* NickLitten 2026.04.04 V03 Standardized header block          */
+/* Bob AI     2026.05.14 V04 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
 
              PGM        PARM(&OUTQPARM &IFS_FLR &EMAIL &SUBJECT &TYPE +

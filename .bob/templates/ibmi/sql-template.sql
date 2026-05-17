@@ -34,14 +34,14 @@
 --   {VERSION} {DATE} | {AUTHOR} | {CHANGE_DESCRIPTION}
 -- ---------------------------------------------------------------------------
 
--- ------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- Drop existing objects (if needed)
--- ------------------------------------------------------------------
--- DROP TABLE IF EXISTS {schema}.{table_name};
--- DROP VIEW IF EXISTS {schema}.{view_name};
--- DROP INDEX IF EXISTS {schema}.{index_name};
--- DROP PROCEDURE IF EXISTS {schema}.{procedure_name};
--- DROP FUNCTION IF EXISTS {schema}.{function_name};
+-- ---------------------------------------------------------------------------
+DROP TABLE IF EXISTS {schema}.{table_name};
+DROP VIEW IF EXISTS {schema}.{view_name};
+DROP INDEX IF EXISTS {schema}.{index_name};
+DROP PROCEDURE IF EXISTS {schema}.{procedure_name};
+DROP FUNCTION IF EXISTS {schema}.{function_name};
 
 -- ------------------------------------------------------------------
 -- Create Table

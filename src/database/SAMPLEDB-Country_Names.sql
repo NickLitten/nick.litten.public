@@ -1,9 +1,59 @@
--- ---------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- SQL Table: SAMPLEDB
 -- Description: European country information reference table
 -- Author: Nick Litten
--- Date: 2026-02-06
--- ---------------------------------------------------------------------
+-- Created: 2026-02-06
+-- ---------------------------------------------------------------------------
+-- Purpose: Store comprehensive European country information
+--   - ISO country codes and names
+--   - Geographic and demographic data
+--   - EU membership tracking
+--   - Currency information
+--
+-- Features:
+--   - Primary key on ISO 3166-1 alpha-2 country code
+--   - Check constraints for data validation
+--   - EU membership flag and join date tracking
+--   - Audit timestamps for record tracking
+--   - Multiple indexes for query optimization
+--   - Summary view for reporting
+--   - Complete European country dataset
+--
+-- Usage: Country reference data and EU membership queries
+--   SELECT * FROM SAMPLEDB WHERE EU_MEMBER = 'Y';
+--   SELECT * FROM SAMPLEDB WHERE REGION = 'Western Europe';
+--   SELECT * FROM V_SAMPLEDB_SUMMARY;
+--
+-- Columns:
+--   - COUNTRY_CODE: ISO 3166-1 alpha-2 code (primary key)
+--   - COUNTRY_NAME: Official English country name
+--   - COUNTRY_NAME_LOCAL: Local language country name
+--   - CAPITAL_CITY: Capital city name
+--   - REGION: Geographic region classification
+--   - POPULATION: Current population estimate
+--   - AREA_KM2: Land area in square kilometers
+--   - EU_MEMBER: EU membership flag (Y/N)
+--   - EU_JOIN_DATE: Date country joined EU
+--   - CURRENCY_CODE: ISO 4217 currency code
+--   - CURRENCY_NAME: Currency name
+--   - CREATED_AT: Record creation timestamp
+--   - UPDATED_AT: Last update timestamp
+--
+-- Indexes:
+--   - IDX_SAMPLEDB_NAME: Country name index
+--   - IDX_SAMPLEDB_REGION: Region index
+--   - IDX_SAMPLEDB_EU: EU membership index
+--
+-- Dependencies:
+--   None
+--
+-- Reference:
+--   https://www.ibm.com/docs/en/i/7.5?topic=reference-sql
+--   ISO 3166-1: https://www.iso.org/iso-3166-country-codes.html
+--
+-- Modification History:
+--   1.0 2026-02-06 | Nick Litten | Initial creation with European countries
+-- ---------------------------------------------------------------------------
 DROP INDEX IDX_SAMPLEDB_NAME;
 
 

@@ -18,7 +18,6 @@
 # Order matters - dependencies must be built before dependents
 # ---
 SUBDIRS := database \
-           binders \
            services \
            check_subsystem_active \
            cl_code_snippets \

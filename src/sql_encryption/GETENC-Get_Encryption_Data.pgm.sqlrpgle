@@ -55,9 +55,13 @@
 ///   - option(*srcstmt): Includes source statements
 ///   - datfmt(*ISO): ISO date format
 ///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=functions-encrypt-aes
+///
 /// Modification History:
-/// 1.0 2026-01-23 | Nick Litten | Initial creation
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+///   1.0 2026-01-23 | Nick Litten | Initial creation
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
+///
 
 /TITLE Customer Data Encryption Example
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
@@ -68,29 +72,29 @@ ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
 // Prototype for error handling
 // this would be your own error handling program called 'ERRORMSG'
 dcl-pr HandleError extpgm('ERRORMSG');
-  ErrorMsg varchar(256) const;
+   ErrorMsg varchar(256) const;
 end-pr;
 
 // Variable declarations
-dcl-s Password varchar(50) inz('MySuperSecretPassword123!');
-dcl-s Hint varchar(100) inz('The usual password we use for testing');
-dcl-s CustomerID varchar(10);
-dcl-s CustomerName varchar(50);
-dcl-s SSN varchar(11);
-dcl-s CreditCard varchar(20);
-dcl-s DecryptedSSN varchar(11);
-dcl-s DecryptedCard varchar(20);
-dcl-s DebugMSG varchar(52);
+Dcl-S Password varchar(50) inz('MySuperSecretPassword123!');
+Dcl-S Hint varchar(100) inz('The usual password we use for testing');
+Dcl-S CustomerID varchar(10);
+Dcl-S CustomerName varchar(50);
+Dcl-S SSN varchar(11);
+Dcl-S CreditCard varchar(20);
+Dcl-S DecryptedSSN varchar(11);
+Dcl-S DecryptedCard varchar(20);
+Dcl-S DebugMSG varchar(52);
 
 // Set up encryption password for this session
 exec sql
-  SET ENCRYPTION PASSWORD = :Password;
+  SET ENCRYPTION :PASSWORD = :Password;
 
 // Check for errors after setting password
-if sqlstate <> '00000';
-  HandleError('Failed to set encryption password: ' + sqlstate);
-  return;
-endif;
+If (sqlstate <> '00000');
+   HandleError('Failed to set encryption password: ' + sqlstate);
+   Return;
+EndIf;
 
 // Example: Insert a new customer with encrypted data
 CustomerID = 'CUST002';
@@ -105,15 +109,15 @@ exec sql
       :CUSTOMERID,
       :CUSTOMERNAME,
       :SSN,
-      encrypt_aes(:SSN, :PASSWORD, HINT => :HINT),
-      encrypt_aes(:CREDITCARD, :PASSWORD, HINT => :HINT)
+      encrypt_aes(:SSN, :PASSWORD, :HINT => :HINT),
+      encrypt_aes(:CREDITCARD, :PASSWORD, :HINT => :HINT)
     );
 
 // Check for insert errors
-if sqlstate <> '00000';
-  HandleError('Failed to insert customer: ' + sqlstate);
-  return;
-endif;
+If (sqlstate <> '00000');
+   HandleError('Failed to insert customer: ' + sqlstate);
+   Return;
+EndIf;
 
 // Example: Retrieve and decrypt customer data
 exec sql
@@ -128,17 +132,17 @@ exec sql
   from NICKLITTEN.CUSTENC
   where CUSTOMER_ID = :CUSTOMERID;
 
-if sqlstate = '00000';
-  // Display results (in a real app, you'd do something useful)
-  DebugMSG = ('Customer: ' + %trim(CustomerName));
-  dsply DebugMSG;
-  DebugMSG = ('SSN: ' + %trim(DecryptedSSN));
-  dsply DebugMSG;
-  DebugMSG = ('Card: ' + %trim(DecryptedCard));
-  dsply DebugMSG;
-else;
-  HandleError('Failed to retrieve customer: ' + sqlstate);
-endif;
+If (sqlstate = '00000');
+   // Display results (in a real app, you'd do something useful)
+   DebugMSG = ('Customer: ' + %trim(CustomerName));
+   dsply DebugMSG;
+   DebugMSG = ('SSN: ' + %trim(DecryptedSSN));
+   dsply DebugMSG;
+   DebugMSG = ('Card: ' + %trim(DecryptedCard));
+   dsply DebugMSG;
+Else;
+   HandleError('Failed to retrieve customer: ' + sqlstate);
+EndIf;
 
 *INLR = *ON;
-return;
+Return;

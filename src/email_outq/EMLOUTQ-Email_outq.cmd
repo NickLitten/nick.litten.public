@@ -15,8 +15,15 @@
 /*   EMLOUTQ OUTQ(QPRINT) RCP('user@example.com')                            */
 /*   EMLOUTQ OUTQ(MYLIB/MYOUTQ) RCP('admin@company.com') ATTACH(*PDF)        */
 /*                                                                            */
+/* Reference:                                                                 */
+/*   - IBM i Spooled File Management                                         */
+/*   - CPYSPLF Command Reference                                             */
+/*   - SNDSMTPEMM Command Reference                                          */
+/*   - https://www.nicklitten.com/ibm-i-email-spool-files/                   */
+/*                                                                            */
 /* Modification History:                                                      */
 /* v.001 2024 - Nick Litten - Created                                         */
+/* v.002 2026-05-14 - Bob AI - Added Reference section                       */
 /******************************************************************************/
 
              CMD        PROMPT('Email Output Queue')

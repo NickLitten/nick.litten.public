@@ -1,7 +1,7 @@
 **free
 
 ///
-/// Service Program: USRPROFSRV - User Profile Query Service
+/// Service Program: USRPRFSRV - User Profile Query Service
 ///
 /// Description: Production-quality service program providing reusable procedures
 ///              for querying IBM i user profile information, specifically focused
@@ -41,7 +41,7 @@
 ///   // Process userList.users(1) through userList.users(userList.count)
 ///
 /// Binding:
-///   Create with binder source USRPROFSRV.bnd
+///   Create with binder source USRPRFSRV.bnd
 ///   Used by PWDEXPILE password monitoring program
 ///
 /// Reference:
@@ -49,14 +49,14 @@
 ///
 /// Modification History:
 ///   V.000 2026-02-03 | Nick Litten | Initial creation - modular service program
-///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///   V.001 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///
 
 ctl-opt
   nomain
   thread(*serialize)
   option(*nodebugio:*srcstmt:*nounref)
-  copyright('USRPROFSRV | V.001 | User Profile Query Service')
+  copyright('USRPRFSRV | V.001 | User Profile Query Service')
   ;
 
 // ------------------------------------------------------------------------------

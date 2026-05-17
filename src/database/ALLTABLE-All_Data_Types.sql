@@ -1,9 +1,61 @@
--- ---------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- SQL Table: ALLTABLE
 -- Description: Comprehensive example of all IBM i SQL data types
 -- Author: Nick Litten
--- Date: 2026-04-03
--- ---------------------------------------------------------------------
+-- Created: 2026-04-03
+-- ---------------------------------------------------------------------------
+-- Purpose: Demonstrate all available IBM i SQL data types
+--   - Character, graphic, and binary string types
+--   - Numeric types (integer, decimal, floating point)
+--   - Date/time types with various precisions
+--   - Large object types (CLOB, BLOB, DBCLOB)
+--   - Advanced types (XML, DATALINK, ROWID, BOOLEAN, ARRAY)
+--
+-- Features:
+--   - Complete coverage of IBM i SQL data types
+--   - CCSID specifications for character and graphic fields
+--   - Identity column with auto-increment
+--   - Generated computed column
+--   - ROWID for unique row identification
+--   - Array type support (7.1+)
+--   - Boolean type support (7.3+)
+--
+-- Usage: Reference table for SQL data type examples
+--   CREATE TABLE mytable LIKE ALLTABLE;
+--   SELECT * FROM ALLTABLE WHERE ID_FLD = 1;
+--
+-- Columns:
+--   - ID_FLD: Auto-increment primary key
+--   - CHAR_FLD, VARCHAR_FLD: Character string types
+--   - GRAPHIC_FLD, VARGRAPHIC_FLD: DBCS graphic types
+--   - BINARY_FLD, VARBINARY_FLD: Binary string types
+--   - SMALLINT_FLD, INTEGER_FLD, BIGINT_FLD: Integer types
+--   - DECIMAL_FLD, NUMERIC_FLD: Exact decimal types
+--   - REAL_FLD, FLOAT_FLD, DOUBLE_FLD: Floating point types
+--   - DATE_FLD, TIME_FLD, TIMESTAMP_FLD: Date/time types
+--   - CLOB_FLD, BLOB_FLD, DBCLOB_FLD: Large object types
+--   - XML_FLD: XML document storage
+--   - DATALINK_FLD: External file reference
+--   - ROWID_FLD: System-generated unique identifier
+--   - BOOLEAN_FLD: True/false values
+--   - ARRAY_FLD: Integer array with 10 elements
+--   - GENERATED_FLD: Computed column (SMALLINT_FLD + INTEGER_FLD)
+--
+-- Indexes:
+--   - ALLTABLE_IDX1: Character field index
+--   - ALLTABLE_IDX2: Date field index
+--   - ALLTABLE_IDX3: Integer field index
+--
+-- Dependencies:
+--   - IBM i 7.1+ for ARRAY and DECFLOAT types
+--   - IBM i 7.3+ for BOOLEAN type
+--
+-- Reference:
+--   https://www.ibm.com/docs/en/i/7.5?topic=reference-sql
+--
+-- Modification History:
+--   1.0 2026-04-03 | Nick Litten | Initial creation
+-- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE TABLE ALLTABLE (
     -- -----------------------------------------------------------------

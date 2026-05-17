@@ -49,9 +49,13 @@
 ///   - actgrp(*new): Creates new activation group per call
 ///   - alwnull(*usrctl): Allows null-capable fields with user control
 ///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=procedures-external-stored
+///
 /// Modification History:
-/// 1.0 2025-10-14 | Nick Litten | Created for online example
-/// 1.1 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+///   1.0 2025-10-14 | Nick Litten | Created for online example
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
+///
 
 ctl-opt
   main(mainline)
@@ -65,37 +69,37 @@ ctl-opt
 
 
 Dcl-Proc mainline;
-  Dcl-Pi mainline;
-       emp_id_in int(10) const;
-       emp_name_out char(50);
-       city_out char(30);
-  end-pi;
+   Dcl-Pi mainline;
+      emp_id_in int(10) const;
+      emp_name_out char(50);
+      city_out char(30);
+   end-pi;
 
-  dcl-f EMPLO00001 usage(*input) extfile('NICKLITTEN/EMPLO00001') rename(EMPLO00001:EMPLREC) usropn;
-  dcl-ds ds_employee_master likerec(EMPLREC:*INPUT) inz;
-  dcl-s employeeFound ind;
+   dcl-f EMPLO00001 usage(*input) extfile('NICKLITTEN/EMPLO00001') rename(EMPLO00001:EMPLREC) usropn;
+   Dcl-Ds ds_employee_master likerec(EMPLREC:*INPUT) inz;
+   Dcl-S employeeFound ind;
 
-  open EMPLO00001;
+   open EMPLO00001;
 
-  read EMPLO00001 ds_employee_master;
-  dow not %eof(EMPLO00001);
-     if emp_id_in = ds_employee_master.emp_id;
-          employeeFound = *on;
-          leave;
-     endif;
-     read EMPLO00001 ds_employee_master;
-  enddo;
+   read EMPLO00001 ds_employee_master;
+   dow (not %eof(EMPLO00001));
+      If (emp_id_in = ds_employee_master.emp_id);
+         employeeFound = *on;
+         leave;
+      EndIf;
+      read EMPLO00001 ds_employee_master;
+   enddo;
   
-  if employeeFound;
-     emp_name_out = ds_employee_master.emp_name;
-     city_out = ds_employee_master.city;
-  else;
-     emp_name_out = 'no employee found';
-     city_out = 'n/a';
-  endif;
+   If (employeeFound);
+      emp_name_out = ds_employee_master.emp_name;
+      city_out = ds_employee_master.city;
+   Else;
+      emp_name_out = 'no employee found';
+      city_out = 'n/a';
+   EndIf;
   
-  close EMPLO00001;
+   close EMPLO00001;
 
-  return;
+   Return;
   
 end-proc;

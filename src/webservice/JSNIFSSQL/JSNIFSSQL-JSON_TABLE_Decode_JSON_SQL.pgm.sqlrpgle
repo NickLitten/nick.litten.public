@@ -52,7 +52,7 @@
 /// Modification History:
 /// 1.0 2017-07-17 | Nick Litten | Initial creation
 /// 1.1 2021-06-20 | Nick Litten | Removed unused variables for clarity
-/// 1.2 2026-04-02 | Bob AI | Added comprehensive triple-slash documentation
+/// 1.2 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
 
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
  option(*nodebugio:*srcstmt:*nounref)
@@ -60,55 +60,55 @@ ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
  copyright('| JSNIFSSQL V1.1 Use JSONTABLE to read IFS and parse JSON');
 
 // IFS file with JSON code that we will be reading and decoding
-dcl-c ifsFilename const('/home/nicklitten/getwebjsn.json');
+Dcl-C IFSFILENAME const('/home/nicklitten/getwebjsn.json');
 
-dcl-ds jsonFields qualified;
-    USERID varchar(100);
-    FIRSTNAME varchar(100);
-    LASTNAME varchar(100);
-    INITIALS varchar(100);
-    COMPANY int(10);
-    DIVISION int(10);
-    DEPARTMENT int(10);
+Dcl-Ds jsonFields qualified;
+   USERID varchar(100);
+   FIRSTNAME varchar(100);
+   LASTNAME varchar(100);
+   INITIALS varchar(100);
+   COMPANY int(10);
+   DIVISION int(10);
+   DEPARTMENT int(10);
 end-ds;
 
-dcl-ds result qualified;
-    success ind;
-    errmsg varchar(500);
-    jsonArray likeds(jsonFields) dim(9999);
+Dcl-Ds result qualified;
+   success ind;
+   errmsg varchar(500);
+   jsonArray likeds(jsonFields) dim(9999);
 end-ds;
 
 // procedures and variables for IBM i *APIS to loads IFS into variable
 dcl-pr open int(10) extproc('open');
-    *n pointer value options(*string); // filename
-    *n int(10) value; // openflags
-    *n uns(10) value options(*nopass); // mode
-    *n uns(10) value options(*nopass); // codepage
+   *n pointer value options(*string); // filename
+   *n int(10) value; // openflags
+   *n uns(10) value options(*nopass); // mode
+   *n uns(10) value options(*nopass); // codepage
 end-pr;
 
 dcl-pr read int(10) extproc('read');
-    *n int(10) value; // filehandle
-    *n pointer value; // datareceived
-    *n uns(10) value; // nbytes
+   *n int(10) value; // filehandle
+   *n pointer value; // datareceived
+   *n uns(10) value; // nbytes
 end-pr;
 
 dcl-pr close int(10) extproc('close');
-    *n int(10) value; // filehandle
+   *n int(10) value; // filehandle
 end-pr;
 
-dcl-s Count int(10);
-dcl-s Handle int(10);
-dcl-s json sqltype(clob:16000000);
-dcl-s ifsData char(16000000);
-dcl-s ifsDataLen int(10);
-dcl-s rc int(10);
-dcl-s O_RDONLY int(10) inz(1);
-dcl-s O_TEXTDATA int(10) inz(16777216);
-dcl-s lastElem int(10);
+Dcl-S Count int(10);
+Dcl-S Handle int(10);
+Dcl-S json sqltype(clob:16000000);
+Dcl-S ifsData char(16000000);
+Dcl-S ifsDataLen int(10);
+Dcl-S rc int(10);
+Dcl-S O_RDONLY int(10) inz(1);
+Dcl-S O_TEXTDATA int(10) inz(16777216);
+Dcl-S lastElem int(10);
 
-dcl-ds ErrorCode;
-    BytesProv int(10) inz(0);
-    BytesAvail int(10) inz(0);
+Dcl-Ds ErrorCode;
+   BytesProv int(10) inz(0);
+   BytesAvail int(10) inz(0);
 end-ds;
 
 
@@ -116,22 +116,22 @@ end-ds;
 Handle = open(%trim(ifsFilename):O_RDONLY + O_TEXTDATA);
 
 // Loop to read the stream file into variable "ifsData"
-dou ifsDataLen<1;
-    Count += 1;
-    ifsDataLen = read(Handle:%addr(ifsData):%size(ifsData));
+dou (ifsDataLen<1);
+   Count += 1;
+   ifsDataLen = read(Handle:%addr(ifsData):%size(ifsData));
 enddo;
 
 // Close the stream file
 rc = close(Handle);
 
-if ifsData <> *blanks;
+If (ifsData <> *blanks);
 
-    // we have the IFS data loaded into variable(ifsData) so lets load
-    // that variable into the SQL(clob) and process it using the JSON_TABLE
-    // to break the JSON out into fields for processing. NOTE: we are not
-    // doing anything with those fields in this program because this is just
-    // a proof of concept
-    exec sql
+   // we have the IFS data loaded into variable(ifsData) so lets load
+   // that variable into the SQL(clob) and process it using the JSON_TABLE
+   // to break the JSON out into fields for processing. NOTE: we are not
+   // doing anything with those fields in this program because this is just
+   // a proof of concept
+   exec sql
     set option naming = *sys,
                       commit = *none,
                       usrprf = *user,
@@ -139,8 +139,8 @@ if ifsData <> *blanks;
                       datfmt = *iso,
                       closqlcsr = *endmod;
 
-    // read the JSON data from a string variable using JSON_TABLE
-    exec sql
+   // read the JSON data from a string variable using JSON_TABLE
+   exec sql
     declare C1 cursor for
     select *
         from json_table(
@@ -159,34 +159,34 @@ if ifsData <> *blanks;
             )
         ) as X;
 
-    exec sql open c1;
+   exec sql :open c1;
 
-    exec sql fetch next from c1 into :jsonfields;
+   exec sql fetch next from c1 into :jsonfields;
 
-    dow sqlstt='00000' or %subst(sqlstt:1:2)='01';
+   dow (sqlstt='00000' or %subst(sqlstt:1:2)='01');
 
-        lastelem += 1;  
+      lastelem += 1;  
 
-        // Store Datastructure values in next element of 'return array'
-        result.jsonArray(lastelem) = jsonFields;
+      // Store Datastructure values in next element of 'return array'
+      result.jsonArray(lastelem) = jsonFields;
 
-        // here we could do something with each row of data ie: write to file
-        // or some other business logic.
-        exec sql fetch next from c1 into :jsonfields;
+      // here we could do something with each row of data ie: write to file
+      // or some other business logic.
+      exec sql fetch next from c1 into :jsonfields;
 
-    enddo;
+   enddo;
 
-    exec sql
-    close c1;
+   exec sql
+    :close c1;
 
-    result.success = *on;
+   result.success = *on;
  
-else;
+Else;
 
-    // If unable to load JSON data from the IFS then tell the world
-    result.success = *off;
-    result.errmsg = 'Ouch! I couldnt read the IFS file';
+   // If unable to load JSON data from the IFS then tell the world
+   result.success = *off;
+   result.errmsg = 'Ouch! I couldnt read the IFS file';
 
-endif;
+EndIf;
 
 *inlr = *on;

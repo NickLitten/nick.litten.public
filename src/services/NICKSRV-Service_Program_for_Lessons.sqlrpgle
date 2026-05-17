@@ -1,17 +1,12 @@
 **free
+
 ///
 /// Service Program: NICKSRV - Service Program for Lessons
+///
 /// Description: This is an ever growing example service program filled with
 ///              useful procedures and sample code for various scenarios.
 ///
-/// Exported Procedures:
-///   - ReturnSystemName() - Returns current IBM i system name
-///   - ReturnJobEnvironment() - Checks if job is interactive or batch
-///   - ExecuteCommand() - Executes CL commands with error handling
-///   - DisplayWindow() - Displays text in 5250 pop-up window
-///
-/// Purpose:
-///   - Demonstrate modern RPG service program structure
+/// Purpose: Demonstrate modern RPG service program structure
 ///   - Provide reusable utility procedures
 ///   - Show best practices for error handling
 ///   - Illustrate efficient SQL usage
@@ -22,16 +17,29 @@
 ///   - Performance optimized
 ///   - Well-documented with examples
 ///
-/// Compilation:
-///   CRTRPGMOD MODULE(LIB/NICKSRV) SRCFILE(LIB/QRPGLESRC)
-///   CRTSRVPGM SRVPGM(LIB/NICKSRV) MODULE(LIB/NICKSRV) EXPORT(*ALL)
+/// Exported Procedures:
+///   - ReturnSystemName() - Returns current IBM i system name
+///   - ReturnJobEnvironment() - Checks if job is interactive or batch
+///   - ExecuteCommand() - Executes CL commands with error handling
+///   - DisplayWindow() - Displays text in 5250 pop-up window
 ///
-/// Author: Nick Litten
+/// Usage: Link to programs via binding directory
+///   CRTPGM PGM(library/MYPGM) MODULE(MYPGM) BNDDIR(NICKSRV)
+///
+/// Parameters:
+///   See individual procedure documentation
+///
+/// Dependencies:
+///   None - self-contained service program
+///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=programs-service
 ///
 /// Modification History:
-/// v.001 2026.04.02 - Nick Litten - Created simple service program example
-/// v.002 2026.05.06 - Nick Litten - Comprehensive refactoring and improvements
+///   1.0 2026-04-02 | Nick Litten | Created simple service program example
+///   2.0 2026-05-06 | Nick Litten | Comprehensive refactoring and improvements
 ///
+
 
 ctl-opt nomain
         option(*nodebugio:*srcstmt:*nounref)

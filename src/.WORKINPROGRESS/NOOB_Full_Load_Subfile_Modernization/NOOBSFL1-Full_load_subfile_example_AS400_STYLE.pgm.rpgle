@@ -47,7 +47,7 @@
 ///
 /// Modification History:
 ///   V.000 2020-01-15 | Nick Litten | Initial creation - AS/400 tutorial
-///   V.001 2026-04-18 | Bob AI | Applied Nick Litten comment standards
+///   V.001 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///
 
      * Declare the display file which contains the subfile

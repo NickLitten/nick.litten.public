@@ -1,8 +1,61 @@
-/* Program: CLRPFRDATA - Clear Performance Data and Report                   */
-/* Purpose: End performance collections, clear QPFRDATA library, restart     */
-/*          collections, and email before/after reports                      */
-/* Author:  Nick Litten                                                      */
-/* Date:    2026-02-05                                                       */
+/* ------------------------------------------------------------ */
+/* CLRPFRDATA - Clear Performance Data and Report               */
+/* ------------------------------------------------------------ */
+/* Program.......... CLRPFRDATA                                 */
+/* Author........... Nick Litten                                */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Ends performance collections, clears       */
+/*                   QPFRDATA library, restarts collections,    */
+/*                   and emails before/after reports showing    */
+/*                   space reclaimed. Automates routine         */
+/*                   performance data maintenance.              */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/CLRPFRDATA)           */
+/*                   SRCFILE(library/QCLLESRC)                  */
+/*                   SRCMBR(CLRPFRDATA)                         */
+/* -------------------------------------------------------------*/
+/* Purpose: Utility program demonstrating:                      */
+/*   - Performance collection management                        */
+/*   - SQL report generation with RUNSQLSTM                     */
+/*   - File export to IFS with CPYTOIMPF                        */
+/*   - Email with attachments using SNDSMTPEMM                  */
+/*   - Comprehensive error handling                             */
+/*   - Before/after comparison reporting                        */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - Generates BEFORE cleanup report (FATQPFRB)               */
+/*   - Ends all active performance collections                  */
+/*   - Clears QPFRDATA library to reclaim space                 */
+/*   - Restarts collection services                             */
+/*   - Generates AFTER cleanup report (FATQPFRA)                */
+/*   - Creates ZIP bundle of reports                            */
+/*   - Emails bundle to administrator                           */
+/*   - Comprehensive error handling with notifications          */
+/* -------------------------------------------------------------*/
+/* Usage: CALL CLRPFRDATA                                       */
+/*        Typically scheduled to run during off-hours           */
+/* -------------------------------------------------------------*/
+/* Parameters: None                                             */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - SQL source files: MYUTIL/QSQLSRC(FATQPFRB, FATQPFRA)    */
+/*   - QPFRDATA library must exist                              */
+/*   - User must have authority to ENDPFRCOL, CLRLIB, STRPFRCOL*/
+/*   - SMTP email must be configured                            */
+/*   - /tmp directory must be writable                          */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i Performance Management Guide                       */
+/*   - Collection Services (STRPFRCOL, ENDPFRCOL)               */
+/*   - https://www.nicklitten.com/ibm-i-performance-cleanup/    */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2026.02.05 V01 Initial creation                   */
+/* Bob AI     2026.05.14 V02 Added comprehensive documentation  */
+/* ------------------------------------------------------------ */
 
 PGM
   /* Email configuration */

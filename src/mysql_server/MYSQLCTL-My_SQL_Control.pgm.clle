@@ -2,7 +2,7 @@
 /* MYSQLCTL - MariaDB/MySQL Service Control                     */
 /* ------------------------------------------------------------ */
 /* Program.......... MYSQLCTL                                   */
-/* Author........... nick@nicklitten.com                        */
+/* Author........... Nick Litten                                */
 /* Calling Program.. *NONE                                      */
 /* Calling Command.. MYSQLCTL                                   */
 /* Function......... Start, stop, or check status of            */
@@ -16,13 +16,44 @@
 /*                   SRCFILE(library/QCLLESRC)                  */
 /*                   SRCMBR(MYSQLCTL)                           */
 /* -------------------------------------------------------------*/
+/* Purpose: Utility program demonstrating:                      */
+/*   - MariaDB/MySQL service management                         */
+/*   - QSH command execution for systemctl                      */
+/*   - Service start/stop operations                            */
+/*   - Status verification after operations                     */
+/*   - Error handling for service operations                    */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - START action: Starts MariaDB service                     */
+/*   - STOP action: Stops MariaDB service                       */
+/*   - Verifies service status after start                      */
+/*   - Comprehensive error handling with MONMSG                 */
+/*   - Informational messaging for each operation               */
+/*   - Uses mysqld_safe for service startup                     */
+/* -------------------------------------------------------------*/
+/* Usage: CALL MYSQLCTL PARM('START')                           */
+/*        CALL MYSQLCTL PARM('STOP')                            */
+/* -------------------------------------------------------------*/
 /* Parameters:                                                  */
-/*   &ACTION - Action to perform (START/STOP)                   */
+/*   &ACTION - Input - CHAR(10) - Action to perform             */
+/*             Valid values: 'START', 'STOP'                    */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - MariaDB must be installed in /QOpenSys/pkgs              */
+/*   - User must have authority to manage services              */
+/*   - systemctl must be available                              */
+/*   - Data directory: /QOpenSys/var/lib/mariadb/data           */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - MariaDB on IBM i Documentation                           */
+/*   - systemctl Command Reference                              */
+/*   - https://www.nicklitten.com/ibm-i-mariadb-setup/          */
 /* -------------------------------------------------------------*/
 /* Modification History:                                        */
 /* Author     Date       Description                            */
 /* NickLitten 2026.03.09 V01 Initial creation                   */
 /* NickLitten 2026.04.04 V02 Standardized header block          */
+/* Bob AI     2026.05.14 V03 Added comprehensive documentation  */
 /* ------------------------------------------------------------ */
 
 PGM PARM(&ACTION)

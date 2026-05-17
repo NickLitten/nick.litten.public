@@ -34,7 +34,7 @@
          dcl-s Qp0l_objtype_t char(11)  based(DataTemplate);
 
 
-          // *****************************************************************
+          // **
           //   Qp0lProcessSubtree() API Object types list                     */
           //    typedef struct                        /*                      */
           //    {                                     /*                      */
@@ -43,13 +43,13 @@
           //     /*qp0l_objtype_t  Objtypes[];*/      /*Variable length entry */
           //                                          /*                      */
           //    } Qp0l_Objtypes_List_t;               /*                      */
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Objtypes_List_t INZ based(StructureTemplate) qualified;
           Number_Of_ObjtypesObjtypes uns(10) dim(128);
          end-ds Qp0l_Objtypes_List_t;
 
 
-          // *****************************************************************
+          // **
           //   Qp0lProcessSubtree() API IN_EXclusion list type
           //    typedef struct
           //    {
@@ -65,14 +65,14 @@
           //                                          /*Variable length entry*/
           //     /*Qlg_Path_Name_T    *Path_Name_Ptrs[];*/
           //    } Qp0l_IN_EXclusion_List_t;
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_IN_EXclusion_List_t INZ based(StructureTemplate) align
            qualified;
           IN_EXclusion_tNumber_Of_PointersReservedPath_Name_Ptrs uns(10) dim(128);
          end-ds Qp0l_IN_EXclusion_List_t;
 
 
-          // *****************************************************************
+          // **
           //  Qp0LProcessSubtree() API user function
           //    typedef struct
           //    {
@@ -84,7 +84,7 @@
           //      char       Reserved[7];             /* must be zero         */
           //      Qp0l_ProcSubtree_t  Procedure;      /* Procedure pointer    */
           //    } Qp0l_User_Function_t;
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_User_Function_t INZ based(StructureTemplate) align
            qualified;
           Function_Type uns(10);
@@ -107,7 +107,7 @@
           //   D  FuncCtlBlk                     *   value
 
 
-          // *****************************************************************
+          // **
 
           //    typedef struct                        /*                      @A5A*/
           //    {                                     /*                      @A5A*/
@@ -120,13 +120,13 @@
           //                                          /*   since Epoch, when  @A5A*/
           //                                          /*   checked out        @A5A*/
           //    } Qp0l_Checkout_t;                    /*                      @A5A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Checkout_t INZ based(StructureTemplate) qualified align;
           Checked_Out_FlagUser_NameReservedChecked_Out_Time uns(3);
          end-ds Qp0l_Checkout_t;
 
 
-          // *****************************************************************
+          // **
           //  Qp0lGetAttr() API format for general authority information.
 
           //    typedef struct                        /*                      @A5A*/
@@ -145,7 +145,7 @@
           //     /*char        Array_of_Users[];*/    /*Variable length entry @A5A*/
           //                                          /*                      @A5A*/
           //    } Qp0l_Authority_General_t;
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Authority_General_t INZ based(StructureTemplate) qualified
            align;
           Object_owner char(10);
@@ -161,7 +161,7 @@
            
 
 
-          // *****************************************************************
+          // **
           //   Qp0lCvtPathToQSYSObjName() API struct for info
           //   returned about the QSYS object name.
 
@@ -180,7 +180,7 @@
           //        char Mbr_Type[20];                /* Type of member       @A6A*/
           //        char Asp_Name[28];                /* Name of ASP          @C4A*/
           //    } Qp0l_QSYS_Info_t;                   /*                      @A6A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_QSYS_Info_t INZ based(StructureTemplate) qualified align;
           Bytes_ReturnedBytes_AvailableCCSID_OutLib_Name uns(10);
           Lib_Type char(20);
@@ -192,7 +192,7 @@
          end-ds Qp0l_QSYS_Info_t;
 
 
-          // *****************************************************************
+          // **
           //   Qp0lGetAttr() API format for information returned for users
           //    typedef struct                        /*                      @A5A*/
           //    {                                     /*                      @A5A*/
@@ -212,7 +212,7 @@
           //      char          EXCLUDE_DataRights[1];/* Exclude              @A5A*/
           //      char          Reserved2[7];         /* (must be zero)       @A5A*/
           //    } Qp0l_Authority_Users_t;             /*                      @A5A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Authority_Users_t INZ based(StructureTemplate) qualified
            align;
          User_NameUser_data_authOBJMGT_rightsOBJEXIST_rightsOBJALTER_ri...
@@ -222,7 +222,7 @@
            EXCLUDE_DataRightsReserved2char(10);
 
 
-          // *****************************************************************
+          // **
           //  Qp0lSaveStgFree() API pathnames for Exit programs
 
           //     typedef struct                        /*                     @A7A*/
@@ -234,13 +234,13 @@
           //                                           /*   entry             @A7A*/
 
           //     } Qp0l_Pathnames_t;                   /*                     @A7A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Pathnames_t INZ based(StructureTemplate) qualified align;
          Number_of_NamesReservedNames_Ptrs uns(10) dim(100);
          end-ds Qp0l_Pathnames_t;
 
 
-          // *****************************************************************
+          // **
           //   Qp0lSaveStgFree() API user function
 
           //    typedef struct                         /*                     @A7A*/
@@ -254,14 +254,14 @@
           //      Qp0l_SaveStgFree_t  Procedure;       /* Procedure pointer   @A7A*/
 
           //    } Qp0l_StgFree_Function_t;             /*                     @A7A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_StgFree_Function_t INZ based(StructureTemplate) qualified
            align;
          Function_TypeLibraryProgramMltthdacnReservedProcedure uns(10) procptr;
          end-ds Qp0l_StgFree_Function_t;
 
 
-          // *****************************************************************
+          // **
           //  Qp0lGetAttr() API usage information
 
           //    typedef struct                        /*                      @B2A*/
@@ -279,13 +279,13 @@
           //                                          /*  an object is used.  @B2A*/
           //      char            Reserved[4];        /* (must be zero)       @A5A*/
           //    } Qp0l_Usage_t;                       /*                      @B2A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Usage_t INZ based(StructureTemplate) qualified align;
          Reset_dateLast_used_dateDays_used_countReserved uns(10);
          end-ds Qp0l_Usage_t;
 
 
-          // *****************************************************************
+          // **
           //   Qp0lGetAttr() API journal information
 
           //    typedef struct                        /*                      @B6A*/
@@ -305,7 +305,7 @@
           //                                          /*  last started on the @B6A*/
           //                                          /*  object.             @B6A*/
           //    } Qp0l_Journal_Info_t;                /*                      @B6A*/
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Journal_Info_T INZ based(StructureTemplate) qualified
            align;
          StatusOptionsJournal_IdentifierJournal_NameJournal_LibraryTime...
@@ -313,14 +313,14 @@
            _Last_Starteduns(3);
 
 
-          // *****************************************************************
+          // **
           //   Format of the "Buffer" parm for Qp0lSetAttr/Qp0lGetAttr APIs.
 
           //   Note: The size of this structure can vary, and more than one
           //         of these can be returned.  That means you must use
           //         the "Next_Attr_Offset" with pointer logic to read them
           //         all.  I know... YUCK!  Well, welcome to the Qp0l APIs!
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_Attr_Header_t INZ based(StructureTemplate) align qualified
            ;
          Next_Attr_OffsetAttr_ID uns(10);
@@ -332,18 +332,18 @@
          end-ds Qp0l_Attr_Header_t;
 
 
-          // *****************************************************************
+          // **
           //   Requested attribute types structure (used by Qp0lGetAttr API)
-          // *****************************************************************
+          // **
          dcl-ds Qp0l_AttrTypes_List_t INZ based(StructureTemplate) align
            qualified;
          Number_Of_ReqAttrsAttrTypes uns(10) dim(256);
          end-ds Qp0l_AttrTypes_List_t;
 
 
-          // *****************************************************************
+          // **
           //   Attributes:
-          // *****************************************************************
+          // **
          dcl-c QP0L_ATTR_OBJTYPE 0;
          dcl-c QP0L_ATTR_DATA_SIZE 1;
          dcl-c QP0L_ATTR_ALLOC_SIZE 2;
@@ -391,21 +391,21 @@
          dcl-c QP0L_ATTR_SUID 300;
          dcl-c QP0L_ATTR_SGID 301;
 
-          // *****************************************************************
+          // **
           //   flags for "follow_symlink" API parameters:
-          // *****************************************************************
+          // **
          dcl-c QP0L_DONOT_FOLLOW_SYMLNK 0;
          dcl-c QP0L_FOLLOW_SYMLNK 1;
 
-          // *****************************************************************
+          // **
           //   Flags for generic "yes/no" parameters
-          // *****************************************************************
+          // **
          dcl-c QP0L_NO 0;
          dcl-c QP0L_YES 1;
 
-          // *****************************************************************
+          // **
           //  flags for particular attributes:
-          // *****************************************************************
+          // **
          dcl-c QP0L_SYS_NOT_STG_FREE x'00';
          dcl-c QP0L_SYS_STG_FREE x'01';
 
@@ -484,9 +484,9 @@
          dcl-c QP0L_RSTDRNMUNL_ON x'01';
 
 
-          // *****************************************************************
+          // **
           //  flags for Qp0lProcessSubtree API:
-          // *****************************************************************
+          // **
          dcl-c QP0L_USER_FUNCTION_PTR 0;
          dcl-c QP0L_USER_FUNCTION_PGM 1;
 
@@ -518,14 +518,14 @@
          dcl-c QP0L_NOQSYS CONST('*NOQSYS');
 
 
-          // *****************************************************************
+          // **
           //   Qp0lSetAttr():  Set IFS file attributes
 
           //     int Qp0lSetAttr(Qlg_Path_Name_T *,
           //                       char *,
           //                       uint,
           //                       uint, ...);
-          // *****************************************************************
+          // **
          dcl-pr Qp0lSetAttr int(10) ExtProc('Qp0lSetAttr');
          Path_Name  likeds(Qlg_Path_Name_t) const;
          Buffer char(32767) options(*varsize);
@@ -535,7 +535,7 @@
          end-pr Qp0lSetAttr;
 
 
-          // *****************************************************************
+          // **
           //  Qp0lGetAttr():  Get IFS File attributes
 
           //    int Qp0lGetAttr(Qlg_Path_Name_T *,
@@ -545,7 +545,7 @@
           //                       uint *,
           //                       uint *,
           //                       uint, ...);
-          // *****************************************************************
+          // **
          dcl-pr Qp0lGetAttr int(10) ExtProc('Qp0lGetAttr');
          Path_Name  likeds(Qlg_Path_Name_t) const;
          Attr_Array  likeds(Qp0l_AttrTypes_List_t);

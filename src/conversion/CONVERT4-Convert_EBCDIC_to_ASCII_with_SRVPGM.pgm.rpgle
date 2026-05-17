@@ -1,9 +1,47 @@
 **free
-// Program: CONVERT
-// Description: Convert EBCDIC data to ASCII data using CCSID service program
-// Author: Nick Litten
-// Created: 2026-03-25
-// Updated: 2026-03-26 - Rewritten to use CONVSRV service program
+
+///
+/// Program: CONVERT4 - EBCDIC to ASCII Conversion with Service Program
+///
+/// Description: Converts EBCDIC data to ASCII using the CONVSRV service program.
+///              Reads 80-byte fixed-length records from an input file and writes
+///              converted ASCII records to an output file. Demonstrates proper
+///              service program integration and modular design patterns.
+///
+/// Purpose: Educational example demonstrating:
+///   - Service program integration via BNDDIR
+///   - Modular conversion using external procedures
+///   - Modern file processing with USROPN
+///   - Separation of concerns (main logic vs conversion)
+///   - Clean resource management
+///
+/// Features:
+///   - Uses CONVSRV service program for conversion
+///   - Processes 80-byte fixed-length records
+///   - Modular procedure-based design
+///   - Tracks number of records processed
+///   - Proper file open/close management
+///
+/// Usage: CALL CONVERT4
+///        (Reads from FILEIN, writes to FILEOUT)
+///
+/// Parameters:
+///   None
+///
+/// Dependencies:
+///   - Input file: FILEIN (80-byte EBCDIC records)
+///   - Output file: FILEOUT (80-byte ASCII records)
+///   - Service program: CONVSRV (character conversion utilities)
+///   - Binding directory: CONVSRV
+///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=programs-service
+///
+/// Modification History:
+///   1.0 2026-03-25 | Nick Litten | Initial creation
+///   1.1 2026-03-26 | Nick Litten | Rewritten to use CONVSRV service program
+///
+
 
 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt) bnddir('CONVSRV');
 

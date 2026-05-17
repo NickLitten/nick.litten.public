@@ -48,13 +48,13 @@ ctl-opt dftactgrp(*no) actgrp(*caller)
 // ---------------------------------------------------------------------------
 // Program Information Data Structure
 // ---------------------------------------------------------------------------
-dcl-ds pgmInfo psds qualified;
-  pgmName *proc;
-  status *status;
-  user char(10) pos(254);
-  jobName char(10) pos(244);
-  jobUser char(10) pos(254);
-  jobNumber char(6) pos(264);
+Dcl-Ds pgmInfo psds qualified;
+   pgmName *proc;
+   status *status;
+   user char(10) pos(254);
+   jobName char(10) pos(244);
+   jobUser char(10) pos(254);
+   jobNumber char(6) pos(264);
 end-ds;
 
 // -------------------------------------------------------------------
@@ -84,7 +84,7 @@ exec sql set option
 // Procedure Prototypes
 // -------------------------------------------------------------------
 dcl-pr MainProcedure extpgm('{program_name}');
-  // Add parameters here if needed
+   // Add parameters here if needed
 end-pr;
 
 // Example procedure prototype
@@ -95,79 +95,79 @@ end-pr;
 // -------------------------------------------------------------------
 // Standalone Variables
 // -------------------------------------------------------------------
-dcl-s gMessage varchar(100);
-dcl-s gReturnCode int(10);
-dcl-s gSqlCode int(10);
-dcl-s gSqlState char(5);
+Dcl-S gMessage varchar(100);
+Dcl-S gReturnCode int(10);
+Dcl-S gSqlCode int(10);
+Dcl-S gSqlState char(5);
 
 // -------------------------------------------------------------------
 // Constants
 // -------------------------------------------------------------------
-dcl-c SUCCESS 0;
-dcl-c ERROR -1;
-dcl-c SQL_SUCCESS 0;
-dcl-c SQL_NOT_FOUND 100;
+Dcl-C SUCCESS 0;
+Dcl-C ERROR -1;
+Dcl-C SQL_SUCCESS 0;
+Dcl-C SQL_NOT_FOUND 100;
 
 // -------------------------------------------------------------------
 // Data Structures
 // -------------------------------------------------------------------
-dcl-ds ErrorInfo qualified;
-  code int(10);
-  message varchar(100);
-  sqlCode int(10);
-  sqlState char(5);
-  timestamp timestamp;
+Dcl-Ds ErrorInfo qualified;
+   code int(10);
+   message varchar(100);
+   sqlCode int(10);
+   sqlState char(5);
+   timestamp timestamp;
 end-ds;
 
 // SQL Result Set Structure Example
-dcl-ds CustomerData qualified;
-  id int(10);
-  name varchar(50);
-  email varchar(100);
-  status char(1);
-  createdDate date;
+Dcl-Ds CustomerData qualified;
+   id int(10);
+   name varchar(50);
+   email varchar(100);
+   status char(1);
+   createdDate date;
 end-ds;
 
 // -------------------------------------------------------------------
 // Main Procedure
 // -------------------------------------------------------------------
-dcl-proc MainProcedure;
-  dcl-pi *n;
-    // Add parameters here if needed
-  end-pi;
+Dcl-Proc MainProcedure;
+   Dcl-Pi *n;
+      // Add parameters here if needed
+   end-pi;
 
-  // Local variables
-  dcl-s counter int(10);
-  dcl-s isValid ind;
+   // Local variables
+   Dcl-S counter int(10);
+   Dcl-S isValid ind;
 
-  // ---------------------------------------------------------------
-  // Main Logic
-  // ---------------------------------------------------------------
+   // ---------------------------------------------------------------
+   // Main Logic
+   // ---------------------------------------------------------------
 
-  // Initialize
-  counter = 0;
-  isValid = *on;
-  gReturnCode = SUCCESS;
+   // Initialize
+   counter = 0;
+   isValid = *on;
+   gReturnCode = SUCCESS;
 
-  // TODO: Add your main program logic here
+   // TODO: Add your main program logic here
 
-  // Example: Execute SQL query
-  // exec sql
-  //   select id, name, email, status, created_date
-  //   into :CustomerData.id, :CustomerData.name, :CustomerData.email,
-  //        :CustomerData.status, :CustomerData.createdDate
-  //   from myschema.customers
-  //   where id = :customerId;
-  //
-  // if CheckSqlError();
-  //   // Handle error
-  // endif;
+   // Example: Execute SQL query
+   // exec sql
+   //   select id, name, email, status, created_date
+   //   into :CustomerData.id, :CustomerData.name, :CustomerData.email,
+   //        :CustomerData.status, :CustomerData.createdDate
+   //   from myschema.customers
+   //   where id = :customerId;
+   //
+   // if CheckSqlError();
+   //   // Handle error
+   // endif;
 
-  // Example: Call a procedure
-  // gMessage = GetCustomerName(12345);
+   // Example: Call a procedure
+   // gMessage = GetCustomerName(12345);
 
-  // Cleanup and return
-  return;
+   // Cleanup and return
+   Return;
 
 end-proc;
 
@@ -180,29 +180,29 @@ end-proc;
 // Purpose  : Check for SQL errors and log them
 // Returns  : *on if error occurred, *off if successful
 // -------------------------------------------------------------------
-dcl-proc CheckSqlError;
-  dcl-pi *n ind end-pi;
+Dcl-Proc CheckSqlError;
+   Dcl-Pi *n ind end-pi;
 
-  dcl-s hasError ind;
+   Dcl-S hasError ind;
 
-  exec sql get diagnostics
+   exec sql get diagnostics
     :gSqlCode = db2_returned_sqlcode,
     :gSqlState = returned_sqlstate;
 
-  hasError = (gSqlCode < SQL_SUCCESS and gSqlCode <> SQL_NOT_FOUND);
+   hasError = (gSqlCode < SQL_SUCCESS and gSqlCode <> SQL_NOT_FOUND);
 
-  if hasError;
-    ErrorInfo.code = ERROR;
-    ErrorInfo.sqlCode = gSqlCode;
-    ErrorInfo.sqlState = gSqlState;
-    ErrorInfo.message = 'SQL Error: ' + %char(gSqlCode);
-    ErrorInfo.timestamp = %timestamp();
+   If hasError;
+      ErrorInfo.code = ERROR;
+      ErrorInfo.sqlCode = gSqlCode;
+      ErrorInfo.sqlState = gSqlState;
+      ErrorInfo.message = 'SQL Error: ' + %char(gSqlCode);
+      ErrorInfo.timestamp = %timestamp();
 
-    // Log error (implement your logging here)
-    // LogError(ErrorInfo);
-  endif;
+      // Log error (implement your logging here)
+      // LogError(ErrorInfo);
+   EndIf;
 
-  return hasError;
+   Return hasError;
 
 end-proc;
 

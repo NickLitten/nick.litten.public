@@ -1,9 +1,40 @@
--- ---------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- SQL Table: PERSONTBL
 -- Description: Person table with name, date of birth, and address
 -- Author: Nick Litten
--- Date: 2026-02-03
--- ---------------------------------------------------------------------
+-- Created: 2026-02-03
+-- ---------------------------------------------------------------------------
+-- Purpose: Store person information for testing and demonstrations
+--   - Person name, date of birth, and address tracking
+--   - Sample data for expanding page subfile testing
+--   - Demonstrate basic person entity management
+--
+-- Features:
+--   - Primary key on person name
+--   - Record format name specified (PERSONR)
+--   - 50 sample records for testing
+--   - Comprehensive US address coverage
+--   - Date of birth tracking
+--
+-- Usage: Person information management and subfile testing
+--   SELECT * FROM PERSONTBL WHERE PNAME LIKE 'A%';
+--   INSERT INTO PERSONTBL VALUES('John Doe', '1990-01-01', '123 Main St');
+--   UPDATE PERSONTBL SET PADDRESS = '456 Oak Ave' WHERE PNAME = 'John Doe';
+--
+-- Columns:
+--   - PNAME: Person's full name (primary key)
+--   - PDOB: Date of birth
+--   - PADDRESS: Full mailing address
+--
+-- Dependencies:
+--   None
+--
+-- Reference:
+--   https://www.ibm.com/docs/en/i/7.5?topic=reference-sql
+--
+-- Modification History:
+--   1.0 2026-02-03 | Nick Litten | Initial creation with 50 sample records
+-- ---------------------------------------------------------------------------
 CREATE OR REPLACE TABLE
     PERSONTBL (
         PNAME VARCHAR(50) NOT NULL,

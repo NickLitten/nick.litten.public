@@ -12,18 +12,28 @@
 ///   - DSPLY operation for console output
 ///   - Program termination with RETURN
 ///
-/// Usage: CALL HELLOWORLD
-///
 /// Features:
 ///   - Ultra-simple 3-line program
 ///   - No parameters required
 ///   - Immediate execution and termination
 ///   - Perfect starting point for RPG beginners
 ///
+/// Usage: CALL HELLOWORLD
+///
+/// Parameters:
+///   None
+///
+/// Dependencies:
+///   None
+///
+/// Reference:
+///   https://www.ibm.com/docs/en/i/7.5?topic=programming-ile-rpg
+///
 /// Modification History:
-///   YYYY-MM-DD | Nick Litten | Initial creation
-///   2026-04-02 | Bob AI      | Added comprehensive documentation
+///   1.0 2020-01-01 | Nick Litten | Initial creation
+///   1.1 2026-04-02 | Nick Litten | Added comprehensive documentation
 ///
 
+
 dsply 'Hello World!';
-return;
+Return;

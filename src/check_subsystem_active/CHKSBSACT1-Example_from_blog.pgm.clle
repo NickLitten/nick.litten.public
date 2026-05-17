@@ -18,14 +18,20 @@
 /*                                                                          */
 /* Usage: CALL CHKSBSACT1                                                   */
 /*                                                                          */
-/* NOTE: Create file CHKSBSTMP before compiling this program               */
+/* Parameters:                                                              */
+/*   None                                                                   */
+/*                                                                          */
+/* Dependencies:                                                            */
+/*   - File: NICKLITTEN/CHKSBSTMP must exist before compilation            */
+/*   - QSYS2.SUBSYSTEM_INFO SQL service                                    */
 /*                                                                          */
 /* Reference:                                                               */
 /* https://www.nicklitten.com/ibm-i-control-language-check-subsystem-status*/
 /*                                                                          */
 /* Modification History:                                                    */
-/* V.000 2025-xx-xx | Nick Litten | Initial creation from blog example     */
-/* V.001 2026-04-18 | Bob AI | Applied coding standards                    */
+/*   1.0 2025-01-01 | Nick Litten | Initial creation from blog example     */
+/*   1.1 2026-04-18 | Nick Litten | Applied coding standards                    */
+/*                                                                          */
 
 PGM
 
@@ -36,14 +42,8 @@ DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
               VALUE('Nick Litten © 2025 | IBM i V7.5 https://www.nicklitten.com')
 DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
 
-/* ------------------------------------------------------------------------------
-   File Declaration
-   ------------------------------------------------------------------------------ */
 DCLF       FILE(NICKLITTEN/CHKSBSTMP) ALWVARLEN(*YES)
 
-/* ------------------------------------------------------------------------------
-   Main Program Logic
-   ------------------------------------------------------------------------------ */
 
 /* Delete any existing temporary file */
 DLTF       FILE(NICKLITTEN/CHKSBSTMP)
@@ -65,9 +65,6 @@ SNDPGMMSG  MSG('Subsystem QINTER is Active')
 
 RETURN
 
-/* ------------------------------------------------------------------------------
-   Error Handling
-   ------------------------------------------------------------------------------ */
 FAIL:
 SNDPGMMSG  MSG('* Unable to retrieve subsystem status!')
 
