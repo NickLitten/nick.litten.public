@@ -30,5 +30,10 @@
 ///   1.0 2020-01-01 | Nick Litten | Initial creation
 ///
 
+/include 'header.rpgleinc'
+
+ctl-opt
+  copyright('Hello World | 1.0 - Simple Hello World Example');
+
 dsply 'Hello World!';
 Return;

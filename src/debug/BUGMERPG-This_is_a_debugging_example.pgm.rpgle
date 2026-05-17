@@ -50,7 +50,7 @@
 
 ctl-opt
   main(mainline)
-  copyright('Bug Me RPG | V.000 | Sample RPG Program for Debug');
+  copyright('Bug Me RPG | 1.1 - Sample RPG Program for Debug');
   
 // Procedure: mainline
 // Description: Main entry point for the program.

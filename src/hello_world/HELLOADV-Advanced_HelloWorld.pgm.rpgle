@@ -44,7 +44,7 @@
 
 ctl-opt
   main(mainline)
-  copyright('HelloAdvanced | V.000 | Sample Stylised RPG Program');
+  copyright('HelloAdvanced | 1.1 - Sample Stylised RPG Program');
 
 // Procedure: mainline
 // Description: Main entry point for the program.

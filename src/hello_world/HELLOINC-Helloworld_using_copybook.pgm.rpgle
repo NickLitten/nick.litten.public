@@ -45,7 +45,7 @@
 /include 'header.rpgleinc'
 
 ctl-opt
-  copyright('HelloAlternate | V.001 | Sample Stylised RPG Program');
+  copyright('HelloAlternate | 1.2 - Sample Stylised RPG Program');
 
 /include 'variables.rpgleinc'
 

@@ -28,7 +28,7 @@
 ///        Waits for user to enter 'Y' or 'y'
 ///
 /// Dependencies:
-///   - Include: header.rpgleinc
+///   - Include: header.rpgleinc (contains ctl-opt with copyright)
 ///   - Include: variables.rpgleinc
 ///
 /// Reference:
@@ -37,6 +37,8 @@
 /// Modification History:
 ///   1.0 2024-11-22 | Nick Litten | Initial creation
 ///   1.1 2024-12-11 | Nick Litten | Christmas update
+///
+/// Note: Copyright version managed in header.rpgleinc include file
 ///
 
 /include 'header.rpgleinc'

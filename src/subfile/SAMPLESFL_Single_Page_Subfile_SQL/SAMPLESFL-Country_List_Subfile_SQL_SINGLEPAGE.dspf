@@ -76,8 +76,8 @@
      A                                  1122TIME
      A                                  2 50'Country Database'
      A                                      DSPATR(HI)
-     A                                  2112'User:'
-     A            USERNAME      10A  O  2118COLOR(WHT)
+     A                                  2 92'User:'
+     A            USERNAME      10A  O  2 98COLOR(WHT)
       *
       * ------------------------------------------------------------====
       * Column Headers
