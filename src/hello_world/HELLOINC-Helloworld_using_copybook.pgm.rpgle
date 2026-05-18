@@ -38,19 +38,20 @@
 /// Modification History:
 ///   1.0 2024-11-22 | Nick Litten | Initial creation
 ///   1.1 2024-12-11 | Nick Litten | Christmas update
-///   1.2 2026-04-02 | Nick Litten | Added comprehensive documentation
+///   1.2 2026-04-02 | Nick Litten | Added documentation
 ///
 
+ctl-opt debug
+        optimize(*full)
+        option(*srcstmt:*nodebugio:*nounref:*noshowcpy)
+        datfmt(*iso) timfmt(*iso)
+        decedit('0.')
+        ccsid(*CHAR:*JOBRUN)
+        indent('| ')
+        copyright('HelloAlternate | 1.2 - RPG Helloworld Program with includes');
 
-/include 'header.rpgleinc'
-
-ctl-opt
-  copyright('HelloAlternate | 1.2 - Sample Stylised RPG Program');
-
+// Include variables from a separate file
 /include 'variables.rpgleinc'
-
-Dcl-S msg char(50);
-Dcl-S reply char(1);
 
 msg = 'Hello World!';
 dsply msg;

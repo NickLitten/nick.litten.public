@@ -1,7 +1,7 @@
 {
   "description": "Nick Litten Public GITHUB Code samples",
   "includePath": [
-    "src/includes"
+    "includes"
   ],
   "preUsrlibl": [
     "NICKLITTEN"

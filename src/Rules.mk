@@ -20,7 +20,6 @@
 SUBDIRS := database \
            services \
            check_subsystem_active \
-           cl_code_snippets \
            clear_bob_logs \
            clear_pfrdata \
            conversion \
@@ -30,8 +29,6 @@ SUBDIRS := database \
            hello_world \
            list_libraries \
            mysql_server \
-           rpg_code \
-           security \
            sql_encryption \
            sqlrpgle_dynamic \
            stored_procs \

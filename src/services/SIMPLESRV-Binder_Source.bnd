@@ -5,8 +5,8 @@
 /* Exports: RTNSYSTEMNAME                                          */
 /*-----------------------------------------------------------------*/
 
-STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('SIMPLEV1')
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Simple V1.2')
 
-  EXPORT SYMBOL('RTNSYSTEMNAME')
+  EXPORT SYMBOL(RTNSYSTEMNAME)
 
 ENDPGMEXP

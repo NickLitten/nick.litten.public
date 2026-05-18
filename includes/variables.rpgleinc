@@ -1,0 +1,3 @@
+       dcl-s success ind inz(*off);
+       dcl-s msg char(50);
+       dcl-s reply char(1);

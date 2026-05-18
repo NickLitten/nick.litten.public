@@ -1,0 +1,17 @@
+       ctl-opt debug
+          optimize(*full)
+          option(*srcstmt:*nodebugio:*nounref:*noshowcpy)
+          truncnbr(*no)
+          alwnull(*usrctl)
+          datfmt(*iso)
+          timfmt(*iso)
+          decedit('0.')
+          ccsid(*CHAR:*JOBRUN)
+          fixnbr(*zoned:*inputpacked)
+          indent('| ')
+          bnddir('BIGBNDDIR':'QC2LE')
+          ;
+
+       /if defined(load_pcml)
+       ctl-opt pgminfo(*pcml:*module);
+       /endif

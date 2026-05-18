@@ -42,6 +42,7 @@
 
 
 ctl-opt nomain
+        thread(*serialize)
         option(*nodebugio:*srcstmt:*nounref)
         copyright('v.002 - Service Program for Lessons');
 

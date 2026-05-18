@@ -27,4 +27,4 @@ SNGPAGSFL.FILE: SNGPAGSFL-Country_List_Subfile_SQL_SINGLEPAGE.dspf
 
 # SNGPAGSFL Program - Country list subfile SQL program
 # Note: Depends on SAMPLEDB table from database directory
-SNGPAGSFL.PGM: SNGPAGSFL-Country_List_Subfile_SQL_SINGLEPAGE.pgm.sqlrpgle SNGPAGSFL.FILE
+SNGPAGSFL.PGM: SNGPAGSFL-Country_List_Subfile_SQL_SINGLEPAGE.pgm.sqlrpgle SNGPAGSFL.FILE ../../database/SAMPLEDB.FILE

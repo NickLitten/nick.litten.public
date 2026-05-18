@@ -3,14 +3,14 @@
 /* Description: Export list for Email Service Program              */
 /*-----------------------------------------------------------------*/
 
-STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('EMAILSRV_V1.0')
+STRPGMEXP  PGMLVL(*CURRENT) SIGNATURE('EmailService V1.3')
 
   /* Email notification procedures */
-  EXPORT     SYMBOL('SendEmail')
-  EXPORT     SYMBOL('BuildPasswordExpiryReport')
-  EXPORT     SYMBOL('BuildEmailSubject')
-  EXPORT     SYMBOL('LogMessage')
-  EXPORT     SYMBOL('ValidateEmailConfig')
-  EXPORT     SYMBOL('EscapeSqlString')
+  EXPORT     SYMBOL(SendEmail)
+  EXPORT     SYMBOL(BuildPasswordExpiryReport)
+  EXPORT     SYMBOL(BuildEmailSubject)
+  EXPORT     SYMBOL(LogMessage)
+  EXPORT     SYMBOL(ValidateEmailConfig)
+  EXPORT     SYMBOL(EscapeSqlString)
 
 ENDPGMEXP

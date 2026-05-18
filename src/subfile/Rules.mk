@@ -9,10 +9,6 @@
 # ---
 
 # ---
-# Build Order
-# ---
-SUBDIRS := Expanding_Page_SFL \ Full_Load_Subfile_Modernization \ Simple_Full_Load_Subfile \ SQL_Single_PageUP_PageDOWN_Subfile
-# ---
 # Compilation Settings
 # ---
 %.MODULE: private TGTRLS := V7R4M0
@@ -22,3 +18,9 @@ SUBDIRS := Expanding_Page_SFL \ Full_Load_Subfile_Modernization \ Simple_Full_Lo
 %.PGM:    private OPTIMIZE := *FULL
 %.PGM:    private ACTGRP := NICKLITTEN
 
+# ---
+# Build Order
+# ---
+SUBDIRS := Full_Load_Subfile_Modernization \
+           Simple_Full_Load_Subfile \
+           SQL_Single_PageUP_PageDOWN_Subfile

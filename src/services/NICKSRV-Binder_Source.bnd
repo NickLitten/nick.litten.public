@@ -6,11 +6,11 @@
 /*          ExecuteCommand, DisplayWindow                         */
 /*-----------------------------------------------------------------*/
 
-STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Nick_V1')
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('NicksService V1.4')
 
-  EXPORT SYMBOL('ReturnSystemName')
-  EXPORT SYMBOL('ReturnJobEnvironment')
-  EXPORT SYMBOL('ExecuteCommand')
-  EXPORT SYMBOL('DisplayWindow')
+  EXPORT SYMBOL(DisplayWindow)
+  EXPORT SYMBOL(ExecuteCommand)
+  EXPORT SYMBOL(ReturnJobEnvironment)
+  EXPORT SYMBOL(ReturnSystemName)
 
 ENDPGMEXP

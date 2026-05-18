@@ -39,21 +39,20 @@
 ///   1.1 2026-04-02 | Nick Litten | Added comprehensive documentation
 ///
 
-
 /include 'header.rpgleinc'
 
 ctl-opt
   main(mainline)
   copyright('HelloAdvanced | 1.1 - Sample Stylised RPG Program');
 
+// Include variables from a separate file
+/include 'variables.rpgleinc'
+
 // Procedure: mainline
 // Description: Main entry point for the program.
 Dcl-Proc mainline;
    Dcl-Pi mainline;
    end-pi;
-
-   Dcl-S msg char(50);
-   Dcl-S reply char(1);
 
    msg = 'Hello World!';
    dsply msg;
@@ -64,6 +63,7 @@ Dcl-Proc mainline;
       dsply msg '' reply;
    enddo;
 
+   // Indicate successful completion using 'success' which is defined in variables.rpgleinc
    success = *on;
 
    Return;

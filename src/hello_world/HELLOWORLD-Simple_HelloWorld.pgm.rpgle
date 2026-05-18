@@ -34,6 +34,5 @@
 ///   1.1 2026-04-02 | Nick Litten | Added comprehensive documentation
 ///
 
-
 dsply 'Hello World!';
 Return;

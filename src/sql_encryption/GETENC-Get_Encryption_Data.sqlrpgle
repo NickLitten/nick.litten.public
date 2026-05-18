@@ -76,7 +76,7 @@ dcl-pr HandleError extpgm('ERRORMSG');
 end-pr;
 
 // Variable declarations
-Dcl-S Password varchar(50) inz('MySuperSecretPassword123!');
+Dcl-S myPassword varchar(50) inz('MySuperSecretPassword123!');
 Dcl-S Hint varchar(100) inz('The usual password we use for testing');
 Dcl-S CustomerID varchar(10);
 Dcl-S CustomerName varchar(50);
@@ -88,7 +88,7 @@ Dcl-S DebugMSG varchar(52);
 
 // Set up encryption password for this session
 exec sql
-  SET ENCRYPTION :PASSWORD = :Password;
+  SET ENCRYPTION PASSWORD = :myPassword;
 
 // Check for errors after setting password
 If (sqlstate <> '00000');
@@ -109,8 +109,8 @@ exec sql
       :CUSTOMERID,
       :CUSTOMERNAME,
       :SSN,
-      encrypt_aes(:SSN, :PASSWORD, :HINT => :HINT),
-      encrypt_aes(:CREDITCARD, :PASSWORD, :HINT => :HINT)
+      encrypt_aes(:SSN, :myPassword, :HINT => :HINT),
+      encrypt_aes(:CREDITCARD, :myPassword, :HINT => :HINT)
     );
 
 // Check for insert errors

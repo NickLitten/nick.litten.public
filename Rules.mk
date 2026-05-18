@@ -12,7 +12,8 @@
 # Global Build Settings
 # ---
 # These settings apply to all objects unless overridden in subdirectory Rules.mk
-# Use := for immediate assignment (required for proper make variable expansion)
+# Use := for immediate assignment to prevent recursive expansion
+# Pattern-specific variables use 'private' with := for target-specific settings
 # ---
 
 # Target Release - IBM i OS version compatibility
@@ -49,4 +50,3 @@
 # Dependencies between directories must be respected
 # ---
 SUBDIRS := src
-          

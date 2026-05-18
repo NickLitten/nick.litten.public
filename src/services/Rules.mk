@@ -47,8 +47,8 @@ USRPRFSRV.MODULE: USRPRFSRV-User_Profile_Service.sqlrpgle
 # USRPRFSRV Service Program - User profile service program
 USRPRFSRV.SRVPGM: USRPRFSRV-User_Profile_Service.bnd USRPRFSRV.MODULE
 
-# MYBNDDIR Binding Directory - Sample binding directory for examples
-MYBNDDIR.BNDDIR: MYBNDDIR-Nicks_Sample_Binding_Directory.bnddir
+# BIGBNDDIR Binding Directory - Sample binding directory for examples
+BIGBNDDIR.BNDDIR: BIGBNDDIR-Nicks_Sample_Binding_Directory.bnddir
 
 # PWDMON Binding Directory - Password monitor service program bindings
 PWDMON.BNDDIR: PWDMON-Password_Monitor_Binding_Directory.bnddir
