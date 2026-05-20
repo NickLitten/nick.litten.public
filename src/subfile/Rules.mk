@@ -21,6 +21,7 @@
 # ---
 # Build Order
 # ---
-SUBDIRS := Full_Load_Subfile_Modernization \
-           Simple_Full_Load_Subfile \
-           SQL_Single_PageUP_PageDOWN_Subfile
+SUBDIRS := 1a-Full_Load_Subfile_SIMPLE \
+           1b-Full_Load_Subfile_Modernization \
+           2-Expanding_Page \
+           3-Single_Paging_Subfile_SQLRPGLE

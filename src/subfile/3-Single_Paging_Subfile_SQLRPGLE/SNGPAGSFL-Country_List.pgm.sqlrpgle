@@ -64,9 +64,9 @@
 /// https://www.nicklitten.com/ibm-i-rpg-subfile-single-page-sql-example
 ///
 /// Modification History:
-///   V.000 2026-01-17 | Nick Litten | Initial creation
-///   V.001 2026-02-18 | Nick Litten | Added comprehensive triple-slash documentation
-///   V.002 2026-03-08 | Nick Litten | Applied coding standards template
+///   V.000 2021-01-17 | Nick Litten | Initial creation
+///   V.001 2022-02-18 | Nick Litten | Added comprehensive triple-slash documentation
+///   V.002 2025-03-08 | Nick Litten | Applied coding standards template
 ///   V.003 2026-05-17 | Nick Litten | Enhanced error handling, performance, and maintainability
 ///
 
@@ -144,19 +144,19 @@ Dcl-S FetchCurrencyName varchar(50);
 // Main Program Logic
 // --------------------------------------------------------------------------
 Dcl-Proc mainline;
-   
+
    Dcl-S ProgramSuccess ind inz(*on);
-   
+
    exec sql set option commit = *none, closqlcsr = *endmod;
-   
+
    // Initialize program
    If (not InitializeProgram());
       Return;
    EndIf;
-   
+
    // Main processing loop
    dow (not Indicators.Exit);
-      
+
       // Initial load or refresh requested
       If (Indicators.Refresh or RRN = 0);
          CurrentPage = 1;
@@ -164,19 +164,19 @@ Dcl-Proc mainline;
          LoadSubfilePage(PageSize);
          Indicators.Refresh = *off;
       EndIf;
-      
+
       write FOOTREC;
       exfmt SFLCTL;
-      
+
       Select;
          When (Indicators.Exit);
             leave;
-      
+
          When (Indicators.Refresh);
             iter;
-      
+
             // Handle page navigation
-         When (Indicators.PageDown) or If (Indicators.PageUp); 
+         When (Indicators.PageDown) or (Indicators.PageUp);
             HandlePageNavigation();
 
          Other;
@@ -185,12 +185,12 @@ Dcl-Proc mainline;
       EndSl;
 
    enddo;
-   
+
    // Cleanup and exit
    CleanupProgram();
    *inlr = *on;
    Return;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -199,9 +199,9 @@ end-proc;
 // Returns: *on if successful, *off if error
 // --------------------------------------------------------------------------
 Dcl-Proc InitializeProgram;
-   
+
    Dcl-Pi *n ind end-pi;
-   
+
    // Open display file
    monitor;
       open SNGPAGSFL;
@@ -210,21 +210,21 @@ Dcl-Proc InitializeProgram;
       // Display file open failed
       Return *off;
    endmon;
-   
+
    SFLRCDNBR = 1;
-   
+
    // Get current user
    exec sql select current user into :USERNAME from sysibm.sysdummy1;
-   
+
    If (SQLSTATE <> SQL_SUCCESS);
       USERNAME = '*UNKNOWN';
    EndIf;
-   
+
    // Get total record count for pagination
    GetTotalRecords();
-   
+
    Return *on;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -232,7 +232,7 @@ end-proc;
 // Description: Clean up resources before program exit
 // --------------------------------------------------------------------------
 Dcl-Proc CleanupProgram;
-   
+
    // Close display file if open
    If (DisplayFileOpen);
       monitor;
@@ -242,7 +242,7 @@ Dcl-Proc CleanupProgram;
          // Ignore close errors
       endmon;
    EndIf;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -250,7 +250,7 @@ end-proc;
 // Description: Process page up/down navigation
 // --------------------------------------------------------------------------
 Dcl-Proc HandlePageNavigation;
-   
+
    // Handle page down
    If (Indicators.PageDown);
       If (RRN >= PageSize and not Indicators.SflEnd);
@@ -260,7 +260,7 @@ Dcl-Proc HandlePageNavigation;
       EndIf;
       Indicators.PageDown = *off;
    EndIf;
-   
+
    // Handle page up
    If (Indicators.PageUp);
       If (CurrentPage > 1);
@@ -270,7 +270,7 @@ Dcl-Proc HandlePageNavigation;
       EndIf;
       Indicators.PageUp = *off;
    EndIf;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -278,17 +278,17 @@ end-proc;
 // Description: Get total count of records for pagination
 // --------------------------------------------------------------------------
 Dcl-Proc GetTotalRecords;
-   
-   exec sql 
-      select count(*) 
+
+   exec sql
+      select count(*)
       into :TotalRecords
       from SAMPLEDB;
-   
+
    // Handle SQL errors
    If (SQLSTATE <> SQL_SUCCESS);
       TotalRecords = 0;
    EndIf;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -300,23 +300,23 @@ Dcl-Proc LoadSubfilePage;
    Dcl-Pi *n;
       p_pagesize like(PageSize) const;
    end-pi;
-   
+
    Dcl-S RecordsToSkip packed(4:0);
    Dcl-S RecordsLoaded packed(4:0);
    Dcl-S SQLState_Local char(5);
    Dcl-S CursorOpen ind inz(*off);
-   
+
    // Clear the subfile
    ClearSubfile();
-   
+
    RRN = 0;
    RecordsLoaded = 0;
    RecordsToSkip = (CurrentPage - 1) * p_pagesize;
-   
+
    // Declare scrollable cursor with optimized column selection
-   exec sql 
+   exec sql
       declare C1 scroll cursor for
-      select 
+      select
          COUNTRY_CODE,
          COUNTRY_NAME,
          REGION,
@@ -325,20 +325,20 @@ Dcl-Proc LoadSubfilePage;
          CURRENCY_NAME
       from SAMPLEDB
       order by COUNTRY_NAME;
-   
+
    exec sql open C1;
-   
+
    // Check for cursor open errors
    If (SQLSTATE <> SQL_SUCCESS);
       Indicators.NoData = *on;
       Return;
    EndIf;
-   
+
    CursorOpen = *on;
-   
+
    // Skip to the correct page position using RELATIVE positioning
    If (RecordsToSkip > 0);
-      exec sql 
+      exec sql
          fetch relative :RecordsToSkip from C1
          into :FetchCode,
               :FetchName,
@@ -347,11 +347,11 @@ Dcl-Proc LoadSubfilePage;
               :FetchCurrency,
               :FetchCurrencyName;
    EndIf;
-   
+
    // Load one page of records
    dow (RecordsLoaded < p_pagesize);
-      
-      exec sql 
+
+      exec sql
          fetch next from C1
          into :FetchCode,
               :FetchName,
@@ -359,9 +359,9 @@ Dcl-Proc LoadSubfilePage;
               :FetchEUMember,
               :FetchCurrency,
               :FetchCurrencyName;
-      
+
       SQLState_Local = SQLSTATE;
-      
+
       If (SQLState_Local = SQL_SUCCESS);
          RRN += 1;
          RecordsLoaded += 1;
@@ -373,17 +373,17 @@ Dcl-Proc LoadSubfilePage;
          // Handle other SQL errors
          leave;
       EndIf;
-      
+
    enddo;
-   
+
    // Close cursor
    If (CursorOpen);
       exec sql close C1;
    EndIf;
-   
+
    // Display subfile if records exist
    DisplaySubfile(p_pagesize);
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -391,13 +391,13 @@ end-proc;
 // Description: Clear the subfile for new data
 // --------------------------------------------------------------------------
 Dcl-Proc ClearSubfile;
-   
+
    Indicators.SflDsp = *off;
    Indicators.SflDspCtl = *on;
    Indicators.SflClr = *on;
    write SFLCTL;
    Indicators.SflClr = *off;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -405,7 +405,7 @@ end-proc;
 // Description: Populate subfile record fields from fetched data
 // --------------------------------------------------------------------------
 Dcl-Proc PopulateSubfileRecord;
-   
+
    clear SFLSEL;
    CCODE = FetchCode;
    CNAME = %trim(FetchName);
@@ -413,7 +413,7 @@ Dcl-Proc PopulateSubfileRecord;
    CEUMEM = FetchEUMember;
    CCURR = FetchCurrency;
    CCURNAME = %trim(FetchCurrencyName);
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -425,19 +425,19 @@ Dcl-Proc DisplaySubfile;
    Dcl-Pi *n;
       p_pagesize like(PageSize) const;
    end-pi;
-   
+
    If (RRN > 0);
       Indicators.SflDsp = *on;
       Indicators.SflDspCtl = *on;
       Indicators.NoData = *off;
-      
+
       // Set end of file indicator if we're on the last page
       If ((CurrentPage * p_pagesize) >= TotalRecords);
          Indicators.SflEnd = *on;
       Else;
          Indicators.SflEnd = *off;
       EndIf;
-      
+
       RECCOUNT = TotalRecords;
       SFLPGM = CurrentPage;
    Else;
@@ -446,7 +446,7 @@ Dcl-Proc DisplaySubfile;
       Indicators.NoData = *on;
       RECCOUNT = 0;
    EndIf;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -454,15 +454,15 @@ end-proc;
 // Description: Handle user selections from subfile
 // --------------------------------------------------------------------------
 Dcl-Proc ProcessSelections;
-   
+
    Dcl-S CurrentRRN packed(4:0);
-   
+
    CurrentRRN = 1;
-   
+
    dow (CurrentRRN <= RRN);
-      
+
       chain CurrentRRN SFLREC;
-      
+
       If (%found(SNGPAGSFL));
          Select;
             When (SFLSEL = SELECTION_DISPLAY);
@@ -471,11 +471,11 @@ Dcl-Proc ProcessSelections;
                update SFLREC;
          EndSl;
       EndIf;
-      
+
       CurrentRRN += 1;
-      
+
    enddo;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -484,16 +484,16 @@ end-proc;
 // Parameters: pCountryCode - Country code to display details for
 // --------------------------------------------------------------------------
 Dcl-Proc DisplayDetails;
-   
+
    Dcl-Pi *n;
       pCountryCode char(2) const;
    end-pi;
-   
+
    Dcl-S SQLState_Local char(5);
-   
+
    // Fetch complete country details
-   exec sql 
-      select 
+   exec sql
+      select
          COUNTRY_CODE,
          COUNTRY_NAME,
          COUNTRY_NAME_LOCAL,
@@ -505,7 +505,7 @@ Dcl-Proc DisplayDetails;
          EU_JOIN_DATE,
          CURRENCY_CODE,
          CURRENCY_NAME
-      into 
+      into
          :FetchCode,
          :FetchName,
          :FetchNameLocal,
@@ -519,30 +519,30 @@ Dcl-Proc DisplayDetails;
          :FetchCurrencyName
       from SAMPLEDB
       where COUNTRY_CODE = :pCountryCode;
-   
+
    SQLState_Local = SQLSTATE;
-   
+
    If (SQLState_Local = SQL_SUCCESS);
-      
+
       // Populate detail screen fields
       PopulateDetailScreen();
-      
+
       // Display detail screen loop
       Indicators.Cancel = *off;
-      
+
       dow (not Indicators.Cancel);
          exfmt DETAILREC;
-         
+
          If (Indicators.Cancel);
             leave;
          EndIf;
       enddo;
-      
+
    Else;
       // Handle record not found or SQL error
       // In production, would display error message to user
    EndIf;
-   
+
 end-proc;
 
 // --------------------------------------------------------------------------
@@ -550,7 +550,7 @@ end-proc;
 // Description: Populate detail screen fields from fetched data
 // --------------------------------------------------------------------------
 Dcl-Proc PopulateDetailScreen;
-   
+
    DCODE = FetchCode;
    DNAME = %trim(FetchName);
    DLOCAL = %trim(FetchNameLocal);
@@ -559,15 +559,15 @@ Dcl-Proc PopulateDetailScreen;
    DPOP = FetchPopulation;
    DAREA = FetchArea;
    DEUMEM = FetchEUMember;
-   
+
    // Format date for display
    If (FetchEUJoinDate <> *loval);
       JOINDATE = %char(FetchEUJoinDate);
    Else;
       clear JOINDATE;
    EndIf;
-   
+
    DCURCODE = FetchCurrency;
    DCURNAME = %trim(FetchCurrencyName);
-   
+
 end-proc;

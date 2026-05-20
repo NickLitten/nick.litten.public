@@ -26,7 +26,7 @@
       *   Supports interactive selection and detail viewing
       *
       * Author: Nick Litten
-      * Created: 2026-04-17
+      * Created: 2021-04-17
       * ---------------------------------------------------------------------------
      A                                      DSPSIZ(27 132 *DS3)
      A                                      PRINT
@@ -101,14 +101,13 @@
       * Footer
       * ------------------------------------------------------------====
      A          R FOOTREC
-     A                                 25  2'F3=Exit'
-     A                                      COLOR(BLU)
-     A                                 25 12'F5=Refresh'
-     A                                      COLOR(BLU)
-     A                                 25 25'F12=Cancel'
-     A                                      COLOR(BLU)
-     A                                 25 40'PageUp/PageDown'
-     A                                      COLOR(BLU)
+
+     A            MOUSECLICK     2Y 0B 25  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(5 'F5 >Refresh' CA05)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)
+
      A            RECCOUNT       4S 0O 25 90
      A                                 25 95'records displayed'
      A                                      COLOR(BLU)
@@ -147,5 +146,7 @@
      A            DCURCODE       3A  O 16 25COLOR(WHT)
      A                                 17  5'Currency Name:'
      A            DCURNAME      30A  O 17 25COLOR(WHT)
-     A                                 26  2'F12=Return to List'
-     A                                      COLOR(BLU)
+     A            MOUSECLICK     2Y 0B 25  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)

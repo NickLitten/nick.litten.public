@@ -6,9 +6,8 @@
 # ---
 # Subdirectories are processed in dependency order:
 # 1. database - Create tables and files first
-# 2. binders - Create binding directories
-# 3. services - Build service programs (may depend on database)
-# 4. All other application directories
+# 2. services - Build service programs (may depend on database)
+# 3. All other application directories
 # ---
 
 # ---
