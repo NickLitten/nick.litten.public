@@ -1,12 +1,16 @@
 {
+  "version": "7.5.0",
   "description": "Nick Litten Public GITHUB Code samples",
+  "repository": "https://github.com/NickLitten/nick.litten.public",
+  "objlib": "&lib",
+  "curlib": "&lib",
   "includePath": [
-    "includes"
+    "IBMi-CodeSamples/includes"
   ],
   "preUsrlibl": [
     "NICKLITTEN"
   ],
-  "buildCommand": "makei build",
-  "compileCommand": "makei compile -f {filename}",
-  "curlib": "&CURLIB"
+  "setIBMiEnvCmd": [],
+  "buildCommand": "/QOpenSys/pkgs/bin/makei build",
+  "compileCommand": "/QOpenSys/pkgs/bin/makei compile c -f {filename}"
 }

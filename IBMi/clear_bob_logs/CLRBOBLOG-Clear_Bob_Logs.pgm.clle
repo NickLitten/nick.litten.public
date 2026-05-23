@@ -1,0 +1,153 @@
+/* --------------------------------------------------------------------- */
+/* CLRBOBLOG - Clear Bob Logs                                            */
+/* --------------------------------------------------------------------- */
+/* Program.......... CLRBOBLOG                                           */
+/* Author........... Nick Litten                                         */
+/* Calling Program.. *NONE                                               */
+/* Calling Command.. CLRBOBLOG                                           */
+/* Function......... Lists and deletes specific log files from           */
+/*                   home directory. Removes core dumps, Java            */
+/*                   core files, JIT dumps, and snap files that          */
+/*                   accumulate during development and testing.          */
+/* User Profile..... *USER                                               */
+/* Object Owner..... QPGMR                                               */
+/* Compiler Options. CRTBNDCL PGM(library/CLRBOBLOG)                     */
+/*                   SRCFILE(library/QCLLESRC)                           */
+/*                   SRCMBR(CLRBOBLOG)                                   */
+/* --------------------------------------------------------------------- */
+/* Purpose: Utility program demonstrating:                               */
+/*   - IFS file management from CL                                       */
+/*   - QSH command execution for Unix operations                         */
+/*   - Pattern-based file deletion                                       */
+/*   - Error handling with MONMSG                                        */
+/*   - Progress messaging during cleanup                                 */
+/* --------------------------------------------------------------------- */
+/* Features:                                                             */
+/*   - Lists all files in specified directory                            */
+/*   - Deletes files matching patterns: core.*, javacore.*,              */
+/*     jitdump.*, Snap.*                                                 */
+/*   - Provides progress messages for each deletion step                 */
+/*   - Handles errors gracefully with MONMSG                             */
+/*   - Uses QSH for Unix-style file operations                           */
+/* --------------------------------------------------------------------- */
+/* Usage: CALL CLRBOBLOG PARM('/home/username')                          */
+/*        Example: CALL CLRBOBLOG PARM('/home/nick')                     */
+/* --------------------------------------------------------------------- */
+/* Parameters:                                                           */
+/*   &HOMEDIR - Input - CHAR(256) - Home directory path                  */
+/*              Full IFS path to directory to clean                      */
+/* --------------------------------------------------------------------- */
+/* Dependencies:                                                         */
+/*   - QSH command must be available                                     */
+/*   - User must have authority to delete files in directory             */
+/*   - Directory must exist                                              */
+/* --------------------------------------------------------------------- */
+/* Reference:                                                            */
+/*   - IBM i IFS Programming Guide                                       */
+/*   - QSH Command Reference                                             */
+/*   - https://www.nicklitten.com/ibm-i-ifs-cleanup/                     */
+/* --------------------------------------------------------------------- */
+/* Modification History:                                                 */
+/* Author     Date       Description                                     */
+/*   1.0 2026-02-20 | Nick Litten | Initial creation                     */
+/*   2.0 2026-02-21 | Nick Litten | Added HOMEDIR parameter support      */
+/*   3.0 2026-05-14 | Nick Litten | Added comprehensive documentation    */
+/*   3.1 2026-05-23 | Nick Litten | Standardized documentation format    */
+/*   3.2 2026-05-23 | Nick Litten | Aligned header comment block         */
+/* --------------------------------------------------------------------- */
+
+PGM        PARM(&HOMEDIR)
+
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('3.1 - Clear Bob Log Files from IFS Directory')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © 2026 | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+  DCL        VAR(&HOMEDIR) TYPE(*CHAR) LEN(256)
+  DCL        VAR(&CMD) TYPE(*CHAR) LEN(512)
+  DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+  DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+  DCL        VAR(&MSGF) TYPE(*CHAR) LEN(10)
+  DCL        VAR(&MSGFLIB) TYPE(*CHAR) LEN(10)
+
+  /* Monitor for errors */
+  MONMSG     MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR))
+
+  /* Display header message */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Starting cleanup of log +
+               files in ' *CAT &HOMEDIR) TOPGMQ(*EXT) +
+               MSGTYPE(*INFO)
+
+  /* List all files in the directory */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Listing files in ' *CAT &HOMEDIR +
+               *TCAT ':') TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('ls -la ' *CAT &HOMEDIR)
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000) EXEC(DO)
+    SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+                 MSGDTA('Warning: Could not list directory +
+                 contents') TOPGMQ(*EXT) MSGTYPE(*INFO)
+  ENDDO
+
+  /* Delete core.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting core.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/core.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete javacore.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting javacore.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/javacore.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete jitdump.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting jitdump.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/jitdump.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Delete Snap.* files */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('Deleting Snap.* files...') +
+               TOPGMQ(*EXT) MSGTYPE(*INFO)
+
+  CHGVAR     VAR(&CMD) VALUE('rm -f ' *CAT &HOMEDIR *TCAT +
+               '/Snap.*')
+  QSH        CMD(&CMD)
+  MONMSG     MSGID(QSH0000)
+
+  /* Display completion message */
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Cleanup completed +
+               successfully') TOPGMQ(*EXT) MSGTYPE(*COMP)
+
+  GOTO       CMDLBL(ENDPGM)
+
+ERROR:      /* Error handling */
+  RCVMSG     MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID) +
+               MSGF(&MSGF) SNDMSGFLIB(&MSGFLIB)
+
+  SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+               MSGDTA('CLRBOBLOG: Error occurred - ' *CAT +
+               &MSGID *CAT ' - ' *CAT &MSGDTA) +
+               TOPGMQ(*PRV) MSGTYPE(*COMP)
+
+ENDPGM:     ENDPGM

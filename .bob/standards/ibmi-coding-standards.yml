@@ -166,6 +166,22 @@ clle:
       - "error_handling"
       - "endpgm"
 
+  header_formatting:
+    comment_style: "/* */"
+    separator_line: "/* --------------------------------------------------------------------- */"
+    separator_length: 75
+    alignment: "left_and_right"
+    description: |
+      Header comment blocks must be left and right aligned:
+      - Opening /* aligned to left margin
+      - Closing */ aligned to column 75
+      - Separator lines use dashes (-) not equals (=)
+      - Content left-aligned with consistent spacing
+      - Example:
+        /* --------------------------------------------------------------------- */
+        /* MYSQLCTL - MariaDB/MySQL Service Control                              */
+        /* --------------------------------------------------------------------- */
+
   best_practices:
     - "Use CLLE (ILE CL) instead of CLP"
     - "Use MONMSG for error handling"
@@ -177,6 +193,7 @@ clle:
     - "Use CALLPRC for ILE procedure calls"
     - "Avoid hard-coded values"
     - "Use message files for user messages"
+    - "Align header comment blocks left and right (75 chars)"
 
   naming:
     variables: "UPPER_SNAKE_CASE"  # &MY_VAR

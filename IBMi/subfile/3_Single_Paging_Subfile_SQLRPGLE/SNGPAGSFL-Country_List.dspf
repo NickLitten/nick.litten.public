@@ -1,0 +1,152 @@
+      * ---------------------------------------------------------------------------
+      * Display File: SAMPLESFL - Country List Subfile (Single Page)
+      * Description: Interactive subfile display for European country database
+      *
+      * Purpose:
+      *   - Display country information in a single-page subfile format
+      *   - Allow selection of countries for detailed view
+      *   - Demonstrate subfile programming with SQL data source
+      *
+      * Features:
+      *   - Single page subfile (18 records per page)
+      *   - Selection option (5=Display Details)
+      *   - Detail overlay screen for selected country
+      *   - Function key support (F3/F5/F12, PageUp/PageDown)
+      *   - Color-coded display elements
+      *   - Record count display
+      *
+      * Record Formats:
+      *   SFLREC    - Subfile record (country list)
+      *   SFLCTL    - Subfile control
+      *   FOOTREC   - Footer with function keys
+      *   DETAILREC - Detail overlay display
+      *
+      * Usage:
+      *   Used by SAMPLESFL program to display SAMPLEDB country data
+      *   Supports interactive selection and detail viewing
+      *
+      * Author: Nick Litten Created: 2021-04-17 
+      * modified: 2025-05-20 added mouse click support to detail overlay
+      * ---------------------------------------------------------------------------
+     A                                      DSPSIZ(27 132 *DS3)
+     A                                      PRINT
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA12(12 'Cancel')
+     A                                      ROLLUP(25 'Page Down')
+     A                                      ROLLDOWN(26 'Page Up')
+      *
+      * ------------------------------------------------------------====
+      * Subfile Record Format
+      * ------------------------------------------------------------====
+     A          R SFLREC                    SFL
+     A                                      SFLNXTCHG
+     A            SFLSEL         1A  B  5  3VALUES(' ' '5')
+     A            CCODE          2A  O  5  7COLOR(WHT)
+     A            CNAME         40A  O  5 11COLOR(WHT)
+     A            CREGION       20A  O  5 53COLOR(WHT)
+     A            CEUMEM         1A  O  5 75COLOR(WHT)
+     A            CCURR          3A  O  5 79COLOR(WHT)
+     A            CCURNAME      25A  O  5 84COLOR(WHT)
+      *
+      * ------------------------------------------------------------====
+      * Subfile Control Record Format
+      * ------------------------------------------------------------====
+     A          R SFLCTL                    SFLCTL(SFLREC)
+     A                                      SFLSIZ(0018)
+     A                                      SFLPAG(0018)
+     A                                      OVERLAY
+     A  91                                  SFLDSP
+     A  92                                  SFLDSPCTL
+     A  93                                  SFLCLR
+     A  94                                  SFLEND(*MORE)
+     A            SFLRCDNBR      4S 0H      SFLRCDNBR(CURSOR)
+     A            SFLPGM         4S 0H      TEXT('Current Page Number')
+      *
+      * ------------------------------------------------------------====
+      * Screen Header
+      * ------------------------------------------------------------====
+     A                                  1  2'Program:'
+     A            PGMNAME       10A  O  1 11COLOR(WHT)
+     A                                  1 50'European Country Information'
+     A                                      DSPATR(HI)
+     A                                  1110DATE
+     A                                      EDTCDE(Y)
+     A                                  1122TIME
+     A                                  2 50'Country Database'
+     A                                      DSPATR(HI)
+     A                                  2 92'User:'
+     A            USERNAME      10A  O  2 98COLOR(WHT)
+      *
+      * ------------------------------------------------------------====
+      * Column Headers
+      * ------------------------------------------------------------====
+     A                                  4  3'Sel'
+     A                                      COLOR(BLU)
+     A                                  4  7'Cd'
+     A                                      COLOR(BLU)
+     A                                  4 11'Country Name'
+     A                                      COLOR(BLU)
+     A                                  4 53'Region'
+     A                                      COLOR(BLU)
+     A                                  4 75'EU'
+     A                                      COLOR(BLU)
+     A                                  4 79'Cur'
+     A                                      COLOR(BLU)
+     A                                  4 84'Currency Name'
+     A                                      COLOR(BLU)
+      *
+      * ------------------------------------------------------------====
+      * Footer
+      * ------------------------------------------------------------====
+     A          R FOOTREC
+
+     A            MOUSECLICK     2Y 0B 25  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(5 'F5 >Refresh' CA05)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)
+
+     A            RECCOUNT       4S 0O 25 90
+     A                                 25 95'records displayed'
+     A                                      COLOR(BLU)
+     A N70                             26  2'Selection: 5=Display Details'
+     A N70                                  COLOR(BLU)
+     A  70                             26  2'* No records to display.'
+     A  70                                  COLOR(RED)
+      *
+      * ------------------------------------------------------------====
+      * Detail Display Record Format
+      * ------------------------------------------------------------====
+     A          R DETAILREC
+     A                                      OVERLAY
+     A                                  5  2'Country Details'
+     A                                      DSPATR(HI)
+     A                                      COLOR(WHT)
+     A                                  7  5'Country Code:'
+     A            DCODE          2A  O  7 25COLOR(WHT)
+     A                                  8  5'Country Name:'
+     A            DNAME         50A  O  8 25COLOR(WHT)
+     A                                  9  5'Local Name:'
+     A            DLOCAL        50A  O  9 25COLOR(WHT)
+     A                                 10  5'Capital City:'
+     A            DCAPITAL      50A  O 10 25COLOR(WHT)
+     A                                 11  5'Region:'
+     A            DREGION       25A  O 11 25COLOR(WHT)
+     A                                 12  5'Population:'
+     A            DPOP          12S 0O 12 25
+     A                                 13  5'Area (km²):'
+     A            DAREA         12S 2O 13 25
+     A                                 14  5'EU Member:'
+     A            DEUMEM         1A  O 14 25COLOR(WHT)
+     A                                 15  5'EU Join Date:'
+     A            JOINDATE      10A  O 15 25COLOR(WHT)
+     A                                 16  5'Currency Code:'
+     A            DCURCODE       3A  O 16 25COLOR(WHT)
+     A                                 17  5'Currency Name:'
+     A            DCURNAME      30A  O 17 25COLOR(WHT)
+     A            MOUSECLICK     2Y 0B 25  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)

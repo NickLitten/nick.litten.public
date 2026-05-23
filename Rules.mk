@@ -17,9 +17,9 @@
 # ---
 
 # Target Release - IBM i OS version compatibility
-%.MODULE: private TGTRLS := V7R4M0
-%.PGM:    private TGTRLS := V7R4M0
-%.SRVPGM: private TGTRLS := V7R4M0
+%.MODULE: private TGTRLS := V7R5M0
+%.PGM:    private TGTRLS := V7R5M0
+%.SRVPGM: private TGTRLS := V7R5M0
 
 # Program Compilation Settings
 %.PGM:    private ENTMOD := *PGM          # Entry module is the program itself
@@ -49,4 +49,5 @@
 # Subdirectories are processed in the order listed
 # Dependencies between directories must be respected
 # ---
-SUBDIRS := src
+
+SUBDIRS := IBMi
