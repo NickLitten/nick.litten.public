@@ -1,0 +1,70 @@
+      // 
+      //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+      //  Modernised September 2025 Nick Litten
+
+      //  Redistribution and use in source and binary forms, with or without
+      //  modification, are permitted provided that the following conditions
+      //  are met:
+      //  1. Redistributions of source code must retain the above copyright
+      //     notice, this list of conditions and the following disclaimer.
+      //  2. Redistributions in binary form must reproduce the above copyright
+      //     notice, this list of conditions and the following disclaimer in the
+      //     documentation and/or other materials provided with the distribution.
+
+      //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+      //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+      //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+      //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+      //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+      //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+      //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+      //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+      //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+      //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+      //  SUCH DAMAGE.
+
+      /if defined(EDIT_H_DEFINED)
+      /eof
+      /endif
+      /define EDIT_H_DEFINED
+
+kjlhaklasdasldjasldkaklsdj
+
+      //  The Convert Edit Code (QECCVTEC) API translates an edit code specificati
+      //  into an edit mask, which is a byte string used to format a numeric value
+      //  into a readable character string.
+      dcl-pr QECCVTEC  ExtPgm('QECCVTEC');
+        OutMask char(256) options(*varsize);
+        OutMaskLen int(10);
+        OutRcvLen int(10);
+        OutZeroBal char(1);
+        EditCode char(1) const;
+        FillorFloat char(1) const;
+        SourcePrec int(10) const;
+        SourceDecPos int(10) const;
+        ErrorCode char(32767) options(*varsize);
+      end-pr QECCVTEC;
+
+      dcl-pr QECCVTEW  ExtPgm('QECCVTEW');
+        OutMask char(256) options(*varsize);
+        OutMaskLen int(10);
+        OutRcvLen int(10);
+        EditWord char(256) options(*Varsize) const;
+        EditWordLen int(10) const;
+        ErrorCode char(32767) options(*varsize);
+        Sourcelen int(10) const options(*nopass);
+        CurrSymm char(1) const options(*nopass);
+      end-pr QECCVTEW;
+
+      dcl-pr QECEDT  ExtPgm('QECEDT');
+        RcvVar char(256) options(*varsize);
+        RcvVarLen int(10) const;
+        SrcVar char(63) const;
+        SrcVarClass char(10) const;
+        Precision int(10) const;
+        OutMask char(256) const options(*varsize);
+        OutMaskLen int(10) const;
+        OutZeroBal char(1) const;
+        ErrorCode char(32767) options(*varsize);
+      end-pr QECEDT;
+      // end of edit_h.rpgleinc file  

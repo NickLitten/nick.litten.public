@@ -1,0 +1,197 @@
+/* ------------------------------------------------------------ */
+/* IASPLOOP - DOU Question and Answer CL Example                */
+/* ------------------------------------------------------------ */
+/* Program.......... IASPLOOP                                   */
+/* Author........... nick@nicklitten.com                        */
+/* Calling Program.. *NONE                                      */
+/* Calling Command.. *NONE                                      */
+/* Function......... Interactive CL program using DOUNTIL loop  */
+/*                   to prompt user for IASP selection with     */
+/*                   enhanced error handling and retry logic.   */
+/*                   Demonstrates robust user interaction with  */
+/*                   SNDUSRMSG, input validation, and ASP group */
+/*                   management with SETASPGRP command.         */
+/* User Profile..... *USER                                      */
+/* Object Owner..... QPGMR                                      */
+/* Compiler Options. CRTBNDCL PGM(library/IASPLOOP)             */
+/*                   SRCFILE(library/QCLLESRC) SRCMBR(IASPLOOP) */
+/* -------------------------------------------------------------*/
+/* Purpose: Educational example demonstrating:                  */
+/*   - DOUNTIL loop for user interaction                        */
+/*   - Retry counter to prevent infinite loops                  */
+/*   - Enhanced error handling with MONMSG                      */
+/*   - Case-insensitive input with %UPPER function              */
+/*   - ASP group switching with SETASPGRP                       */
+/*   - Comprehensive error messages                             */
+/* -------------------------------------------------------------*/
+/* Features:                                                    */
+/*   - DOUNTIL loop for robust user interaction                 */
+/*   - Maximum retry counter (3 attempts)                       */
+/*   - Comprehensive error handling with MONMSG                 */
+/*   - Case-insensitive input using %UPPER function             */
+/*   - Validates user response against allowed values           */
+/*   - Sets job ASP group based on selection                    */
+/*   - Detailed error messages with MSGID and MSGDTA            */
+/*   - Graceful exit after max retries                          */
+/*   - Sends confirmation message to job log                    */
+/*   - Navigates to MAIN menu after completion                  */
+/* -------------------------------------------------------------*/
+/* Usage: CALL IASPLOOP                                         */
+/*        (Interactive - prompts user for IASP selection)       */
+/*        Maximum 3 retry attempts before exit                  */
+/* -------------------------------------------------------------*/
+/* Parameters: None                                             */
+/* -------------------------------------------------------------*/
+/* Dependencies:                                                */
+/*   - IASP1 and IASP2 must be configured on the system         */
+/*   - User must have authority to SETASPGRP command            */
+/*   - MAIN menu must exist for GO MENU(MAIN)                   */
+/* -------------------------------------------------------------*/
+/* Reference:                                                   */
+/*   - IBM i CL Programming Guide                               */
+/*   - SETASPGRP Command Reference                              */
+/*   - DOUNTIL Loop Control Structure                           */
+/*   - https://www.nicklitten.com/ibm-i-error-handling/         */
+/* -------------------------------------------------------------*/
+/* Modification History:                                        */
+/* Author     Date       Description                            */
+/* NickLitten 2025.02.25 V01 Initial creation                   */
+/* NickLitten 2026.02.05 V02 Enhanced with error handling       */
+/* NickLitten 2026.04.04 V03 Standardized header block          */
+/* Bob AI     2026.05.14 V04 Added comprehensive documentation  */
+/* ------------------------------------------------------------ */
+
+PGM
+
+/* --------------------------------------------------------- */
+/* Variable Declarations                                     */
+/* --------------------------------------------------------- */
+DCL VAR(&EXIT) TYPE(*LGL) VALUE('0')
+DCL VAR(&REPLY) TYPE(*CHAR) LEN(10)
+DCL VAR(&VALIDREPLY) TYPE(*LGL) VALUE('0')
+DCL VAR(&MSGID) TYPE(*CHAR) LEN(7)
+DCL VAR(&MSGDTA) TYPE(*CHAR) LEN(512)
+DCL VAR(&RETRYCNT) TYPE(*DEC) LEN(3 0) VALUE(0)
+DCL VAR(&MAXRETRY) TYPE(*DEC) LEN(3 0) VALUE(3)
+
+/* --------------------------------------------------------- */
+/* Global Error Monitoring                                   */
+/* --------------------------------------------------------- */
+MONMSG MSGID(CPF0000) EXEC(GOTO CMDLBL(ERROR))
+
+/* --------------------------------------------------------- */
+/* Main Processing Loop                                      */
+/* --------------------------------------------------------- */
+DOUNTIL COND(&EXIT)
+
+  /* Increment retry counter to prevent infinite loops */
+  CHGVAR VAR(&RETRYCNT) VALUE(&RETRYCNT + 1)
+  
+  /* Exit if maximum retries exceeded */
+  IF COND(&RETRYCNT *GT &MAXRETRY) THEN(DO)
+    SNDPGMMSG MSG('Maximum retry attempts exceeded. Exiting.') +
+              TOPGMQ(*EXT) MSGTYPE(*DIAG)
+    GOTO CMDLBL(CLEANUP)
+  ENDDO
+
+  /* Prompt user for iASP selection */
+  SNDUSRMSG MSG('Which iASP do you want to use? +
+                (IASP1/IASP2/*NONE)') +
+            VALUES(IASP1 IASP2 *NONE) +
+            TOMSGQ(*) +
+            MSGRPY(&REPLY)
+  
+  MONMSG MSGID(CPF0000) EXEC(DO)
+    SNDPGMMSG MSG('Error receiving user response.') +
+              TOPGMQ(*EXT) MSGTYPE(*DIAG)
+    GOTO CMDLBL(ERROR)
+  ENDDO
+
+  /* Normalize reply to uppercase for comparison */
+  CHGVAR VAR(&REPLY) VALUE(%UPPER(&REPLY))
+
+  /* --------------------------------------------------------- */
+  /* Validate and Process User Selection                      */
+  /* --------------------------------------------------------- */
+  IF COND(&REPLY *EQ '*NONE') THEN(DO)
+    SETASPGRP ASPGRP(*NONE)
+    MONMSG MSGID(CPF0000) EXEC(DO)
+      RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+      SNDPGMMSG MSG('Error setting ASP group to *NONE:' *BCAT +
+                    &MSGID *BCAT &MSGDTA) +
+                TOPGMQ(*EXT) MSGTYPE(*DIAG)
+      GOTO CMDLBL(RETRY)
+    ENDDO
+    CHGVAR VAR(&VALIDREPLY) VALUE('1')
+    CHGVAR VAR(&EXIT) VALUE('1')
+  ENDDO
+
+  ELSE CMD(IF COND(&REPLY *EQ 'IASP1') THEN(DO))
+    SETASPGRP ASPGRP(IASP1)
+    MONMSG MSGID(CPF0000) EXEC(DO)
+      RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+      SNDPGMMSG MSG('Error setting ASP group to IASP1:' *BCAT +
+                    &MSGID *BCAT &MSGDTA) +
+                TOPGMQ(*EXT) MSGTYPE(*DIAG)
+      GOTO CMDLBL(RETRY)
+    ENDDO
+    CHGVAR VAR(&VALIDREPLY) VALUE('1')
+    CHGVAR VAR(&EXIT) VALUE('1')
+  ENDDO
+
+  ELSE CMD(IF COND(&REPLY *EQ 'IASP2') THEN(DO))
+    SETASPGRP ASPGRP(IASP2)
+    MONMSG MSGID(CPF0000) EXEC(DO)
+      RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+      SNDPGMMSG MSG('Error setting ASP group to IASP2:' *BCAT +
+                    &MSGID *BCAT &MSGDTA) +
+                TOPGMQ(*EXT) MSGTYPE(*DIAG)
+      GOTO CMDLBL(RETRY)
+    ENDDO
+    CHGVAR VAR(&VALIDREPLY) VALUE('1')
+    CHGVAR VAR(&EXIT) VALUE('1')
+  ENDDO
+
+  ELSE CMD(DO)
+    /* Invalid selection - notify user and retry */
+    SNDPGMMSG MSG('Invalid selection:' *BCAT &REPLY *TCAT +
+                  '. Please choose IASP1, IASP2, or *NONE.') +
+              TOPGMQ(*EXT) MSGTYPE(*DIAG)
+    CHGVAR VAR(&VALIDREPLY) VALUE('0')
+    /* Continue loop for retry */
+  ENDDO
+
+  RETRY:
+  /* Label for retry after error */
+
+ENDDO
+
+/* --------------------------------------------------------- */
+/* Success Processing                                        */
+/* --------------------------------------------------------- */
+IF COND(&VALIDREPLY) THEN(DO)
+  SNDPGMMSG MSG('iASP' *BCAT &REPLY *TCAT ' selected +
+                successfully.') +
+            TOPGMQ(*EXT) TOMSGQ(*TOPGMQ) MSGTYPE(*COMP)
+  
+  /* Navigate to main menu */
+  GO MENU(MAIN)
+ENDDO
+
+GOTO CMDLBL(CLEANUP)
+
+/* --------------------------------------------------------- */
+/* Error Handling                                            */
+/* --------------------------------------------------------- */
+ERROR:
+RCVMSG MSGTYPE(*EXCP) MSGDTA(&MSGDTA) MSGID(&MSGID)
+SNDPGMMSG MSG('Program error:' *BCAT &MSGID *BCAT &MSGDTA) +
+          TOPGMQ(*EXT) TOMSGQ(*TOPGMQ) MSGTYPE(*DIAG)
+
+/* --------------------------------------------------------- */
+/* Cleanup and Exit                                          */
+/* --------------------------------------------------------- */
+CLEANUP:
+/* Perform any necessary cleanup here */
+
+ENDPGM

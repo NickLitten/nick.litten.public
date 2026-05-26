@@ -1,0 +1,4 @@
+     A          R RSIMPLE                                                
+     A            NAME          10A         TEXT('THIS IS THE NAME')     
+     A            ADDRESS       50A         TEXT('THIS IS THE ADDRESS')  
+     A          K NAME                                                   

@@ -1,0 +1,301 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+        
+        /if defined(USRSPC_H_DEFINED)
+        /eof
+        /endif
+        /define USRSPC_H_DEFINED
+
+          // ---------------------------------------------------------------
+          //  QUSCRTUS(): Create User Space
+          //   USRSPC_H is the /COPY member containing definitions for use
+          //   with user spaces.
+          //       usrspc = (input) qualified user space name
+          //                          pos  1-10 = object name
+          //                              11-20 = library name
+          //      extattr = (input) attribute displayed in WRKOBJ panels
+          //         size = (input) initial size of user space
+          //        value = (input) initial value of bytes in user space
+          //                           (use x'00' for best performance)
+          //   publicAuth = (input) authority that *PUBLIC gets to space
+          //         Text = (input) Text description of user space
+          //  -- optional group 1 --
+          //      Replace = (input/optional) Replace if exists? (*YES/*NO)
+          //    ErrorCode = (i/o) standard API error code
+          //  -- optional group 2 --
+          //       Domain = (input/optional) Domain (*DEFAULT/*SYSTEM/*USER)
+          //  -- optional group 3 --
+          //  XferSizeReq = (input/optional) number of pages of storage to
+          //                          transfer on each request
+          //                          0 = use the default value
+          //                       1-32 = number of pages
+          //  OptSpcAlign = (input/optional) Use optimimum space alignment?
+          //                          0 = do not choose optimum (default)
+          //                          1 = choose optimum alignment
+          // ---------------------------------------------------------------
+         dcl-pr QUSCRTUS  ExtPgm('QUSCRTUS');
+          usrspc char(20) const;
+          extattr char(10) const;
+          size int(10) const;
+          value char(1) const;
+          publicAuth char(10) const;
+          Text char(50) const;
+          Replace char(10) const options(*nopass);
+          ErrorCode char(32767) options(*varsize:*nopass);
+          Domain char(10) const options(*nopass);
+          XferSizeReq int(10) const options(*nopass);
+          OptSpcAlign char(1) const options(*nopass);
+         end-pr QUSCRTUS;
+
+          // ---------------------------------------------------------------
+          //  QUSPTRUS(): Retrieve Pointer to User Space
+          //       usrspc = (input) qualified user space name
+          //                          pos  1-10 = object name
+          //                              11-20 = library name
+          //       pointer = (output) pointer retrieved
+          //  -- optional group 1 --
+          //    ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSPTRUS  ExtPgm('QUSPTRUS');
+          usrspc char(20) const;
+          pointer pointer;
+          ErrorCode char(32767) options(*varsize:*nopass);
+         end-pr QUSPTRUS;
+
+          // ---------------------------------------------------------------
+          //  QUSDLTUS(): Delete User Space
+          //       usrspc = (input) qualified user space name
+          //                          pos  1-10 = object name
+          //                              11-20 = library name
+          //  -- optional group 1 --
+          //    ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSDLTUS  ExtPgm('QUSDLTUS');
+          usrspc char(20) const;
+          ErrorCode char(32767) options(*varsize);
+         end-pr QUSDLTUS;
+
+          // ---------------------------------------------------------------
+          //  QUSCHGUS(): Change User Space Contents
+          //     NOTE: This is only included for completeness. For best
+          //           performance, and simplest coding, please use pointer
+          //           access to change a user space.
+          //       usrspc = (input) qualified user space name
+          //                          pos  1-10 = object name
+          //                              11-20 = library name
+          //        start = (input) starting position within space
+          //          len = (input) length of data to change
+          //         data = (input) new data to assign
+          //     ForceAux = (input/optional) force changes to aux storage
+          //                        (i.e. make data write to disk immediately
+          //                              instead of caching in memory)
+          //                        0 = do not force (best performance)
+          //                        1 = force asynch (medium performance)
+          //                        2 = force synch  (worst performance)
+          //  -- optional group 1 --
+          //    ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSCHGUS  ExtPgm('QUSCHGUS');
+          usrspc char(20) const;
+          Start int(10) const;
+          Len int(10) const;
+          Data char(65535) const options(*varsize);
+          ForceAux char(1) const;
+          ErrorCode char(32767) options(*varsize:*nopass);
+         end-pr QUSCHGUS;
+
+          // ---------------------------------------------------------------
+          //  QUSCHGUS(): Retrieve User Space Contents
+          //     NOTE: This is only included for completeness. For best
+          //           performance and simplest coding, please use pointer
+          //           access to read a user space.
+          //       usrspc = (input) qualified user space name
+          //        start = (input) starting position in the user space
+          //          len = (input) length of data to read
+          //       RcvVar = (output) variable to receive data
+          //  -- optional group 1 --
+          //    ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSRTVUS  ExtPgm('QUSRTVUS');
+          usrspc char(20) const;
+          Start int(10) const;
+          Len int(10) const;
+          RcvVar char(32767) options(*varsize);
+          ErrorCode char(32767) options(*varsize:*nopass);
+         end-pr QUSRTVUS;
+
+          // ---------------------------------------------------------------
+          //  QUSCUSAT(): Change user space attributes ("cuss at")
+          //     rtnlib = (output) annoying "returned library" parameter
+          //                 Note: I recommend that you do not use this.
+          //                       Use QUSRUSAT to get the library, if needed,
+          //                       so I have this defined as CONST so you dont
+          //                       have to always create an unused temporary
+          //                       variable every time you call this API.
+          //                       You can disable this behavior with
+          //                       /define NO_RTNLIB_HACK if you like.
+          //     usrspc = (input) qualified user space name
+          //       attr = (input) attribute list (see Qus_UsrSpc_Attr_LIst_t)
+          //                       to change in user space
+          //  ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSCUSAT  ExtPgm('QUSCUSAT');
+          rtnlib char(10);
+          /if not defined(NO_RTNLIB_HACK)
+          *n const;
+          /endif
+          usrspc char(20) const;
+          attr char(480) const options(*varsize);
+          ErrorCode char(32767) options(*varsize);
+         end-pr QUSCUSAT;
+
+        //  Possible key values for QUSCUSAT:
+         dcl-c QUS_ATTR_SPACE_SIZE 1;
+         dcl-c QUS_ATTR_INITIAL_VALUE 2;
+         dcl-c QUS_ATTR_AUTO_EXTEND 3;
+         dcl-c QUS_ATTR_XFER_SIZE_REQ 4;
+
+          //  RPG doesn't support nested data structures or
+          //  arrays of them in V5R1 or earlier
+        /if not defined(*V5R2M0)
+        /undefine USE_NESTED_STRUCTURES
+        /endif
+
+          //  The "proper" way to call the QUSCUSAT API is to set all of
+          //  the needed attributes in an array of data structures. However
+          //  this requires V5R2, and even in later releases is more awkward
+          //  than using flat DS.  Granted, with the flat DS you have to
+          //  call the API repeatedly (once for each key) but in my experience
+          //  it's unusual to need to change more than one attribute anyway.
+          //  Consequently, if you want the "proper" approach (with a nested
+          //  array) you can define USE_NESTED_STRUCTURES.  But, by default
+          //  I have the "flat" version defined.
+        /if defined(USE_NESTED_STRUCTURES)
+         dcl-ds Qus_UsrSpc_Attr_t INZ qualified based(Template);
+          Key int(10);
+          Length int(10);
+          ValueIntValue  overlay(Value);
+          CharValue char(1) overlay(Value);
+         end-ds Qus_UsrSpc_Attr_t;
+         dcl-ds Qus_UsrSpc_Attr_List_t INZ qualified based(Template);
+          NbrRec int(10);
+          Rec  likeds(Qus_UsrSpc_Attr_t) dim(4);
+         end-ds Qus_UsrSpc_Attr_List_t;
+        /else
+         dcl-ds Qus_UsrSpc_Attr_List_t INZ qualified based(Template);
+          NbrKeys int(10);
+          Key int(10);
+          Length int(10);
+          ValueIntValue  overlay(Value);
+          CharValue char(1) overlay(Value);
+         end-ds Qus_UsrSpc_Attr_List_t;
+        /endif
+
+          //  This is a "short cut" to save me time.  99% of the time that
+          //  I use QUSCAT, I use it for "auto-extend" so I've predefined
+          //  the auto-extend values in their own DS.
+         dcl-ds Qus_Auto_Extend INZ qualified;
+          NbrKeys int(10) inz(1);
+          Key int(10) inz(QUS_ATTR_AUTO_EXTEND);
+          Length int(10) inz(%size(Qus_Auto_Extend.Value));
+          Value char(1) inz('1');
+         end-ds Qus_Auto_Extend;
+
+          // ---------------------------------------------------------------
+          //  QUSRUSAT(): Retrieve User Space Attributes
+          //     RcvVar = (output) attributes retrieved (data structure thats
+          //                            in SPCA0100 format... see the
+          //                            Qus_SPCA0100_t ds, below)
+          //  RcvVarLen = (input) size of receiver variable
+          //     format = (input) format of attributes (SPCA0100)
+          //     usrspc = (input) user space to retrieve the attributes of
+          //  ErrorCode = (i/o) standard API error code
+          // ---------------------------------------------------------------
+         dcl-pr QUSRUSAT  ExtPgm('QUSCUSAT');
+          RcvVar  like(Qus_SPCA0100_t);
+          RcvVarLen int(10) const;
+          format char(8) const;
+          usrspc char(20) const;
+          ErrorCode char(32767) options(*varsize);
+         end-pr QUSRUSAT;
+
+
+          //   Data structure to contain the returned definitions
+
+         dcl-ds Qus_SPCA0100_t INZ qualified based(Template);
+          BytesRtn int(10);
+          BytesAvail int(10);
+          Size int(10);
+          AutoExtend char(1);
+          InitValue char(1);
+          Library char(10);
+         end-ds Qus_SPCA0100_t;
+
+          // ---------------------------------------------------------------
+          //  Qus_Generic_Header_0100_t: Structure of the generic header
+          //                             used by the i5/OS list APIs.
+          //   99% of the time, I only use the Offset, Count & Size fields
+          //       so I have these defined with simple, short names to
+          //       simplify coding
+          // ---------------------------------------------------------------
+         dcl-ds Qus_Generic_Header_0100_t INZ qualified based(Template);
+          User_Area char(64);
+          GenHdrSize int(10);
+          Release char(4);
+          Format char(8);
+          API_Used char(10);
+          TimeCreated char(13);
+          InfoStatus char(1);
+          SpaceSize int(10);
+          InputOffset int(10);
+          InputSize int(10);
+          HeaderOffset int(10);
+          HeaderSize int(10);
+          ListOffset int(10);
+          Offset int(10) overlay(ListOffset);
+          ListSize int(10);
+          EntryCount int(10);
+          Count int(10) overlay(EntryCount);
+          EntrySize int(10);
+          Size int(10) overlay(EntrySize);
+          EntryCCSID int(10);
+          CountryID char(2);
+          LanguageID char(3);
+          Subset char(1);
+          *n char(42);
+         end-ds Qus_Generic_Header_0100_t;
+
+          // ---------------------------------------------------------------
+          //  Qus_Generic_Header_0300_t: Same as Qus_Generic_Header_0100_t
+          //                             except for 1 additional field
+          //                             typically used with ILE versions
+          //                             of the list APIs.
+          // ---------------------------------------------------------------
+         dcl-ds Qus_Generic_Header_0300_t INZ qualified based(Template);
+          User_Area char(64);
+          GenHdrSize int(10);
+          Release char(4);
+          Format char(8);
+          API_Used char(10);
+          TimeCreated char(13);
+          InfoStatus char(1);
+          SpaceSize int(10);
+          InputOffset int(10);
+          InputSize int(10);
+          HeaderOffset int(10);
+          HeaderSize int(10);
+          ListOffset int(10);
+          Offset int(10) overlay(ListOffset);
+          ListSize int(10);
+          EntryCount int(10);
+          Count int(10) overlay(EntryCount);
+          EntrySize int(10);
+          Size int(10) overlay(EntrySize);
+          EntryCCSID int(10);
+          CountryID char(2);
+          LanguageID char(3);
+          Subset char(1);
+          Entry_Point char(42);
+          *n char(128);
+         end-ds Qus_Generic_Header_0300_t;

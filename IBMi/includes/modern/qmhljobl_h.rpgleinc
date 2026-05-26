@@ -1,0 +1,93 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(QMHLJOBL_H_DEFINED)
+        /eof
+        /endif
+        /define QMHLJOBL_H_DEFINED
+
+         dcl-pr QMHLJOBL  ExtPgm('QMHLJOBL');
+          UsrSpc char(20) const;
+          Format char(8) const;
+          MsgSel char(32767) const options(*varsize);
+          MsgSelSize int(10) const;
+          SelFormat char(8) const;
+          ErrorCode char(32767) const;
+         end-pr QMHLJOBL;
+
+         dcl-ds QMHLJOBL_QualJob_t INZ qualified based(Template);
+          Name char(10);
+          User char(10);
+          Nbr char(6);
+         end-ds QMHLJOBL_QualJob_t;
+
+         dcl-ds JSLT0100_t INZ qualified based(Template);
+          MaxMsgs int(10);
+          Dir char(10);
+          job  likeds(QMHLJOBL_QualJob_t);
+          IntJobId char(16);
+          StrMsgKey char(4);
+          MaxMsgLen int(10);
+          MaxMsgHlp int(10);
+          FieldIdOff int(10);
+          FieldCount int(10);
+          MsgQOff int(10);
+          MsgQLen int(10);
+          RtnFld int(10) dim(50);
+          MsgQName char(4096);
+         end-ds JSLT0100_t;
+
+         dcl-ds QMHLJOBL_Header_t INZ qualified based(Template);
+          UsrSpc char(20);
+          StrMsgKey char(4);
+          EndMsgKey char(4);
+          QualJob  likeds(QMHLJOBL_QualJob_t);
+          CCSID char(2);
+         end-ds QMHLJOBL_Header_t;
+
+         dcl-ds LJOB0100_t INZ based(Template) qualified;
+          next int(10);
+          fldOffset int(10);
+          fldCount int(10);
+          msgSev int(10);
+          msgId char(7);
+          msgType char(2);
+          msgKey char(4);
+          msgFile char(10);
+          msgFileLib char(10);
+          dateSent char(7);
+          timeSent char(6);
+          microsec char(6);
+         end-ds LJOB0100_t;
+
+         dcl-ds LJOB0100_field_t INZ based(Template) qualified;
+          next int(10);
+          size int(10);
+          id int(10);
+          type char(1);
+          status char(1);
+          len char(14);
+          data char(32767);
+         end-ds LJOB0100_field_t;

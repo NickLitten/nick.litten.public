@@ -1,0 +1,6 @@
+DCL        VAR(&MSG) TYPE(*CHAR) LEN(100)
+DCL        VAR(&MSG1) TYPE(*CHAR) LEN(100)
+DCL        VAR(&MSG2) TYPE(*CHAR) LEN(100)
+
+/* This value is used by the debugging CMD/CLLE/RPGLE Example */
+DCL        VAR(&DEBUGPARM) TYPE(*CHAR) LEN(100)

@@ -1,0 +1,190 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(QP2USER_H_DEFINED)
+        /eof
+        /endif
+        /define QP2USER_H_DEFINED
+
+
+          // ********************************************************
+          //  PASE argument (parameter) types for constructing
+          //       a signature
+          // ********************************************************
+         dcl-s Qp2_arg_type_t int(5)  based(Template);
+         dcl-c QP2_ARG_END 0;
+         dcl-c QP2_ARG_WORD -1;
+         dcl-c QP2_ARG_DWORD -2;
+         dcl-c QP2_ARG_FLOAT32 -3;
+         dcl-c QP2_ARG_FLOAT64 -4;
+         dcl-c QP2_ARG_PTR32 -5;
+         dcl-c QP2_ARG_PTR64 -6;
+
+
+          // ********************************************************
+          //  PASE result types
+          // ********************************************************
+         dcl-s Qp2_Result_Type_t int(5)  based(Template);
+         dcl-c QP2_RESULT_VOID 0;
+         dcl-c QP2_RESULT_WORD -1;
+         dcl-c QP2_RESULT_DWORD -2;
+         dcl-c QP2_RESULT_FLOAT64 -4;
+         dcl-c QP2_RESULT_PTR32 -5;
+         dcl-c QP2_RESULT_PTR64 -6;
+
+
+          // ********************************************************
+          //  Qp2RunPase() special return values
+          // ********************************************************
+         dcl-c QP2RUNPASE_ERROR -1;
+         dcl-c QP2RUNPASE_RETURN_NOEXIT -2;
+
+
+          // ********************************************************
+          //   data types allowed in the PASE environment
+          // ********************************************************
+         dcl-s Qp2_word_t uns(10);
+         dcl-s Qp2_dword_t uns(20);
+         dcl-s Qp2_float32_t float(4);
+         dcl-s Qp2_float64_t float(8);
+         dcl-s Qp2_ptr32_t uns(10);
+         dcl-s Qp2_ptr64_t uns(20);
+
+
+          // ********************************************************
+          //   Special value for argument pointer into stack
+          // ********************************************************
+         dcl-c QP2_ARG_PTR_TOSTACK x'0fff0000';
+
+          // ********************************************************
+          //   Qp2CallPase/Qp2CallaAse2 return values
+          // ********************************************************
+         dcl-c QP2CALLPASE_NORMAL 0;
+         dcl-c QP2CALLPASE_RESULT_ERROR 1;
+         dcl-c QP2CALLPASE_ENVIRON_ERROR 2;
+         dcl-c QP2CALLPASE_ARG_ERROR 4;
+         dcl-c QP2CALLPASE_TERMINATING 6;
+         dcl-c QP2CALLPASE_RETURN_NOEXIT 7;
+
+
+          // ********************************************************
+          //  Qp2EndPase():  End the currently running PASE Program
+
+          //   returns 0 if successful, nonzero upon error
+          // ********************************************************
+         dcl-pr Qp2EndPase int(10) extproc('Qp2EndPase');
+         end-pr Qp2EndPase;
+
+
+
+          // ********************************************************
+          //  Qp2CallPase(): Call a procedure (e.g. a C function) in
+          //    a PASE program or library that's currently loaded
+          //    or running in the PASE environment.
+
+          //    target = (input) function descriptor for the proc.
+          //   arglist = (input) fun, eh?
+
+          //   returns 0 if successful, nonzero upon error
+          // ********************************************************
+         dcl-pr Qp2CallPase int(10) extproc('Qp2CallPase');
+          target pointer value;
+          arglist pointer value;
+          signature  like(Qp2_arg_type_t) const;
+          result_type  like(Qp2_result_type_t) value;
+          buf pointer value;
+         end-pr Qp2CallPase;
+
+         dcl-pr Qp2CallPase2 int(10) extproc('Qp2CallPase2');
+          target pointer value;
+          arglist pointer value;
+          signature  like(Qp2_arg_type_t) const;
+          result_type  like(Qp2_result_type_t) value;
+          buf pointer value;
+          bufLenIn int(5) value;
+         end-pr Qp2CallPase2;
+
+         dcl-pr Qp2RunPase int(10) extproc('Qp2RunPase');
+          PathName pointer value options(*string);
+          symbolName pointer value;
+          symData pointer value;
+          symDataLen uns(10) value;
+          ccsid int(10) value;
+          argv pointer dim(32767) options(*varsize);
+          env pointer dim(32767) options(*varsize);
+         end-pr Qp2RunPase;
+
+         dcl-pr Qp2SignalPase int(10) extproc('Qp2SignalPase');
+          signo int(10) value;
+         end-pr Qp2SignalPase;
+
+         dcl-pr Qp2ptrsize uns(10) extproc('Qp2ptrsize');
+         end-pr Qp2ptrsize;
+
+         dcl-pr Qp2paseCCSID int(10) extproc('Qp2paseCCSID');
+         end-pr Qp2paseCCSID;
+
+         dcl-pr Qp2jobCCSID int(10) extproc('Qp2jobCCSID');
+         end-pr Qp2jobCCSID;
+
+         dcl-pr Qp2errnop pointer extproc('Qp2errnop');
+         end-pr Qp2errnop;
+
+         dcl-pr Qp2malloc pointer extproc('Qp2malloc');
+          size  like(QP2_dword_t) value;
+          mem_pase  like(QP2_ptr64_t) options(*omit);
+         end-pr Qp2malloc;
+
+         dcl-pr Qp2free int(10) extproc('Qp2free');
+          mem pointer value;
+         end-pr Qp2free;
+
+         dcl-pr Qp2dlopen  like(QP2_ptr64_t) extproc('Qp2dlopen');
+          path pointer value options(*string);
+          flags int(10) value;
+          ccsid int(10) value;
+         end-pr Qp2dlopen;
+
+         dcl-pr Qp2dlsym pointer extproc('Qp2dlsym');
+          id  like(QP2_ptr64_t) value;
+          name pointer value options(*string);
+          ccsid int(10) value;
+          sym_pase  like(QP2_ptr64_t);
+         end-pr Qp2dlsym;
+
+         dcl-pr Qp2dlclose int(10) extproc('Qp2dlclose');
+          id  like(QP2_ptr64_t) value;
+         end-pr Qp2dlclose;
+
+         dcl-pr Qp2dlerror pointer extproc('Qp2dlclose');
+          id  like(QP2_ptr64_t) value;
+         end-pr Qp2dlerror;
+
+         dcl-c QP2_RTLD_NOW x'00000002';
+         dcl-c QP2_RTLD_LAZY x'00000004';
+         dcl-c QP2_RTLD_GLOBAL x'00010000';
+         dcl-c QP2_RTLD_NOAUTODEFER x'00020000';
+         dcl-c QP2_RTLD_MEMBER x'00040000';
+         dcl-c QP2_RTLD_LOCAL x'00080000';

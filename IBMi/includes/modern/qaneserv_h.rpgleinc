@@ -1,0 +1,86 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(QANESERV_H_DEFINED)
+        /eof
+        /endif
+        /define QANESERV_H_DEFINED
+
+         dcl-ds Qane_SVRS0100_t INZ qualified based(Template);
+          Struct_Len int(10);
+          CmdParm_Off int(10);
+          CmdParm_Len int(10);
+          AppDta_Off int(10);
+          AppDta_Len int(10);
+          Cmd_Type int(10);
+          Exit_Pgm char(10);
+          Exit_Lib char(10);
+          tgt_rls char(8);
+          SR_Parms char(27715);
+          App_Dta char(5000);
+         end-ds Qane_SVRS0100_t;
+
+         dcl-ds Qane_SRST0100_t INZ qualified based(Template);
+          Bytes_Ret int(10);
+          Bytes_Avl int(10);
+          Trans_Time int(10);
+          Blck_Size int(10);
+          Blck_Mult int(10);
+          Last_BlckSiz int(10);
+          Usrsp_Lib char(10);
+         end-ds Qane_SRST0100_t;
+
+         dcl-pr QaneSava  extproc('QaneSava');
+          UsrSpc char(20) const;
+          UsrSpcFmt char(8) const;
+          StatusFmt char(8) const;
+          Status  like(Qane_SrSt0100_t);
+          StatusLen int(10) const;
+          ErrorCode char(32767) options(*varsize);
+         end-pr QaneSava;
+
+         dcl-pr QaneRsta  extproc('QaneRsta');
+          UsrSpc char(20) const;
+          UsrSpcFmt char(8) const;
+          StatusFmt char(8) const;
+          Status  like(Qane_SrSt0100_t);
+          StatusLen int(10) const;
+          ErrorCode char(32767) options(*varsize);
+         end-pr QaneRsta;
+
+         dcl-c QANE_SAV 1;
+         dcl-c QANE_SAVOBJ 2;
+         dcl-c QANE_SAVDLO 3;
+         dcl-c QANE_SAVLIB 4;
+         dcl-c QANE_SAVCHGOBJ 5;
+         dcl-c QANE_QSRSAVE 6;
+
+         dcl-c QANE_START 1;
+         dcl-c QANE_XFER 2;
+         dcl-c QANE_END 3;
+         dcl-c QANE_ABEND 4;
+
+         dcl-c QANE_GOOD 0;
+         dcl-c QANE_ERROR 1;

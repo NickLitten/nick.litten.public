@@ -1,0 +1,175 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+        /if defined(QTVAPI_H_DEFINED)
+        /eof
+        /endif
+        /define QTVAPI_H_DEFINED
+
+          // ------------------------------------------------
+          //  Virtual Terminal Handle (used by all APIs)
+          // ------------------------------------------------
+         dcl-s Qtv_Handle_t char(16)  based(Template);
+
+          // ------------------------------------------------
+          //  Supported Terminal Types
+          // ------------------------------------------------
+         dcl-c QTV_5251_11 const(1);
+         dcl-c QTV_5291_1 const(2);
+         dcl-c QTV_5292_2 const(3);
+         dcl-c QTV_5555_B01 const(4);
+         dcl-c QTV_3196_A1 const(5);
+         dcl-c QTV_3979_2 const(6);
+         dcl-c QTV_3180_2 const(7);
+         dcl-c QTV_3477_FC const(8);
+         dcl-c QTV_3477_FG const(9);
+         dcl-c QTV_5555_C01 const(10);
+         dcl-c QTV_5555_G01 const(11);
+         dcl-c QTV_5555_G02 const(12);
+         dcl-c QTV_3486_BA const(13);
+         dcl-c QTV_3487_HA const(14);
+         dcl-c QTV_3487_HC const(15);
+
+
+          // ------------------------------------------------
+          //  Open Feedback Information (QtvOpnVT API)
+          // ------------------------------------------------
+         dcl-ds Qtv_OpnFdbk_t INZ qualified based(Template);
+          BytesAvail int(10);
+          BytesRtn int(10);
+          Reason int(10);
+          DevName char(10);
+          *n char(4);
+         end-ds Qtv_OpnFdbk_t;
+
+          // ------------------------------------------------
+          //  Session Initiation Info (QtvOpnVT API)
+          //    The "data" part is made up of variable-len
+          //    Qtv_SessRec_t structures.
+          // ------------------------------------------------
+         dcl-ds Qtv_SessionInit_t INZ qualified based(Template);
+          RecCount int(10);
+          Data char(32763);
+         end-ds Qtv_SessionInit_t;
+
+         dcl-ds Qtv_SessRec_t INZ qualified based(Template);
+          Key int(10);
+          Len int(10);
+          Data char(172);
+         end-ds Qtv_SessRec_t;
+
+         dcl-ds Qtv_Auto_SignOn_t INZ qualified based(Template);
+          Len int(10);
+          pwCCSID int(10);
+          pwOffset int(10);
+          pwLen int(10);
+          cSeed char(8);
+          sSeed char(8);
+          UsrPrf char(10);
+          Passphrase char(2);
+         end-ds Qtv_Auto_SignOn_t;
+
+
+          // ------------------------------------------------
+          //  Data queue info used by QtvRdVt/QtvWrtVt
+          // ------------------------------------------------
+         dcl-ds Qtv_DtaRec_t INZ qualified based(Template);
+          Type char(10);
+          ID char(2);
+          Handle  like(Qtv_Handle_t);
+          Reserved char(52);
+          Key char(256);
+         end-ds Qtv_DtaRec_t;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  QtvOpnVt():  Open Virtual Terminal
+          //        Handle = (output) Handle to new terminal instance
+          //       KbdLang = (input) language of keyboard (blanks=default)
+          //       CharSet = (input) character set (0=Default)
+          //      CodePage = (input) code page (0=Default)
+          //    WrkStnType = (input) Type/Model of workstation (see above)
+          //      QualDtaQ = (input) qualified data queue to which async
+          //                         notifications are sent.
+          //        KeyVal = (input) Key to be used with data queue
+          //     KeyValLen = (input) Length of KeyVal parm, or 0=No Key
+          //     ErrorCode = (i/o)   Standard API Error code structure
+          //   Optional Group 1:
+          //      OpenInfo = (input) Whether PC text-assist is supported
+          //                   '0' = Yes, '1' = No
+          //   Optional Group 2:
+          //      SessInit = (input) Session initiation info.
+          //   Optional Group 3:
+          //        OpnFbk = (i/o)   Open Feedback Information
+          //     OpnFbkLen = (input) size of OpnFbk parameter
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr QtvOpnVt  extpgm('QTVOPNVT');
+          Handle  like(Qtv_Handle_t);
+          KbdLang char(3) const;
+          CharSet int(10) const;
+          CodePage int(10) const;
+          WrkStnType int(10) const;
+          QualDtaQ char(20) const;
+          KeyVal char(32767) const options(*varsize);
+          KeyValLen int(10) const;
+          ErrorCode char(32767) const options(*varsize);
+            //  Opt Grp 1
+          OpenInfo char(10) const options(*nopass);
+            //  Opt Grp 2
+          SessInit  like(Qtv_SessionInit_t) const options(*nopass);
+            //  Opt Grp 3
+          OpnFbk  like(Qtv_OpnFdBk_t) options(*nopass);
+          OpnFbkLen int(10) const options(*nopass);
+         end-pr QtvOpnVt;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  QtvRdVt(): Read Virtual Terminal
+          //      Handle = (input)  Session handle
+          //    ReadInfo = (output) Info about the read operation performed
+          //      Buffer = (output) data sent to terminal
+          //     BufSize = (input)  %size() of Buffer variable
+          //   BytesRead = (output) bytes placed in Buffer
+          //   ErrorCode = (i/o)    standard API error code structure
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr QtvRdVt  extpgm('QTVRDVT');
+          Handle  like(Qtv_Handle_t) const;
+          ReadInfo char(10);
+          Buffer char(32767) options(*varsize);
+          BufSize int(10) const;
+          BytesRead int(10);
+          ErrorCode char(32767) const options(*varsize);
+         end-pr QtvRdVt;
+
+
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          //  QtvCloVt(): Close Virtual Terminal
+          //      Handle = (input) Session handle
+          //   ErrorCode = (i/o)   Standard API error code structure
+          // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         dcl-pr QtvCloVt  extpgm('QTVCLOVT');
+          Handle  like(Qtv_Handle_t) const;
+          ErrorCode char(32767) const options(*varsize);
+         end-pr QtvCloVt;

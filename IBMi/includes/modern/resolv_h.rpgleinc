@@ -1,0 +1,121 @@
+        // 
+        //  Copyright (c) 2008 Scott C. Klement  All rights reserved.
+        //  Modernised September 2025 Nick Litten
+
+        //  Redistribution and use in source and binary forms, with or without
+        //  modification, are permitted provided that the following conditions
+        //  are met:
+        //  1. Redistributions of source code must retain the above copyright
+        //     notice, this list of conditions and the following disclaimer.
+        //  2. Redistributions in binary form must reproduce the above copyright
+        //     notice, this list of conditions and the following disclaimer in the
+        //     documentation and/or other materials provided with the distribution.
+
+        //  THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+        //  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        //  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPO
+        //  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+        //  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTI
+        //  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        //  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+        //  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRI
+        //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WA
+        //  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+        //  SUCH DAMAGE.
+
+         dcl-pr res_search int(10) extproc('res_search');
+            domain pointer value options(*string);
+            class int(10) value;
+            type int(10) value;
+            answer char(32767) options(*varsize);
+            anslen int(10) value;
+         end-pr res_search;
+
+         dcl-pr dn_expand int(10) extproc('dn_expand');
+            msgstr pointer value;
+            msgend pointer value;
+            comp_dn pointer value;
+            exp_dn pointer value;
+            exp_size int(10) value;
+         end-pr dn_expand;
+
+         dcl-pr dn_skipname int(10) extproc('dn_skipname');
+            comp_dn pointer value;
+            msgend pointer value;
+         end-pr dn_skipname;
+
+         dcl-c NS_MAXDNAME const(256);
+         dcl-c NS_PACKETSZ const(512);
+         dcl-c NS_HFIXEDSZ const(12);
+         dcl-c NS_QFIXEDSZ const(4);
+         dcl-c NS_RRFIXEDSZ const(10);
+         dcl-c NS_MAXCDNAME consT(255);
+         dcl-c NS_MAXLABEL const(63);
+         dcl-c NS_INDIR_MASK const(x'c0');
+         dcl-c MAXDNSRCH const(6);
+         dcl-c MAXNS const(3);
+         dcl-c MAXRESOLVSORT const(10);
+
+         dcl-ds NS_HEADER INZ qualified based(Template);
+            id uns(5);
+            flags uns(5);
+            qdcount uns(5);
+            ancount uns(5);
+            nscount uns(5);
+            arcount uns(5);
+         end-ds NS_HEADER;
+
+         dcl-ds res_state_t INZ qualified align based(Template);
+            retrans int(10);
+            retry int(10);
+            options int(10);
+            nscount int(10);
+            nsaddr_list char(16) dim(MAXNS);
+            id uns(5);
+            defdname char(256);
+            reserved0 char(1);
+            reserved1 char(13);
+            dnsrch pointer dim(MAXDNSRCH);
+            sort_list char(8) dim(MAXRESOLVSORT);
+            res_h_errno int(10);
+            extended_errorbits int(10);
+            state_data char(27);
+            internal_use int(10) dim(4);
+            reserved char(444);
+         end-ds res_state_t;
+
+         dcl-c RES_AAONLY const(1);
+         dcl-c RES_DEFNAMES const(2);
+         dcl-c RES_DNSRCH const(4);
+         dcl-c RES_IGNTC const(8);
+         dcl-c RES_INIT const(16);
+         dcl-c RES_RECURSE const(32);
+         dcl-c RES_STAYOPEN const(64);
+         dcl-c RES_USEVC const(128);
+         dcl-c RES_XINIT const(256);
+         dcl-c RES_INSECURE1 const(512);
+         dcl-c RES_INSECURE2 const(1024);
+         dcl-c RES_NOALIASES const(2048);
+         dcl-c RES_ROTATE const(4096);
+         dcl-c RES_NOCHECKNAME const(8192);
+         dcl-c RES_KEEPTSIG const(16384);
+         dcl-c RES_NOCACHE const(32768);
+         dcl-c RES_CP850 const(1048576);
+         dcl-c RES_RETRYTCP const(2097152);
+         dcl-c RES_NSADDRONLY const(4194304);
+         dcl-c RES_DEFAULT const(38);
+
+         dcl-pr res_ninit int(10) extproc('res_ninit');
+            res  like(res_state_t);
+         end-pr res_ninit;
+         dcl-pr res_nclose  extproc('res_nclose');
+            res  like(res_state_t);
+         end-pr res_nclose;
+         dcl-pr res_nsearch int(10) extproc('res_nsearch');
+            res  like(res_state_t);
+            domain pointer value options(*string);
+            class int(10) value;
+            type int(10) value;
+            answer char(32767) options(*varsize);
+            anslen int(10) value;
+         end-pr res_nsearch;

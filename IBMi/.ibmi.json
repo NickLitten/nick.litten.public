@@ -1,0 +1,6 @@
+{
+  "build": {
+    "objlib": "&CURLIB",
+    "tgtCcsid": "37"
+  }
+}
