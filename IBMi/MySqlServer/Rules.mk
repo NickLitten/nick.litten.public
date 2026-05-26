@@ -1,17 +1,13 @@
-﻿# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Rules.MK
-# IBM i TOBi/MAKEi Build Rules
+# IBM i TOBi/MAKEi Build Rules - MySqlServer Module
 # -----------------------------------------------------------------------------
-# This file defines build targets and subdirectories for the MAKEi build system.
+# This file defines build targets for the MySqlServer utilities.
 # It follows IBM i TOBi naming standards: OBJECTNAME-Description_With_Underscores.ext
-#
-# Variables:
-#   TARGETS  - Source files to compile in this directory
-#   SUBDIRS  - Subdirectories to process recursively
-#
-# Usage:
-#   make          - Build all targets in this directory
-#   make clean    - Remove all built objects
-#   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-TARGETS := MYSQLCTL-My_SQL_Control.cmd MYSQLCTL-My_SQL_Control.pgm.clle
+
+# -----------------------------------------------------------------------------
+# Build Dependencies (IBM i TOBi Format)
+# -----------------------------------------------------------------------------
+MYSQLCTL.PGM:     MYSQLCTL-My_SQL_Control.pgm.clle
+MYSQLCTL.CMD:     MYSQLCTL-My_SQL_Control.cmd MYSQLCTL.PGM

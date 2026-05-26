@@ -1,17 +1,19 @@
 ﻿# -----------------------------------------------------------------------------
 # Rules.MK
-# IBM i TOBi/MAKEi Build Rules
+# IBM i TOBi/MAKEi Build Rules - ClearBobLogs Module
 # -----------------------------------------------------------------------------
-# This file defines build targets and subdirectories for the MAKEi build system.
+# This file defines build targets for the ClearBobLogs utility.
 # It follows IBM i TOBi naming standards: OBJECTNAME-Description_With_Underscores.ext
 #
-# Variables:
-#   TARGETS  - Source files to compile in this directory
-#   SUBDIRS  - Subdirectories to process recursively
+# Build Order:
+#   1. Main program (CLRBOBLOG.PGM)
+#   2. Command object (CLRBOBLOG.CMD)
 #
-# Usage:
-#   make          - Build all targets in this directory
-#   make clean    - Remove all built objects
-#   make install  - Deploy objects to IBM i system
+# Usage: make -f Rules.mk [target]
 # -----------------------------------------------------------------------------
-TARGETS := CLRBOBLOG-Clear_Bob_Logs.cmd CLRBOBLOG-Clear_Bob_Logs.pgm.clle
+
+# -----------------------------------------------------------------------------
+# Build Dependencies (IBM i TOBi Format)
+# -----------------------------------------------------------------------------
+CLRBOBLOG.PGM:    CLRBOBLOG-Clear_Bob_Logs.pgm.clle
+CLRBOBLOG.CMD:    CLRBOBLOG-Clear_Bob_Logs.cmd CLRBOBLOG.PGM

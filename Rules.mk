@@ -50,4 +50,4 @@
 # Dependencies between directories must be respected
 # ---
 
-SUBDIRS = IBMi
+SUBDIRS := IBMi
