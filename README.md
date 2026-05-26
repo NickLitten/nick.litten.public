@@ -20,12 +20,12 @@ If found confused: hand coffee + ask about **Code for IBM i**.
 
 ### 🧩 Repository Note
 
-The examples in [codesnippets_IBM-i/readme.md](codesnippets_IBM-i/readme.md) are idea starters and learning snippets.
+The examples in [IBMi/.CodeSnippets/readme.md](IBMi/.CodeSnippets/readme.md) are idea starters and learning snippets.
 Some are closer to pseudocode and may not compile as-is without changes for your environment.
 
 ### 📁 IBM i Source Code Location
 
-All IBM i source code for this repository is in the [src/](src/) folder.
+All IBM i source code for this repository is in the [IBMi/](IBMi/) folder.
 If you are looking for the main programs, services, and working examples, start there first.
 
 **Still here. Still coding. Still having way too much fun.**
