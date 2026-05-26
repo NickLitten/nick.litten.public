@@ -14,22 +14,4 @@
 #   make clean    - Remove all built objects
 #   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-SUBDIRS := CheckSubsystemActive \
-           ClearBobLogs \
-           ClearPfrdata \
-           CodeSamples \
-           Conversion \
-           Database \
-           Debug \
-           EmailCsvFile \
-           EmailOutq \
-           HelloWorld \
-           ListLibraries \
-           MySqlServer \
-           Services \
-           SqlEncryption \
-           SqlRpgleDynamic \
-           StoredProcs \
-           SubfileSamples \
-           UploadFiles \
-           WebServices
+TARGETS := BUGMECL-This_is_a_debugging_example.pgm.clle BUGMERPG-This_is_a_debugging_example.pgm.rpgle BUGME-This_is_a_debugging_example.cmd

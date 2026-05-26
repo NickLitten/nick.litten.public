@@ -14,22 +14,4 @@
 #   make clean    - Remove all built objects
 #   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-SUBDIRS := CheckSubsystemActive \
-           ClearBobLogs \
-           ClearPfrdata \
-           CodeSamples \
-           Conversion \
-           Database \
-           Debug \
-           EmailCsvFile \
-           EmailOutq \
-           HelloWorld \
-           ListLibraries \
-           MySqlServer \
-           Services \
-           SqlEncryption \
-           SqlRpgleDynamic \
-           StoredProcs \
-           SubfileSamples \
-           UploadFiles \
-           WebServices
+TARGETS := ENCRYPTHNT-Get_Hint.sql ENCRYPTSQL-Create_Encrypted_Stuff.sql GETENC-Get_Encryption_Data.ilepgm GETENC-Get_Encryption_Data.sqlrpgle

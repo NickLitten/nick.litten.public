@@ -1,0 +1,28 @@
+     A                                      DSPSIZ(24 80 *DS3)                
+     A                                      CA03(03)                           
+     A          R SFL01                     SFL  
+     A            RRN01          4S 0H                               
+     A            NAME          10A  O  5  5                                   
+     A            ADDRESS       50A  O  5 17                                   
+     A          R CTL01                     SFLCTL(SFL01)                      
+     A                                      SFLSIZ(0016)                       
+     A                                      SFLPAG(0015)                       
+     A                                      OVERLAY                            
+     A  30                                  SFLCLR                             
+     A  31                                  SFLDSP                             
+     A  32                                  SFLDSPCTL                          
+     A  33                                  SFLEND(*MORE)               
+     A            PGMNAME       10A     1  2COLOR(BLU)                                
+     A                                  1 17'SIMPLE FILE DATA SUBFILE'         
+     A                                      DSPATR(HI)                         
+     A                                      COLOR(BLU)                         
+     A                                      DSPATR(RI)              
+     A  31                              4  5'NAME'         
+     A                                      DSPATR(HI)                         
+     A  31                              4 17'ADDRESS'         
+     A                                      DSPATR(HI)       
+     A N31                              4  5'Data File (SIMPLEFILE) is Empty!'         
+     A                                      DSPATR(RI)                      
+     A          R CMD01
+     A                                 23 02'F3=EXIT'                      
+     A                                      COLOR(BLU)                  

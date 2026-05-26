@@ -14,22 +14,4 @@
 #   make clean    - Remove all built objects
 #   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-SUBDIRS := CheckSubsystemActive \
-           ClearBobLogs \
-           ClearPfrdata \
-           CodeSamples \
-           Conversion \
-           Database \
-           Debug \
-           EmailCsvFile \
-           EmailOutq \
-           HelloWorld \
-           ListLibraries \
-           MySqlServer \
-           Services \
-           SqlEncryption \
-           SqlRpgleDynamic \
-           StoredProcs \
-           SubfileSamples \
-           UploadFiles \
-           WebServices
+TARGETS := NOOBDSPF-Full_load_sfl_with_incrementing_value.dspf NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle NOOBSFL2-Full_load_subfile_example_ISERIES_STYLE.pgm.rpgle NOOBSFL3-Full_load_subfile_example_IBMi_STYLE.pgm.rpgle NOOBSFL4-Full_load_subfile_example_IBMi_BOB_STYLE.pgm.rpgle

@@ -5,7 +5,7 @@
   "objlib": "&lib",
   "curlib": "&lib",
   "includePath": [
-    "IBMi-CodeSamples/includes"
+    "IBMi/includes"
   ],
   "preUsrlibl": [
     "NICKLITTEN"

@@ -14,22 +14,4 @@
 #   make clean    - Remove all built objects
 #   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-SUBDIRS := CheckSubsystemActive \
-           ClearBobLogs \
-           ClearPfrdata \
-           CodeSamples \
-           Conversion \
-           Database \
-           Debug \
-           EmailCsvFile \
-           EmailOutq \
-           HelloWorld \
-           ListLibraries \
-           MySqlServer \
-           Services \
-           SqlEncryption \
-           SqlRpgleDynamic \
-           StoredProcs \
-           SubfileSamples \
-           UploadFiles \
-           WebServices
+TARGETS := MYSQLCTL-My_SQL_Control.cmd MYSQLCTL-My_SQL_Control.pgm.clle

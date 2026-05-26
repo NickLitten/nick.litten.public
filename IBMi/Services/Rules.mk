@@ -14,22 +14,4 @@
 #   make clean    - Remove all built objects
 #   make install  - Deploy objects to IBM i system
 # -----------------------------------------------------------------------------
-SUBDIRS := CheckSubsystemActive \
-           ClearBobLogs \
-           ClearPfrdata \
-           CodeSamples \
-           Conversion \
-           Database \
-           Debug \
-           EmailCsvFile \
-           EmailOutq \
-           HelloWorld \
-           ListLibraries \
-           MySqlServer \
-           Services \
-           SqlEncryption \
-           SqlRpgleDynamic \
-           StoredProcs \
-           SubfileSamples \
-           UploadFiles \
-           WebServices
+TARGETS := BIGBNDDIR-Nicks_Sample_Binding_Directory.bnddir EMAILSRV-Email_Service.bnd EMAILSRV-Email_Service.sqlrpgle NICKSRV-Binder_Source.bnd NICKSRV-Service_Program_for_Lessons.sqlrpgle SIMPLEMOD-Simple_Service_Program.sqlrpgle SIMPLESRV-Binder_Source.bnd USRPRFSRV-User_Profile_Service.bnd USRPRFSRV-User_Profile_Service.sqlrpgle

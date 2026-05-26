@@ -1,0 +1,135 @@
+/* --------------------------------------------------------------------- */
+/* LSTLIBSIMP - List Libraries Simply                                    */
+/* --------------------------------------------------------------------- */
+/* Program.......... LSTLIBSIMP                                          */
+/* Author........... Nick Litten                                         */
+/* Calling Program.. *NONE                                               */
+/* Calling Command.. *NONE                                               */
+/* Function......... Simple library inventory program that               */
+/*                   lists all libraries, calls QLIRLIBD API             */
+/*                   for each to get statistics, and exports             */
+/*                   results to CSV file in IFS.                         */
+/* User Profile..... *USER                                               */
+/* Object Owner..... QPGMR                                               */
+/* Compiler Options. CRTBNDCL PGM(library/LSTLIBSIMP)                    */
+/*                   SRCFILE(library/QCLLESRC)                           */
+/*                   SRCMBR(LSTLIBSIMP)                                  */
+/* --------------------------------------------------------------------- */
+/* Purpose: Educational example demonstrating:                           */
+/*   - SQL catalog queries (QSYS2.SYSSCHEMAS)                           */
+/*   - IBM i API usage (QLIRLIBD)                                       */
+/*   - Binary data extraction from API buffers                           */
+/*   - Dynamic SQL statement construction                                */
+/*   - CSV file export with CPYTOIMPF                                    */
+/*   - Loop processing with DOWHILE/RCVF                                 */
+/* --------------------------------------------------------------------- */
+/* Features:                                                             */
+/*   - Queries all libraries from system catalog                         */
+/*   - Calls QLIRLIBD API for each library                               */
+/*   - Extracts object count and library size                            */
+/*   - Stores results in temporary table                                 */
+/*   - Exports to CSV: /home/libinventory.csv                            */
+/*   - Columns: Library Name, Number of Objects, Library Size            */
+/* --------------------------------------------------------------------- */
+/* Usage: CALL LSTLIBSIMP                                                */
+/*        Output file: /home/libinventory.csv                            */
+/* --------------------------------------------------------------------- */
+/* Parameters: None                                                      */
+/* --------------------------------------------------------------------- */
+/* Dependencies:                                                         */
+/*   - NICKLITTEN/LSTLIB file must exist                                 */
+/*   - User must have authority to query QSYS2.SYSSCHEMAS                */
+/*   - User must have authority to call QLIRLIBD API                     */
+/*   - /home directory must be writable                                  */
+/* --------------------------------------------------------------------- */
+/* Reference:                                                            */
+/*   - IBM i API Reference (QLIRLIBD)                                    */
+/*   - QSYS2.SYSSCHEMAS Catalog View                                     */
+/*   - https://www.nicklitten.com/ibm-i-library-inventory/               */
+/* --------------------------------------------------------------------- */
+/* STATUS: WORK IN PROGRESS                                              */
+/* --------------------------------------------------------------------- */
+/* Modification History:                                                 */
+/* Author     Date       Description                                     */
+/*   1.0 2026-02-19 | Nick Litten | Initial creation (WIP)               */
+/*   2.0 2026-04-04 | Nick Litten | Standardized header block            */
+/*   3.0 2026-05-14 | Nick Litten | Added comprehensive documentation    */
+/*   3.1 2026-05-23 | Nick Litten | Standardized documentation format    */
+/*   3.2 2026-05-23 | Nick Litten | Aligned header comment block         */
+/* --------------------------------------------------------------------- */
+ 
+PGM
+
+DCLPRCOPT  LOG(*NO) DFTACTGRP(*NO) ACTGRP(*CALLER)
+
+COPYRIGHT  TEXT('3.1 - List Libraries with Statistics to CSV')
+DCL        VAR(&COPYRIGHT) TYPE(*CHAR) LEN(256) +
+              VALUE('Nick Litten © 2026 | IBM i V7.5 https://www.nicklitten.com')
+DCL        VAR(&COPYRIGHTP) TYPE(*PTR) STG(*DEFINED) DEFVAR(&COPYRIGHT)
+
+    /* API receiver buffer for QLIRLIBD (format LIBD0100) */
+    DCL VAR(&RECEIVER) TYPE(*CHAR) LEN(500)
+    DCL VAR(&RECLEN) TYPE(*INT) LEN(4) VALUE(500)
+    DCL VAR(&FMT) TYPE(*CHAR) LEN(8) VALUE('LIBD0100')
+    DCL VAR(&ERR) TYPE(*CHAR) LEN(116)
+
+    /* Working variables */
+    DCL VAR(&LIB) TYPE(*CHAR) LEN(10)
+    DCL VAR(&LIBSIZ) TYPE(*INT) LEN(8)
+
+    /* Character conversion variables for SQL */
+    DCL VAR(&CHARNUM) TYPE(*CHAR) LEN(11)
+    DCL VAR(&CHARLIB) TYPE(*CHAR) LEN(20)
+    DCL VAR(&SQLSTMT) TYPE(*CHAR) LEN(512)
+
+    DCLF FILE(NICKLITTEN/LSTLIB)
+
+    /* Step 1: Create temporary table to hold library names */
+    CLRPFM FILE(NICKLITTEN/LSTLIB)
+
+    /* Step 2: Populate with all libraries from system catalog */
+    RUNSQL SQL('INSERT INTO NICKLITTEN.LSTLIB +
+                SELECT SCHEMA_NAME FROM QSYS2.SYSSCHEMAS')
+
+    /* Step 3: Create results table to store library statistics */
+    RUNSQL SQL('CREATE OR REPLACE TABLE NICKLITTEN.RESULTS +
+                (LIBNAME CHAR(10), NUMOBJ INTEGER, LIBSIZE BIGINT)')
+
+    /* Step 4: Loop through each library and call QLIRLIBD API */
+    DOWHILE COND(1 *EQ 1)
+        RCVF
+        MONMSG MSGID(CPF0864) EXEC(LEAVE)
+        
+            /* Get current library name from file */
+            CHGVAR VAR(&LIB) VALUE(&LIBNAME)
+
+            /* Call QLIRLIBD API to retrieve library description */
+            CALL PGM(QSYS/QLIRLIBD) PARM(&RECEIVER &RECLEN &LIB &FMT &ERR)
+
+            /* Extract number of objects (offset 83, length 4) */
+            CHGVAR VAR(&NUMOBJ) VALUE(%BINARY(&RECEIVER 83 4))
+
+            /* Extract library size in bytes (offset 87, length 8) */
+            CHGVAR VAR(&LIBSIZ) VALUE(%BINARY(&RECEIVER 87 4))
+
+            /* Convert numeric values to character for SQL */
+            CHGVAR VAR(&CHARNUM) VALUE(&NUMOBJ)
+            CHGVAR VAR(&CHARLIB) VALUE(&LIBSIZ)
+
+            /* Build dynamic SQL INSERT statement */
+            CHGVAR VAR(&SQLSTMT) VALUE('INSERT INTO NICKLITTEN.RESULTS +
+                        VALUES(''' || %TRIM(&LIB) || ''',' || +
+                        %TRIM(&CHARNUM) || ',' || %TRIM(&CHARLIB) || ')')
+
+            /* Execute INSERT to store library statistics */
+            RUNSQL SQL(&SQLSTMT)
+
+    ENDDO
+
+    /* Step 5: Export results to CSV file in IFS */
+    CPYTOIMPF FROMFILE(NICKLITTEN/RESULTS) +
+              TOSTMF('/home/libinventory.csv') +
+              MBROPT(*REPLACE) STMFCODPAG(*PCASCII) +
+              RCDDLM(*CRLF) FLDDLM(',')
+
+ENDPGM

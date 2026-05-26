@@ -1,5 +1,57 @@
 [
   {
+    "command": "err=*EVENTF lib1=&CURLIB makei build",
+    "deployFirst": true,
+    "environment": "pase",
+    "extensions": [
+      "GLOBAL"
+    ],
+    "name": "tobi build",
+    "postDownload": [
+      ".logs/",
+      ".evfevent/"
+    ]
+  },
+  {
+    "command": "err=*EVENTF makei compile -f &BASENAME -e lib1=&CURLIB",
+    "deployFirst": true,
+    "environment": "pase",
+    "extensions": [
+      "GLOBAL"
+    ],
+    "name": "tobi compile",
+    "postDownload": [
+      ".logs/",
+      ".evfevent/"
+    ]
+  },
+  {
+    "command": "err=*EVENTF lib1=&CURLIB ../ibmi-tobi/bin/makei build",
+    "deployFirst": true,
+    "environment": "pase",
+    "extensions": [
+      "GLOBAL"
+    ],
+    "name": "test tobi build",
+    "postDownload": [
+      ".logs/",
+      ".evfevent/"
+    ]
+  },
+  {
+    "command": "err=*EVENTF ../ibmi-tobi/bin/makei compile -f &BASENAME -e lib1=&CURLIB",
+    "deployFirst": true,
+    "environment": "pase",
+    "extensions": [
+      "GLOBAL"
+    ],
+    "name": "test tobi compile",
+    "postDownload": [
+      ".logs/",
+      ".evfevent/"
+    ]
+  },
+  {
     "name": "Create RPGLE Program",
     "command": "CRTBNDRPG PGM(&CURLIB/&NAME) SRCSTMF('&RELATIVEPATH') OPTION(*EVENTF) DBGVIEW(*SOURCE) TGTCCSID(*JOB)",
     "deployFirst": true,

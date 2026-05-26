@@ -1,0 +1,19 @@
+-- ---------------------------------------------------------------------------
+-- Table: FILEIN - EBCDIC Input File for Conversion
+-- Purpose: Input file containing 80-byte EBCDIC records for conversion
+-- Usage: Used by CONVERSION programs to read EBCDIC data for ASCII conversion
+-- Author: Nick Litten
+-- Date: 2026-03-25
+-- ---------------------------------------------------------------------------
+set schema NICKLITTEN;
+
+drop table FILEIN;
+
+create table FILEIN (INDATA char(80) not null with default)
+  rcdfmt RFILEIN;
+
+
+label on table FILEIN is 'EBCDIC Input File - 80 byte records';
+
+
+label on column FILEIN.INDATA is '80 character fixed length EBCDIC record';

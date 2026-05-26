@@ -1,0 +1,27 @@
+     A                                      DSPSIZ(24 80 *DS3)                   
+     A                                      CA03                       
+      * This is the subfile definition aka "the fields to display"                                      
+     A          R SFL01                     SFL        
+     A            COUNT          4Y 0   4 10TEXT('Counter')              
+      * This is the subfile-control definition which controls how 
+      * the subfile is displayed, when to CLEAR it and when to DISPLAY it
+      * note that it also defines the subfile size and how many records to display
+     A          R CTL01                     SFLCTL(SFL01)       
+     A                                      OVERLAY                                            
+     A                                      SFLPAG(18)                            
+     A                                      SFLSIZ(9999)       
+     A  30                                  SFLCLR                               
+     A N30                                  SFLDSP                               
+     A N30                                  SFLDSPCTL                            
+     A N30                                  SFLEND              
+     A                                  1  2'NOOBSFL'           
+     A                                      DSPATR(HI)                      
+     A                                  1 10'Simple Subfile Example'           
+     A                                      DSPATR(HI)                      
+     A                                  3 09'Count'                           
+     A                                      DSPATR(UL)
+     A                                      COLOR(BLU)     
+      * This is the footer of the screen - showing the PFKEY options
+     A          R CMD01             
+     A                                 23 02'F3=EXIT'                      
+     A                                      COLOR(BLU)       

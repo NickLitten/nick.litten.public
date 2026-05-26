@@ -1,0 +1,13 @@
+{
+  "function": "READ",
+  "rtntext": "status",
+  "food": {
+    "ingid": 1001,
+    "ingname": "INGNAME",
+    "category": "CATEGORY",
+    "measure": "MEASURE",
+    "quantity": 0,
+    "expdate": "DATE",
+    "organic": "ORGANIC"
+  }
+}

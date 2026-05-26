@@ -1,0 +1,12 @@
+/*-----------------------------------------------------------------*/
+/* Binder Source: SIMPLESRV                                        */
+/* Description: Export list for Simple Service Program             */
+/* Service Program: SIMPLEMOD                                      */
+/* Exports: RTNSYSTEMNAME                                          */
+/*-----------------------------------------------------------------*/
+
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('Simple V1.2')
+
+  EXPORT SYMBOL(RTNSYSTEMNAME)
+
+ENDPGMEXP

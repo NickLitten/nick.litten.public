@@ -1,0 +1,11 @@
+/*-----------------------------------------------------------------*/
+/* Binding Directory: CONVSRV                                      */
+/* Description: Creates binding directory for conversion services  */
+/* Contains: CONVSRV service program (EBCDIC/ASCII conversion)     */
+/* Usage: Run to create binding directory, then specify            */
+/*        BNDDIR('CONVSRV') in program control options             */
+/*-----------------------------------------------------------------*/
+
+!DLTOBJ OBJ(&O/&N) OBJTYPE(*BNDDIR)
+CRTBNDDIR BNDDIR(&O/&N) TEXT('Conversion Services Binding Directory')
+ADDBNDDIRE BNDDIR(&O/&N) OBJ((*LIBL/CONVSRV *SRVPGM))
