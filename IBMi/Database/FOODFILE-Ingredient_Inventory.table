@@ -543,5 +543,5 @@ VALUES
     );
 
 
--- Made with Bob
+# -----------------------------------------------------------------------------
 LABEL ON TABLE FOODFILE IS 'Food Ingredient Inventory';

@@ -16,6 +16,8 @@ In all SQLRPGLE procedures, use fully qualified object names and always check SQ
 
 Be concise in your responses and code comments. Focus on the technical change without extra explanations unless asked.
 
+Never put "# Made with Bob" into any generated files.
+
 After every code change, write a summary of the interaction into the folder '.bob/internal-monologue'. Name the file starting with a timestamp followed by a concise description.
 Example: 2026-05-13_pgmname_action-description.md
 

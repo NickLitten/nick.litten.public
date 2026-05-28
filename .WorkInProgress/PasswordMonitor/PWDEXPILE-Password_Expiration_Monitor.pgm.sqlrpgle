@@ -70,7 +70,7 @@ ctl-opt
   dftactgrp(*no)
   actgrp(*caller)
   option(*nodebugio:*srcstmt:*nounref)
-  bnddir('PWDMON')
+  bnddir('BIGBNDDIR')
   copyright('PWDEXPILE | V.002 | Password Expiration Monitor - ILE Modular')
   ;
 

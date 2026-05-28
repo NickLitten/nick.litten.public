@@ -3,7 +3,7 @@
 ///
 /// Service Program: USRPRFSRV - User Profile Query Service
 ///
-/// Description: Production-quality service program providing reusable procedures
+/// Description: This service program is providing reusable procedures
 ///              for querying IBM i user profile information, specifically focused
 ///              on password expiration data. Uses QSYS2.USER_INFO catalog view
 ///              for comprehensive user profile analysis.
@@ -38,7 +38,6 @@
 ///   dcl-ds userList likeds(UserList_t);
 ///   dcl-s warningDays int(10) inz(7);
 ///   userList = GetExpiringUsers(warningDays);
-///   // Process userList.users(1) through userList.users(userList.count)
 ///
 /// Binding:
 ///   Create with binder source USRPRFSRV.bnd
