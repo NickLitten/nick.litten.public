@@ -1,7 +1,7 @@
 **free
 
 ///
-/// Service Program: NICKSRV - Service Program for Lessons
+/// Service Program: SMALL - Service Program for Lessons
 ///
 /// Description: This is an ever growing example service program filled with
 ///              useful procedures and sample code for various scenarios.
@@ -24,7 +24,7 @@
 ///   - DisplayWindow() - Displays text in 5250 pop-up window
 ///
 /// Usage: Link to programs via binding directory
-///   CRTPGM PGM(library/MYPGM) MODULE(MYPGM) BNDDIR(NICKSRV)
+///   CRTPGM PGM(library/MYPGM) MODULE(MYPGM) BNDDIR(BIGBNDDIR)
 ///
 /// Parameters:
 ///   See individual procedure documentation

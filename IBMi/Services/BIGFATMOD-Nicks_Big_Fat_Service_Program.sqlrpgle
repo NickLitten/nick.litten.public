@@ -1,41 +1,53 @@
 **free
 
 ///
-/// Service Program: EMAILSRV - Email Notification Service
+/// Service Program: BIGFATONE - Litten Combined Service Program
 ///
-/// Description: Production-quality service program providing reusable email
-///              notification procedures using IBM i QSYS2.SEND_EMAIL service.
-///              Includes email validation, formatting, and comprehensive error
-///              handling for password expiration monitoring and other notifications.
+/// Description: Comprehensive service program combining email notification
+///              and user profile query capabilities. Merges all procedures
+///              from EMAILSRV and USRPRFSRV into a single reusable service.
 ///
 /// Purpose: Production utility demonstrating:
-///   - Service program architecture with multiple exported procedures
-///   - IBM i QSYS2.SEND_EMAIL integration
-///   - Email configuration and validation
-///   - Formatted report generation
-///   - Comprehensive error handling and diagnostics
-///   - Job log integration for monitoring
+///   - Combined service program architecture
+///   - Email notification services
+///   - User profile query services
+///   - IBM i QSYS2 service integration
+///   - Comprehensive error handling
+///   - Type-safe data structures
 ///
 /// Features:
-///   - Send email with subject and body
-///   - Build formatted password expiration reports
-///   - Email configuration validation
-///   - SQL string escaping for safety
-///   - Detailed error diagnostics with SQLCODE/SQLSTATE
-///   - Job log message integration
-///   - Template data structures for type safety
+///   - Email Services (6 procedures from EMAILSRV):
+///     * Send email with QSYS2.SEND_EMAIL
+///     * Build formatted password expiration reports
+///     * Build email subject lines
+///     * Log messages to job log
+///     * Validate email configuration
+///     * Escape SQL strings for safety
+///   - User Profile Services (4 procedures from USRPRFSRV):
+///     * Query users with expiring passwords
+///     * Format user profile information
+///     * Retrieve system name
+///     * Validate warning days parameter
 ///
 /// Exported Procedures:
+///   Email Services:
 ///   - SendEmail: Send email using QSYS2.SEND_EMAIL
 ///   - BuildPasswordExpiryReport: Format password expiration report
 ///   - BuildEmailSubject: Build subject line with user count
 ///   - LogMessage: Send message to job log
 ///   - ValidateEmailConfig: Validate email configuration
 ///   - EscapeSqlString: Escape single quotes for SQL safety
+///   User Profile Services:
+///   - GetExpiringUsers: Returns list of users with expiring passwords
+///   - FormatUserInfo: Formats user information for display
+///   - GetSystemName: Retrieves current system name
+///   - ValidateWarningDays: Validates warning days parameter
 ///
 /// Data Structures:
 ///   - EmailConfig_t: Email configuration template
 ///   - EmailResult_t: Email result with success/error details
+///   - UserProfile_t: User profile information template
+///   - UserList_t: Collection of user profiles
 ///
 /// Prerequisites:
 ///   - SMTP server configured via CHGSMTPA command
@@ -43,46 +55,52 @@
 ///   - TCP/IP and SMTP server (*SMTPSVR) subsystem active
 ///
 /// Usage Example:
+///   // Email example
 ///   dcl-ds config likeds(EmailConfig_t);
 ///   dcl-ds result likeds(EmailResult_t);
 ///   config.toAddress = 'admin@company.com';
 ///   config.subject = 'Test Email';
 ///   config.fromAddress = 'ibmi@company.com';
 ///   result = SendEmail(config: 'Email body text');
+///   
+///   // User profile example
+///   dcl-ds userList likeds(UserList_t);
+///   dcl-s warningDays int(10) inz(7);
+///   userList = GetExpiringUsers(warningDays);
 ///
 /// Binding:
-///   Create with binder source EMAILSRV.bnd
-///   Used by PWDEXPILE password monitoring program
+///   Create with binder source BIGFATONE.bnd
 ///
 /// Reference:
-/// https://www.nicklitten.com/blog/ibmi-email-notifications/
+/// https://www.nicklitten.com/blog/ibmi-service-programs/
 ///
 /// Modification History:
-///   V.000 2026-02-03 | Nick Litten | Initial creation - modular email service
-///   V.001 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
+///   V.000 2026-06-01 | Nick Litten | Initial creation - combined service program
 ///
 
 ctl-opt
   nomain
   thread(*serialize)
   option(*nodebugio:*srcstmt:*nounref)
-  copyright('EMAILSRV | V.001 | Email Notification Service')
+  copyright('BIGFATONE | V.000 | Litten Combined Service Program')
   ;
 
-// ------------------------------------------------------------------------------
+// ---
 // Named Constants
-// ------------------------------------------------------------------------------
+// ---
 Dcl-C MAX_EMAIL_BODY_SIZE 32000;
 Dcl-C CRLF x'0D25';  // Carriage return + line feed
 Dcl-C SQL_SUCCESS 0;
+Dcl-C SQL_NO_DATA 100;
+Dcl-C MAX_USERS 9999;
 
 // Email configuration - These should be set via configuration or parameters
 Dcl-C DEFAULT_SMTP_SERVER 'smtp.yourcompany.com';
 Dcl-C DEFAULT_EMAIL_FROM 'ibmi-security@yourcompany.com';
 
-// ------------------------------------------------------------------------------
+// ---
 // Data Structures - Exported Types
-// ------------------------------------------------------------------------------
+// ---
 
 // Email configuration structure
 Dcl-Ds EmailConfig_t qualified template;
@@ -100,14 +118,36 @@ Dcl-Ds EmailResult_t qualified template;
    errorMsg char(256);
 end-ds;
 
-// ------------------------------------------------------------------------------
+// User profile information structure
+Dcl-Ds UserProfile_t qualified template;
+   userName char(10);
+   userText char(50);
+   status char(10);
+   pwdExpDate date;
+   pwdExpInterval int(10);
+   daysUntilExpiry int(10);
+   lastSignOn timestamp;
+   prevSignOn timestamp;
+end-ds;
+
+// User list structure
+Dcl-Ds UserList_t qualified template;
+   count int(10);
+   users likeds(UserProfile_t) dim(MAX_USERS);
+end-ds;
+
+// ---
+// Email Service Procedures (from EMAILSRV)
+// ---
+
+// ---
 // Procedure: SendEmail
 // Description: Send email using QSYS2.SEND_EMAIL service
 // Parameters:
 //   - config: EmailConfig_t - Email configuration
 //   - messageBody: varchar(32000) - Email body content
 // Returns: EmailResult_t with success status and error details
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc SendEmail export;
    Dcl-Pi *n likeds(EmailResult_t);
       config likeds(EmailConfig_t) const;
@@ -194,7 +234,7 @@ Dcl-Proc SendEmail export;
    Return result;
 end-proc;
 
-// ------------------------------------------------------------------------------
+// ---
 // Procedure: BuildPasswordExpiryReport
 // Description: Build formatted email body for password expiration report
 // Parameters:
@@ -203,7 +243,7 @@ end-proc;
 //   - userCount: int(10) - Number of affected users
 //   - userLines: varchar(32000) - Formatted user detail lines
 // Returns: Formatted email body as varchar
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc BuildPasswordExpiryReport export;
    Dcl-Pi *n varchar(MAX_EMAIL_BODY_SIZE);
       systemName char(8) const;
@@ -249,14 +289,14 @@ Dcl-Proc BuildPasswordExpiryReport export;
    Return emailBody;
 end-proc;
 
-// ------------------------------------------------------------------------------
+// ---
 // Procedure: BuildEmailSubject
 // Description: Build email subject line with user count
 // Parameters:
 //   - baseSubject: char(256) - Base subject text
 //   - userCount: int(10) - Number of affected users
 // Returns: Formatted subject line
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc BuildEmailSubject export;
    Dcl-Pi *n varchar(256);
       baseSubject char(256) const;
@@ -275,44 +315,61 @@ Dcl-Proc BuildEmailSubject export;
    Return subject;
 end-proc;
 
-// ------------------------------------------------------------------------------
+// ---
 // Procedure: LogMessage
 // Description: Send message to job log
 // Parameters:
 //   - message: char(256) - Message text
 //   - messageType: char(10) - Message type (*COMP, *DIAG, *ESCAPE, etc.)
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc LogMessage export;
    Dcl-Pi *n;
-      message char(256) const;
-      messageType char(10) const options(*nopass);
+      p_message char(256) const;
+      p_msgType char(10) const options(*nopass);
    end-pi;
    
-   Dcl-S cmdString varchar(512);
+   Dcl-S message char(256);
    Dcl-S msgType char(10);
+   Dcl-S length int(5) ;
    
+   message = p_message;
+   length = %len(%trimr(message)) ;
+
    // Default to completion message if not specified
    If (%Parms() >= 2);
-      msgType = messageType;
+      msgType = p_msgType;
    Else;
       msgType = '*COMP';
    EndIf;
-   
-   // Build and execute SNDPGMMSG command
-   cmdString = 'SNDPGMMSG MSG(''' + 
-               %trim(%scanrpl('''':'''''':message)) + 
-               ''') TOPGMQ(*EXT) MSGTYPE(' + %trim(msgType) + ')';
-   
-   exec sql call qsys2.qcmdexc(:cmdString);
+
+   //  exec sql CALL QSYS2.SEND_MESSAGE('CPF9898',:length,:message,
+   //                  'QSYS','QCPFMSG') ;
+
+   MONITOR;
+      If msgType = '*COMP';
+         snd-msg *COMP message %TARGET(*CALLER : 1) ;
+      Elseif (msgType = '*DIAG');
+         snd-msg *DIAG message %TARGET(*CALLER : 1) ;
+      Elseif (msgType = '*INFO');
+         snd-msg *INFO message %TARGET(*CALLER : 1) ;
+      Elseif (msgType = '*ESCAPE');
+         snd-msg *ESCAPE message %TARGET(*CALLER : 1) ;
+      EndIf;
+   ON-ERROR 126;
+      DSPLY 'SND-MSG error';
+   ON-ERROR 9999;
+      DSPLY 'Escape message';
+   ENDMON;
+
 end-proc;
 
-// ------------------------------------------------------------------------------
+// ---
 // Procedure: ValidateEmailConfig
 // Description: Validate email configuration parameters
 // Parameters:
 //   - config: EmailConfig_t - Email configuration to validate
 // Returns: *on if valid, *off if invalid
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc ValidateEmailConfig export;
    Dcl-Pi *n ind;
       config likeds(EmailConfig_t) const;
@@ -335,17 +392,185 @@ Dcl-Proc ValidateEmailConfig export;
    Return *on;
 end-proc;
 
-// ------------------------------------------------------------------------------
+// ---
 // Procedure: EscapeSqlString
 // Description: Escape single quotes in strings for SQL safety
 // Parameters:
 //   - inputString: varchar(1000) - String to escape
 // Returns: Escaped string with doubled single quotes
-// ------------------------------------------------------------------------------
+// ---
 Dcl-Proc EscapeSqlString export;
    Dcl-Pi *n varchar(1000);
       inputString varchar(1000) const;
    end-pi;
    
    Return %scanrpl('''':'''''':inputString);
+end-proc;
+
+// ---
+// User Profile Service Procedures (from USRPRFSRV)
+// ---
+
+// ---
+// Procedure: GetExpiringUsers
+// Description: Query database for users with expiring passwords
+// Parameters:
+//   - warningDays: int(10) - Number of days to look ahead
+// Returns: UserList_t structure with matching users
+// ---
+Dcl-Proc GetExpiringUsers export;
+   Dcl-Pi *n likeds(UserList_t);
+      warningDays int(10) const;
+   end-pi;
+   
+   Dcl-Ds userList likeds(UserList_t);
+   Dcl-Ds currentUser likeds(UserProfile_t);
+   Dcl-S idx int(10) inz(0);
+   
+   // Initialize return structure
+   userList.count = 0;
+   
+   // Declare cursor for user profiles
+   exec sql declare userCursor cursor for
+      select
+         authorization_name,
+         coalesce(text_description, ' '),
+         status,
+         password_expiration_interval,
+         days_until_password_expires,
+         last_used_timestamp,
+         previous_signon
+      from qsys2.user_info
+      where status in ('*ENABLED', '*DISABLED')
+        and days_until_password_expires is not null
+        and days_until_password_expires between 0 and :warningDays
+      order by days_until_password_expires, authorization_name;
+   
+   // Open cursor
+   exec sql open userCursor;
+   
+   If (sqlcode <> SQL_SUCCESS);
+      Return userList;
+   EndIf;
+   
+   // Fetch first record
+   exec sql fetch next from userCursor into
+      :currentUser.userName,
+      :currentUser.userText,
+      :currentUser.status,
+      :currentUser.pwdExpInterval,
+      :currentUser.daysUntilExpiry,
+      :currentUser.lastSignOn,
+      :currentUser.prevSignOn;
+   
+   // Loop through results
+   dow (sqlcode = SQL_SUCCESS and idx < MAX_USERS);
+      idx += 1;
+      userList.users(idx) = currentUser;
+      userList.count = idx;
+
+      // Fetch next record
+      exec sql fetch next from userCursor into
+         :currentUser.userName,
+         :currentUser.userText,
+         :currentUser.status,
+         :currentUser.pwdExpInterval,
+         :currentUser.daysUntilExpiry,
+         :currentUser.lastSignOn,
+         :currentUser.prevSignOn;
+   enddo;
+   
+   // Close cursor
+   exec sql close userCursor;
+   
+   Return userList;
+end-proc;
+
+// ---
+// Procedure: FormatUserInfo
+// Description: Format user profile information for display/email
+// Parameters:
+//   - user: UserProfile_t - User profile to format
+// Returns: Formatted string with user details
+// ---
+Dcl-Proc FormatUserInfo export;
+   Dcl-Pi *n varchar(200);
+      user likeds(UserProfile_t) const;
+   end-pi;
+   
+   Dcl-S line varchar(200);
+   Dcl-S lastSignOnStr char(19);
+   Dcl-S expDateStr char(10);
+   Dcl-S daysStr char(15);
+   
+   // Format expiration date
+   If (user.pwdExpDate <> *loval);
+      expDateStr = %char(user.pwdExpDate);
+   Else;
+      expDateStr = '*NONE';
+   EndIf;
+   
+   // Format days until expiry with urgency indicator
+   If (user.daysUntilExpiry = 0);
+      daysStr = '**TODAY**';
+   elseif (user.daysUntilExpiry = 1);
+      daysStr = '1 day';
+   Else;
+      daysStr = %char(user.daysUntilExpiry) + ' days';
+   EndIf;
+   
+   // Format last sign on
+   If (user.lastSignOn <> *loval);
+      lastSignOnStr = %char(%date(user.lastSignOn));
+   Else;
+      lastSignOnStr = 'Never';
+   EndIf;
+   
+   // Build formatted line with proper spacing
+   line = %trim(user.userName) + 
+          %subst(' ' : 1 : 11 - %len(%trim(user.userName))) +
+          %subst(%trim(user.userText) + %trim(' ') : 1 : 30) + ' ' +
+          %trim(user.status) + 
+          %subst(' ' : 1 : 11 - %len(%trim(user.status))) +
+          expDateStr + ' ' +
+          daysStr + 
+          %subst(' ' : 1 : 11 - %len(%trim(daysStr))) +
+          lastSignOnStr;
+   
+   Return line;
+end-proc;
+
+// ---
+// Procedure: GetSystemName
+// Description: Retrieve the current IBM i system name
+// Returns: System name as character string
+// ---
+Dcl-Proc GetSystemName export;
+   Dcl-Pi *n char(8);
+   end-pi;
+   
+   Dcl-S systemName char(8);
+   
+   exec sql values current server into :systemName;
+   
+   If (sqlcode <> SQL_SUCCESS);
+      systemName = '*UNKNOWN';
+   EndIf;
+   
+   Return systemName;
+end-proc;
+
+// ---
+// Procedure: ValidateWarningDays
+// Description: Validate the warning days parameter
+// Parameters:
+//   - days: int(10) - Number of days to validate
+// Returns: *on if valid (1-365), *off if invalid
+// ---
+Dcl-Proc ValidateWarningDays export;
+   Dcl-Pi *n ind;
+      days int(10) const;
+   end-pi;
+   
+   Return (days >= 1 and days <= 365);
 end-proc;

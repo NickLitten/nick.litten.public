@@ -1,7 +1,7 @@
 **free
 
 ///
-/// Service Program: SIMPLEMOD - Simple Service Program Example
+/// Service Program: SIMPLE - Simple Service Program Example
 ///
 /// Description: Educational example demonstrating a basic ILE service program
 ///              with a single exported procedure. This service program provides
@@ -26,7 +26,7 @@
 ///   - GetSystemName: Returns the current IBM i system name
 ///
 /// Usage Example:
-///   dcl-pr GetSystemName extpgm('SIMPLEMOD');
+///   dcl-pr GetSystemName extpgm('SIMPLE');
 ///     systemName char(8);
 ///   end-pr;
 ///   
@@ -35,7 +35,7 @@
 ///
 /// Binding:
 ///   Create with binder source SIMPLESRV.bnd
-///   CRTSRVPGM SRVPGM(library/SIMPLEMOD) MODULE(SIMPLEMOD) +
+///   CRTSRVPGM SRVPGM(library/SIMPLE) MODULE(SIMPLE) +
 ///             EXPORT(*SRCFILE) SRCFILE(QSRVSRC) SRCMBR(SIMPLESRV)
 ///
 /// Reference:
@@ -49,7 +49,7 @@
 ctl-opt
      nomain
      option(*nodebugio:*srcstmt:*nounref)
-     copyright('SIMPLEMOD | V.001 | Simple Service Program');
+     copyright('SIMPLE | V.001 | Simple Service Program');
 
 // ------------------------------------------------------------------------------
 // Procedure: RtnSystemName

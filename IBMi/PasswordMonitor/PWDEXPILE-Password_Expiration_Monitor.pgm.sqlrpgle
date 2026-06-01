@@ -226,6 +226,7 @@ Dcl-Proc mainline;
    // Build user lines for email body
    userLines = '';
    for i = 1 to userList.count;
+      LogMessage('...Checking ' + %char(FormatUserInfo(userList.users(i))): '*COMP');
       userLines += FormatUserInfo(userList.users(i)) + CRLF;
    endfor;
    
