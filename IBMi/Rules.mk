@@ -20,4 +20,5 @@ SUBDIRS := \
 	PasswordMonitor \
 	Services \
 	StoredProcs \
+	SubfileSamples \
 	UploadFiles

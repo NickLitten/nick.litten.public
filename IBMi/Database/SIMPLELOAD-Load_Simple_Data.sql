@@ -1,35 +1,9 @@
--- ============================================================================
--- Script Name: SIMPLEFILE-Super_Simple_file_with_NAME_ADDRESS.sql
--- Description: Populate SIMPLEFILE with 100 celebrity and well-known people
--- Author: Nick Litten
--- Created: 2026-05-17
--- ============================================================================
--- Purpose:
---   - Insert 100 rows of sample data into SIMPLEFILE
---   - Uses names of celebrities and well-known historical figures
---   - Provides realistic address data for testing
--- ============================================================================
-set schema NICKLITTEN;
-
-create or replace table SIMPLEFILE (
-      NAME char(50) not null,
-      ADDRESS char(500) not null
-    )
-  rcdfmt RSIMPLE;
-
-label on table SIMPLEFILE is 'Simple file with name and address';
-
-label on column SIMPLEFILE (
-  NAME is 'THIS IS THE NAME',
-  ADDRESS is 'THIS IS THE ADDRESS'
-);
-
 
 -- Clear existing data
-delete from SIMPLEFILE;
+delete from SIMPLETBL;
 
 -- Insert 100 celebrity records
-insert into SIMPLEFILE (
+insert into SIMPLETBL (
       NAME,
       ADDRESS
     )
@@ -431,16 +405,3 @@ insert into SIMPLEFILE (
       'Yasnaya Polyana, Tula Oblast 301214 Russia'
     );
 
-
-commit;
-
-
--- Verify record count
-select count(*) as RECORD_COUNT
-  from SIMPLEFILE;
-
-
--- Display first 10 records
-select *
-  from SIMPLEFILE
-  fetch first 10 rows only;

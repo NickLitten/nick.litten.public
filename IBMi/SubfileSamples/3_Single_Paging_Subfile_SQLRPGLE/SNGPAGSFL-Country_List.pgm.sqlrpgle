@@ -46,7 +46,7 @@
 /// Display File: SNGPAGSFL.DSPF
 ///   - SFLCTL: Subfile control record
 ///   - SFLREC: Subfile detail record (18 records per page)
-///   - FOOTREC: Footer with function keys
+///   - FOOTER: Footer with function keys
 ///   - DETAILREC: Detail display record
 ///
 /// Database: SAMPLEDB table
@@ -165,7 +165,7 @@ Dcl-Proc mainline;
          Indicators.Refresh = *off;
       EndIf;
 
-      write FOOTREC;
+      write FOOTER;
       exfmt SFLCTL;
 
       Select;

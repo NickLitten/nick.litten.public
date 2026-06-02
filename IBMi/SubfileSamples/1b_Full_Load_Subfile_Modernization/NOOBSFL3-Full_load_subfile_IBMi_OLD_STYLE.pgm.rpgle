@@ -73,24 +73,24 @@ Dcl-S RRN01 zoned(4:0);
 
 // Start of mainline code
 // Execute subroutine to load the subfile
-EXSR #LODSFL;
+exsr LOADSFL;
 
 // Loop until user press the F3 key
-DOU (*inkc = *on);
+dou (*inkc = *on);
    // ExFmt the CONTROL FORMAT of the subfile.
-   WRITE CMD01;
-   EXFMT CTL01;
-ENDDO;
+   write CMD01;
+   exfmt CTL01;
+enddo;
 
 // Free up resources and return
 *inlr = *On;
 Return;
 
 // ------------------------------------------------------------------------------
-// Subroutine: #LODSFL
+// Subroutine: LOADSFL
 // Description: Loads the subfile with 9999 records
 // ------------------------------------------------------------------------------
-BEGSR #LODSFL;
+begsr LOADSFL;
    // Clear the subfile. Clearing a subfile involves the following four
    // statements.
    // 1. Switch on the SFLCLR indicator
@@ -101,12 +101,12 @@ BEGSR #LODSFL;
    // we generally reset this value while clearing the subfile itself.
    clear RRN01;
    *In(30) = *On;
-   WRITE CTL01;
+   write CTL01;
    *In(30) = *Off;
    
    // Set a looping condition. This condition may be based on anything.
    // But in any case, just ensure that RRN does not exceed 9999.
-   DOW (RRN01 < 9999);
+   dow (RRN01 < 9999);
       // Increment the RRN to mark a new record of subfile. Remember that
       // the variable corresponding to RRN should not be less than one (1) a
       // nd it should never exceed 9999.
@@ -118,6 +118,6 @@ BEGSR #LODSFL;
       
       // Perform actual write to the subfile. Notice that each write
       // actually adds a record to the subfile but is not displayed yet
-      WRITE SFL01;
-   ENDDO;
-ENDSR;
+      write SFL01;
+   enddo;
+endsr;

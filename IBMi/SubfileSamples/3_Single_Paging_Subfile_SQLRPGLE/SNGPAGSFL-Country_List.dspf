@@ -54,7 +54,7 @@
       * Subfile Control Record Format
       * ------------------------------------------------------------====
      A          R SFLCTL                    SFLCTL(SFLREC)
-     A                                      SFLSIZ(0018)
+     A                                      SFLSIZ(0019)
      A                                      SFLPAG(0018)
      A                                      OVERLAY
      A  91                                  SFLDSP
@@ -100,7 +100,7 @@
       * ------------------------------------------------------------====
       * Footer
       * ------------------------------------------------------------====
-     A          R FOOTREC
+     A          R FOOTER
 
      A            MOUSECLICK     2Y 0B 25  2PSHBTNFLD
      A                                      PSHBTNCHC(1 '>Enter')

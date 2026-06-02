@@ -1,0 +1,92 @@
+     A* ------------------------------------------------------------====
+     A* Display File: PERSONSFL
+     A* Description: Expanding page subfile for Person table
+     A* ------------------------------------------------------------====
+     A                                      DSPSIZ(24 80 *DS3                  -
+     A                                             27 132 *DS4)
+     A                                      PRINT
+     A                                      INDARA
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      CA12(12 'Cancel')
+     A                                      PAGEDOWN(40)
+     A*
+     A* ------------------------------------------------------------====
+     A* Screen Header
+     A* ------------------------------------------------------------====
+     A          R SFLHDR
+     A                                  1  2'Program:'
+     A            PGMNAME       10A  O  1 11
+     A                                  1 30'Person List - Expanding Page'
+     A                                      DSPATR(HI)
+     A                                  1 72DATE
+     A                                      EDTCDE(Y)
+     A                                  2  2'User ID:'
+     A            USERNAME      10A  O  2 11
+     A                                  2 30'Subfile'
+     A                                      DSPATR(HI)
+     A                                  2 72TIME
+     A                                  4  7'Selection: 5=Display Details'
+     A                                      COLOR(BLU)
+     A*
+     A* ------------------------------------------------------------====
+     A* Column Headers
+     A* ------------------------------------------------------------====
+     A                                  5  2'Sel'
+     A                                      DSPATR(HI)
+     A                                  5  7'Name'
+     A                                      DSPATR(HI)
+     A                                  5 60'Date of Birth'
+     A                                      DSPATR(HI)
+     A*
+     A* ------------------------------------------------------------====
+     A* Subfile Record Format
+     A* ------------------------------------------------------------====
+     A          R SFLREC                    SFL
+     A                                      SFLNXTCHG
+     A            ADDRESS       60A  H
+     A            SFLSEL         1A  B  6  3VALUES(' ' '5')
+     A            NAME          50A  O  6  7
+     A            DOB             L  O  6 60
+     A*
+     A* ------------------------------------------------------------====
+     A* Subfile Control Record Format
+     A* ------------------------------------------------------------====
+     A          R SFLCTL                    SFLCTL(SFLREC)
+     A                                      OVERLAY
+     A  91                                  SFLDSP
+     A  92                                  SFLDSPCTL
+     A  93                                  SFLCLR
+     A  94                                  SFLEND(*MORE)
+     A  *DS3                                SFLSIZ(9999)
+     A  *DS4                                SFLSIZ(9999)
+     A  *DS3                                SFLPAG(0015)
+     A  *DS4                                SFLPAG(0015)
+     A            SFLRCDNBR      4S 0H      SFLRCDNBR(CURSOR)
+
+     A            MOUSECLICK     2Y 0B 23  2PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(5 'F5 >Refresh' CA05)
+     A                                      PSHBTNCHC(12 'F12 >Previous' CA12)
+      *
+      * ------------------------------------------------------------====
+      * Footer
+      * ------------------------------------------------------------====
+      *
+      * ------------------------------------------------------------====
+      * Detail Display Record Format - Window
+      * ------------------------------------------------------------====
+     A          R DETAIL
+     A  *DS3                                WINDOW(5 3 9 70)
+     A  *DS4                                WINDOW(8 3 9 70)
+     A                                      WDWTITLE((*TEXT 'Person Details'))
+     A                                      WDWBORDER((*COLOR BLU))
+     A                                  2  2'Name:'
+     A            DNAME         50A  O  2 20
+     A                                  4  2'Date of Birth:'
+     A            DDOB            L  O  4 20
+     A                                  6  2'Address:'
+     A            DADDRESS      50A  O  6 20
+     A                                  8  2'F12=Return'
+     A                                      COLOR(BLU)

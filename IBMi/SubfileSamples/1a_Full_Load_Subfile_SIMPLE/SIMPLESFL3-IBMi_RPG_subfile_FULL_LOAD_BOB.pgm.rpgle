@@ -68,7 +68,7 @@ ctl-opt
 // ------------------------------------------------------------------------------
 // File Declarations
 // ------------------------------------------------------------------------------
-Dcl-F SIMPLEDSPF WORKSTN SFILE(SFL01:RRN01) IndDs(Indicators) UsrOpn;
+Dcl-F SIMPLEDSPF WORKSTN SFILE(SFL01:RRN01) indds(Indicators) UsrOpn;
 Dcl-F SIMPLEFILE Usage(*Input) Keyed UsrOpn;
 
 // ------------------------------------------------------------------------------

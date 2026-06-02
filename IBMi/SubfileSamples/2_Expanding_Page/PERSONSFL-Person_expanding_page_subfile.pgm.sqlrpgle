@@ -8,6 +8,18 @@
 // This program demonstrates an expanding page subfile that loads
 // records as the user pages down through the data.
 // ------------------------------------------------------------------------------
+// Note: Expanding page logic
+// The expanding page subfile automatically loads more records
+// when the user pages down past the current set of records.
+// This is controlled by:
+// - SFLSIZ(0020): Total subfile size
+// - SFLPAG(0010): Page size (records per page)
+// - SFLEND(*MORE): Shows "More..." indicator
+// 
+// When SFLRCDNBR exceeds LastRRN, the program should detect
+// this and load the next page of records. This can be enhanced
+// by checking SFLRCDNBR after the EXFMT operation.
+// ------------------------------------------------------------------------------
 
 ctl-opt dftactgrp(*no) actgrp(*new) option(*nodebugio:*srcstmt);
 
@@ -23,6 +35,7 @@ Dcl-Ds Indicators;
    Exit ind pos(3);
    Refresh ind pos(5);
    Cancel ind pos(12);
+   Pagedown ind pos(25);
    SflDsp ind pos(91);
    SflDspCtl ind pos(92);
    SflClr ind pos(93);
@@ -33,10 +46,11 @@ end-ds;
 // Standalone Variables
 // ------------------------------------------------------------------------------
 Dcl-S RRN packed(4:0);
-Dcl-S PageSize packed(4:0) inz(10);
+Dcl-S PageSize packed(4:0) inz(16);
 Dcl-S LastRRN packed(4:0) inz(0);
 Dcl-S MoreRecords ind inz(*on);
 Dcl-S FirstTime ind inz(*on);
+Dcl-S CursorOpen ind inz(*off);
 
 // ------------------------------------------------------------------------------
 // SQL Cursor Declaration
@@ -52,7 +66,7 @@ Dcl-S USERNAME char(10);
 // ------------------------------------------------------------------------------
 exec sql set option commit = *none, closqlcsr = *endmod;
 
-open PERSONTBL1;
+open PERSONSFL;
 
 PGMNAME = 'PERSONSFL';
 USERNAME = 'SOMEBLOKE';
@@ -66,7 +80,7 @@ dow (not Exit);
       Refresh = *off;
    EndIf;
 
-   write SFLCTL;
+   write SFLHDR;
    exfmt SFLCTL;
 
    If (Exit);
@@ -77,12 +91,26 @@ dow (not Exit);
       iter;
    EndIf;
 
+   // Check if user paged down and more records available
+   If (Pagedown and MoreRecords);
+      LoadNextPage();
+      Pagedown = *off;
+      iter;
+   EndIf;
+
    // Process subfile selections
    ProcessSelections();
 
 enddo;
 
-close PERSONTBL1;
+// Close cursor if still open
+If (CursorOpen);
+   exec sql close C1;
+   CursorOpen = *off;
+EndIf;
+
+close PERSONSFL;
+
 *inlr = *on;
 Return;
 
@@ -102,13 +130,14 @@ Dcl-Proc LoadSubfile;
    LastRRN = 0;
    MoreRecords = *on;
    
-   // Declare cursor for initial load
+   // Declare and open cursor for initial load
    exec sql declare C1 cursor for
-      select :PNAME, PDOB, PADDRESS
-      from PERSONTBL1
-      order by :PNAME;
+      select PNAME, PDOB, PADDRESS
+      from PERSONTBL
+      order by PNAME;
    
    exec sql open C1;
+   CursorOpen = *on;
    
    // Load first page
    dow (RRN < PageSize and MoreRecords);
@@ -119,9 +148,9 @@ Dcl-Proc LoadSubfile;
          RRN += 1;
          LastRRN = RRN;
          SFLSEL = ' ';
-         PNAME = FetchName;
-         PDOB = FetchDOB;
-         PADDRESS = FetchAddress;
+         NAME = FetchName;
+         DOB = FetchDOB;
+         ADDRESS = FetchAddress;
          write SFLREC;
       Else;
          MoreRecords = *off;
@@ -137,14 +166,16 @@ Dcl-Proc LoadSubfile;
       If (SQLSTATE <> '00000');
          MoreRecords = *off;
          SflEnd = *on;
-      Else;
-         // Put the record back by closing and reopening cursor
          exec sql close C1;
+         CursorOpen = *off;
+      Else;
+         // More records available - keep cursor open
          SflEnd = *off;
       EndIf;
+   Else;
+      exec sql close C1;
+      CursorOpen = *off;
    EndIf;
-   
-   exec sql close C1;
    
    // Display subfile if records exist
    If (RRN > 0);
@@ -153,6 +184,62 @@ Dcl-Proc LoadSubfile;
    Else;
       SflDsp = *off;
       SflDspCtl = *on;
+   EndIf;
+   
+end-proc;
+
+// ------------------------------------------------------------------------------
+// LoadNextPage - Load next page of subfile records
+// ------------------------------------------------------------------------------
+Dcl-Proc LoadNextPage;
+   
+   Dcl-S RecordsLoaded packed(4:0);
+   
+   // If cursor is not open, nothing to load
+   If (not CursorOpen);
+      MoreRecords = *off;
+      SflEnd = *on;
+      Return;
+   EndIf;
+   
+   RecordsLoaded = 0;
+   
+   // Load next page of records
+   dow (RecordsLoaded < PageSize and MoreRecords);
+      exec sql fetch next from C1
+         into :FetchName, :FetchDOB, :FetchAddress;
+      
+      If (SQLSTATE = '00000');
+         RRN += 1;
+         LastRRN = RRN;
+         SFLSEL = ' ';
+         NAME = FetchName;
+         DOB = FetchDOB;
+         ADDRESS = FetchAddress;
+         write SFLREC;
+         RecordsLoaded += 1;
+      Else;
+         MoreRecords = *off;
+         SflEnd = *on;
+         exec sql close C1;
+         CursorOpen = *off;
+      EndIf;
+   enddo;
+   
+   // Check if more records exist after this page
+   If (MoreRecords and RecordsLoaded = PageSize);
+      exec sql fetch next from C1
+         into :FetchName, :FetchDOB, :FetchAddress;
+      
+      If (SQLSTATE <> '00000');
+         MoreRecords = *off;
+         SflEnd = *on;
+         exec sql close C1;
+         CursorOpen = *off;
+      Else;
+         // More records available - keep cursor open
+         SflEnd = *off;
+      EndIf;
    EndIf;
    
 end-proc;
@@ -169,15 +256,12 @@ Dcl-Proc ProcessSelections;
    dow (CurrentRRN <= LastRRN);
       chain CurrentRRN SFLREC;
       
-      If (%found(PERSONTBL1));
-         Select;
-            When (SFLSEL = '1');  // Display details
-               DisplayDetails();
-               SFLSEL = ' ';
-               update SFLREC;
-         EndSl;
+      If (SFLSEL = '1');  // Display details
+         DisplayDetails();
+         SFLSEL = ' ';
+         update SFLREC;
       EndIf;
-      
+
       CurrentRRN += 1;
    enddo;
    
@@ -188,15 +272,14 @@ end-proc;
 // ------------------------------------------------------------------------------
 Dcl-Proc DisplayDetails;
    
-   DNAME = PNAME;
-   DDOB = PDOB;
-   DADDRESS = PADDRESS;
+   DNAME = NAME;
+   DDOB = DOB;
+   DADDRESS = ADDRESS;
    
    Cancel = *off;
    
    dow (not Cancel);
-      write FOOTREC;
-      exfmt DETAILREC;
+      exfmt DETAIL;
       
       If (Cancel);
          leave;
@@ -206,18 +289,3 @@ Dcl-Proc DisplayDetails;
    Cancel = *off;
    
 end-proc;
-
-// ------------------------------------------------------------------------------
-// Note: Expanding page logic
-// ------------------------------------------------------------------------------
-// The expanding page subfile automatically loads more records
-// when the user pages down past the current set of records.
-// This is controlled by:
-// - SFLSIZ(0020): Total subfile size
-// - SFLPAG(0010): Page size (records per page)
-// - SFLEND(*MORE): Shows "More..." indicator
-// 
-// When SFLRCDNBR exceeds LastRRN, the program should detect
-// this and load the next page of records. This can be enhanced
-// by checking SFLRCDNBR after the EXFMT operation.
-// ------------------------------------------------------------------------------

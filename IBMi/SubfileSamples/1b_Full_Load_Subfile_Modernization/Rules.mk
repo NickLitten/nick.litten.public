@@ -12,5 +12,5 @@
 NOOBDSPF.FILE:    NOOBDSPF-Full_load_sfl_with_incrementing_value.dspf
 NOOBSFL1.PGM:     NOOBSFL1-Full_load_subfile_example_AS400_STYLE.pgm.rpgle NOOBDSPF.FILE
 NOOBSFL2.PGM:     NOOBSFL2-Full_load_subfile_example_ISERIES_STYLE.pgm.rpgle NOOBDSPF.FILE
-NOOBSFL3.PGM:     NOOBSFL3-Full_load_subfile_example_IBMi_STYLE.pgm.rpgle NOOBDSPF.FILE
-NOOBSFL4.PGM:     NOOBSFL4-Full_load_subfile_example_IBMi_BOB_STYLE.pgm.rpgle NOOBDSPF.FILE
+NOOBSFL3.PGM:     NOOBSFL3-Full_load_subfile_IBMi_OLD_STYLE.pgm.rpgle NOOBDSPF.FILE
+NOOBSFL4.PGM:     NOOBSFL4-Full_load_subfile_IBMi_NEW_STYLE.pgm.rpgle NOOBDSPF.FILE

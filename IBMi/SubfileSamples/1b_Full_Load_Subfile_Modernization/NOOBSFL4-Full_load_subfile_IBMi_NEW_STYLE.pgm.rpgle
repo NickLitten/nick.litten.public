@@ -152,64 +152,64 @@ Dcl-Proc LoadSubfile;
       EndIf;
     
       RRN01 = RecordCount;
-      EndDow;
+   EndDo;
   
-      // Enable subfile display if records were loaded
-      If (RecordCount > 0);
-         Indicators.SflDsp = *On;
-         Indicators.SflDspCtl = *On;
+   // Enable subfile display if records were loaded
+   If (RecordCount > 0);
+      Indicators.SflDsp = *On;
+      Indicators.SflDspCtl = *On;
+   EndIf;
+  
+   Return Success;
+End-Proc;
+
+// ------------------------------------------------------------------------------
+// Procedure: ClearSubfile
+// Description: Clears all records from the subfile
+// Notes: Uses standard 4-step subfile clear process
+// ------------------------------------------------------------------------------
+Dcl-Proc ClearSubfile;
+  
+   // Step 1: Reset RRN to zero
+   RRN01 = 0;
+  
+   // Step 2: Turn on SFLCLR indicator
+   Indicators.SflClr = *On;
+  
+   // Step 3: Write control record to clear subfile
+   Write CTL01;
+  
+   // Step 4: Turn off SFLCLR indicator
+   Indicators.SflClr = *Off;
+  
+   // Turn off display indicators for clean state
+   Indicators.SflDsp = *Off;
+   Indicators.SflDspCtl = *Off;
+  
+End-Proc;
+
+// ------------------------------------------------------------------------------
+// Procedure: ProcessUserInput
+// Description: Handles user interaction with the subfile
+// Notes: Loops until F3 (Exit) is pressed
+// ------------------------------------------------------------------------------
+Dcl-Proc ProcessUserInput;
+  
+   // Display loop - continue until user presses F3
+   Dow (Not Indicators.Exit);
+      // Write command key line
+      Write CMD01;
+    
+      // Display subfile control format and wait for input
+      ExFmt CTL01;
+    
+      // Process function keys or subfile options here
+      // (In a real application, you would check for other
+      // function keys and process subfile option fields)
+    
+      If (Indicators.Exit);
+         Leave;
       EndIf;
+   EndDo;
   
-      Return Success;
-   End-Proc;
-
-   // ------------------------------------------------------------------------------
-   // Procedure: ClearSubfile
-   // Description: Clears all records from the subfile
-   // Notes: Uses standard 4-step subfile clear process
-   // ------------------------------------------------------------------------------
-   Dcl-Proc ClearSubfile;
-  
-      // Step 1: Reset RRN to zero
-      RRN01 = 0;
-  
-      // Step 2: Turn on SFLCLR indicator
-      Indicators.SflClr = *On;
-  
-      // Step 3: Write control record to clear subfile
-      Write CTL01;
-  
-      // Step 4: Turn off SFLCLR indicator
-      Indicators.SflClr = *Off;
-  
-      // Turn off display indicators for clean state
-      Indicators.SflDsp = *Off;
-      Indicators.SflDspCtl = *Off;
-  
-   End-Proc;
-
-   // ------------------------------------------------------------------------------
-   // Procedure: ProcessUserInput
-   // Description: Handles user interaction with the subfile
-   // Notes: Loops until F3 (Exit) is pressed
-   // ------------------------------------------------------------------------------
-   Dcl-Proc ProcessUserInput;
-  
-      // Display loop - continue until user presses F3
-      Dow (Not Indicators.Exit);
-         // Write command key line
-         Write CMD01;
-    
-         // Display subfile control format and wait for input
-         ExFmt CTL01;
-    
-         // Process function keys or subfile options here
-         // (In a real application, you would check for other
-         // function keys and process subfile option fields)
-    
-         If (Indicators.Exit);
-            Leave;
-         EndIf;
-         EndDow;
-  
-      End-Proc;
+End-Proc;
