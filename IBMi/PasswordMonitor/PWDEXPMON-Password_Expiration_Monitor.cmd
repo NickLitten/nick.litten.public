@@ -43,6 +43,10 @@
 
              CMD        PROMPT('Password Expiration Monitor')
 
-             PARM       KWD(DAYS) TYPE(*DEC) LEN(3 0) DFT(7) +
-                          MIN(0) MAX(1) RANGE(001 365) +
-                          PROMPT('Days until expiration')
+             PARM KWD(DAYS) +
+                TYPE(*CHAR) +
+                LEN(6) +
+                DFT(*WEEK) +
+                SPCVAL((*WEEK) (*MONTH) (*YEAR)) +
+                EXPR(*YES) +
+                PROMPT('List if within this period')

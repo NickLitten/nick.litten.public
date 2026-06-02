@@ -1,5 +1,6 @@
 **free
 
+// ---------------------------------------------------------------------------
 ///
 /// Service Program: BIGFATONE - Litten Combined Service Program
 ///
@@ -77,30 +78,35 @@
 /// Modification History:
 ///   V.000 2026-06-01 | Nick Litten | Initial creation - combined service program
 ///
+// ---------------------------------------------------------------------------
 
 ctl-opt
   nomain
   thread(*serialize)
+  alwnull(*inputonly) 
   option(*nodebugio:*srcstmt:*nounref)
   copyright('BIGFATONE | V.000 | Litten Combined Service Program')
   ;
 
-// ---
+Dcl-S $debug ind inz('1');
+Dcl-S $debugValue char(50);
+
+// ---------------------------------------------------------------------------
 // Named Constants
-// ---
+// ---------------------------------------------------------------------------
 Dcl-C MAX_EMAIL_BODY_SIZE 32000;
 Dcl-C CRLF x'0D25';  // Carriage return + line feed
 Dcl-C SQL_SUCCESS 0;
 Dcl-C SQL_NO_DATA 100;
-Dcl-C MAX_USERS 9999;
+Dcl-C MAX_USERS 999;
 
 // Email configuration - These should be set via configuration or parameters
 Dcl-C DEFAULT_SMTP_SERVER 'smtp.yourcompany.com';
 Dcl-C DEFAULT_EMAIL_FROM 'ibmi-security@yourcompany.com';
 
-// ---
+// ---------------------------------------------------------------------------
 // Data Structures - Exported Types
-// ---
+// ---------------------------------------------------------------------------
 
 // Email configuration structure
 Dcl-Ds EmailConfig_t qualified template;
@@ -123,11 +129,11 @@ Dcl-Ds UserProfile_t qualified template;
    userName char(10);
    userText char(50);
    status char(10);
-   pwdExpDate date;
+   pwdExpDate char(10);
    pwdExpInterval int(10);
    daysUntilExpiry int(10);
-   lastSignOn timestamp;
-   prevSignOn timestamp;
+   lastSignOn char(10);
+   prevSignOn char(10);
 end-ds;
 
 // User list structure
@@ -136,18 +142,15 @@ Dcl-Ds UserList_t qualified template;
    users likeds(UserProfile_t) dim(MAX_USERS);
 end-ds;
 
-// ---
-// Email Service Procedures (from EMAILSRV)
-// ---
 
-// ---
+// ---------------------------------------------------------------------------
 // Procedure: SendEmail
 // Description: Send email using QSYS2.SEND_EMAIL service
 // Parameters:
 //   - config: EmailConfig_t - Email configuration
 //   - messageBody: varchar(32000) - Email body content
 // Returns: EmailResult_t with success status and error details
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc SendEmail export;
    Dcl-Pi *n likeds(EmailResult_t);
       config likeds(EmailConfig_t) const;
@@ -195,12 +198,11 @@ Dcl-Proc SendEmail export;
    //   2. User registered via ADDUSRSMTP (Add User SMTP) command
    //   3. TCP/IP and SMTP server (*SMTPSVR) subsystem active
    exec sql
-      call qsys2.send_email(
-         :toAddr,
-         :subject,
-         :body,
-         :fromAddr
-      );
+      call qsys2.send_email( :toAddr,
+                             :subject,
+                             :body,
+                             :fromAddr
+                             );
    
    // Capture SQL diagnostics immediately after execution
    result.sqlCode = sqlcode;
@@ -234,7 +236,11 @@ Dcl-Proc SendEmail export;
    Return result;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: BuildPasswordExpiryReport
 // Description: Build formatted email body for password expiration report
 // Parameters:
@@ -243,10 +249,10 @@ end-proc;
 //   - userCount: int(10) - Number of affected users
 //   - userLines: varchar(32000) - Formatted user detail lines
 // Returns: Formatted email body as varchar
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc BuildPasswordExpiryReport export;
    Dcl-Pi *n varchar(MAX_EMAIL_BODY_SIZE);
-      systemName char(8) const;
+      systemName char(256) const;
       warningDays int(10) const;
       userCount int(10) const;
       userLines varchar(MAX_EMAIL_BODY_SIZE) const;
@@ -264,10 +270,8 @@ Dcl-Proc BuildPasswordExpiryReport export;
                CRLF +
                'The following user profiles have passwords expiring soon:' + CRLF +
                CRLF +
-               'User       Description                    Status     ' +
-               'Exp Date   Days Left  Last Sign On' + CRLF +
-               '---------- ------------------------------ ---------- ' +
-               '---------- ---------- ---------------' + CRLF;
+               'User - Description - Status - Days Left - Last Sign On' + CRLF +
+               '------------------------------------------------------ ' + CRLF;
    
    // Add user lines
    emailBody += userLines;
@@ -289,14 +293,18 @@ Dcl-Proc BuildPasswordExpiryReport export;
    Return emailBody;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: BuildEmailSubject
 // Description: Build email subject line with user count
 // Parameters:
 //   - baseSubject: char(256) - Base subject text
 //   - userCount: int(10) - Number of affected users
 // Returns: Formatted subject line
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc BuildEmailSubject export;
    Dcl-Pi *n varchar(256);
       baseSubject char(256) const;
@@ -315,13 +323,17 @@ Dcl-Proc BuildEmailSubject export;
    Return subject;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: LogMessage
 // Description: Send message to job log
 // Parameters:
 //   - message: char(256) - Message text
 //   - messageType: char(10) - Message type (*COMP, *DIAG, *ESCAPE, etc.)
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc LogMessage export;
    Dcl-Pi *n;
       p_message char(256) const;
@@ -342,34 +354,48 @@ Dcl-Proc LogMessage export;
       msgType = '*COMP';
    EndIf;
 
-   //  exec sql CALL QSYS2.SEND_MESSAGE('CPF9898',:length,:message,
-   //                  'QSYS','QCPFMSG') ;
-
    MONITOR;
-      If msgType = '*COMP';
-         snd-msg *COMP message %TARGET(*CALLER : 1) ;
-      Elseif (msgType = '*DIAG');
-         snd-msg *DIAG message %TARGET(*CALLER : 1) ;
-      Elseif (msgType = '*INFO');
-         snd-msg *INFO message %TARGET(*CALLER : 1) ;
-      Elseif (msgType = '*ESCAPE');
-         snd-msg *ESCAPE message %TARGET(*CALLER : 1) ;
-      EndIf;
+
+      // TO BE FIXED !!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // Why doesnt SND-MSG accept a *COMP/*DIAG for the message?
+      // snd-msgh message %TARGET(*CALLER : 1);
+
+      // If (msgType = '*COMP');
+      // snd-msg *comp message %TARGET(*CALLER : 1);
+      // Elseif (msgType = '*DIAG');
+      // snd-msg *diag message %TARGET(*CALLER : 1);
+      // Elseif (msgType = '*INFO');
+      // snd-msg *info message %TARGET(*CALLER : 1);
+      // Elseif (msgType = '*ESCAPE');
+      // snd-msg *escape message %TARGET(*CALLER : 1);
+      // Elseif (msgType = '*NOTIFY');
+      // snd-msg *notify message %TARGET(*CALLER : 1);
+      // Elseif (msgType = '*STATUS');
+      // snd-msg *status message %TARGET(*CALLER : 1);
+      // Else;
+      snd-msg message %TARGET(*CALLER : 1);
+      // EndIf;
+
    ON-ERROR 126;
       DSPLY 'SND-MSG error';
    ON-ERROR 9999;
       DSPLY 'Escape message';
    ENDMON;
 
+
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: ValidateEmailConfig
 // Description: Validate email configuration parameters
 // Parameters:
 //   - config: EmailConfig_t - Email configuration to validate
 // Returns: *on if valid, *off if invalid
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc ValidateEmailConfig export;
    Dcl-Pi *n ind;
       config likeds(EmailConfig_t) const;
@@ -392,13 +418,17 @@ Dcl-Proc ValidateEmailConfig export;
    Return *on;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: EscapeSqlString
 // Description: Escape single quotes in strings for SQL safety
 // Parameters:
 //   - inputString: varchar(1000) - String to escape
 // Returns: Escaped string with doubled single quotes
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc EscapeSqlString export;
    Dcl-Pi *n varchar(1000);
       inputString varchar(1000) const;
@@ -407,17 +437,21 @@ Dcl-Proc EscapeSqlString export;
    Return %scanrpl('''':'''''':inputString);
 end-proc;
 
-// ---
-// User Profile Service Procedures (from USRPRFSRV)
-// ---
 
-// ---
+
+
+
+// ---------------------------------------------------------------------------
+// User Profile Service Procedures (from USRPRFSRV)
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
 // Procedure: GetExpiringUsers
 // Description: Query database for users with expiring passwords
 // Parameters:
 //   - warningDays: int(10) - Number of days to look ahead
 // Returns: UserList_t structure with matching users
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc GetExpiringUsers export;
    Dcl-Pi *n likeds(UserList_t);
       warningDays int(10) const;
@@ -428,7 +462,7 @@ Dcl-Proc GetExpiringUsers export;
    Dcl-S idx int(10) inz(0);
    
    // Initialize return structure
-   userList.count = 0;
+   clear userList;
    
    // Declare cursor for user profiles
    exec sql declare userCursor cursor for
@@ -436,10 +470,11 @@ Dcl-Proc GetExpiringUsers export;
          authorization_name,
          coalesce(text_description, ' '),
          status,
+         coalesce(char(date_password_expires), ''),
          password_expiration_interval,
          days_until_password_expires,
-         last_used_timestamp,
-         previous_signon
+         coalesce(char(last_used_timestamp), ' '),
+         coalesce(char(previous_signon), ' ')
       from qsys2.user_info
       where status in ('*ENABLED', '*DISABLED')
         and days_until_password_expires is not null
@@ -448,53 +483,72 @@ Dcl-Proc GetExpiringUsers export;
    
    // Open cursor
    exec sql open userCursor;
-   
-   If (sqlcode <> SQL_SUCCESS);
-      Return userList;
-   EndIf;
-   
-   // Fetch first record
-   exec sql fetch next from userCursor into
-      :currentUser.userName,
-      :currentUser.userText,
-      :currentUser.status,
-      :currentUser.pwdExpInterval,
-      :currentUser.daysUntilExpiry,
-      :currentUser.lastSignOn,
-      :currentUser.prevSignOn;
-   
-   // Loop through results
-   dow (sqlcode = SQL_SUCCESS and idx < MAX_USERS);
-      idx += 1;
-      userList.users(idx) = currentUser;
-      userList.count = idx;
 
-      // Fetch next record
-      exec sql fetch next from userCursor into
+   // display value of currentUser.userName to screen
+   If ($debug);
+      $debugValue = 'SQL Code:' + %char(sqlcode);
+      Dsply $debugValue;
+   EndIf;
+
+   If (sqlcode = SQL_SUCCESS);
+   
+      // Loop through results
+      dou (idx = MAX_USERS);
+
+         // Fetch next record
+         exec sql fetch next from userCursor into
          :currentUser.userName,
          :currentUser.userText,
          :currentUser.status,
+         :currentUser.pwdExpDate,
          :currentUser.pwdExpInterval,
          :currentUser.daysUntilExpiry,
          :currentUser.lastSignOn,
          :currentUser.prevSignOn;
-   enddo;
+
+         // display value of currentUser.userName to screen
+         If ($debug);
+            $debugValue = 'FETCH SQL Code:' + %char(sqlcode);
+            Dsply $debugValue;
+         EndIf;
+
+         If (sqlcode <> SQL_SUCCESS or idx >= MAX_USERS);
+            leave;
+         EndIf;
+
+         // display value of currentUser.userName to screen
+         If ($debug);
+            $debugValue = 'User:' + currentUser.userName;
+            Dsply $debugValue;
+         EndIf;
+
+         idx += 1;
+         userList.count = idx;
+         userList.users(idx) = currentUser;
+
+      enddo;
    
-   // Close cursor
-   exec sql close userCursor;
+      // Close cursor
+      exec sql close userCursor;
+
+   EndIf;
    
    Return userList;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: FormatUserInfo
 // Description: Format user profile information for display/email
 // Parameters:
 //   - user: UserProfile_t - User profile to format
 // Returns: Formatted string with user details
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc FormatUserInfo export;
-   Dcl-Pi *n varchar(200);
+   Dcl-Pi *n char(200);
       user likeds(UserProfile_t) const;
    end-pi;
    
@@ -521,37 +575,38 @@ Dcl-Proc FormatUserInfo export;
    
    // Format last sign on
    If (user.lastSignOn <> *loval);
-      lastSignOnStr = %char(%date(user.lastSignOn));
+      lastSignOnStr = user.lastSignOn;
    Else;
       lastSignOnStr = 'Never';
    EndIf;
    
    // Build formatted line with proper spacing
-   line = %trim(user.userName) + 
-          %subst(' ' : 1 : 11 - %len(%trim(user.userName))) +
-          %subst(%trim(user.userText) + %trim(' ') : 1 : 30) + ' ' +
-          %trim(user.status) + 
-          %subst(' ' : 1 : 11 - %len(%trim(user.status))) +
-          expDateStr + ' ' +
-          daysStr + 
-          %subst(' ' : 1 : 11 - %len(%trim(daysStr))) +
+   line = %trim(user.userName) + ' - ' + 
+          %trim(user.userText) + ' - ' + 
+          %trim(user.status) + ' - ' + 
+          daysStr + ' - ' + 
           lastSignOnStr;
    
    Return line;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: GetSystemName
 // Description: Retrieve the current IBM i system name
 // Returns: System name as character string
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc GetSystemName export;
-   Dcl-Pi *n char(8);
+   Dcl-Pi *n char(256);
    end-pi;
    
-   Dcl-S systemName char(8);
+   Dcl-S systemName char(256);
    
-   exec sql values current server into :systemName;
+   exec sql select host_name into :systemName
+            from sysibmadm.env_sys_info;
    
    If (sqlcode <> SQL_SUCCESS);
       systemName = '*UNKNOWN';
@@ -560,13 +615,17 @@ Dcl-Proc GetSystemName export;
    Return systemName;
 end-proc;
 
-// ---
+
+
+
+
+// ---------------------------------------------------------------------------
 // Procedure: ValidateWarningDays
 // Description: Validate the warning days parameter
 // Parameters:
 //   - days: int(10) - Number of days to validate
 // Returns: *on if valid (1-365), *off if invalid
-// ---
+// ---------------------------------------------------------------------------
 Dcl-Proc ValidateWarningDays export;
    Dcl-Pi *n ind;
       days int(10) const;

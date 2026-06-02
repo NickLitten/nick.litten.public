@@ -22,7 +22,7 @@
 # Build Dependencies (IBM i TOBi Format)
 # -----------------------------------------------------------------------------
 # Main password expiration monitor (SQLRPGLE with service program dependencies)
-PWDEXPILE.PGM:    PWDEXPILE-Password_Expiration_Monitor.pgm.sqlrpgle
+PWDEXPILE.PGM:    PWDEXPILE-Password_Expiration_Monitor.pgm.rpgle
 
 # CL wrapper program (depends on main program)
 PWDEXPMON.PGM:    PWDEXPMON-Password_Expiration_Monitor.pgm.clle PWDEXPILE.PGM

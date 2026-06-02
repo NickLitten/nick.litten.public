@@ -6,11 +6,12 @@
 # It follows IBM i TOBi naming standards: OBJECTNAME-Description_With_Underscores.ext
 # -----------------------------------------------------------------------------
 SUBDIRS := \
+	.Database \
+	.Services \
 	ClearBobLogs \
 	ClearPfrdata \
 	CodeSamples \
 	Conversion \
-	Database \
 	Debug \
 	EmailCsvFile \
 	EmailOutq \
@@ -18,7 +19,6 @@ SUBDIRS := \
 	ListLibraries \
 	MySqlServer \
 	PasswordMonitor \
-	Services \
 	StoredProcs \
 	SubfileSamples \
 	UploadFiles

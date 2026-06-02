@@ -11,7 +11,7 @@
   "UppercaseConstants": true,
   "IncorrectVariableCase": true,
   "RequiresParameter": true,
-  "RequiresProcedureDescription": true,
+  "RequiresProcedureDescription": false,
   "StringLiteralDupe": false,
   "RequireBlankSpecial": false,
   "CopybookDirective": "include",
