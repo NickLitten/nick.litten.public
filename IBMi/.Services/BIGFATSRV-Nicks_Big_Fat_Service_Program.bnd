@@ -4,7 +4,7 @@
 /*              Combines all procedures from EMAILSRV and USRPRFSRV  */
 /*-------------------------------------------------------------------*/
 
-STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('BIGFATSRV V1.0')
+STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('BIGFATSRV V1.1')
 
 /*-------------------------------------------------------------------*/
 /* Email Service Procedures (from EMAILSRV)                          */
@@ -24,4 +24,9 @@ STRPGMEXP PGMLVL(*CURRENT) SIGNATURE('BIGFATSRV V1.0')
   EXPORT SYMBOL(GETSYSTEMNAME)
   EXPORT SYMBOL(VALIDATEWARNINGDAYS)
 
+/*-------------------------------------------------------------------*/
+/* General Purpose Procedures                                        */
+/*-------------------------------------------------------------------*/
+  EXPORT SYMBOL(WRITETOIFS)
+  
 ENDPGMEXP

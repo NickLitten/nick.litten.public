@@ -13,20 +13,21 @@
 /*   - Integration with CL wrapper program                               */
 /*                                                                       */
 /* Features:                                                             */
-/*   - Single DAYS parameter with default of 7                           */
+/*   - PERIOD selector with default of *WEEK                             */
+/*   - Optional IFS output file path parameter                           */
 /*   - Decimal parameter type for numeric validation                     */
 /*   - Optional parameter (MIN(0) MAX(1))                                */
 /*   - User-friendly prompt text                                         */
 /*   - Calls PWDEXPMON CL program                                        */
 /*                                                                       */
 /* Parameters:                                                           */
-/*   DAYS - *DEC(3 0) - Number of days to look ahead for expiring        */
-/*          passwords. Valid range: 1-999. Default: 7                    */
+/*   PERIOD  - *CHAR(6)   - Expiry period selector: *WEEK/*MONTH/*YEAR   */
+/*   IFSPATH - *CHAR(256) - Optional IBM i IFS report file path          */
 /*                                                                       */
 /* Usage Examples:                                                       */
-/*   PWDEXPMON DAYS(7)   - Check for passwords expiring in 7 days        */
-/*   PWDEXPMON DAYS(14)  - Check for passwords expiring in 14 days       */
-/*   PWDEXPMON           - Uses default (7 days)                         */
+/*   PWDEXPMON PERIOD(*WEEK)                                             */
+/*   PWDEXPMON PERIOD(*MONTH) IFSPATH('/tmp/pwdexpmon_report.txt')       */
+/*   PWDEXPMON                - Uses defaults                             */
 /*                                                                       */
 /* Compiler Options:                                                     */
 /*   CRTCMD CMD(library/PWDEXPMON) PGM(library/PWDEXPMON)                */
@@ -43,10 +44,18 @@
 
              CMD        PROMPT('Password Expiration Monitor')
 
-             PARM KWD(DAYS) +
+             PARM KWD(PERIOD) +
                 TYPE(*CHAR) +
                 LEN(6) +
                 DFT(*WEEK) +
                 SPCVAL((*WEEK) (*MONTH) (*YEAR)) +
                 EXPR(*YES) +
                 PROMPT('List if within this period')
+
+             PARM KWD(IFSPATH) +
+                TYPE(*CHAR) +
+                LEN(256) +
+                DFT('/tmp/pwdexpmon_report.txt') +
+                EXPR(*YES) +
+                CASE(*MIXED) +
+                PROMPT('IBM i IFS output file path')

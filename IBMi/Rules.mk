@@ -21,4 +21,5 @@ SUBDIRS := \
 	PasswordMonitor \
 	StoredProcs \
 	SubfileSamples \
+	Update_iasp \
 	UploadFiles

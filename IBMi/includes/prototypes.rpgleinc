@@ -1,0 +1,293 @@
+**free
+
+///
+/// File: prototypes.rpgleinc
+///
+/// Description: Service program prototypes for password monitoring and utility functions.
+///              This include file provides procedure prototypes for BIGFATSRV.srvpgm and
+///              smallsrv.srvpgm service programs used throughout the application.
+///
+/// Dependencies:
+///   - BIGFATSRV.srvpgm - Password expiry monitoring and email services
+///   - smallsrv.srvpgm  - System utility functions
+///
+/// Author: Nick Litten
+///
+/// Modification History:
+///   2026-06-02 | Nick Litten | Added documentation with detailed parameter descriptions
+///
+/// Note: This file contains only prototypes. The referenced data structures
+///       (UserList_t, UserProfile_t, EmailConfig_t, EmailResult_t) are defined
+///       in the service program source files where these procedures are implemented.
+///       Programs using these prototypes must also include the corresponding
+///       data structure definitions.
+///
+///
+
+// -----------------------------------------------------------------
+// BIGFATSRV.srvpgm - Password Monitoring Service Prototypes
+// -----------------------------------------------------------------
+
+///
+/// GetExpiringUsers - Retrieve users with expiring passwords
+///
+/// Purpose: Queries the system for user profiles with passwords expiring
+///          within the specified number of days. Uses QSYRUSRI API to
+///          retrieve user profile information and filters based on
+///          password expiration dates.
+///
+/// Parameters:
+///   warningDays - Number of days before expiration to include (valid range: 1-999)
+///
+/// Returns: UserList_t structure containing array of matching user profiles
+///          with their expiration information
+///
+/// Example:
+///   dcl-ds userList likeds(UserList_t);
+///   userList = GetExpiringUsers(30);  // Get users expiring in 30 days
+///
+dcl-pr GetExpiringUsers likeds(UserList_t);
+   warningDays int(10) const;
+end-pr;
+
+///
+/// FormatUserInfo - Format user profile information for display
+///
+/// Purpose: Converts a UserProfile_t structure into a formatted string
+///          suitable for email reports or display. Includes user name,
+///          expiration date, and days remaining.
+///
+/// Parameters:
+///   userProfile - UserProfile_t structure containing user information
+///
+/// Returns: Formatted string (200 chars) with user details
+///
+/// Example:
+///   formattedInfo = FormatUserInfo(userProfile);
+///
+dcl-pr FormatUserInfo char(200);
+   userProfile likeds(UserProfile_t) const;
+end-pr;
+
+///
+/// GetSystemName - Retrieve current system name
+///
+/// Purpose: Returns the system name from the network attributes.
+///          Used for email subject lines and report headers.
+///
+/// Returns: System name (up to 256 chars)
+///
+/// Example:
+///   systemName = GetSystemName();
+///
+dcl-pr GetSystemName char(256);
+end-pr;
+
+///
+/// ValidateWarningDays - Validate warning days parameter
+///
+/// Purpose: Validates that the warning days parameter is within
+///          acceptable range (1-999 days). Used to prevent invalid
+///          parameter values before processing.
+///
+/// Parameters:
+///   warningDays - Number of days to validate
+///
+/// Returns: *on if valid (1-999), *off if invalid
+///
+/// Example:
+///   if ValidateWarningDays(days);
+///     // Process with valid days
+///   endif;
+///
+dcl-pr ValidateWarningDays ind;
+   warningDays int(10) const;
+end-pr;
+
+// -----------------------------------------------------------------
+// Email Service Prototypes
+// -----------------------------------------------------------------
+
+///
+/// SendEmail - Send email message via SMTP
+///
+/// Purpose: Sends an email message using the provided configuration
+///          and message body. Handles SMTP connection, authentication,
+///          and message transmission.
+///
+/// Parameters:
+///   emailConfig - EmailConfig_t structure with SMTP settings (server, port, credentials)
+///   messageBody - Email message body content (up to 32000 chars)
+///
+/// Returns: EmailResult_t structure with success/failure status and error details
+///
+/// Example:
+///   dcl-ds config likeds(EmailConfig_t);
+///   dcl-ds result likeds(EmailResult_t);
+///   result = SendEmail(config: messageBody);
+///
+dcl-pr SendEmail likeds(EmailResult_t);
+   emailConfig likeds(EmailConfig_t) const;
+   messageBody varchar(32000) const;
+end-pr;
+
+///
+/// BuildPasswordExpiryReport - Generate password expiry report
+///
+/// Purpose: Creates a formatted HTML or text report of users with
+///          expiring passwords. Includes system information, user
+///          details, and expiration dates.
+///
+/// Parameters:
+///   systemName    - Name of the system for report header
+///   warningDays   - Number of warning days used in query
+///   userCount     - Total number of users in report
+///   userListText  - Formatted list of user information
+///
+/// Returns: Complete report text (up to 32000 chars)
+///
+/// Example:
+///   report = BuildPasswordExpiryReport(sysName: 30: count: userList);
+///
+dcl-pr BuildPasswordExpiryReport varchar(32000);
+   systemName char(256) const;
+   warningDays int(10) const;
+   userCount int(10) const;
+   userListText varchar(32000) const;
+end-pr;
+
+///
+/// BuildEmailSubject - Generate email subject line
+///
+/// Purpose: Creates a standardized email subject line including
+///          system name and user count for password expiry notifications.
+///
+/// Parameters:
+///   systemName - Name of the system
+///   userCount  - Number of users with expiring passwords
+///
+/// Returns: Formatted subject line (up to 256 chars)
+///
+/// Example:
+///   subject = BuildEmailSubject(systemName: userCount);
+///   // Returns: "Password Expiry Alert - SYSTEM01 - 5 users"
+///
+dcl-pr BuildEmailSubject varchar(256);
+   systemName char(256) const;
+   userCount int(10) const;
+end-pr;
+
+///
+/// LogMessage - Write message to job log
+///
+/// Purpose: Sends a message to the job log with specified message type.
+///          Used for audit trail and debugging throughout the application.
+///
+/// Parameters:
+///   messageText - Message text to log (up to 256 chars)
+///   messageType - Message type (*INFO, *DIAG, *ESCAPE, *COMP) - optional, defaults to *INFO
+///
+/// Example:
+///   LogMessage('Processing started');
+///   LogMessage('Error occurred': '*ESCAPE');
+///
+dcl-pr LogMessage;
+   messageText char(256) const;
+   messageType char(10) const options(*nopass);
+end-pr;
+
+///
+/// ValidateEmailConfig - Validate email configuration
+///
+/// Purpose: Validates that all required email configuration fields
+///          are populated and valid (SMTP server, port, credentials).
+///          Should be called before attempting to send email.
+///
+/// Parameters:
+///   emailConfig - EmailConfig_t structure to validate
+///
+/// Returns: *on if configuration is valid, *off if invalid
+///
+/// Example:
+///   if ValidateEmailConfig(config);
+///     result = SendEmail(config: message);
+///   endif;
+///
+dcl-pr ValidateEmailConfig ind;
+   emailConfig likeds(EmailConfig_t) const;
+end-pr;
+
+// -----------------------------------------------------------------
+// smallsrv.srvpgm - System Utility Prototypes
+// -----------------------------------------------------------------
+
+///
+/// DisplayWindow - Display message in popup window
+///
+/// Purpose: Displays a message in a system popup window using DSPMSG
+///          or similar API. Useful for interactive notifications.
+///
+/// Parameters:
+///   messageText - Text to display (up to 8192 chars)
+///   messageId   - Optional message ID for message file lookup
+///   messageFile - Optional qualified message file name (format: MSGF/LIB)
+///
+/// Example:
+///   DisplayWindow('Process completed successfully');
+///   DisplayWindow(msgText: 'CPF9898': 'QCPFMSG/QSYS');
+///
+dcl-pr DisplayWindow;
+   messageText varchar(8192) const;
+   messageId char(7) options(*nopass:*omit);
+   messageFile char(21) options(*nopass:*omit);
+end-pr;
+
+///
+/// ExecuteCommand - Execute CL command
+///
+/// Purpose: Executes a CL command using QCMDEXC API with error handling.
+///          Returns success/failure indicator and optional error message.
+///
+/// Parameters:
+///   command      - CL command to execute (up to 1024 chars)
+///   errorMessage - Optional error message if command fails (256 chars)
+///
+/// Returns: *on if command succeeded, *off if failed
+///
+/// Example:
+///   if ExecuteCommand('DSPLIBL');
+///     // Command succeeded
+///   else;
+///     // Command failed - check errorMessage
+///   endif;
+///
+dcl-pr ExecuteCommand ind;
+   command varchar(1024);
+   errorMessage char(256) options(*nopass:*omit);
+end-pr;
+
+///
+/// ReturnSystemName - Get system name (short version)
+///
+/// Purpose: Returns the 8-character system name from network attributes.
+///          Faster alternative to GetSystemName() when only short name needed.
+///
+/// Returns: System name (8 chars)
+///
+/// Example:
+///   sysName = ReturnSystemName();  // Returns: "SYSTEM01"
+///
+dcl-pr ReturnSystemName char(8);
+end-pr;
+
+
+// WriteToIFS writes text content to an IBM i IFS stream file.
+// Parameters:
+//   pIfsPath - Target IFS path, e.g. /tmp/pwdexpmon_report.txt
+//   pContent - Text payload to write (caller controls line breaks)
+// Returns:
+//   *on on success, *off if path is blank or SQL write fails
+dcl-pr WriteToIFS ind;
+   pIfsPath char(256);
+   pContent varchar(32000);
+end-pr;

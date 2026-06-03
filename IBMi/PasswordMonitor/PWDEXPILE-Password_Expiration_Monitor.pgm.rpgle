@@ -28,6 +28,7 @@
 ///   CALL PWDEXPILE PARM('*WEEK')   // Check 7 days ahead
 ///   CALL PWDEXPILE PARM('*MONTH')  // Check 30 days ahead
 ///   CALL PWDEXPILE PARM('*YEAR')   // Check 365 days ahead
+///   CALL PWDEXPILE PARM('*WEEK' '/tmp/pwdexpmon_report.txt')
 ///
 /// Dependencies:
 ///   - User Profile Service Program (GetExpiringUsers, FormatUserInfo, etc.)
@@ -59,57 +60,10 @@ ctl-opt
   copyright('V.003 - Password Expiration Monitor - ILE Modular')
   ;
 
-// ---
 // Prototypes for Service Program Procedures
-// ---
+/include 'prototypes.rpgleinc'
 
-// User Profile Service prototypes
-dcl-pr GetExpiringUsers likeds(UserList_t);
-   *n int(10) const;
-end-pr;
-
-dcl-pr FormatUserInfo char(200);
-   *n likeds(UserProfile_t) const;
-end-pr;
-
-dcl-pr GetSystemName char(256);
-end-pr;
-
-dcl-pr ValidateWarningDays ind;
-   *n int(10) const;
-end-pr;
-
-// Email Service prototypes
-dcl-pr SendEmail likeds(EmailResult_t);
-   *n likeds(EmailConfig_t) const;
-   *n varchar(32000) const;
-end-pr;
-
-dcl-pr BuildPasswordExpiryReport varchar(32000);
-   *n char(256) const;
-   *n int(10) const;
-   *n int(10) const;
-   *n varchar(32000) const;
-end-pr;
-
-dcl-pr BuildEmailSubject varchar(256);
-   *n char(256) const;
-   *n int(10) const;
-end-pr;
-
-dcl-pr LogMessage;
-   *n char(256) const;
-   *n char(10) const options(*nopass);
-end-pr;
-
-dcl-pr ValidateEmailConfig ind;
-   *n likeds(EmailConfig_t) const;
-end-pr;
-
-// ------------------------------------------------------------------------------
 // Data Structures
-// ------------------------------------------------------------------------------
-
 // User profile information structure
 Dcl-Ds UserProfile_t qualified template;
    userName char(10);
@@ -144,9 +98,7 @@ Dcl-Ds EmailResult_t qualified template;
    errorMsg char(256);
 end-ds;
 
-// ------------------------------------------------------------------------------
 // Named Constants
-// ------------------------------------------------------------------------------
 Dcl-C DEFAULT_WARNING_DAYS 7;
 Dcl-C CRLF x'0D25';
 
@@ -156,17 +108,13 @@ Dcl-C EMAIL_FROM 'ibmi-security@yourcompany.com';
 Dcl-C EMAIL_TO 'security-team@yourcompany.com';
 Dcl-C EMAIL_SUBJECT 'IBM i Password Expiration Warning';
 
-// ------------------------------------------------------------------------------
-// Standalone Variables
-// ------------------------------------------------------------------------------
-Dcl-S numberOfDays int(10);
-
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Main Procedure
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 Dcl-Proc mainline;
    Dcl-Pi *n;
       parmExpiryPeriod char(6) const;
+      parmIfsPath char(256) const options(*nopass);
    end-pi;
    
    Dcl-Ds userList likeds(UserList_t);
@@ -178,6 +126,7 @@ Dcl-Proc mainline;
    Dcl-S userLines varchar(32000);
    Dcl-S i int(10);
    Dcl-S numberOfDays int(10);
+   Dcl-S ifsOutputPath char(256);
    
    // Set warning days from parameter or use default
    If (%Parms() >= 1);
@@ -200,10 +149,17 @@ Dcl-Proc mainline;
                  '. Using default: ' + %char(DEFAULT_WARNING_DAYS) : '*DIAG');
       numberOfDays = DEFAULT_WARNING_DAYS;
    EndIf;
+
+   // Resolve optional IFS output path parameter
+   ifsOutputPath = '/tmp/pwdexpmon_report.txt';
+   If (%Parms() >= 2 and %trim(parmIfsPath) <> '');
+      ifsOutputPath = parmIfsPath;
+   EndIf;
    
    // Log program start
    LogMessage('PWDEXPMON started - checking for passwords expiring within ' +
               %char(numberOfDays) + ' days' : '*COMP');
+   LogMessage('IFS output file path: ' + %trim(ifsOutputPath) : '*COMP');
    
    // Get system name
    systemName = GetSystemName();
@@ -229,6 +185,14 @@ Dcl-Proc mainline;
       userLines += FormatUserInfo(userList.users(i)) + CRLF;
    endfor;
    
+   // write userlines to IFS file
+   If (not WriteToIFS(ifsOutputPath : userLines));
+      LogMessage('Failed to write report to IFS path: ' + %trim(ifsOutputPath) : '*DIAG');
+   Else;
+      LogMessage('Report written to IFS path: ' + %trim(ifsOutputPath) : '*COMP');
+   EndIf;
+
+
    // Build complete email body
    emailBody = BuildPasswordExpiryReport(systemName : 
                                          numberOfDays : 
@@ -263,3 +227,4 @@ Dcl-Proc mainline;
    
    Return;
 end-proc;
+

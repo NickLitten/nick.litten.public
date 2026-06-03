@@ -88,7 +88,8 @@ ctl-opt
   copyright('BIGFATONE | V.000 | Litten Combined Service Program')
   ;
 
-Dcl-S $debug ind inz('1');
+// temporary global variables for debugging
+Dcl-S $debug ind inz('0');
 Dcl-S $debugValue char(50);
 
 // ---------------------------------------------------------------------------
@@ -147,14 +148,14 @@ end-ds;
 // Procedure: SendEmail
 // Description: Send email using QSYS2.SEND_EMAIL service
 // Parameters:
-//   - config: EmailConfig_t - Email configuration
-//   - messageBody: varchar(32000) - Email body content
+//   - p_EmailConfig: EmailConfig_t - Email configuration
+//   - p_messageBody: varchar(32000) - Email body content
 // Returns: EmailResult_t with success status and error details
 // ---------------------------------------------------------------------------
 Dcl-Proc SendEmail export;
    Dcl-Pi *n likeds(EmailResult_t);
-      config likeds(EmailConfig_t) const;
-      messageBody varchar(MAX_EMAIL_BODY_SIZE) const;
+      p_EmailConfig likeds(EmailConfig_t) const;
+      p_messageBody varchar(MAX_EMAIL_BODY_SIZE) const;
    end-pi;
    
    Dcl-Ds result likeds(EmailResult_t);
@@ -172,23 +173,23 @@ Dcl-Proc SendEmail export;
    result.errorMsg = '';
    
    // Validate configuration before attempting to send
-   If (not ValidateEmailConfig(config));
+   If (not ValidateEmailConfig(p_EmailConfig));
       result.errorMsg = 'Invalid email configuration: ' +
                         'Missing or invalid required fields';
       Return result;
    EndIf;
    
    // Validate message body is not empty
-   If (%len(%trim(messageBody)) = 0);
+   If (%len(%trim(p_messageBody)) = 0);
       result.errorMsg = 'Email body cannot be empty';
       Return result;
    EndIf;
    
    // Copy const parameters to local variables for SQL call
-   toAddr = %trim(config.toAddress);
-   subject = %trim(config.subject);
-   fromAddr = %trim(config.fromAddress);
-   body = messageBody;
+   toAddr = %trim(p_EmailConfig.toAddress);
+   subject = %trim(p_EmailConfig.subject);
+   fromAddr = %trim(p_EmailConfig.fromAddress);
+   body = p_messageBody;
    
    // Send email via IBM i QSYS2 service
    // NOTE: QSYS2.SEND_EMAIL is the preferred interface (vs SYSTOOLS)
@@ -211,7 +212,7 @@ Dcl-Proc SendEmail export;
    // Evaluate result and provide detailed error information
    If (sqlcode = SQL_SUCCESS);
       result.success = *on;
-      LogMessage('Email sent successfully to: ' + %trim(config.toAddress));
+      LogMessage('Email sent successfully to: ' + %trim(p_EmailConfig.toAddress));
    Else;
       // Build comprehensive error message with diagnostic details
       result.errorMsg = 'Email send failed: SQLCODE=' +
@@ -301,23 +302,23 @@ end-proc;
 // Procedure: BuildEmailSubject
 // Description: Build email subject line with user count
 // Parameters:
-//   - baseSubject: char(256) - Base subject text
+//   - p_baseSubject: char(256) - Base subject text
 //   - userCount: int(10) - Number of affected users
 // Returns: Formatted subject line
 // ---------------------------------------------------------------------------
 Dcl-Proc BuildEmailSubject export;
    Dcl-Pi *n varchar(256);
-      baseSubject char(256) const;
-      userCount int(10) const;
+      p_baseSubject char(256) const;
+      p_userCount int(10) const;
    end-pi;
    
    Dcl-S subject varchar(256);
    
-   If (userCount = 1);
-      subject = %trim(baseSubject) + ' - 1 User Affected';
+   If (p_userCount = 1);
+      subject = %trim(p_baseSubject) + ' - 1 User Affected';
    Else;
-      subject = %trim(baseSubject) + ' - ' + 
-                %char(userCount) + ' Users Affected';
+      subject = %trim(p_baseSubject) + ' - ' + 
+                %char(p_userCount) + ' Users Affected';
    EndIf;
    
    Return subject;
@@ -398,20 +399,20 @@ end-proc;
 // ---------------------------------------------------------------------------
 Dcl-Proc ValidateEmailConfig export;
    Dcl-Pi *n ind;
-      config likeds(EmailConfig_t) const;
+      p_EmailConfig likeds(EmailConfig_t) const;
    end-pi;
    
    // Check required fields are not blank
-   If (%trim(config.toAddress) = '');
+   If (%trim(p_EmailConfig.toAddress) = '');
       Return *off;
    EndIf;
    
-   If (%trim(config.subject) = '');
+   If (%trim(p_EmailConfig.subject) = '');
       Return *off;
    EndIf;
    
    // Basic email format validation (contains @)
-   If (%scan('@' : %trim(config.toAddress)) = 0);
+   If (%scan('@' : %trim(p_EmailConfig.toAddress)) = 0);
       Return *off;
    EndIf;
    
@@ -454,7 +455,7 @@ end-proc;
 // ---------------------------------------------------------------------------
 Dcl-Proc GetExpiringUsers export;
    Dcl-Pi *n likeds(UserList_t);
-      warningDays int(10) const;
+      p_warningDays int(10) const;
    end-pi;
    
    Dcl-Ds userList likeds(UserList_t);
@@ -478,7 +479,7 @@ Dcl-Proc GetExpiringUsers export;
       from qsys2.user_info
       where status in ('*ENABLED', '*DISABLED')
         and days_until_password_expires is not null
-        and days_until_password_expires between 0 and :warningDays
+        and days_until_password_expires between 0 and :p_warningDays
       order by days_until_password_expires, authorization_name;
    
    // Open cursor
@@ -549,7 +550,7 @@ end-proc;
 // ---------------------------------------------------------------------------
 Dcl-Proc FormatUserInfo export;
    Dcl-Pi *n char(200);
-      user likeds(UserProfile_t) const;
+      p_User likeds(UserProfile_t) const;
    end-pi;
    
    Dcl-S line varchar(200);
@@ -558,32 +559,32 @@ Dcl-Proc FormatUserInfo export;
    Dcl-S daysStr char(15);
    
    // Format expiration date
-   If (user.pwdExpDate <> *loval);
-      expDateStr = %char(user.pwdExpDate);
+   If (p_User.pwdExpDate <> *loval);
+      expDateStr = %char(p_User.pwdExpDate);
    Else;
       expDateStr = '*NONE';
    EndIf;
    
    // Format days until expiry with urgency indicator
-   If (user.daysUntilExpiry = 0);
+   If (p_User.daysUntilExpiry = 0);
       daysStr = '**TODAY**';
-   elseif (user.daysUntilExpiry = 1);
+   elseif (p_User.daysUntilExpiry = 1);
       daysStr = '1 day';
    Else;
-      daysStr = %char(user.daysUntilExpiry) + ' days';
+      daysStr = %char(p_User.daysUntilExpiry) + ' days';
    EndIf;
    
    // Format last sign on
-   If (user.lastSignOn <> *loval);
-      lastSignOnStr = user.lastSignOn;
+   If (p_User.lastSignOn <> *loval);
+      lastSignOnStr = p_User.lastSignOn;
    Else;
       lastSignOnStr = 'Never';
    EndIf;
    
    // Build formatted line with proper spacing
-   line = %trim(user.userName) + ' - ' + 
-          %trim(user.userText) + ' - ' + 
-          %trim(user.status) + ' - ' + 
+   line = %trim(p_User.userName) + ' - ' + 
+          %trim(p_User.userText) + ' - ' + 
+          %trim(p_User.status) + ' - ' + 
           daysStr + ' - ' + 
           lastSignOnStr;
    
@@ -628,8 +629,52 @@ end-proc;
 // ---------------------------------------------------------------------------
 Dcl-Proc ValidateWarningDays export;
    Dcl-Pi *n ind;
-      days int(10) const;
+      p_days int(10) const;
    end-pi;
    
-   Return (days >= 1 and days <= 365);
+   Return (p_days >= 1 and p_days <= 365);
+end-proc;
+
+
+
+
+
+
+// ---------------------------------------------------------------------------
+// Procedure: WriteToIFS
+// Description: Write report content to an IBM i IFS stream file using SQL
+// Parameters:
+//   - p_IfsPath: char(256) - Target IFS path (for example /tmp/report.txt)
+//   - p_Content: varchar(32000) - Text content to write
+// Returns: *on if write succeeds, *off if path is blank or SQL write fails
+// Notes:
+//   - Uses QSYS2.IFS_WRITE service with OVERWRITE = 'REPLACE'
+//   - Uses END_OF_LINE = 'NONE' so caller controls line breaks in content
+// ---------------------------------------------------------------------------
+Dcl-Proc WriteToIFS export;
+   Dcl-Pi *n ind;
+      p_IfsPath char(256);
+      p_Content varchar(32000);
+   end-pi;
+
+   Dcl-S ifsPath varchar(256);
+
+   ifsPath = %trim(p_IfsPath);
+   If (ifsPath = '');
+      Return *off;
+   EndIf;
+
+   exec sql
+      call qsys2.ifs_write(
+         path_name => :ifsPath,
+         line => :p_Content,
+         overwrite => 'REPLACE',
+         file_ccsid => 1208,
+         end_of_line => 'CRLF');
+
+   If (sqlstate <> '00000');
+      Return *off;
+   EndIf;
+
+   Return *on;
 end-proc;

@@ -99,7 +99,7 @@ end-ds;
 //     07-58=Various errors
 // ------------------------------------------------------------------------------
 Dcl-Proc ReturnSystemName export;
-   Dcl-Pi *n char(8);
+   Dcl-Pi ReturnSystemName char(8);
    end-pi;
   
    Dcl-S systemName char(8) inz;
