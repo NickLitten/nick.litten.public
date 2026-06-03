@@ -1,108 +1,118 @@
 **free
-/title Simple RPG program to write to the IFS using SQL
 
-// ----------------------------------------------------------
-//
-// Service - WRITEIFS.RPGLE
-//
-// Function - Simple RPG program to write to the IFS using SQL
-//
-// COMPILE NOTES:
-//
-// Obviously change the source location to match yours:
-//
-// CRTSQLRPGI OBJ(NICKLITTEN/WRITEIFS)
-// SRCSTMF('/home/nicklitten/source/writeifs.sqlrpgle')
-// COMMIT(*NONE)
-// OBJTYPE(*PGM)
-// DBGVIEW(*SOURCE)
-// CVTCCSID(*JOB)
-//
-// Modification History:
-// 2020-06-31 V1.0 Created by Nick Litten
-// ----------------------------------------------------------
+/// Program: WRITEIFS
+/// Description: Write data to IFS using SQL IFS_WRITE service
+///
+/// Purpose:
+/// - Demonstrate SQL cursor processing with IFS file operations
+/// - Show proper use of QSYS2.IFS_WRITE stored procedure
+/// - Illustrate REPLACE vs APPEND file writing strategies
+/// - Example of SQL error handling with SQLCODE checking
+///
+/// Features:
+/// - Uses SQL cursor to read database records
+/// - Writes each record as a line to IFS file
+/// - First write uses REPLACE to clear file, subsequent writes APPEND
+/// - UTF-8 (CCSID 1208) output with CRLF line endings
+/// - Comprehensive SQL error handling
+/// - Monitor/on-error exception handling
+///
+/// Usage:
+///   CALL WRITEIFS
+///
+/// Compile:
+///   CRTSQLRPGI OBJ(NICKLITTEN/WRITEIFS) +
+///     SRCSTMF('/home/nicklitten/source/writeifs.sqlrpgle') +
+///     COMMIT(*NONE) OBJTYPE(*PGM) DBGVIEW(*SOURCE)
+///
+/// Author: Nick Litten
+///
+/// Modification History:
+/// 2020-06-31 V1.0 Initial creation - Nick Litten
+/// ---
+
 ctl-opt
   main(WRITEIFS)
-  option(*srcstmt:*nodebugio:*noshowcpy)
+  option(*srcstmt:*nodebugio:*noshowcpy:*sqlcursorstay)
   /if defined(*CRTSQLRPGI)
     dftactgrp(*no) actgrp('NICKLITTEN')
   /endif
-  copyright('WRITEIFS.SQLRPGLE: Version 1.0 June 2020');
+  copyright('V1.0 - Write data to IFS using SQL IFS_WRITE service');
 
-dcl-proc WRITEIFS;
-dcl-pi WRITEIFS end-pi;
+Dcl-Proc WRITEIFS;
+   Dcl-Pi WRITEIFS end-pi;
 
-// Status Message string for humans
-dcl-s stsMsg char(50);
+   // Status Message string for humans
+   Dcl-S stsMsg char(50);
 
-// IFS Location where the data will be written
-dcl-s ifsFile varchar(255) inz('/home/nicklitten/myfile.txt');
-dcl-s ifsData varchar(255);
-dcl-s overwrite varchar(10) inz('REPLACE');
+   // IFS Location where the data will be written
+   Dcl-S ifsFile varchar(255) inz('/home/nicklitten/myfile.txt');
+   Dcl-S ifsData varchar(255);
+   Dcl-S overwrite varchar(10) inz('REPLACE');
 
-monitor;
+   monitor;
 
-// Set SQL option, mainly to force cursor to close at endmodule
-exec sql
-  set option naming = *sys,
-  commit = *none,
-  usrprf = *user,
-  dynusrprf = *user,
-  datfmt = *iso,
-  closqlcsr = *endmod;
+      // Set SQL option, mainly to force cursor to close at endmodule
+      exec sql
+           set option naming = *sys,
+           commit = *none,
+           usrprf = *user,
+           dynusrprf = *user,
+           datfmt = *iso,
+           closqlcsr = *endmod;
 
-exec sql
-  declare c1 cursor for
-  select MYDATA
-  from MYFILE;
+      exec sql
+           declare c1 cursor for
+           select MYDATA
+           from MYFILE;
 
-exec sql open c1;
+      exec sql open c1;
 
-// Keep reading until end of file (or an error occurs)
-dou sqlCode <> 0;
+      // Keep reading until end of file (or an error occurs)
+      dou (sqlCode <> 0);
 
- exec sql fetch c1 into :ifsData;
+         exec sql fetch c1 into :ifsData;
 
- Select;
-  when sqlcode = 0;
+         Select;
+            When (sqlcode = 0);
 
-    exec sql CALL QSYS2.IFS_WRITE
-             (PATH_NAME =>:ifsFile,
-              LINE => :ifsData,
-              OVERWRITE => :overwrite,
-              FILE_CCSID => 1208,
-              END_OF_LINE => 'CRLF');
+               exec sql CALL QSYS2.IFS_WRITE
+                        (PATH_NAME =>:ifsFile,
+                         LINE => :ifsData,
+                         :OVERWRITE => :overwrite,
+                         FILE_CCSID => 1208,
+                         END_OF_LINE => 'CRLF');
 
-    // the first write is OVERWRITE to clear the file
-    // but all others lets APPEND so we add new lines
-    overwrite = 'APPEND';
+               // the first write is OVERWRITE to clear the file
+               // but all others lets APPEND so we add new lines
+               overwrite = 'APPEND';
 
-    stsMsg = 'Completed normally - read next row';
+               stsMsg = 'Completed normally - read next row';
 
-  when sqlcode = 100;
-    stsMsg = 'No data found';
-    leave;
+            When (sqlcode = 100);
+               stsMsg = 'No data found';
+               leave;
 
-  when sqlcode > 0;
-    stsMsg = 'Completed with warning';
-    leave;
+            When (sqlcode > 0);
+               stsMsg = 'Completed with warning';
+               leave;
 
-  when sqlcode < 0;
-    stsMsg = 'Did not complete normally';
-    leave;
+            When (sqlcode < 0);
+               stsMsg = 'Did not complete normally';
+               leave;
 
- endsl;
+         EndSl;
 
-enddo;
+      enddo;
 
-// close the cursor
-exec sql close c1;
+      // close the cursor
+      exec sql close c1;
 
-on-error ;
- dump(a);
- dsply ('*** WRITEIFS has failed!');
-endmon ;
+   on-error ;
+      dump(a);
+      dsply ('*** WRITEIFS has failed!');
+   endmon ;
 
-return;
+   Return;
 
 end-proc;

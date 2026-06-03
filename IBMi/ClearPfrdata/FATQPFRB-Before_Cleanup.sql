@@ -1,7 +1,7 @@
 -- Script: FATQPFRB - Performance Data Object Statistics (Before Cleanup)
 -- Purpose: Analyze QPFRDATA library objects by size before cleanup operations
--- Author: IBM Bob
--- Created: 2026-02-05
+-- Author: Nick Litten
+-- Created: 2025-02-05
 --
 -- Description:
 --   Creates a temporary table showing the top 20 largest objects in QPFRDATA
