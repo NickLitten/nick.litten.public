@@ -2,7 +2,7 @@
 
 // ---------------------------------------------------------------------------
 ///
-/// Service Program: BIGFATONE - Litten Combined Service Program
+/// Service Program: BIGFATSRV - Litten Combined Service Program
 ///
 /// Description: Comprehensive service program combining email notification
 ///              and user profile query capabilities. Merges all procedures

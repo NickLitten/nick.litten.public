@@ -31,6 +31,7 @@
 ///   CALL PWDEXPILE PARM('*WEEK' '/tmp/pwdexpmon_report.txt')
 ///
 /// Dependencies:
+///   - Service Program BIGFATSRV adds the following procedures:
 ///   - User Profile Service Program (GetExpiringUsers, FormatUserInfo, etc.)
 ///   - Email Service Program (SendEmail, BuildPasswordExpiryReport, etc.)
 ///   - BIGBNDDIR binding directory
