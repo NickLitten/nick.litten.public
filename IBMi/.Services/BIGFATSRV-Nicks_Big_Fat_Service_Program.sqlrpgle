@@ -1,6 +1,6 @@
 **free
 
-// ---------------------------------------------------------------------------
+/// ---------------------------------------------------------------------------
 ///
 /// Service Program: BIGFATSRV - Litten Combined Service Program
 ///
@@ -73,19 +73,20 @@
 ///   Create with binder source BIGFATONE.bnd
 ///
 /// Reference:
-/// https://www.nicklitten.com/blog/ibmi-service-programs/
+/// https://youtu.be/xvaZgVMoHhY
 ///
 /// Modification History:
 ///   V.000 2026-06-01 | Nick Litten | Initial creation - combined service program
+///   V.001 2026-06-03 | Nick Litten | Minor Tweaks for VIDEO Overview
 ///
-// ---------------------------------------------------------------------------
+/// ---------------------------------------------------------------------------
 
 ctl-opt
   nomain
   thread(*serialize)
   alwnull(*inputonly) 
   option(*nodebugio:*srcstmt:*nounref)
-  copyright('BIGFATONE | V.000 | Litten Combined Service Program')
+  copyright('BIGFATSRV | V.001 | Nicks Big Fat Service Program')
   ;
 
 // temporary global variables for debugging

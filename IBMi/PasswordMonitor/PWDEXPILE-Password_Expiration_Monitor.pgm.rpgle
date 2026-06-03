@@ -50,6 +50,7 @@
 ///   V.001 2026-02-03 | Nick Litten | Refactored to modular ILE architecture
 ///   V.002 2026-04-18 | Nick Litten | Applied Nick Litten comment standards
 ///   V.003 2026-06-02 | Nick Litten | Refreshed header documentation
+///   V.004 2026-06-03 | Nick Litten | Store EMAILBODY in IFS report
 ///
 
 ctl-opt
@@ -58,7 +59,7 @@ ctl-opt
   actgrp(*caller)
   option(*nodebugio:*srcstmt:*nounref)
   bnddir('BIGBNDDIR')
-  copyright('V.003 - Password Expiration Monitor - ILE Modular')
+  copyright('V.004 - Password Expiration Monitor - ILE Modular')
   ;
 
 // Prototypes for Service Program Procedures
@@ -152,9 +153,10 @@ Dcl-Proc mainline;
    EndIf;
 
    // Resolve optional IFS output path parameter
-   ifsOutputPath = '/tmp/pwdexpmon_report.txt';
    If (%Parms() >= 2 and %trim(parmIfsPath) <> '');
       ifsOutputPath = parmIfsPath;
+   Else;
+      ifsOutputPath = '/tmp/pwdexpmon_report.txt';
    EndIf;
    
    // Log program start
@@ -186,20 +188,19 @@ Dcl-Proc mainline;
       userLines += FormatUserInfo(userList.users(i)) + CRLF;
    endfor;
    
-   // write userlines to IFS file
-   If (not WriteToIFS(ifsOutputPath : userLines));
-      LogMessage('Failed to write report to IFS path: ' + %trim(ifsOutputPath) : '*DIAG');
-   Else;
-      LogMessage('Report written to IFS path: ' + %trim(ifsOutputPath) : '*COMP');
-   EndIf;
-
-
    // Build complete email body
    emailBody = BuildPasswordExpiryReport(systemName : 
                                          numberOfDays : 
                                          userList.count : 
                                          userLines);
    
+   // write emailBody to IFS file
+   If (not WriteToIFS(ifsOutputPath : emailBody));
+      LogMessage('Failed to write report to IFS path: ' + %trim(ifsOutputPath) : '*DIAG');
+   Else;
+      LogMessage('Report written to IFS path: ' + %trim(ifsOutputPath) : '*COMP');
+   EndIf;
+
    // Configure email settings
    emailConfig.smtpServer = SMTP_SERVER;
    emailConfig.fromAddress = EMAIL_FROM;
