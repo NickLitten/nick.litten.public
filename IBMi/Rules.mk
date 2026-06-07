@@ -22,4 +22,5 @@ SUBDIRS := \
 	StoredProcs \
 	SubfileSamples \
 	Update_iasp \
-	UploadFiles
+	UploadFiles \
+	WebServices

@@ -10,7 +10,7 @@ This file provides coding-specific guidance for agents working in this IBM i rep
 - Example: `CRUD01TBL-Task_Management.table`, `ALLFILE-All_Field_Types.pf`
 
 ## Comment Standards (EXACT Format Required)
-- RPGLE/SQLRPGLE: `///` triple-slash for headers, `// ---` for sections (dashes only, not equals)
+- RPGLE/SQLRPGLE: `///` triple-slash for headers, `// --------------------------------------------` for sections (dashes only, not equals)
 - SQL/Table files: `--` with `-` separators (never `=`)
 - CLLE/CMD: `/* */` block comments
 - DDS (.pf/.dspf): `*` prefix
@@ -18,7 +18,7 @@ This file provides coding-specific guidance for agents working in this IBM i rep
 
 ## IBM i Coding Requirements
 - RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` (not optional)
-- SQLRPGLE: Never add `option(*sqlcursorstay)` to ctl-opt
+- SQLRPGLE: Always add `option(*sqlcursorstay)` to ctl-opt
 - All ILE programs: Include `bnddir('QC2LE')` or `bnddir('NICKLITTEN')`
 - SQLRPGLE: Always check SQLSTATE after SQL statements, use fully qualified names
 
