@@ -63,42 +63,8 @@ ctl-opt
   ;
 
 // Prototypes for Service Program Procedures
+/include 'globals.rpgleinc'
 /include 'prototypes.rpgleinc'
-
-// Data Structures
-// User profile information structure
-Dcl-Ds UserProfile_t qualified template;
-   userName char(10);
-   userText char(50);
-   status char(10);
-   pwdExpDate char(10);
-   pwdExpInterval int(10);
-   daysUntilExpiry int(10);
-   lastSignOn char(10);
-   prevSignOn char(10);
-end-ds;
-
-// User list structure
-Dcl-Ds UserList_t qualified template;
-   count int(10);
-   users likeds(UserProfile_t) dim(999);
-end-ds;
-
-// Email configuration structure
-Dcl-Ds EmailConfig_t qualified template;
-   smtpServer char(256);
-   fromAddress char(256);
-   toAddress char(256);
-   subject char(256);
-end-ds;
-
-// Email result structure
-Dcl-Ds EmailResult_t qualified template;
-   success ind;
-   sqlCode int(10);
-   sqlState char(5);
-   errorMsg char(256);
-end-ds;
 
 // Named Constants
 Dcl-C DEFAULT_WARNING_DAYS 7;

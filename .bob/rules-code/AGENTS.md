@@ -18,9 +18,16 @@ This file provides coding-specific guidance for agents working in this IBM i rep
 
 ## IBM i Coding Requirements
 - RPGLE: MUST include `ctl-opt dftactgrp(*no) actgrp(*caller)` (not optional)
-- SQLRPGLE: Add `option(*sqlcursorstay)` to ctl-opt
+- SQLRPGLE: Never add `option(*sqlcursorstay)` to ctl-opt
 - All ILE programs: Include `bnddir('QC2LE')` or `bnddir('NICKLITTEN')`
 - SQLRPGLE: Always check SQLSTATE after SQL statements, use fully qualified names
+
+## Include/Copy Standards (TOBi Format)
+- Use `/INCLUDE` or `/COPY` (uppercase) without folder paths
+- Format: `/INCLUDE 'filename.rpgleinc'` or `/COPY 'filename.rpgleinc'`
+- TOBi/Code for IBM i defines include folder locations in project settings
+- Never specify paths like `'includes/filename.rpgleinc'`
+- Examples: `/INCLUDE 'prototypes.rpgleinc'`, `/COPY 'header.rpgleinc'`
 
 ## Build System Quirks
 - Rules.mk uses `:=` for immediate assignment (not `=` deferred)

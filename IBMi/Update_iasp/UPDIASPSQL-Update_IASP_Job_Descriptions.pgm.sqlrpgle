@@ -5,7 +5,7 @@
 ///
 /// Description: Scans all job descriptions in user libraries and updates
 ///              the INLASPGRP parameter from *NONE to a specified ASP group.
-///              Uses SQL for efficient querying via QSYS2.JOBDESC_INFO.
+///              Uses SQL for efficient querying via qsys2.job_description_info.
 ///
 /// Purpose:
 ///   - Demonstrate modern SQLRPGLE with SQL cursor and table function processing
@@ -21,7 +21,7 @@
 ///   - Proper cursor cleanup with on-exit handler
 ///   - Validates ASP group before updates
 ///   - Handles edge cases (empty values, system libraries)
-///   - Uses QSYS2.JOBDESC_INFO for modern SQL-based retrieval
+///   - Uses qsys2.job_description_info for modern SQL-based retrieval
 ///
 /// Usage:
 ///   CALL UPDIASPSQL
@@ -31,7 +31,7 @@
 ///   - BIGBNDDIR binding directory
 ///   - Service programs: BIGFATSRV (LogMessage, ExecuteCommand)
 ///   - QSYS2.OBJECT_STATISTICS table function
-///   - QSYS2.JOBDESC_INFO table function
+///   - qsys2.job_description_info table function
 ///   - Authority to change job descriptions
 ///
 /// Performance Notes:
@@ -55,6 +55,7 @@ ctl-opt
   ;
 
 // Prototypes for Service Program Procedures
+/include 'globals.rpgleinc'
 /include 'prototypes.rpgleinc'
 
 // ---
@@ -199,12 +200,12 @@ Dcl-Proc ProcessSingleJobd;
    stats.checked += 1;
    qualName = %trim(jobdLib) + '/' + %trim(jobdName);
   
-   // Use SQL to retrieve job description information from QSYS2.JOBDESC_INFO
+   // Use SQL to retrieve job description information from qsys2.job_description_info
    // This modern approach replaces the QWDRJOBD API call
    exec sql
       select initial_asp_group
       into :currentAspGrp
-      from table(qsys2.jobdesc_info(
+      from table(qsys2.job_description_info(
          job_description_library => :jobdLib,
          job_description_name => :jobdName
       ));
@@ -293,21 +294,21 @@ Dcl-Proc ValidateAspGroup;
       aspGroup char(10) const;
    end-pi;
   
-   Dcl-S aspExists ind inz(*off);
+   Dcl-S aspCount int(10) inz(0);
   
    // Check if ASP group exists using SQL
    exec sql select count(*)
-    into :aspExists
+    into :aspCount
     from qsys2.asp_info
     where asp_number > 0
       and resource_name = :aspGroup;
   
    // If SQL fails or no rows, assume ASP doesn't exist
-   If (sqlcode <> 0);
+   If (sqlcode <> 0 or aspCount = 0);
       Return *off;
    EndIf;
   
-   Return aspExists;
+   Return *on;
 end-proc;
 
 // ---
