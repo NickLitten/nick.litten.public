@@ -61,27 +61,22 @@
 /// 1.0 2017-07-17 | Nick Litten | Initial creation
 /// 1.1 2021-06-20 | Nick Litten | Removed unused variables for clarity
 /// 1.2 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
-/// 2.0 2026-05-17 | Nick Litten | Major refactoring: improved error handling,
-///                                 resource cleanup, performance optimization,
-///                                 added validation and edge case handling
-/// 3.0 2026-06-07 | Nick Litten | Refactored IFS access from C APIs to SQL
+/// 2.0 2026-06-07 | Nick Litten | Refactored IFS access from C APIs to SQL
 ///                                 using QSYS2.IFS_READ_UTF8 for modern approach
-/// 4.0 2026-06-07 | Nick Litten | Converted to main procedure structure
-/// 4.2 2026-06-07 | Nick Litten | Fixed to use positional parameters with
 ///                                 QSYS2.IFS_READ_UTF8 (correct syntax)
 
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
  option(*nodebugio:*srcstmt:*nounref:*sqlcursorstay)
  datfmt(*ISO) decedit('0.')
- main(main)
- copyright('JSNIFSSQL V4.2 - Use JSON_TABLE to read IFS and parse JSON');
+ main(mainline)
+ copyright('JSNIFSSQL2 V2.0 - Load IFS with SQL then use JSON_TABLE to parse JSON');
 
 
 // --------------------------------------------
 // Main Procedure
 // --------------------------------------------
 
-Dcl-Proc main;
+Dcl-Proc mainline;
    Dcl-Pi *n;
    end-pi;
 
