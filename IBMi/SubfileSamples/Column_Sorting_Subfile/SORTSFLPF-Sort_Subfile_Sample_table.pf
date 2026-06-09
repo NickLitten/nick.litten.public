@@ -1,0 +1,11 @@
+     A          R ALWSORT
+     A            SORTDATE      10S 0       COLHDG('Date')
+     A            SORTTIME      10S 0       COLHDG('Time')
+     A            SORTUSER      10A         COLHDG('User ID')
+     A            SORTTEXT      40A         COLHDG('Audit Text')
+     A            SORTSTATUS     1A         COLHDG('0=ACTIVE\2=INACTIVE')
+     A          K SORTDATE
+     A          K SORTTIME
+     A          K SORTUSER
+     A          K SORTTEXT
+     A          K SORTSTATUS

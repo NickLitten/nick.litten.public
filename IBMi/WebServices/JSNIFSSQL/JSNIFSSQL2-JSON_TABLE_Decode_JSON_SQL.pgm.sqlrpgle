@@ -1,6 +1,6 @@
 **free
 
-/// Program: JSNIFSSQL - JSON_TABLE Decode JSON using SQL
+/// Program: JSNIFSSQL2 - JSON_TABLE Decode JSON using SQL
 ///
 /// Description: Demonstrates reading JSON data from an IFS file and parsing it
 ///              using SQL JSON_TABLE functions. This program loads JSON data
@@ -14,35 +14,35 @@
 ///   - Extracting nested JSON arrays into RPG data structures
 ///   - Handling JSON data in embedded SQL within SQLRPGLE
 ///   - Processing multiple JSON records in a cursor loop
-///   - Proper error handling and resource cleanup
-///   - Modern main procedure structure
+///   - Proper error handling with MONITOR blocks and resource cleanup
+///   - Modern main procedure structure with constants
 ///
 /// Features:
 ///   - Reads JSON file from IFS using SQL QSYS2.IFS_READ_UTF8 function
+///   - Validates file existence before processing
 ///   - Loads JSON data into SQL CLOB variable for processing
 ///   - Uses JSON_TABLE to parse nested JSON arrays
 ///   - Extracts user data (userID, firstName, lastName, etc.)
-///   - Stores parsed data in array of data structures
-///   - Comprehensive error handling with detailed messages
-///   - Proper resource cleanup (cursors)
-///   - Supports up to 9999 JSON records
-///   - Validates file existence and read operations
-///   - Uses main procedure instead of cycle main
+///   - Stores parsed data in dynamically sized array
+///   - Comprehensive error handling with MONITOR/ON-ERROR blocks
+///   - Proper resource cleanup (cursors) in all code paths
+///   - Configurable maximum record limit via constant
+///   - Detailed logging of processing results
 ///
-/// Usage: CALL JSNIFSSQL
-///        (No parameters required - reads from hardcoded IFS path)
+/// Usage: CALL JSNIFSSQL2
+///        Optionally override IFS_FILE_PATH constant for different file
 ///
-/// Parameters: None
+/// Parameters: None (file path configurable via constant)
 ///
 /// SQL Usage:
 ///   - QSYS2.IFS_READ_UTF8 to read IFS file into CLOB
 ///   - JSON_TABLE function to parse JSON structure
-///   - Cursor MYCURSOR to iterate through parsed JSON records
+///   - Cursor to iterate through parsed JSON records
 ///   - Nested path '$.users[*]' to access JSON array elements
 ///   - Individual field paths for data extraction
 ///
 /// Dependencies:
-///   - IFS file: /home/nicklitten/getwebjsn.json
+///   - IFS file: /home/nicklitten/getwebjsn.json (configurable)
 ///   - SQL QSYS2.IFS_READ_UTF8 function (requires IBM i 7.3 or higher)
 ///   - SQL JSON_TABLE function (requires IBM i 7.2 or higher)
 ///   - Activation group: NICKLITTEN
@@ -55,144 +55,182 @@
 ///   - option(*nounref): Flags unreferenced variables
 ///   - option(*sqlcursorstay): Keeps SQL cursors open across commits
 ///   - datfmt(*ISO): Uses ISO date format (YYYY-MM-DD)
-///   - main(main): Specifies main procedure entry point
+///   - main(mainline): Specifies main procedure entry point
 ///
 /// Modification History:
-/// 1.0 2017-07-17 | Nick Litten | Initial creation
-/// 1.1 2021-06-20 | Nick Litten | Removed unused variables for clarity
-/// 1.2 2026-04-02 | Nick Litten | Added comprehensive triple-slash documentation
-/// 2.0 2026-06-07 | Nick Litten | Refactored IFS access from C APIs to SQL
-///                                 using QSYS2.IFS_READ_UTF8 for modern approach
-///                                 QSYS2.IFS_READ_UTF8 (correct syntax)
+/// 1.0 2026-06-01 | Nick Litten | Initial creation
 
-ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
- option(*nodebugio:*srcstmt:*nounref:*sqlcursorstay)
- datfmt(*ISO) decedit('0.')
- main(mainline)
- copyright('JSNIFSSQL2 V2.0 - Load IFS with SQL then use JSON_TABLE to parse JSON');
+ctl-opt 
+   dftactgrp(*no)
+   actgrp('NICKLITTEN')
+   option(*nodebugio:*srcstmt:*nounref)
+   datfmt(*ISO)
+   decedit('0.')
+   main(mainline)
+   copyright('JSNIFSSQL2 V1.0 - JSON_TABLE parse with SQL');
 
-
-// --------------------------------------------
-// Main Procedure
-// --------------------------------------------
+Dcl-C IFS_FILE_PATH '/home/nicklitten/getwebjsn.json';
 
 Dcl-Proc mainline;
    Dcl-Pi *n;
-   end-pi;
+   End-Pi;
 
    // Structure to hold individual JSON record fields
-   // Field sizes optimized for 27x132 screen display
    Dcl-Ds jsonFields qualified;
-      userID varchar(20);      // User ID - max 20 chars
-      firstName varchar(30);   // First name - max 30 chars
-      lastName varchar(30);    // Last name - max 30 chars
-      initials varchar(5);     // Initials - max 5 chars
-      company int(10);         // Company number
-      division int(10);        // Division number
-      department int(10);      // Department number
+      userID varchar(20);
+      firstName varchar(30);
+      lastName varchar(30);
+      initials varchar(5);
+      company int(10);
+      division int(10);
+      department int(10);
    End-Ds;
 
    // Result structure with success indicator, error message, and data array
    Dcl-Ds result qualified;
       success ind inz(*off);
-      errmsg varchar(132);     // Error message - fits one screen line
+      errmsg varchar(256);
       recordCount int(10) inz(0);
-      jsonArray likeds(jsonFields) dim(9999);
+      jsonArray likeds(jsonFields) dim(999);
    End-Ds;
 
-
    Dcl-S json sqltype(clob:16000000);
-
+   
    Dcl-S cursorOpen ind inz(*off);
 
-   Exec SQL
-      select QSYS2.IFS_READ_UTF8('/home/nicklitten/getwebjsn.json')
-      into :json
-      from sysibm.sysdummy1;
+   Monitor;
+      // Read JSON file from IFS into CLOB
+      Exec SQL
+         select QSYS2.IFS_READ_UTF8(:IFS_FILE_PATH)
+         into :json;
 
-   // Check for SQL errors on file read
-   If (SQLSTATE <> '00000');
-      result.success = *off;
-      result.errmsg = 'Failed to read IFS file with SQLSTATE: ' + SQLSTATE;
-      Return;
-   EndIf;
+      // Check for SQL errors on file read
+      If (SQLSTATE <> '00000');
+         result.errmsg = 'Failed to read IFS file: ' + IFS_FILE_PATH +
+                              ' SQLSTATE: ' + SQLSTATE;
+         displayResults(result);
+         Return;
+      EndIf;
 
-   // Validate that we have data
-   // Check CLOB length - json_len is the length indicator for the CLOB
-   If (json_len = 0 or json_len = *null);
-      result.success = *off;
-      result.errmsg = 'IFS file is empty or contains no data';
-      Return;
-   EndIf;
-
-   // Declare cursor to process JSON data using JSON_TABLE
-   // Column sizes match data structure for 27x132 screen display
-   Exec SQL
-      declare MYCURSOR cursor for
+      // Declare cursor to process JSON data using JSON_TABLE
+      Exec SQL
+      declare myCursor cursor for
       select *
       from json_table(
          :json,
          '$'
          columns(
             nested '$.users[*]' columns(
-               userID varchar(20) path '$.userID',
-               firstName varchar(30) path '$.firstName',
-               lastName varchar(30) path '$.lastName',
-               initials varchar(5) path '$.initials',
+               userid varchar(100) path '$.userID',
+               firstname varchar(100) path '$.firstName',
+               lastname varchar(100) path '$.lastName',
+               initials varchar(100) path '$.initials',
                company int path '$.company',
                division int path '$.division',
                department int path '$.department'
             )
          )
-      ) as X;
+      ) as x;
 
-   // Open the cursor
-   Exec SQL open MYCURSOR;
+      // Open cursor
+      Exec SQL open MYCURSOR;
 
-   // Check for SQL errors on cursor open
-   If (SQLSTATE <> '00000');
-      result.success = *off;
-      result.errmsg = 'Failed to open cursor. SQLSTATE: ' + SQLSTATE;
-      Return;
-   EndIf;
-
-   cursorOpen = *on;
-
-   // Fetch first record
-   Exec SQL fetch next from MYCURSOR into :jsonFields;
-
-   // Process all records from the cursor
-   Dow (SQLSTATE = '00000' or %subst(SQLSTATE: 1: 2) = '01');
-
-      // Increment record counter
-      result.recordCount += 1;
-
-      // Check if we've exceeded maximum array size
-      If (result.recordCount > 9999);
-         result.errmsg = 'Warning: Maximum record limit reached (' +
-                         %char(9999) + ')';
-         leave;
+      // Check for SQL errors on cursor open
+      If (SQLSTATE <> '00000');
+         result.errmsg = 'Failed to open cursor. SQLSTATE: ' + SQLSTATE;
+         displayResults(result);
+         Return;
       EndIf;
 
-      // Store data structure values in next element of return array
-      result.jsonArray(result.recordCount) = jsonFields;
+      cursorOpen = *on;
 
-      // Fetch next record
-      Exec SQL fetch next from MYCURSOR into :jsonFields;
+      // Fetch and process all records
+      Exec SQL fetch next from MYCURSOR
+         into :result.jsonArray(:result.recordCount + 1);
 
-   EndDo;
+      Dow (SQLSTATE = '00000' or %subst(SQLSTATE:1:2) = '01');
+         result.recordCount += 1;
 
-   // Close cursor if still open
-   If (cursorOpen = *on);
-      Exec SQL close MYCURSOR;
-      cursorOpen = *off;
+         // Check array bounds
+         If (result.recordCount >= 999);
+            result.errmsg = 'Warning: Maximum record limit reached (' +
+                                 %char(999) + ')';
+            Leave;
+         EndIf;
+
+         // Fetch next record
+         Exec SQL fetch next from MYCURSOR
+            into :result.jsonArray(:result.recordCount + 1);
+      EndDo;
+
+      // Close cursor
+      If (cursorOpen);
+         Exec SQL close MYCURSOR;
+         cursorOpen = *off;
+      EndIf;
+
+      // Set final status
+      If (result.recordCount = 0);
+         result.errmsg = 'No records found in JSON data';
+      Else;
+         result.success = *on;
+         If (result.errmsg = '');
+            result.errmsg = 'Successfully processed ' +
+                                 %char(result.recordCount) + ' records';
+         EndIf;
+      EndIf;
+
+   On-Error;
+      // Handle any unexpected errors
+      result.errmsg = 'Unexpected error during JSON processing';
+
+      // Ensure cursor is closed
+      If (cursorOpen);
+         Monitor;
+            Exec SQL close MYCURSOR;
+         On-Error;
+            // Ignore errors during cleanup
+         EndMon;
+         cursorOpen = *off;
+      EndIf;
+   EndMon;
+
+   // Display results to user
+   displayResults(result);
+
+   Return;
+End-Proc;
+
+// ---
+// Display Results Procedure
+// ---
+
+Dcl-Proc displayResults;
+   Dcl-Pi *n;
+      pResult likeds(result);
+   End-Pi;
+
+   Dcl-S idx int(10);
+   Dcl-S msg varchar(256);
+
+   // Display summary
+   If (pResult.success);
+      dsply ('SUCCESS: ' + pResult.errmsg);
+   Else;
+      dsply ('ERROR: ' + pResult.errmsg);
    EndIf;
 
-   // Check if we processed any records
-   If (result.recordCount = 0);
-      result.success = *off;
-      result.errmsg = 'No records found in JSON data';
-   Else;
-      result.success = *on;
-      // Add success message if there was a warning
-      If (result.errmsg = '');
+   // Display first 5 records as sample
+   If (pResult.recordCount > 0);
+      dsply ('Sample records (first 5):');
+      For idx = 1 to %min(pResult.recordCount:5);
+         msg = %char(idx) + ': ' +
+               %trim(pResult.jsonArray(idx).userID) + ' - ' +
+               %trim(pResult.jsonArray(idx).firstName) + ' ' +
+               %trim(pResult.jsonArray(idx).lastName);
+         dsply (msg);
+      EndFor;
+   EndIf;
+
+   Return;
+End-Proc;

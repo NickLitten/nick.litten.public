@@ -1,9 +1,9 @@
 **FREE
 
-/// ----------------------------------------------------------------------------
+/// --------------------------------------------
 /// Program: JSNIFSSQL1
 /// Description: JSON_TABLE Decode JSON using SQL - Proof of Concept
-/// ----------------------------------------------------------------------------
+/// --------------------------------------------
 ///
 /// Purpose:
 /// - Demonstrates reading JSON data from an IFS file
@@ -31,23 +31,46 @@
 /// 2017-07-17 1.0      Nick Litten   Created
 /// 2021-06-20 1.1      Nick Litten   Removed unused variables for clarity
 /// 2026-06-08 1.2      Nick Litten   Applied comment standards
-/// ----------------------------------------------------------------------------
+/// 2026-06-09 1.3      Nick Litten   Fixed SQL syntax, renamed IFS APIs, updated comments
+/// --------------------------------------------
 
 ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
- option(*nodebugio:*srcstmt:*nounref:*sqlcursorstay)
- datfmt(*ISO) decedit('0.')
- copyright('1.2 - JSON_TABLE Decode JSON using SQL');
+        option(*nodebugio:*srcstmt:*nounref:*sqlcursorstay)
+        datfmt(*ISO) decedit('0.')
+        copyright('1.3 - JSON_TABLE Decode JSON using SQL');
 
-// ------------------------------------------------------
+// --------------------------------------------
+// Prototypes - IBM i IFS APIs
+// --------------------------------------------
+
+dcl-pr openIFS int(10) extproc('open');
+   *n pointer value options(*string); // filename
+   *n int(10) value; // openflags
+   *n uns(10) value options(*nopass); // mode
+   *n uns(10) value options(*nopass); // codepage
+end-pr;
+
+dcl-pr readIFS int(10) extproc('read');
+   *n int(10) value; // filehandle
+   *n pointer value; // datareceived
+   *n uns(10) value; // nbytes
+end-pr;
+
+dcl-pr closeIFS int(10) extproc('close');
+   *n int(10) value; // filehandle
+end-pr;
+
+
+// --------------------------------------------
 // Constants
-// ------------------------------------------------------
+// --------------------------------------------
 
 // IFS file with JSON code that we will be reading and decoding
 Dcl-C IFS const('/home/nicklitten/getwebjsn.json');
 
-// ------------------------------------------------------
+// --------------------------------------------
 // Data Structures
-// ------------------------------------------------------
+// --------------------------------------------
 
 Dcl-Ds jsonFields qualified;
    USERID varchar(100);
@@ -70,30 +93,10 @@ Dcl-Ds ErrorCode;
    BytesAvail int(10) inz(0);
 end-ds;
 
-// ------------------------------------------------------
-// Prototypes - IBM i IFS APIs
-// ------------------------------------------------------
 
-dcl-pr open int(10) extproc('open');
-   *n pointer value options(*string); // filename
-   *n int(10) value; // openflags
-   *n uns(10) value options(*nopass); // mode
-   *n uns(10) value options(*nopass); // codepage
-end-pr;
-
-dcl-pr read int(10) extproc('read');
-   *n int(10) value; // filehandle
-   *n pointer value; // datareceived
-   *n uns(10) value; // nbytes
-end-pr;
-
-dcl-pr close int(10) extproc('close');
-   *n int(10) value; // filehandle
-end-pr;
-
-// ------------------------------------------------------
+// --------------------------------------------
 // Variables
-// ------------------------------------------------------
+// --------------------------------------------
 
 Dcl-S Count int(10);
 Dcl-S Handle int(10);
@@ -105,60 +108,68 @@ Dcl-S O_RDONLY int(10) inz(1);
 Dcl-S O_TEXTDATA int(10) inz(16777216);
 Dcl-S lineCounter int(10);
 
-// ------------------------------------------------------
+// --------------------------------------------
 // Main Processing
-// ------------------------------------------------------
+// --------------------------------------------
 
+// Load IFS data into SQL CLOB and process using JSON_TABLE
+exec sql set option naming = *sys,
+         commit = *none,
+         usrprf = *user,
+         dynusrprf = *user,
+         datfmt = *iso,
+         closqlcsr = *endmod;
+ 
 // Open the stream file
-Handle = open(%trim(IFS):O_RDONLY + O_TEXTDATA);
+Handle = openIFS(%trim(IFS):O_RDONLY + O_TEXTDATA);
 
 // Loop to read the stream file into variable "ifsData"
 dou (ifsDataLen<1);
    Count += 1;
-   ifsDataLen = read(Handle:%addr(ifsData):%size(ifsData));
+   ifsDataLen = readIFS(Handle:%addr(ifsData):%size(ifsData));
 enddo;
 
 // Close the stream file
-rc = close(Handle);
+rc = closeIFS(Handle);
 
 If (ifsData <> *blanks);
 
-   // Load IFS data into SQL CLOB and process using JSON_TABLE
-   exec sql
-  set option naming = *sys,
-  commit = *none,
-  usrprf = *user,
-  dynusrprf = *user,
-  datfmt = *iso,
-  closqlcsr = *endmod;
+   Exec SQL
+      declare myCursor cursor for
+      select *
+      from json_table(
+         :json,
+         '$'
+         columns(
+            nested '$.users[*]' columns(
+               userid varchar(100) path '$.userID',
+               firstname varchar(100) path '$.firstName',
+               lastname varchar(100) path '$.lastName',
+               initials varchar(100) path '$.initials',
+               company int path '$.company',
+               division int path '$.division',
+               department int path '$.department'
+            )
+         )
+      ) as x;
  
-   exec sql
-  declare c1 cursor for
-  select *
-  from json_table (:json, '$'
-  columns (nested '$.users[*]' columns (userid varchar(100) path
-  '$.userID', firstname varchar(100) path '$.firstName', lastname
-  varchar(100) path '$.lastName', initials varchar(100) path
-  '$.initials', company int path '$.company', division int path
-  '$.division', department int path '$.department'))) as x;
- 
-   exec sql :open c1;
- 
-   exec sql fetch next from c1 into :jsonfields;
- 
-   dow (sqlstt='00000' or %subst(sqlstt:1:2)='01');
- 
+   Exec SQL open myCursor;
+
+   Exec SQL fetch next from myCursor into :jsonfields;
+
+   Dow (sqlstt='00000' or %subst(sqlstt:1:2)='01');
+
       lineCounter += 1;
-  
+
       // Store Datastructure values in next element of 'return array'
       result.jsonArray(lineCounter) = jsonFields;
-  
+
       // Fetch next row from cursor
-      exec sql fetch next from c1 into :jsonfields;
- 
-   enddo;
- 
-   exec sql :close c1;
+      Exec SQL fetch next from myCursor into :jsonfields;
+
+   EndDo;
+
+   Exec SQL close myCursor;
  
    result.success = *on;
  

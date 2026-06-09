@@ -151,6 +151,10 @@ sqlrpgle:
     - "Use proper transaction boundaries"
     - "Avoid SELECT * (specify columns)"
     - "Use indexes appropriately"
+    - "NEVER use colons before SQL keywords (OPEN, CLOSE, DECLARE, etc.)"
+    - "Colons are ONLY for host variables (RPG variables in SQL)"
+    - "Correct: EXEC SQL OPEN cursor_name"
+    - "Incorrect: EXEC SQL :OPEN cursor_name"
 
 # ============================================================================
 # CL/CLLE STANDARDS
@@ -444,6 +448,12 @@ scanning_rules:
       severity: "warning"
       message: "Use return instead of *INLR in procedures"
       languages: ["rpgle", "sqlrpgle"]
+
+    - pattern: "(?i)exec\\s+sql\\s+:(?:open|close|declare|prepare|execute|fetch|commit|rollback)"
+      severity: "error"
+      message: "Invalid colon before SQL keyword - colons are ONLY for host variables"
+      languages: ["sqlrpgle"]
+      fix: "Remove colon before SQL keyword"
 
   warning_patterns:
     - pattern: "TODO|FIXME"

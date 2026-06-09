@@ -9,4 +9,5 @@
 # -----------------------------------------------------------------------------
 # Build Dependencies (IBM i TOBi Format)
 # -----------------------------------------------------------------------------
-JSNIFSSQL.PGM:    JSNIFSSQL-JSON_TABLE_Decode_JSON_SQL.pgm.sqlrpgle
+JSNIFSSQL1.PGM:    JSNIFSSQL1-JSON_TABLE_Decode_JSON_API.pgm.sqlrpgle
+#JSNIFSSQL2.PGM:    JSNIFSSQL2-JSON_TABLE_Decode_JSON_SQL.pgm.sqlrpgle

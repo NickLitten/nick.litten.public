@@ -8,4 +8,5 @@
 SUBDIRS :=  1a_Full_Load_Subfile_SIMPLE \
             1b_Full_Load_Subfile_Modernization \
             2_Expanding_Page \
-            3_Single_Paging_Subfile_SQLRPGLE
+            3_Single_Paging_Subfile_SQLRPGLE \
+            Column_Sorting_Subfile
