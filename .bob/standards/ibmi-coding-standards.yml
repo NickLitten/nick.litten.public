@@ -66,7 +66,7 @@ rpgle:
     required:
       - "dftactgrp(*no)"
       - "actgrp(*caller)"
-      - "option(*nodebugio:*srcstmt)"
+      - "option(*nodebugio:*srcstmt:*noshowcpy)"
       - "bnddir('QC2LE')"
     recommended:
       - "main(MainProcedure)"

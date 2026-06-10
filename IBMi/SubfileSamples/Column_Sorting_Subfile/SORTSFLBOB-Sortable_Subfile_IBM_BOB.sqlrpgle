@@ -221,8 +221,6 @@ end-proc;
 // SORTes: Uses cursor for efficient data retrieval
 // ----------------------------------------------------------
 Dcl-Proc LoadSubfile;
-   Dcl-S fetchCount int(10) inz(0);
-   Dcl-S sqlCode int(10);
    Dcl-S sqlErrMsg char(256);
    
    ErrorOccurred = *off;
@@ -243,7 +241,7 @@ Dcl-Proc LoadSubfile;
    
    If (sqlcode <> SQL_SUCCESS);
       ErrorOccurred = *on;
-      ErrorMessage = 'SQL Prepare failed: SQLCODE=' + %char(sqlcode);
+      ErrorMessage = 'SQL Prepare failed: sqlcode=' + %char(sqlcode);
       LogMessage(ErrorMessage);
       Return;
    EndIf;
@@ -255,7 +253,7 @@ Dcl-Proc LoadSubfile;
    
    If (sqlcode <> SQL_SUCCESS);
       ErrorOccurred = *on;
-      ErrorMessage = 'SQL Open cursor failed: SQLCODE=' + %char(sqlcode);
+      ErrorMessage = 'SQL Open cursor failed: sqlcode=' + %char(sqlcode);
       LogMessage(ErrorMessage);
       Return;
    EndIf;
@@ -264,15 +262,12 @@ Dcl-Proc LoadSubfile;
    exec sql fetch next from myCursor 
             into :SORTDATE, :SORTTIME, :SORTUSER, :SORTTEXT, :SORTSTATUS;
    
-   sqlCode = sqlcode;
-   
    // Loop through all records with proper boundary checking
-   dow (sqlCode = SQL_SUCCESS and rrn < 9999);
+   dow (sqlcode = SQL_SUCCESS and rrn < 9999);
       rrn += 1;
-      fetchCount += 1;
       write SFL01;
       
-      exec sql fetch next from myCursor 
+      exec sql fetch next from myCursor
                into :SORTDATE, :SORTTIME, :SORTUSER, :SORTTEXT, :SORTSTATUS;
       
    enddo;
@@ -281,9 +276,9 @@ Dcl-Proc LoadSubfile;
    exec sql close myCursor;
    
    // Handle edge cases
-   If (sqlCode <> SQL_SUCCESS and sqlCode <> SQL_NO_DATA);
+   If (sqlcode <> SQL_SUCCESS and sqlcode <> SQL_NO_DATA);
       ErrorOccurred = *on;
-      ErrorMessage = 'SQL Fetch error: SQLCODE=' + %char(sqlCode);
+      ErrorMessage = 'SQL Fetch error: sqlcode=' + %char(sqlcode);
       LogMessage(ErrorMessage);
    EndIf;
    
@@ -295,7 +290,7 @@ Dcl-Proc LoadSubfile;
    EndIf;
    
    // Log successful load for diagnostics
-   If (fetchCount = 0);
+   If (rrn = 0);
       LogMessage('No records found matching criteria');
       indicators.norows = *on;
    EndIf;
@@ -304,6 +299,7 @@ end-proc;
 // ----------------------------------------------------------
 // Procedure: HandleColumnClick
 // Purpose: Process column header clicks to change sort order
+
 // SORTes: Uses cursor position to determine which column was clicked
 // ----------------------------------------------------------
 Dcl-Proc HandleColumnClick;
@@ -327,7 +323,9 @@ Dcl-Proc HandleColumnClick;
          newSortField = 'SORTSTATUS';
          
       Other;
-         // Click outside valid column headers - ignore
+         // Click outside valid column headers - use Date as default
+         SortField = 'SORTDATE';
+         SortOrder = SORT_ASCENDING;
          Return;
    EndSl;
    

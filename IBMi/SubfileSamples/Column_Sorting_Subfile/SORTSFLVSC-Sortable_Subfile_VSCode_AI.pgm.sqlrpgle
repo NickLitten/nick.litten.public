@@ -1,8 +1,8 @@
 **free
 
-/// ----------------------------------------------------------------------------
-/// Program Name: SORTSFLC - Sortable Subfile using Embedded SQL
-/// ----------------------------------------------------------------------------
+/// --------------------------------------------
+/// Program Name: SORTSFLVSC
+/// --------------------------------------------
 ///
 /// Description:
 ///   Interactive subfile demonstration with column-based sorting and search
@@ -26,7 +26,7 @@
 ///   - Indicator data structure for readable screen control
 ///
 /// Usage:
-///   CALL SORTSFLC
+///   CALL SORTSFLVSC
 ///   - Click any column header to sort by that column
 ///   - Click same header again to reverse sort order
 ///   - Enter search criteria in header fields to filter results
@@ -35,10 +35,11 @@
 /// Author: Nick Litten
 ///
 /// Modification History:
-///   v1.0 2025.10.16 njl - Created for online example
-///   v1.1 2026.02.03 njl - Enhanced with error handling, constants, and improved structure
+///   2025.10.16 njl - Created for online example
+///   2026.02.03 njl - Enhanced with error handling, constants, and improved structure
+///   2026.06.10 njl - Updated comments to match coding standards
 ///
-/// ----------------------------------------------------------------------------
+/// --------------------------------------------
 
 ctl-opt main(mainline)
         optimize(*full)
@@ -49,28 +50,22 @@ ctl-opt main(mainline)
         alwnull(*usrctl)
         dftactgrp(*no)
         bnddir('BIGBNDDIR')
-        copyright('V1.1 - Sortable Subfile using SQL in RPG');
+        copyright('v1.3 - Sortable Subfile using SQL in RPG');
 
+// --------------------------------------------
 // File Declarations
-dcl-f SORTSFLC workstn sfile(SFL01:RRN) indds(indicators) usropn;
+// --------------------------------------------
+dcl-f SORTSFL workstn sfile(SFL01:RRN) indds(indicators) usropn;
 
 // --------------------------------------------
-// Prototypes for Service Program Procedures
+// Include Files
 // --------------------------------------------
-// LOGMESSAGE: Centralized logging utility for diagnostics and error tracking
-//   - Writes messages to the job log with proper severity levels
-//   - Used throughout this program for:
-//     * SQL error reporting (prepare, open, fetch failures)
-//     * Diagnostic information (record counts, search criteria)
-//     * Runtime status tracking
-//   - Provides consistent message format across all program operations
-//   - Messages appear in QSYSOPR and can be monitored/analyzed
-//   - Signature: LogMessage(message: char(256))
-// --------------------------------------------
-/include 'globals.rpgleinc'
-/include 'prototypes.rpgleinc'
+/INCLUDE 'globals.rpgleinc'
+/INCLUDE 'prototypes.rpgleinc'
 
-// Indicator Data Structure for better readability
+// --------------------------------------------
+// Data Structures
+// --------------------------------------------
 Dcl-Ds indicators qualified;
    exit ind pos(3);
    columnClick ind pos(9);
@@ -81,44 +76,51 @@ Dcl-Ds indicators qualified;
    norows ind pos(69);
 end-ds;
 
+// --------------------------------------------
+// Constants
+// --------------------------------------------
 Dcl-C SQL_SUCCESS 0;
 Dcl-C SQL_NO_DATA 100;
 Dcl-C SORT_ASC 'ASC';
 Dcl-C SORT_DSC 'DESC';
 Dcl-C DFT_SORT_FIELD 'SORTDATE';
 
-// Subfile control variables
+// --------------------------------------------
+// Global Variables
+// --------------------------------------------
 Dcl-S rrn zoned(4:0);
 Dcl-S SortField char(10) inz('SORTDATE');
 Dcl-S SortOrder char(4) inz(SORT_ASC);
 Dcl-S LastSortField char(10);
 
-// SQL statement building
 Dcl-S WhereClause varchar(1000);
 Dcl-S SqlStmt varchar(2000);
 Dcl-S OrderByClause varchar(32);
 
-// SQL host variables for cursor fetches
 Dcl-S FetchSortDate zoned(10:0);
 Dcl-S FetchSortTime zoned(10:0);
 Dcl-S FetchSortUser char(10);
 Dcl-S FetchSortText char(40);
 Dcl-S FetchSortStatus char(1);
 
-// Error handling and diagnostics
 Dcl-S ErrorOccurred ind inz(*off);
 Dcl-S ErrorMessage char(256);
 
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: mainline
 // Purpose: Main display loop - handles user interaction
-// SORTes: Centralized control flow for better maintainability
-// ----------------------------------------------------------
+// Notes: Centralized control flow for better maintainability
+// --------------------------------------------
 Dcl-Proc mainline;
    Dcl-S firstDisplay ind inz(*on);
    
-   open SORTSFLC;
+   open SORTSFL;
+   HEADDATE = 'Date';
+   HEADTIME = 'Time';
+   HEADUSER = 'User ID';
+   HEADTEXT = 'Text';
+   HEADSTAT = 'Status';
 
    dow (not indicators.exit);
       // Clear and reload subfile
@@ -146,17 +148,17 @@ Dcl-Proc mainline;
       firstDisplay = *off;
    enddo;
 
-   close SORTSFLC;
+   close SORTSFL;
 
    Return;
    
 end-proc;
 
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: ClearSubfile
 // Purpose: Clear all records from the subfile
-// ----------------------------------------------------------
+// --------------------------------------------
 Dcl-Proc ClearSubfile;
    indicators.sflClr = *on;
    write CTL01;
@@ -164,27 +166,27 @@ Dcl-Proc ClearSubfile;
    rrn = 0;
 end-proc;
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: GetOrderByClause
 // Purpose: Restrict dynamic ORDER BY to known columns before opening cursor
-// ----------------------------------------------------------
+// --------------------------------------------
 Dcl-Proc GetOrderByClause;
    Dcl-Pi *N varchar(32) end-pi;
 
    Select;
-      When (SortField = 'SORTDATE');
+      When (fld = 'HEADDATE' or fld = 'SRCHDATE');
          Return 'SORTDATE ' + %trim(SortOrder);
 
-      When (SortField = 'SORTTIME');
+      When (fld = 'HEADTIME' or fld = 'SRCHTIME');
          Return 'SORTTIME ' + %trim(SortOrder);
 
-      When (SortField = 'SORTUSER');
+      When (fld = 'HEADUSER' or fld = 'SRCHUSER');
          Return 'SORTUSER ' + %trim(SortOrder);
 
-      When (SortField = 'SORTTEXT');
+      When (fld = 'HEADTEXT' or fld = 'SRCHTEXT');
          Return 'SORTTEXT ' + %trim(SortOrder);
 
-      When (SortField = 'SORTSTATUS');
+      When (fld = 'HEADSTAT' or fld = 'SRCHSTAT');
          Return 'SORTSTATUS ' + %trim(SortOrder);
 
       Other;
@@ -194,12 +196,12 @@ Dcl-Proc GetOrderByClause;
    EndSl;
 end-proc;
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: BuildWhereClause
 // Purpose: Construct SQL WHERE clause based on search criteria
 // Returns: WhereClause variable populated with conditions
-// SORTes: Uses parameterized approach to prevent SQL injection
-// ----------------------------------------------------------
+// Notes: Uses parameterized approach to prevent SQL injection
+// --------------------------------------------
 Dcl-Proc BuildWhereClause;
    Dcl-S conditions varchar(1000);
    Dcl-S hasConditions ind inz(*off);
@@ -246,12 +248,12 @@ Dcl-Proc BuildWhereClause;
    EndIf;
 end-proc;
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: LoadSubfile
 // Purpose: Execute SQL query and populate subfile with results
 // Returns: Sets ErrorOccurred flag if SQL errors occur
-// SORTes: Uses cursor for efficient data retrieval
-// ----------------------------------------------------------
+// Notes: Uses cursor for efficient data retrieval
+// --------------------------------------------
 Dcl-Proc LoadSubfile;
    Dcl-S fetchCount int(10);
    Dcl-S localSqlCode int(10) inz(SQL_SUCCESS);
@@ -267,7 +269,7 @@ Dcl-Proc LoadSubfile;
    // Native PF I/O is replaced with cursor FETCH so sorting stays fully in SQL.
    // Construct dynamic SQL statement with proper spacing
    SqlStmt = 'SELECT SORTDATE, SORTTIME, SORTUSER, SORTTEXT, SORTSTATUS ' +
-             'FROM SORTSFLCPF ' +
+             'FROM SORTSFLPF ' +
              %trim(WhereClause) + ' ' +
              'ORDER BY ' + %trim(OrderByClause);
    
@@ -343,11 +345,11 @@ Dcl-Proc LoadSubfile;
    EndIf;
 end-proc;
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: HandleColumnClick
 // Purpose: Process column header clicks to change sort order
-// SORTes: Uses cursor position to determine which column was clicked
-// ----------------------------------------------------------
+// Notes: Uses cursor position to determine which column was clicked
+// --------------------------------------------
 Dcl-Proc HandleColumnClick;
    Dcl-S newSortField char(10);
   
@@ -380,11 +382,11 @@ Dcl-Proc HandleColumnClick;
    EndIf;
 end-proc;
 
-// ----------------------------------------------------------
+// --------------------------------------------
 // Procedure: ToggleSortOrder
 // Purpose: Toggle between ASC and DSC sort order
-// SORTes: Maintains sort direction when clicking same column repeatedly
-// ----------------------------------------------------------
+// Notes: Maintains sort direction when clicking same column repeatedly
+// --------------------------------------------
 Dcl-Proc ToggleSortOrder;
    // If same field clicked, toggle sort direction
    If (SortField = LastSortField);

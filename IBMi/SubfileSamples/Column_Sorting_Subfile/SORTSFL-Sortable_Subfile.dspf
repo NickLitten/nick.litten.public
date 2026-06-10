@@ -1,30 +1,27 @@
-     A*%%TS  SD  20260609  170232  NICKLITTEN  REL-V7R5M0  5770-WDS
-     A*%%EC
      A                                      DSPSIZ(24 80 *DS3)
      A                                      INDARA
      A                                      CA03(03 'Exit')
-     A                                      CA09(09 'Search')
+     A                                      CF09(09 'Search')
      A          R SFL01                     SFL
-     A            SORTDATE      10S 0O  9  2
-     A            SORTTIME      10S 0O  9 13
-     A            SORTUSER      10A  O  9 24
-     A            SORTTEXT      40A  O  9 35
-     A            SORTSTATUS     1A  O  9 76
+     A            SORTDATE      10S 0O  9  3
+     A            SORTTIME      10S 0O  9 14
+     A            SORTUSER      10A  O  9 25
+     A            SORTTEXT      40A  O  9 36
+     A            SORTSTATUS     1A  O  9 77
      A          R CTL01                     SFLCTL(SFL01)
-     A*%%TS  SD  20260609  170232  NICKLITTEN  REL-V7R5M0  5770-WDS
+     A                                      RTNCSRLOC(&RCD &FLD &POS)
+     A  31                                  SFLDSP
+     A  32                                  SFLDSPCTL
+     A  30                                  SFLCLR
+     A  33                                  SFLEND(*SCRBAR *MORE)
      A                                      SFLSIZ(9999)
      A                                      SFLPAG(0013)
      A                                      OVERLAY
-     A  30                                  SFLCLR
-     A  31                                  SFLDSP
-     A  32                                  SFLDSPCTL
-     A  33                                  SFLEND(*MORE)
-     A                                      RTNCSRLOC(&RCD &FLD &POS)
      A            RCD           10A  H
      A            FLD           10A  H
      A            POS            4S 0H
-     A                                  1  3'SORTSFL - Column Sorteable Subfile-
-     A                                       Example'
+     A                                  1  3'SORTSFL - Column Sortable Subfile -
+     A                                      Example'
      A                                      DSPATR(HI)
      A                                  3  3'You can sort this subfile two ways-
      A                                      :'
@@ -36,32 +33,32 @@
      A                                  5  3'(b) enter a partial search charact-
      A                                      er string in the search field below'
      A                                      COLOR(BLU)
-     A            HEADDATE      10A  O  7  2DSPATR(UL)
+     A            HEADDATE      10A  O  7  3DSPATR(UL)
      A                                      COLOR(BLU)
-     A            HEADTIME      10A  O  7 13DSPATR(UL)
+     A            HEADTIME      10A  O  7 14DSPATR(UL)
      A                                      COLOR(BLU)
-     A            HEADUSER      10A  O  7 24DSPATR(UL)
+     A            HEADUSER      10A  O  7 25DSPATR(UL)
      A                                      COLOR(BLU)
-     A            HEADTEXT      40A  O  7 35DSPATR(UL)
+     A            HEADTEXT      40A  O  7 36DSPATR(UL)
      A                                      COLOR(BLU)
-     A            HEADSTAT       1A  O  7 76DSPATR(UL)
+     A            HEADSTAT       1A  O  7 77DSPATR(UL)
      A                                      COLOR(BLU)
-     A            SRCHDATE      10A  B  8  2CHGINPDFT
+     A            SRCHDATE      10A  B  8  3CHGINPDFT
      A                                      COLOR(BLU)
-     A            SRCHTIME      10A  B  8 13CHGINPDFT
+     A            SRCHTIME      10A  B  8 14CHGINPDFT
      A                                      COLOR(BLU)
-     A            SRCHUSER      10A  B  8 24CHGINPDFT
+     A            SRCHUSER      10A  B  8 25CHGINPDFT
      A                                      COLOR(BLU)
-     A            SRCHTEXT      40A  B  8 35CHGINPDFT
+     A            SRCHTEXT      40A  B  8 36CHGINPDFT
      A                                      COLOR(BLU)
-     A            SRCHSTAT       1A  B  8 76CHGINPDFT
+     A            SRCHSTAT       1A  B  8 77CHGINPDFT
      A                                      COLOR(BLU)
      A          R CMD01
-     A                                 13 18'No Data matches the Selection crit-
+     A            MOUSECLICK     2Y 0B 23  3PSHBTNFLD
+     A                                      PSHBTNCHC(1 '>Enter')
+     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
+     A                                      PSHBTNCHC(9 'F9 >Sort' CF09)
+     A                                 24  3'No Data matches the Selection crit-
      A                                      eria'
      A N69                                  DSPATR(ND)
      A                                      COLOR(RED)
-     A            MOUSECLICK     2Y 0B 23  2PSHBTNFLD
-     A                                      PSHBTNCHC(1 '>Enter')
-     A                                      PSHBTNCHC(3 'F3 e>Xit' CA03)
-     A                                      PSHBTNCHC(9 'F9 >Sort' CA09)
