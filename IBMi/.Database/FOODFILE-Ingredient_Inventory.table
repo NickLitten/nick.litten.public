@@ -39,9 +39,13 @@
 -- Modification History:
 --   1.0 2026-05-14 | Nick Litten | Initial creation
 -- ---------------------------------------------------------------------------
+SET SCHEMA FOODLIB;
+
 -- ---------------------------------------------------------------------
 -- Drop existing objects if they exist
 -- ---------------------------------------------------------------------
+drop view if exists VW_FOOD_PUBLIC;
+
 DROP TABLE IF EXISTS FOODFILE;
 
 
@@ -543,5 +547,9 @@ VALUES
     );
 
 
-# -----------------------------------------------------------------------------
 LABEL ON TABLE FOODFILE IS 'Food Ingredient Inventory';
+
+CREATE VIEW VW_FOOD_PUBLIC AS SELECT INGID, INGNAME,
+CATEGORY, MEASURE, QUANTITY FROM FOODLIB.FOODFILE;
+
+GRANT SELECT ON VW_FOOD_PUBLIC TO QTMHHTTP;

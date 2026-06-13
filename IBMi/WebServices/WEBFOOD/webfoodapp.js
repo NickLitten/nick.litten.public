@@ -1,3 +1,17 @@
+const { Connection, ProgramCall } = require('itoolkit');
+const { XMLParser } = require('fast-xml-parser');
+
+// Your IBM i connection – tweak as needed
+const connection = new Connection({
+transport: 'rest',
+transportOptions: {
+database: '*LOCAL',
+username: 'WEBUSER',
+password: 'Bonehead$1',
+url: 'http://projex.rzkh.de:80/cgi-bin/xmlcgi.pgm' // Port 80 for HTTP; 443 for HTTPS
+}
+});
+
 const express = require('express');
 const app = express();
 const port = 8080;
@@ -15,7 +29,7 @@ app.post('/api/food', (req, res) => {
   const rtntext = body.rtntext || 'status';
 
   // Fire up the program call
-  const program = new ProgramCall('WEBFOOD', { lib: 'NICKLITTEN' });
+  const program = new ProgramCall('WEBFOODNEW', { lib: 'NICKLITTEN' });
 
   // Input params – match your RPGLE defs
   program.addParam({ name: 'ingid', type: '10i0', value: (food.ingid || 0).toString() });

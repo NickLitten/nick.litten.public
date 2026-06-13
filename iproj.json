@@ -12,5 +12,8 @@
   ],
   "setIBMiEnvCmd": [],
   "buildCommand": "/QOpenSys/pkgs/bin/makei build",
-  "compileCommand": "/QOpenSys/pkgs/bin/makei compile c -f {filename}"
+  "compileCommand": "/QOpenSys/pkgs/bin/makei compile c -f {filename}",
+  "postUsrlibl": [
+    "FOODLIB"
+  ]
 }
