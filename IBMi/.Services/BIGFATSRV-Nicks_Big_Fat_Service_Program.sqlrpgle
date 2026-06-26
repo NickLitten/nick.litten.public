@@ -37,7 +37,7 @@
 ///   - BuildEmailSubject: Build subject line with user count
 ///   - LogMessage: Send message to job log
 ///   - ValidateEmailConfig: Validate email configuration
-///   - EscapeSqlString: Escape single quotes for SQL safety
+///   - EscapeSqlString: Escape single quotes for SQL safety            
 ///   User Profile Services:
 ///   - GetExpiringUsers: Returns list of users with expiring passwords
 ///   - FormatUserInfo: Formats user information for display
@@ -329,64 +329,70 @@ end-proc;
 
 
 
-// ---------------------------------------------------------------------------
-// Procedure: LogMessage
-// Description: Send message to job log
-// Parameters:
-//   - message: char(256) - Message text
-//   - messageType: char(10) - Message type (*COMP, *DIAG, *ESCAPE, etc.)
-// ---------------------------------------------------------------------------
+/// ---------------------------------------------------------------------------
+/// Procedure: LogMessage
+/// Description: Send a message to the job log via QMHSNDPM API.
+///   SND-MSG only supports *INFO for ad-hoc text. To send *COMP, *DIAG,
+///   *ESCAPE etc. as dynamic text we must call QMHSNDPM directly.
+/// Parameters:
+///   p_message  - Text to send (max 256 chars)
+///   p_msgType  - Message type: *COMP *DIAG *INFO *ESCAPE *NOTIFY *STATUS
+///                Defaults to *COMP when omitted.
+/// ---------------------------------------------------------------------------
 Dcl-Proc LogMessage export;
    Dcl-Pi *n;
       p_message char(256) const;
       p_msgType char(10) const options(*nopass);
    end-pi;
-   
-   Dcl-S message char(256);
-   Dcl-S msgType char(10);
-   Dcl-S length int(5) ;
-   
-   message = p_message;
-   length = %len(%trimr(message)) ;
+
+   // QMHSNDPM parameters
+   Dcl-S msgId         char(7)   inz('       ');  // Blank = immediate text
+   Dcl-S msgFile       char(20)  inz('                   ');
+   Dcl-S msgData       char(256);
+   Dcl-S msgDataLen    int(10);
+   Dcl-S msgType       char(10);
+   Dcl-S callStack     char(10)  inz('*');         // * = current call stack
+   Dcl-S callStackCtr  int(10)   inz(1);           // 1 level up = caller
+   Dcl-S msgKey        char(4)   inz('    ');
+   Dcl-S errCode       char(16)  inz(*allx'00');
+
+   Dcl-Pr QMHSNDPM extpgm('QMHSNDPM');
+      msgId_p        char(7)   const;
+      msgFile_p      char(20)  const;
+      msgData_p      char(256) const;
+      msgDataLen_p   int(10)   const;
+      msgType_p      char(10)  const;
+      callStack_p    char(10)  const;
+      callStackCtr_p int(10)   const;
+      msgKey_p       char(4);
+      errCode_p      char(16);
+   end-pr;
 
    // Default to completion message if not specified
    If (%Parms() >= 2);
-      msgType = p_msgType;
+      msgType = %trimr(p_msgType);
    Else;
       msgType = '*COMP';
    EndIf;
 
+   msgData    = p_message;
+   msgDataLen = %len(%trimr(msgData));
+
    MONITOR;
-
-      // TO BE FIXED !!!!!!!!!!!!!!!!!!!!!!!!!!!
-      // Why doesnt SND-MSG accept a *COMP/*DIAG for the message?
-      // snd-msgh message %TARGET(*CALLER : 1);
-
-      // If (msgType = '*COMP');
-      // snd-msg *comp message %TARGET(*CALLER : 1);
-      // Elseif (msgType = '*DIAG');
-      // snd-msg *diag message %TARGET(*CALLER : 1);
-      // Elseif (msgType = '*INFO');
-      // snd-msg *info message %TARGET(*CALLER : 1);
-      // Elseif (msgType = '*ESCAPE');
-      // snd-msg *escape message %TARGET(*CALLER : 1);
-      // Elseif (msgType = '*NOTIFY');
-      // snd-msg *notify message %TARGET(*CALLER : 1);
-      // Elseif (msgType = '*STATUS');
-      // snd-msg *status message %TARGET(*CALLER : 1);
-      // Else;
-      snd-msg message %TARGET(*CALLER : 1);
-      // EndIf;
-
-   ON-ERROR 126;
-      DSPLY 'SND-MSG error';
-   ON-ERROR 9999;
-      DSPLY 'Escape message';
+      QMHSNDPM( msgId
+              : msgFile
+              : msgData
+              : msgDataLen
+              : msgType
+              : callStack
+              : callStackCtr
+              : msgKey
+              : errCode );
+   ON-ERROR;
+      // Silently absorb - avoid recursive error loops in a service program
    ENDMON;
 
-
 end-proc;
-
 
 
 
