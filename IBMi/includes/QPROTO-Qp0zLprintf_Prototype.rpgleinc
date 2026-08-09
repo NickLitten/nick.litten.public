@@ -1,0 +1,20 @@
+**FREE
+///
+/// QPROTO - Qp0zLprintf_Prototype
+/// -------------------------------------------------------------------
+/// Shared prototype for Qp0zLprintf (PASE stdout / job-log writer).
+/// Include this member wherever Qp0zLprintf is called to avoid
+/// duplicating the prototype in every program.
+///
+/// Usage:
+///   /copy ACTGRPTEST,QPROTO
+///
+/// Modification History:
+///   2025-05-30  NL  Initial version
+/// -------------------------------------------------------------------
+
+dcl-pr Qp0zLprintf int(10) extproc('Qp0zLprintf');
+  *n pointer value options(*string);           // szOutputStg (format string)
+  *n pointer value options(*string:*nopass);   // optional arg 1
+  *n pointer value options(*string:*nopass);   // optional arg 2
+end-pr;

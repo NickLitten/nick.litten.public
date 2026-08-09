@@ -8,6 +8,7 @@
 SUBDIRS := \
 	.Database \
 	.Services \
+	ActivationGroupTest \
 	ClearBobLogs \
 	ClearPfrdata \
 	CodeSamples \

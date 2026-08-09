@@ -34,10 +34,8 @@
 /// 2026-06-09 1.3      Nick Litten   Fixed SQL syntax, renamed IFS APIs, updated comments
 /// --------------------------------------------
 
-ctl-opt dftactgrp(*no) actgrp('NICKLITTEN')
-        option(*nodebugio:*srcstmt:*nounref:*sqlcursorstay)
-        datfmt(*ISO) decedit('0.')
-        copyright('1.3 - JSON_TABLE Decode JSON using SQL');
+/include 'header.rpgleinc'
+ctl-opt copyright('JSNIFSSQL1 | 1.3 - JSON_TABLE Decode JSON using SQL');
 
 // --------------------------------------------
 // Prototypes - IBM i IFS APIs
